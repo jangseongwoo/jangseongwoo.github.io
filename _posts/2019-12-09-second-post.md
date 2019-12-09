@@ -1,28 +1,21 @@
-/\*<!\[CDATA\[\*/ div.rbtoc1575889350967 {padding: 0px;} div.rbtoc1575889350967 ul {list-style: disc;margin-left: 0px;} div.rbtoc1575889350967 li {margin-left: 0px;padding-left: 0px;} /\*\]\]>\*/
+---
+title:  "Fluentd로 데이터 수집해 AWS Kinesis firehose로 보내기"
+excerpt: "이 문서는 Fluentd에서 AWS Kinesis firehose로 데이터 보내는 테스트의 과정과 결과를 기록하기 위해 작성하였다."
 
-*   [목적](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-목적)
-*   [테스트 환경](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-테스트환경)
-    *   [로컬 환경](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-로컬환경)
-    *   [AWS 테스트 리전, 관련 서비스, 흐름](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-AWS테스트리전,관련서비스,흐름)
-    *   [AWS Elasticsearch 환경](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-AWSElasticsearch환경)
-    *   [AWS Kinesis Firehose 환경](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-AWSKinesisFirehose환경)
-*   [Fluentd에서 AWS Kinesis firehose로 데이터 보내기](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-Fluentd에서AWSKinesisfirehose로데이터보내기)
-    *   [데이터 수집 플랫폼 테스트 환경 구축](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-데이터수집플랫폼테스트환경구축)
-    *   [Elasticsearch에 Template 설정](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-Elasticsearch에Template설정)
-    *   [Fluentd의 AWS Kinesis Data stream 플러그인 설치하기](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-Fluentd의AWSKinesisDatastream플러그인설치하기)
-    *   [Fluentd의 설정 변경 및 실행](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-Fluentd의설정변경및실행)
-    *   [Data gererator를 만들고 실행하기](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-Datagererator를만들고실행하기)
-    *   [데이터 입력이 제대로 됬는지 확인](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-데이터입력이제대로됬는지확인)
-*   [테스트 결과](#Fluentd로데이터수집해AWSKinesisfirehose로보내기-테스트결과)
+categories:
+  - Blog
+tags:
+  - Fluentd, AWS Kinesis firehose, Elasticsearch, AWS
+---
 
 목적
 ==
 
 * * *
 
-이 문서는 커넥츠 15초 동영상 데이터 수집 플랫폼 POC의 Fluentd에서 AWS Kinesis firehose로 데이터 보내는 테스트의 과정과 결과를 기록하기 위해 작성하였다.
+이 문서는 Fluentd에서 AWS Kinesis firehose로 데이터 보내는 테스트의 과정과 결과를 기록하기 위해 작성하였다.
 
-Elasticsearch, Fluentd, AWS Kinesis firehose에 대한 기초 지식에 대한 것은 이미 알고 있다는 가정하에 문서 작성을 한다. 모르는 경우 기술전략실안에 있는 위키 문서들을 참고하도록 한다.
+Elasticsearch, Fluentd, AWS Kinesis firehose에 대한 기초 지식에 대한 것은 이미 알고 있다는 가정하에 문서 작성을 한다. 모르는 경우 다른 블로그 문서들을 참고하도록 한다.
 
 테스트 환경
 ======
@@ -77,7 +70,7 @@ AWS 테스트 리전, 관련 서비스, 흐름
 AWS Elasticsearch 환경
 --------------------
 
-*   도메인 명: conects-data-es-test
+*   도메인 명: 
     
 *   Elasticsearch 7.1
     
@@ -89,7 +82,7 @@ AWS Elasticsearch 환경
         
     *   인스턴스별 일반 EBS(SSD) 10GB 각 1개
         
-*   테스트 인덱스 : conect-data-test
+*   테스트 인덱스 : data-test
     
 
 AWS Kinesis Firehose 환경
@@ -134,16 +127,16 @@ Elasticsearch에 Template 설정
 Elasticsearch에 tempalte을 설정하기 위해 Kibana Dev tools에 아래와 같은 명령어를 실행한다.
 
 ```
-PUT _template/conect-template-test
+PUT _template/template-test
 {
     "index_patterns": [
-        "conect-data-test-*"
+        "data-test-*"
     ],
     "settings": {
         "number_of_shards": 1
     },
     "aliases": {
-        "conect-data": {}
+        "test-data": {}
     },
     "mappings": {
             "_source": {
@@ -206,8 +199,8 @@ kinesis\_test.config을 생성하고 다음과 같이 내용을 입력한다. �
 ```
 <source>
   @type tail
-  path /Users/st/test/conect_data_poc/source/*.log
-  pos_file /Users/st/test/conect_data_poc/pos/pos_file.pos
+  path /Users/st/test/test_data_poc/source/*.log
+  pos_file /Users/st/test/test_data_poc/pos/pos_file.pos
   tag kinesis.test
   <parse>
     @type json
@@ -352,7 +345,7 @@ $ python data_generator.py > firehose.log
 미리 설정해둔 fleuntd.log에서 다음과 같은 메시지를 확인한다.
 
 ```
-2019-11-14 21:07:00 +0900 [info]: #0 following tail of /Users/st/test/conect_data_poc/source/test_fluentd_firehose.log
+2019-11-14 21:07:00 +0900 [info]: #0 following tail of /Users/st/test/test_data_poc/source/test_fluentd_firehose.log
 ```
 
 데이터 입력이 제대로 됬는지 확인
@@ -403,7 +396,7 @@ GET _search/
     "max_score" : 0.99693555,
     "hits" : [
       {
-        "_index" : "conect-data-test-2019-11-18-11",
+        "_index" : "data-test-2019-11-18-11",
         "_type" : "_doc",
         "_id" : "49601506511312770511672440629703967127024877424999399426.0",
         "_score" : 0.99693555,
@@ -416,7 +409,7 @@ GET _search/
         }
       },
       {
-        "_index" : "conect-data-test-2019-11-18-11",
+        "_index" : "data-test-2019-11-18-11",
         "_type" : "_doc",
         "_id" : "49601506511312770511672440629705176052844492054174105602.0",
         "_score" : 0.99693555,
@@ -429,7 +422,7 @@ GET _search/
         }
       },
       {
-        "_index" : "conect-data-test-2019-11-18-11",
+        "_index" : "data-test-2019-11-18-11",
         "_type" : "_doc",
         "_id" : "49601506511312770511672440629706384978664106683348811778.0",
         "_score" : 0.99693555,
@@ -442,7 +435,7 @@ GET _search/
         }
       },
       {
-        "_index" : "conect-data-test-2019-11-18-11",
+        "_index" : "data-test-2019-11-18-11",
         "_type" : "_doc",
         "_id" : "49601506511312770511672440629707593904483721312523517954.0",
         "_score" : 0.99693555,
@@ -455,7 +448,7 @@ GET _search/
         }
       },
       {
-        "_index" : "conect-data-test-2019-11-18-11",
+        "_index" : "data-test-2019-11-18-11",
         "_type" : "_doc",
         "_id" : "49601506511312770511672440629708802830303335941698224130.0",
         "_score" : 0.99693555,
@@ -468,7 +461,7 @@ GET _search/
         }
       },
       {
-        "_index" : "conect-data-test-2019-11-18-11",
+        "_index" : "data-test-2019-11-18-11",
         "_type" : "_doc",
         "_id" : "49601506511312770511672440629710011756122950570872930306.0",
         "_score" : 0.99693555,
@@ -481,7 +474,7 @@ GET _search/
         }
       },
       {
-        "_index" : "conect-data-test-2019-11-18-11",
+        "_index" : "data-test-2019-11-18-11",
         "_type" : "_doc",
         "_id" : "49601506511312770511672440629711220681942565200047636482.0",
         "_score" : 0.99693555,
@@ -494,7 +487,7 @@ GET _search/
         }
       },
       {
-        "_index" : "conect-data-test-2019-11-18-11",
+        "_index" : "data-test-2019-11-18-11",
         "_type" : "_doc",
         "_id" : "49601506511312770511672440629712429607762179829222342658.0",
         "_score" : 0.99693555,
@@ -507,7 +500,7 @@ GET _search/
         }
       },
       {
-        "_index" : "conect-data-test-2019-11-18-11",
+        "_index" : "data-test-2019-11-18-11",
         "_type" : "_doc",
         "_id" : "49601506511312770511672440629713638533581794458397048834.0",
         "_score" : 0.99693555,
@@ -520,7 +513,7 @@ GET _search/
         }
       },
       {
-        "_index" : "conect-data-test-2019-11-18-11",
+        "_index" : "data-test-2019-11-18-11",
         "_type" : "_doc",
         "_id" : "49601506511312770511672440629714847459401409087571755010.0",
         "_score" : 0.99693555,
