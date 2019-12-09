@@ -5,7 +5,7 @@ excerpt: "이 문서는 Fluentd에서 AWS Kinesis firehose로 데이터 보내�
 categories:
   - Blog
 tags:
-  - Fluentd, AWS Kinesis firehose, Elasticsearch, AWS
+  - Fluentd, AWS_Kinesis_firehose, Elasticsearch, AWS
 ---
 
 목적

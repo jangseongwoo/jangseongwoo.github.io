@@ -6,7 +6,7 @@ var store = [{
         "teaser":"http://localhost:4000/assets/images/logo.png"},{
         "title": "Fluentd로 데이터 수집해 AWS Kinesis firehose로 보내기",
         "excerpt":"목적 이 문서는 Fluentd에서 AWS Kinesis firehose로 데이터 보내는 테스트의 과정과 결과를 기록하기 위해 작성하였다. Elasticsearch, Fluentd, AWS Kinesis firehose에 대한 기초 지식에 대한 것은 이미 알고 있다는 가정하에 문서 작성을 한다. 모르는 경우 다른 블로그 문서들을 참고하도록 한다. 테스트 환경 테스트 환경은 다음과 같다. 로컬 환경 Python 3.7.4 Fluentd...","categories": ["Blog"],
-        "tags": ["Fluentd, AWS Kinesis firehose, Elasticsearch, AWS"],
+        "tags": ["Fluentd, AWS_Kinesis_firehose, Elasticsearch, AWS"],
         "url": "http://localhost:4000/blog/second-post/",
         "teaser":"http://localhost:4000/assets/images/logo.png"},{
         "title": "first post",
