@@ -1,0 +1,1742 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[테스트] Fluentd(td-agent) output plugin 동작 확인 - Andro’s tech blog</title>
+<meta name="description" content="이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 Filter plugin의 단순 동작 확인에 목적을 두고 있다.">
+
+
+  <meta name="author" content="Andro">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Andro's tech blog">
+<meta property="og:title" content="[테스트] Fluentd(td-agent) output plugin 동작 확인">
+<meta property="og:url" content="http://localhost:4000/fluentd/fluentd_filter_plugin_operation_check/">
+
+
+  <meta property="og:description" content="이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 Filter plugin의 단순 동작 확인에 목적을 두고 있다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-12-10T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/fluentd/fluentd_filter_plugin_operation_check/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Andro",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Andro's tech blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Andro's tech blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/" >Quick-Start Guide</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="Andro" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Andro</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[테스트] Fluentd(td-agent) output plugin 동작 확인">
+    <meta itemprop="description" content="이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 Filter plugin의 단순 동작 확인에 목적을 두고 있다.">
+    <meta itemprop="datePublished" content="December 10, 2019">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">[테스트] Fluentd(td-agent) output plugin 동작 확인
+</h1>
+          
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  15 minute read
+
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h1 id="테스트-목적">테스트 목적</h1>
+
+<p>이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 Filter plugin의 단순 동작 확인에 목적을 두고 있다.</p>
+
+<ul>
+  <li>
+    <p>필드를 가공해야하는 경우</p>
+  </li>
+  <li>
+    <p>로그 값을 확인하여 필터링 하는 경우</p>
+  </li>
+  <li>
+    <p>로그를 파싱하여 저장하는 경우</p>
+  </li>
+</ul>
+
+<h1 id="테스트-환경">테스트 환경</h1>
+
+<p>다음과 같은 환경에서 테스트 하였다.</p>
+
+<ul>
+  <li>
+    <p>OS : masOS Mojave v10.14.6</p>
+  </li>
+  <li>
+    <p>Fluentd : 1.0.2 (td-agent : 3.1.1.0)</p>
+  </li>
+</ul>
+
+<h1 id="테스트-사전-정보">테스트 사전 정보</h1>
+
+<p>Fluentd 기초 사용법을 확인하여 td-agent 기초 동작을 확인하면 된다.</p>
+
+<hr />
+
+<h1 id="테스트-케이스--필드를-가공해야하는-경우-filter---record_transformer">테스트 케이스 : 필드를 가공해야하는 경우 (Filter - record_transformer)</h1>
+
+<p>td-agent로 로그를 수집하여 저장하는 과정에서 필드의 가공이 필요한 경우가 있다.</p>
+
+<p>이러한 경우 Filter plugin중 record_transformer 타입을 사용하면 된다.</p>
+
+<h2 id="테스트-목적-1">테스트 목적</h2>
+
+<p>이 테스트는 학습차원에서 다음과 같은 td-agent의 단순 동작 확인이 목적이다.</p>
+
+<ul>
+  <li>파일에서 로그를 수집하여 저장하는 과정에서 Filter plugin의 record_transformer 타입을 사용하여 필드 가공</li>
+</ul>
+
+<h2 id="테스트-시나리오">테스트 시나리오</h2>
+
+<p>이 테스트는 다음과 같은 시나리오를 바탕으로 진행된다.</p>
+
+<ol>
+  <li>
+    <p>다음과 같은 형태 json로그가 파일에 생성된다.</p>
+
+    <p>{ “user_id” : “javascript0247”, “created_at” : “2019-08-16T01:23:45+0900”, “os” : “Android” }</p>
+  </li>
+  <li>
+    <p>파일에서 로그를 수집하고 다음과 같은 조건으로 필드를 가공한다.</p>
+
+    <ul>
+      <li>
+        <p>로그 수집 시각인 “collected_at” 필드 추가</p>
+      </li>
+      <li>
+        <p>만들어진 시각인 “created_at” 필드 삭제</p>
+      </li>
+      <li>
+        <p>“os”필드를 “device_os”로 변경</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>필드가 가공된 로그는 다음과 같은 형태의 파일로 출력된다.</p>
+
+    <p>{ “user_id” : “javascript0247”, “collected_at” : “2019-08-16T14:22:00+0900”, “device_os” : “Android” }</p>
+  </li>
+</ol>
+
+<h2 id="테스트-plugin-정보">테스트 Plugin 정보</h2>
+
+<h3 id="source-plugin---tail">Source Plugin - tail</h3>
+
+<p>다음은 테스트에서 사용할 tail 설정 예시이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;source&gt;  
+  @type tail
+  path /Users/kevin/dev/fluentd/test/filter_record_transformer/source/*
+  pos_file /Users/kevin/dev/fluentd/test/filter_record_transformer/pos/filter_record_transformer.pos
+  &lt;parse&gt;
+    @type json
+  &lt;/parse&gt;
+  tag filter_record_transformer.test
+  refresh_interval 5s
+&lt;/source&gt;
+</code></pre></div></div>
+
+<p>위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.</p>
+
+<ul>
+  <li>
+    <p>@type : tail type을 사용한다. 자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+  </li>
+  <li>
+    <p>path : 읽어오고자 하는 파일의 경로를 의미한다.</p>
+  </li>
+  <li>
+    <p>pos_file : td-agent는 파일마다 읽었던 위치를 파일로 저장해두는데 그 파일의 경로를 지정한다.</p>
+  </li>
+  <li>
+    <p>parse</p>
+
+    <ul>
+      <li>@type : json를 사용한다. 자세한 내용은 아래의 링크를 통하여 확인한다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>tag : 이벤트를 구분짓기 위한 tag name을 의미한다.</p>
+  </li>
+  <li>
+    <p>refresh_interval : td-agent가 수집하려는 파일리스트의 갱신주기를 의미한다.</p>
+  </li>
+</ul>
+
+<p>자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+
+<ul>
+  <li>
+    <p><a href="https://docs.fluentd.org/input/tail">Fluentd - Input Plugin : tail</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.fluentd.org/parser/json">Fluentd - Parser Plugin : json</a></p>
+  </li>
+</ul>
+
+<h3 id="filter-plugin---record_transformer">Filter Plugin - record_transformer</h3>
+
+<p>다음은 테스트에서 사용할 grep 설정 예시이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;filter filter_record_transformer.*&gt;  
+  @type record_transformer
+  enable_ruby true
+  &lt;record&gt;
+    collected_at ${time.strftime('%Y-%m-%dT%H:%M:%S%z')}
+    device_os ${record["os"]}
+  &lt;/record&gt;
+  remove_keys [ "os", "created_at" ]
+&lt;/filter&gt;
+
+</code></pre></div></div>
+
+<p>위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.</p>
+
+<ul>
+  <li>
+    <p>&lt;filter pattern&gt; : pattern 부분에 filter plugin을 적용시키고자 하는 이벤트(tag명)를 명시한다.</p>
+  </li>
+  <li>
+    <p>@type : record을 사용한다. 자세한 내용은 아래의 링크를 참고한다.</p>
+  </li>
+  <li>
+    <p>enable_ruby : 필드 가공시 ‘Ruby’식 표현을 사용하는 지에 대하여 묻는다.</p>
+  </li>
+  <li>
+    <p>record : 필드의 추가를 의미한다. “필드명 : 필드값” 형태로 추가한다.</p>
+  </li>
+  <li>
+    <p>remove_keys : 삭제할 필드명을 지정한다.</p>
+  </li>
+</ul>
+
+<p>자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+
+<ul>
+  <li><a href="https://docs.fluentd.org/filter/record_transformer">Fluentd - Filter plugin : record_transformer</a></li>
+</ul>
+
+<h3 id="match-plugin---file">Match Plugin - file</h3>
+
+<p>다음은 테스트에서 사용하게 될 file 설정 예시이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;match filter_record_transformer.*&gt;  
+  @type file
+  path /Users/kevin/dev/fluentd/test/filter_record_transformer/match/${tag}
+  path_suffix ".json"
+  add_path_suffix true
+  append true
+  &lt;format&gt;
+    @type json
+  &lt;/format&gt;
+  &lt;buffer tag&gt;
+    path /Users/kevin/dev/fluentd/test/filter_record_transformer/match/
+    flush_mode interval
+    flush_interval 10s
+  &lt;/buffer&gt;
+&lt;/match&gt;
+
+</code></pre></div></div>
+
+<p>테스트 과정에서 사용하는 설정과 간단한 설명이다. required 설정은 녹색으로 표기하였다.</p>
+
+<ul>
+  <li>
+    <p>&lt;match pattern&gt; : pattern 부분에 match plugin을 적용시키고자 하는 이벤트(tag명)를 명시한다.</p>
+  </li>
+  <li>
+    <p>@type : file을 사용한다. 자세한 내용은 아래의 링크를 참고한다.</p>
+  </li>
+  <li>
+    <p>path : 출력할 파일의 경로를 의미한다. 예약어(예: tag)를 사용할 수 있다.</p>
+  </li>
+  <li>
+    <p>path_suffix : 확장자명을 지정한다.</p>
+  </li>
+  <li>
+    <p>add_path_suffix : path_suffix 사용유무를 지정한다.</p>
+  </li>
+  <li>
+    <p>append : 한 파일에 출력하는지 여부를 지정한다. 원할한 테스트를 위하여 설정한다.</p>
+  </li>
+  <li>
+    <p>format : json으로 설정한다. 자세한 내용은 아래의 링크를 참고한다.</p>
+  </li>
+  <li>
+    <p>buffer : 자세한 내용은 아래의 링크를 참고한다. 원할한 테스트를 위하여 설정한다.</p>
+  </li>
+</ul>
+
+<p>자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+
+<ul>
+  <li>
+    <p><a href="https://docs.fluentd.org/output/file">Fluentd - Output Plugin : file</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.fluentd.org/formatter/json">Fluentd - Fommatter Plugin : json</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.fluentd.org/configuration/buffer-section">Fluentd - Config : Buffer Section</a></p>
+  </li>
+</ul>
+
+<h2 id="테스트-과정">테스트 과정</h2>
+
+<ol>
+  <li>
+    <p>파일을 생성하고 정상적으로 생성 되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch filter_record_transformer.json | stat filter_record_transformer.json
+16777223 8192640 -rw-r--r-- 1 kevin staff 0 0 "Aug 14 14:01:39 2019" "Aug 14 14:01:39 2019" "Aug 14 14:01:39 2019" "Aug 14 14:01:39 2019" 4096 0 0 filter_record_transformer.json
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>td-agent 설정파일 경로를 수정한다. <br />
+다음은 경로 예시이다.</p>
+
+    <p>/Users/kevin/dev/fluentd/test/filter_record_transformer/config/td-agent_filter_record_transformer.conf</p>
+
+    <p>수정한 경로에 td-agent 설정 파일을 생성한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch td-agent_filter_record_transformer.conf | stat td-agent_filter_record_transformer.conf
+16777223 8192245 -rw-r--r-- 1 kevin staff 0 0 "Aug 14 13:50:42 2019" "Aug 14 13:50:42 2019" "Aug 14 13:50:42 2019" "Aug 14 13:50:42 2019" 4096 0 0 td-agent_filter_record_transformer.conf
+</code></pre></div>    </div>
+
+    <p>td-agent 설정 파일을 다음과 같이 수정한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim td-agent_filter_record_transformer.conf
+&lt;source&gt;
+  @type tail
+  tag filter_record_transformer.test
+  path /Users/kevin/dev/fluentd/test/filter_record_transformer/source/*
+  pos_file /Users/kevin/dev/fluentd/test/filter_record_transformer/pos/filter_record_transformer.pos
+  &lt;parse&gt;
+    @type json
+  &lt;/parse&gt;
+  refresh_interval 5s
+&lt;/source&gt;
+&lt;filter filter_record_transformer.*&gt;
+  @type record_transformer
+  enable_ruby true
+  &lt;record&gt;
+    collected_at ${time.strftime('%Y-%m-%dT%H:%M:%S%z')}
+    device_os ${record["os"]}
+  &lt;/record&gt;
+  remove_keys [ "os", "created_at" ]
+&lt;/filter&gt;
+&lt;match filter_record_transformer.*&gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/filter_record_transformer/match/${tag}
+  add_path_suffix true
+  path_suffix ".json"
+  append true
+  &lt;format&gt;
+    @type json
+  &lt;/format&gt;
+  &lt;buffer tag&gt;
+    path /Users/kevin/dev/fluentd/test/filter_record_transformer/match/
+    flush_mode interval
+    flush_interval 10s
+  &lt;/buffer&gt;
+&lt;/match&gt;
+</code></pre></div>    </div>
+
+    <p>이제 td-agent를 실행한다.</p>
+  </li>
+  <li>
+    <p>입력용 파일에 로그를 출력하고 정상적으로 출력되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat filter_record_transformer.json
+{ "user_id" : "javascript0247", "created_at" : "2019-08-16T01:23:45+0900", "os" : "Android" }
+{ "user_id" : "kotlin_0247", "created_at" : "2019-08-16T14:28:10+0900", "os" : "Android" }
+{ "user_id" : "java_8615", "created_at" : "2019-08-16T14:30:00+0900", "os" : "iOS" }
+{ "user_id" : "python_1574", "created_at" : "2019-08-16T14:30:00+0900", "os" : "iOS" }
+{ "user_id" : "cpp_2464", "created_at" : "2019-08-16T14:30:00+0900", "os" : "iOS" }
+</code></pre></div>    </div>
+
+    <p>출력용 파일에 출력된 로그를 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat filter_record_transformer.test.json
+{"user_id":"javascript0247","collected_at":"2019-08-16T15:14:29+0900","device_os":"Android"}
+{"user_id":"kotlin_0247","collected_at":"2019-08-16T15:14:29+0900","device_os":"Android"}
+{"user_id":"java_8615","collected_at":"2019-08-16T15:14:29+0900","device_os":"iOS"}
+{"user_id":"python_1574","collected_at":"2019-08-16T15:14:29+0900","device_os":"iOS"}
+{"user_id":"cpp_2464","collected_at":"2019-08-16T15:14:29+0900","device_os":"iOS"} 
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="테스트-결과">테스트 결과</h2>
+
+<p>테스트 결과 record_transformer 타입을 사용하여 필드 가공이 이루어지는지 확인하였다.</p>
+
+<p>테스트 과정에서 json 형태 로그에 관하여 다음과 같은 필드에 관한 수정이 이루어짐을 확인하였다.</p>
+
+<ul>
+  <li>
+    <p>필드 추가 - collected_at</p>
+  </li>
+  <li>
+    <p>필드 삭제 - created_at</p>
+  </li>
+  <li>
+    <p>필드명 변경 - os / device_os</p>
+  </li>
+</ul>
+
+<p>다음은 위의 필드수정 항목에 대한 예시이다.</p>
+
+<p>{ “user_id” : “javascript0247”, “created_at” : “2019-08-16T01:23:45+0900”, “os” : “Android” }</p>
+
+<p> {“user_id”:”javascript0247”,”collected_at”:”2019-08-16T15:14:29+0900”,”device_os”:”Android”}</p>
+
+<hr />
+
+<h1 id="테스트-케이스--로그-값을-확인하여-필터링-하는-경우-filter---grep">테스트 케이스 : 로그 값을 확인하여 필터링 하는 경우 (Filter - grep)</h1>
+
+<p>td-agent로 로그를 수집하여 저장하는 과정에서 필터링하여 원하는 로그만 출력해야하는 경우가 있다.</p>
+
+<p>이러한 경우 Filter plugin중 grep 타입을 사용하면 된다.</p>
+
+<h2 id="테스트-목적-2">테스트 목적</h2>
+
+<p>이 테스트는 학습차원에서 다음과 같은 td-agent의 단순 동작 확인이 목적이다.</p>
+
+<ul>
+  <li>파일에서 로그를 수집하여 저장하는 과정에서 Filter plugin의 grep타입을 사용하여 원하는 로그만 필터링 가능</li>
+</ul>
+
+<h2 id="테스트-시나리오-1">테스트 시나리오</h2>
+
+<p>이 테스트는 다음과 같은 시나리오를 바탕으로 진행된다.</p>
+
+<ul>
+  <li>
+    <p>Apache access log가 파일로 생성된다.</p>
+  </li>
+  <li>
+    <p>Apache access log중 다음과 같은 요구사항에 충족되는 로그만 필터링한다.</p>
+
+    <p>요청 method가 “POST”이면서 status가 2XX이 아닌 경우</p>
+  </li>
+  <li>
+    <p>필터링된 결과는 파일로 출력한다.</p>
+  </li>
+</ul>
+
+<h2 id="테스트-필요-정보">테스트 필요 정보</h2>
+
+<h3 id="apache-access-log">Apache Access Log</h3>
+
+<p>테스트 과정에서 다음과 같은 Combined 로그 형식(Combined Log Format)을 사용한다.</p>
+
+<p>%h %l %u %t \“%r\” %&gt;s %b  \”%{Referer}i\” \”%{User-agent}i\”</p>
+
+<p>%h : 서버에 요청을 한 클라이언트의 IP 주소를 의미한다.</p>
+
+<p>%l : 클라이언트 컴퓨터의 identd가 제공하는 클라이언트의 RFC 1413 신원이다. 만약 요청한 정보가 없다면 “-“로 표기한다.</p>
+
+<p>%u : HTTP 인증으로 알아낸 문서를 요청한 사용자의 userid이다. 문서를 암호로 보호하지 않는다면 “-“ 으로 표기한다.</p>
+
+<p>%t : 서버가 요청처리를 마친 시간을 의미한다. [day/month/year:hour:minute:second zone] 형식이다.</p>
+
+<p>\“%r\” : 클라이언트의 요청줄을 쌍따옴표로 묶어 표현한다. </p>
+
+<p>%&gt;s : 서버가 클라이언트에게 보내는 상태코드이다.</p>
+
+<p>%b : 응답 헤더를 제외하고 클라이언트에게 보내는 내용의 크기를 나타낸다. 보내는 내용이 없다면 “-“으로 표기한다.</p>
+
+<p>\”%{Referer}i\” : 클라이언트가 참조하였다고 서버에게 알린 사이트이다.</p>
+
+<p>\”%{User-agent}i\” : 클라이언트 브라우저가 자신에 대해 알리는 식별 정보를 의미한다.</p>
+
+<p>다음은 Combined 로그 형식의 예시이다.</p>
+
+<p>127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] “GET /apache_pb.gif HTTP/1.0” 200 2326 “<a href="http://www.example.com/start.html">http://www.example.com/start.html</a>” “Mozilla/4.08 [en] (Win98; I ;Nav)”</p>
+
+<p>자세한 내용은 다음의 링크를 참고한다.</p>
+
+<ul>
+  <li><a href="https://httpd.apache.org/docs/2.4/ko/logs.html">로그파일 - Apache HTTP Server Version 2.4</a></li>
+</ul>
+
+<h3 id="source-plugin---tail-1">Source Plugin - tail</h3>
+
+<p>다음은 테스트에서 사용할 tail 설정 예시이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;source&gt;
+  @type tail
+  path /Users/kevin/dev/fluentd/test/filter_grep/source/*
+  pos_file /Users/kevin/dev/fluentd/test/pos/filter_grep.pos
+  tag filter_grep.test
+  &lt;parse&gt;
+    @type apache2
+  &lt;/parse&gt;
+  refresh_interval 1s
+&lt;/source&gt;
+</code></pre></div></div>
+
+<p>위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.</p>
+
+<ul>
+  <li>
+    <p>@type : tail type을 사용한다. 자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+  </li>
+  <li>
+    <p>path : 읽어오고자 하는 파일의 경로를 의미한다.</p>
+  </li>
+  <li>
+    <p>pos_file : td-agent는 파일마다 읽었던 위치를 파일로 저장해두는데 그 파일의 경로를 지정한다.</p>
+  </li>
+  <li>
+    <p>parse</p>
+
+    <ul>
+      <li>@type : apache2를 사용한다. 자세한 내용은 아래의 링크를 통하여 확인한다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>tag : 이벤트를 구분짓기 위한 tag name을 의미한다.</p>
+  </li>
+  <li>
+    <p>refresh_interval : td-agent가 수집하려는 파일리스트의 갱신주기를 의미한다.</p>
+  </li>
+</ul>
+
+<p>자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+
+<ul>
+  <li>
+    <p><a href="https://docs.fluentd.org/input/tail">Fluentd - Input Plugins : tail</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.fluentd.org/parser/apache2">Fluentd - Parser plugins : apache2</a></p>
+  </li>
+</ul>
+
+<h3 id="filter-plugin---grep">Filter Plugin - grep</h3>
+
+<p>다음은 테스트에서 사용할 grep 설정 예시이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;filter filter_grep*&gt;
+  @type grep
+  &lt;regexp&gt;
+    key method
+    pattern ^POST$
+  &lt;/regexp&gt;
+  &lt;regexp&gt;
+    key code
+    pattern ^[1-1|3-5]\d\d$
+  &lt;/regexp&gt;
+&lt;/filter&gt;
+
+</code></pre></div></div>
+
+<p>위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.</p>
+
+<ul>
+  <li>
+    <p>&lt;filter pattern&gt; : pattern 부분에 filter plugin을 적용시키고자 하는 이벤트(tag명)를 명시한다.</p>
+  </li>
+  <li>
+    <p>@type : grep을 사용한다. 자세한 내용은 아래의 링크를 참고한다.</p>
+  </li>
+  <li>
+    <p>regexp</p>
+
+    <ul>
+      <li>
+        <p>key : 필드명을 지정한다.</p>
+      </li>
+      <li>
+        <p>pattern : “Ruby의 정규표현식 표현”을 사용하여 표현한다.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>공식 문서 상에는 “pattern /정규표현식/”으로 표현되어 있으나 “pattern 정규표현식” 형태로 표기하여야 정상적으로 동작한다.</p>
+  </li>
+  <li>
+    <and> <or>의 설정은 fluentd 1.2 부터 지원한다.
+    
+
+  
+
+  
+
+</or></and>
+  </li>
+</ul>
+<p>자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+
+<ul>
+  <li><a href="https://docs.fluentd.org/filter/grep">Fluentd - Filter plugins : grep</a></li>
+</ul>
+
+<h3 id="match-plugin---file-1">Match Plugin - file</h3>
+
+<p>다음은 테스트에서 사용하게 될 file 설정 예시이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;match filter_grep.*&gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/filter_grep/match/${tag}_output
+  path_suffix ".log"
+  add_path_suffix true
+  append true
+  &lt;format&gt;
+    @type out_file
+    output_tag false
+    output_time true
+  &lt;/format&gt;
+  &lt;buffer tag&gt;    
+    flush_mode interval
+    flush_interval 10s
+  &lt;/buffer&gt;
+&lt;/match&gt;
+
+</code></pre></div></div>
+
+<p>테스트 과정에서 사용하는 설정과 간단한 설명이다. required 설정은 녹색으로 표기하였다.</p>
+
+<ul>
+  <li>
+    <p>&lt;match pattern&gt; : pattern 부분에 match plugin을 적용시키고자 하는 이벤트(tag명)를 명시한다.</p>
+  </li>
+  <li>
+    <p>@type : file을 사용한다. 자세한 내용은 아래의 링크를 참고한다.</p>
+  </li>
+  <li>
+    <p>path : 출력할 파일의 경로를 의미한다. 예약어(예: tag)를 사용할 수 있다.</p>
+  </li>
+  <li>
+    <p>path_suffix : 확장자명을 지정한다.</p>
+  </li>
+  <li>
+    <p>add_path_suffix : path_suffix 사용유무를 지정한다.</p>
+  </li>
+  <li>
+    <p>append : 한 파일에 출력하는지 여부를 지정한다. 원할한 테스트를 위하여 설정한다.</p>
+  </li>
+  <li>
+    <p>format : 아래의 <strong>Formatter Plugins - out_file</strong>을 참고한다.</p>
+  </li>
+  <li>
+    <p>buffer : 자세한 내용은 아래의 링크를 참고한다. 원할한 테스트를 위하여 설정한다.</p>
+  </li>
+</ul>
+
+<p>자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+
+<ul>
+  <li>
+    <p><a href="https://docs.fluentd.org/output/file">Fluentd - Output plugins : file</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.fluentd.org/configuration/buffer-section">Fluentd - Config : Buffer Section</a></p>
+  </li>
+</ul>
+
+<h3 id="formatter-plugins---out_file">Formatter Plugins - out_file</h3>
+
+<p>다음은 테스트에서 사용하게 될 out_file 설정 예시이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;format&gt;
+    @type out_file
+    output_tag false
+    output_time true
+  &lt;/format&gt;
+
+</code></pre></div></div>
+
+<p>위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.</p>
+
+<ul>
+  <li>
+    <p>@type : out_file을 사용한다. 자세한 내용은 아래의 링크를 참고한다.</p>
+  </li>
+  <li>
+    <p>output_tag : tag(이벤트 명)의 출력 여부를 설정한다.</p>
+  </li>
+  <li>
+    <p>output_time : 로그 수집 시간 출력 여부를 설정한다.</p>
+  </li>
+</ul>
+
+<p>자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+
+<ul>
+  <li><a href="https://docs.fluentd.org/formatter/out_file">Fluentd - Formatter Plugins : out_file</a></li>
+</ul>
+
+<h2 id="테스트-과정-1">테스트 과정</h2>
+
+<ol>
+  <li>
+    <p>입력용 파일을 생성하고 정상적으로 생성 되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch filter_grep_input.log | stat filter_grep_input.log
+16777223 8232044 -rw-r--r-- 1 kevin staff 0 0 "Aug 19 20:20:14 2019" "Aug 19 20:20:14 2019" "Aug 19 20:20:14 2019" "Aug 19 20:20:14 2019" 4096 0 0 filter_grep_input.log
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>td-agent 설정 경로를 수정한다.</p>
+
+    <p>다음은 경로 예시이다.</p>
+
+    <p>/Users/kevin/dev/fluentd/test/filter_grep/config/td-agent.conf</p>
+
+    <p>위에서 수정한 경로에 td-agent 설정파일을 생성한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch td-agent.conf | stat td-agent.conf
+16777223 8226646 -rw-r--r-- 1 kevin staff 0 0 "Aug 19 15:54:04 2019" "Aug 19 15:54:04 2019" "Aug 19 15:54:04 2019" "Aug 19 15:54:04 2019" 4096 0 0 td-agent.conf
+</code></pre></div>    </div>
+
+    <p>td-agent 설정 파일을 다음과 같이 수정한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat td-agent.conf
+    
+&lt;source&gt;
+  @type tail
+  tag filter_grep
+  path /Users/kevin/dev/fluentd/test/filter_grep/source/*
+  pos_file /Users/kevin/dev/fluentd/test/filter_grep/pos/filter_grep.pos
+  &lt;parse&gt;
+    @type apache2
+  &lt;/parse&gt;
+  refresh_interval 5s
+&lt;/source&gt;
+    
+&lt;filter filter_grep*&gt;
+  @type grep
+  &lt;regexp&gt;
+    key method
+    pattern ^POST$
+  &lt;/regexp&gt;
+  &lt;regexp&gt;
+    key code
+    pattern ^[1-1|3-5]\d\d$
+  &lt;/regexp&gt;
+&lt;/filter&gt;
+ 
+&lt;match filter_grep*&gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/filter_grep/match/${tag}_output
+  add_path_suffix true
+  path_suffix ".log"
+  append true
+  &lt;buffer tag&gt;
+    flush_mode interval
+    flush_interval 10s
+  &lt;/buffer&gt;
+  &lt;format&gt;
+    @type out_file
+    output_tag false
+    output_time true
+  &lt;/format&gt;
+&lt;/match&gt;
+</code></pre></div>    </div>
+
+    <p>td-agent를 실행한다.</p>
+  </li>
+  <li>
+    <p>입력용 파일에 로그를 출력하고 정상적으로 출력 되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ cat source/filter_grep_input.log
+127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] "GET /apache_pb.gif HTTP/1.0" 100 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] "POST /regist.html HTTP/1.0" 200 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] "POST /regist.html HTTP/1.0" 300 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:03 +0900] "GET /apache_pb.gif HTTP/1.0" 400 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:04 +0900] "POST /regist.html HTTP/1.0" 500 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:05 +0900] "POST /regist.html HTTP/1.0" 100 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:06 +0900] "GET /apache_pb.gif HTTP/1.0" 200 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:07 +0900] "POST /regist.html HTTP/1.0" 300 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:08 +0900] "POST /regist.html HTTP/1.0" 400 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:09 +0900] "GET /apache_pb.gif HTTP/1.0" 500 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+</code></pre></div>    </div>
+
+    <p>출력용 파일이 정상적으로 출력 되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ cat match/filter_grep_output.log
+2019-08-20T00:40:02+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":300,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
+2019-08-20T00:40:04+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":500,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
+2019-08-20T00:40:05+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":100,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
+2019-08-20T00:40:07+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":300,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
+2019-08-20T00:40:08+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":400,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="테스트-결과-1">테스트 결과</h2>
+
+<p>테스트 결과 grep 타입을 사용하여 필터링 가능함을 확인하였다.</p>
+
+<p>테스트 과정에서 다음과 같은 요구사항에 대하여 필터링 되는지 확인하였다.</p>
+
+<p>요청 method가 “POST”이면서 status가 2XX이 아닌 경우</p>
+
+<p>다음은 위의 요구사항대로 필터링된 예시이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] "GET /apache_pb.gif HTTP/1.0" 100 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] "POST /regist.html HTTP/1.0" 200 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] "POST /regist.html HTTP/1.0" 300 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:03 +0900] "GET /apache_pb.gif HTTP/1.0" 400 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:04 +0900] "POST /regist.html HTTP/1.0" 500 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:05 +0900] "POST /regist.html HTTP/1.0" 100 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:06 +0900] "GET /apache_pb.gif HTTP/1.0" 200 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:07 +0900] "POST /regist.html HTTP/1.0" 300 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:08 +0900] "POST /regist.html HTTP/1.0" 400 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+127.0.0.1 - - [20/Aug/2019:00:40:09 +0900] "GET /apache_pb.gif HTTP/1.0" 500 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2019-08-20T00:40:02+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":300,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
+2019-08-20T00:40:04+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":500,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
+2019-08-20T00:40:05+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":100,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
+2019-08-20T00:40:07+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":300,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
+2019-08-20T00:40:08+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":400,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
+</code></pre></div></div>
+
+<p>필터링 후에는 다음과 같은 형식으로 저장됨을 알 수 있다.</p>
+
+<p>로그를 기록한 날짜 { host : “클라이언트 아이피”, … 중략… agent : “클라이언트 브라우저 식별정보”}</p>
+
+<hr />
+
+<h1 id="테스트-케이스--로그를-파싱하여-저장하는-경우-filter---parser">테스트 케이스 : 로그를 파싱하여 저장하는 경우 (Filter - parser)</h1>
+
+<p>td-agent로 로그를 수집하여 저장하는 과정에서 원하는 형식으로 파싱하여 저장해야 하는 경우가 있다.</p>
+
+<p>이러한 경우에 Filter plugin중 parser 타입을 사용하면된다.</p>
+
+<h2 id="테스트-목적-3">테스트 목적</h2>
+
+<p>이 테스트는 학습차원에서 다음과 같은 td-agent의 동작 확인이 목적이다.</p>
+
+<ul>
+  <li>파일에서 로그를 수집하여 저장하는 과정에서 Filter plugin의 parser를 사용하여 파싱 가능</li>
+</ul>
+
+<h2 id="테스트-시나리오-2">테스트 시나리오</h2>
+
+<p>이 테스트는 다음과 같은 시나리오를 바탕으로 진행된다.</p>
+
+<ol>
+  <li>
+    <p>Apache access log가 입력용 파일에 생성된다.</p>
+  </li>
+  <li>
+    <p>td-agent로 Apache access log를 수집하고 파싱한다.</p>
+  </li>
+  <li>
+    <p>파싱된 결과는 출력용 파일에 json 형태로 출력한다.</p>
+  </li>
+</ol>
+
+<h2 id="테스트에-필요한-사전-지식">테스트에 필요한 사전 지식</h2>
+
+<h3 id="appache-access-log">Appache Access Log</h3>
+
+<p>테스트에서 다음과 같은 Common 로그 형식(Common Log Format)을 사용한다.</p>
+
+<p>%h %l %u %t \“%r\” %&gt;s %b</p>
+
+<p>%h : 서버에 요청을 한 클라이언트의 IP 주소를 의미한다.</p>
+
+<p>%l : 클라이언트 컴퓨터의 identd가 제공하는 클라이언트의 RFC 1413 신원이다. 만약 요청한 정보가 없다면 “-“로 표기한다.</p>
+
+<p>%u : HTTP 인증으로 알아낸 문서를 요청한 사용자의 userid이다. 문서를 암호로 보호하지 않는다면 “-“ 으로 표기한다.</p>
+
+<p>%t : 서버가 요청처리를 마친 시간을 의미한다. [day/month/year:hour:minute:second zone] 형식이다.</p>
+
+<p>\“%r\” : 클라이언트의 요청줄을 쌍따옴표로 묶어 표현한다. </p>
+
+<p>%&gt;s : 서버가 클라이언트에게 보내는 상태코드이다.</p>
+
+<p>%b : 응답 헤더를 제외하고 클라이언트에게 보내는 내용의 크기를 나타낸다. 보내는 내용이 없다면 “-“으로 표기한다.</p>
+
+<p>다음은 Common 로그 형식의 예시이다.</p>
+
+<p>127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] “GET /apache_pb.gif HTTP/1.0” 200 2326</p>
+
+<p>자세한 내용은 다음의 링크를 참고한다.</p>
+
+<ul>
+  <li><a href="https://httpd.apache.org/docs/2.4/ko/logs.html">로그파일 - Apache HTTP Server Version 2.4</a></li>
+</ul>
+
+<h3 id="json">Json</h3>
+
+<p>json에 대한 설명은 다음의 링크를 참고한다.</p>
+
+<ul>
+  <li><a href="http://json.org/">JSON - 공식 사이트</a></li>
+</ul>
+
+<h3 id="source-plugin---tail-2">Source Plugin - tail</h3>
+
+<p>다음은 테스트에서 사용할 tail 설정 예시이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;source&gt;
+  @type tail
+  path /Users/kevin/dev/fluentd/test/filter_parser/source/*
+  pos_file /Users/kevin/dev/fluentd/test/filter_parser/pos/pos_file.pos
+  tag filter_parser
+  &lt;parse&gt;
+    @type none
+  &lt;/parse&gt;
+  refresh_interval 1s
+&lt;/source&gt;
+</code></pre></div></div>
+
+<p>위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.</p>
+
+<ul>
+  <li>
+    <p>@type : tail type을 사용한다. 자세한 설명은 아래의 링크를 통하여 확인한다.</p>
+  </li>
+  <li>
+    <p>path : 읽어오고자 하는 파일의 경로를 의미한다.</p>
+  </li>
+  <li>
+    <p>pos_file : td-agent는 파일마다 읽었던 위치를 파일로 저장해두는데 그 파일의 경로를 지정한다.</p>
+  </li>
+  <li>
+    <p>parse</p>
+
+    <ul>
+      <li>@type : none을 사용한다. 자세한 설명은 아래의 링크를 통하여 확인한다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>tag : 이벤트를 구분짓기 위한 tag name을 의미한다.</p>
+  </li>
+  <li>
+    <p>refresh_interval : td-agent가 수집하려는 파일리스트의 갱신주기를 의미한다.</p>
+  </li>
+</ul>
+
+<p>자세한 내용은 아래의 링크를 참고한다.</p>
+
+<ul>
+  <li>
+    <p><a href="https://docs.fluentd.org/input/tail">Fluentd - Input Plugin : tail</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.fluentd.org/parser/none">Fluentd - Parser Plugin : none</a></p>
+  </li>
+</ul>
+
+<h3 id="filter-plugin---parser">Filter Plugin - parser</h3>
+
+<p>다음은 테스트에서 사용하게 될 parser 설정 예시이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;filter filter_parser*&gt;
+  @type parser
+  key_name message
+  &lt;parse&gt;
+    @type regexp
+    expression ^(?&lt;host&gt;[^ ]*) (?&lt;identd&gt;[^ ]*) (?&lt;user&gt;[^ ]*) \[(?&lt;time&gt;[^\]]*)\] "(?&lt;method&gt;\S+)(?: +(?&lt;path&gt;[^ ]*) +\S*)?" (?&lt;code&gt;[^ ]*) (?&lt;size&gt;[^ ]*)$
+    time_format %d/%b/%Y:%H:%M:%S %z
+  &lt;/parse&gt;
+&lt;/filter&gt;
+</code></pre></div></div>
+
+<p>위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.</p>
+
+<ul>
+  <li>
+    <p>&lt;filter pattern&gt; : pattern 부분에 filter plugin을 적용시키고자 하는 이벤트(tag명)를 명시한다.</p>
+  </li>
+  <li>
+    <p>@type : parser를 사용한다. 자세한 내용은 아래의 링크를 참고한다.</p>
+  </li>
+  <li>
+    <p>key_name : 파싱하고자 하는 필드명을 명시한다.</p>
+  </li>
+  <li>
+    <p>parse : 아래의 <strong>Parser Plugins - regexp</strong>를 참고한다.</p>
+  </li>
+</ul>
+
+<p>자세한 내용은 아래의 링크를 참고한다.</p>
+
+<ul>
+  <li><a href="https://docs.fluentd.org/filter/parser">Fluentd - Filter Plugin : parser</a></li>
+</ul>
+
+<h3 id="parser-plugin---regexp">Parser Plugin - regexp</h3>
+
+<p>다음은 테스트에서 사용하게 될 regexp 설정 예시이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;parse&gt;
+    @type regexp
+    expression ^(?&lt;host&gt;[^ ]*) [^ ]* (?&lt;user&gt;[^ ]*) \[(?&lt;time&gt;[^\]]*)\] "(?&lt;method&gt;\S+)(?: +(?&lt;path&gt;[^ ]*) +\S*)?" (?&lt;code&gt;[^ ]*) (?&lt;size&gt;[^ ]*)$
+    time_format %d/%b/%Y:%H:%M:%S %z
+  &lt;/parse&gt;
+</code></pre></div></div>
+
+<p>위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.</p>
+
+<ul>
+  <li>
+    <p>@type : regexp를 사용한다. 자세한 내용은 아래의 링크를 참고한다.</p>
+  </li>
+  <li>
+    <p>expression : 파싱하고자 하는 형식에 대하여 “Ruby의 정규표현식 표현”을 사용하여 표현한다. 위의 예시는 Apache access log중 Common 로그 형식을 의미한다.</p>
+  </li>
+  <li>
+    <p>time_format : 시간형식을 어떻게 지정할 지에 대한 형식을 지정한다. 위의 예시의 샘플은 “20/Aug/2019:13:55:36 +0900” 이다.</p>
+  </li>
+</ul>
+
+<p>자세한 내용은 아래의 링크를 참고한다.</p>
+
+<ul>
+  <li>
+    <p><a href="https://docs.fluentd.org/parser/regexp">Fluentd - Parser Plugins : regexp</a></p>
+  </li>
+  <li>
+    <p><a href="https://ruby-doc.org/core-2.4.1/Regexp.html#class-Regexp-label-Options">Ruby’s Regexp document</a></p>
+  </li>
+</ul>
+
+<h3 id="match-plugin---file-2">Match Plugin - file</h3>
+
+<p>다음은 테스트에서 사용하게 될 file 설정 예시이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;match filter_parser*&gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/filter_parser/match/${tag}_output
+  path_suffix ".json"
+  add_path_suffix true  
+  append true
+  &lt;format&gt;
+    @type json
+  &lt;/format&gt;
+  &lt;buffer tag&gt;
+    flush_mode interval
+    flush_interval 10s
+  &lt;/buffer&gt;
+&lt;/match&gt;
+</code></pre></div></div>
+
+<p>위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.</p>
+
+<ul>
+  <li>
+    <p>&lt;match pattern&gt; : pattern 부분에 match plugin을 적용시키고자 하는 이벤트(tag명)를 명시한다.</p>
+  </li>
+  <li>
+    <p>@type : file을 사용한다. 자세한 내용은 아래의 링크를 참고한다.</p>
+  </li>
+  <li>
+    <p>path : 출력할 파일의 경로를 의미한다. 예약어(예: tag)를 사용할 수 있다.</p>
+  </li>
+  <li>
+    <p>path_suffix : 확장자명을 지정한다.</p>
+  </li>
+  <li>
+    <p>add_path_suffix : path_suffix 사용유무를 지정한다.</p>
+  </li>
+  <li>
+    <p>append : 한 파일에 출력하는지 여부를 지정한다. 원할한 테스트를 위하여 설정한다.</p>
+  </li>
+  <li>
+    <p>format</p>
+
+    <ul>
+      <li>@type : json으로 설정한다. 자세한 내용은 아래의 링크를 참고한다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>buffer : 자세한 내용은 아래의 링크를 참고한다. 원할한 테스트를 위하여 설정한다.</p>
+  </li>
+</ul>
+
+<p>자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+
+<ul>
+  <li>
+    <p><a href="https://docs.fluentd.org/output/file">Fluentd - Output plugins : file</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.fluentd.org/formatter/json">Fluentd - Formatter plugins : json</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.fluentd.org/configuration/buffer-section">Fluentd - Config : Buffer Section</a></p>
+  </li>
+</ul>
+
+<h2 id="테스트-과정-2">테스트 과정</h2>
+
+<ol>
+  <li>
+    <p>파일을 생성하고 정상적으로 생성 되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch filter_parser_input.log | stat filter_parser_input.log
+16777223 8251706 -rw-r--r-- 1 kevin staff 0 0 "Aug 20 18:26:05 2019" "Aug 20 18:26:05 2019" "Aug 20 18:26:05 2019" "Aug 20 18:26:05 2019" 4096 0 0 filter_parser_input.log
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>td-agent 설정파일의 경로를 수정한다.<br />
+다음은 경로예시이다.</p>
+
+    <p>/Users/kevin/dev/fluentd/test/filter_parser/config/td-agent.conf</p>
+
+    <p>위에서 수정한 경로에 td-agent 설정파일을 생성한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch td-agent.conf | stat td-agent.conf
+16777223 8251793 -rw-r--r-- 1 kevin staff 0 0 "Aug 20 18:29:43 2019" "Aug 20 18:29:43 2019" "Aug 20 18:29:43 2019" "Aug 20 18:29:43 2019" 4096 0 0 td-agent.conf
+</code></pre></div>    </div>
+
+    <p>td-agent 설정 파일을 다음과 같이 수정한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat td-agent.conf
+&lt;source&gt;
+  @type tail
+  path /Users/kevin/dev/fluentd/test/filter_parser/source/*
+  pos_file /Users/kevin/dev/fluentd/test/filter_parser/pos/pos_file.pos
+  tag filter_parser
+  &lt;parse&gt;
+    @type none
+  &lt;/parse&gt;
+  refresh_interval 1s
+&lt;/source&gt;
+&lt;filter filter_parser*&gt;
+  @type parser
+  key_name message
+  &lt;parse&gt;
+    @type regexp
+    expression ^(?&lt;host&gt;[^ ]*) (?&lt;identd&gt;[^ ]*) (?&lt;user&gt;[^ ]*) \[(?&lt;time&gt;[^\]]*)\] "(?&lt;method&gt;\S+)(?: +(?&lt;path&gt;[^ ]*) +\S*)?" (?&lt;code&gt;[^ ]*) (?&lt;size&gt;[^ ]*)$
+    time_format %d/%b/%Y:%H:%M:%S %z
+  &lt;/parse&gt;
+&lt;/filter&gt;
+&lt;match filter_parser*&gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/filter_parser/match/${tag}_output
+  add_path_suffix true
+  path_suffix ".json"
+  append true
+  &lt;format&gt;
+    @type json
+  &lt;/format&gt;
+  &lt;buffer tag&gt;
+    flush_mode interval
+    flush_interval 10s
+  &lt;/buffer&gt;
+&lt;/match&gt;
+</code></pre></div>    </div>
+
+    <p>이제 td-agent를 실행한다.</p>
+  </li>
+  <li>
+    <p>입력용 파일에 로그를 출력하고 정상적으로 출력 되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat source/filter_parser_input.log
+127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] "GET /apache_pb.gif HTTP/1.0" 100 2326
+127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] "POST /registration.html HTTP/1.0" 200 2326
+127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] "POST /registration.html HTTP/1.0" 300 2326
+127.0.0.1 - - [20/Aug/2019:00:40:03 +0900] "GET /apache_pb.gif HTTP/1.0" 400 2326
+127.0.0.1 - - [20/Aug/2019:00:40:04 +0900] "POST /registration.html HTTP/1.0" 500 2326
+127.0.0.1 - - [20/Aug/2019:00:40:05 +0900] "POST /registration.html HTTP/1.0" 100 2326
+127.0.0.1 - - [20/Aug/2019:00:40:06 +0900] "GET /apache_pb.gif HTTP/1.0" 200 2326
+127.0.0.1 - - [20/Aug/2019:00:40:07 +0900] "POST /registration.html HTTP/1.0" 300 2326
+127.0.0.1 - - [20/Aug/2019:00:40:08 +0900] "POST /registration.html HTTP/1.0" 400 2326
+127.0.0.1 - - [20/Aug/2019:00:40:09 +0900] "GET /apache_pb.gif HTTP/1.0" 500 2326
+</code></pre></div>    </div>
+
+    <p>출력용 파일이 정상적으로 출력 되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat match/filter_parser_output.json
+{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"300","size":"2326"}
+{"host":"127.0.0.1","identd":"-","user":"-","method":"GET","path":"/apache_pb.gif","code":"400","size":"2326"}
+{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"500","size":"2326"}
+{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"100","size":"2326"}
+{"host":"127.0.0.1","identd":"-","user":"-","method":"GET","path":"/apache_pb.gif","code":"200","size":"2326"}
+{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"300","size":"2326"}
+{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"400","size":"2326"}
+{"host":"127.0.0.1","identd":"-","user":"-","method":"GET","path":"/apache_pb.gif","code":"500","size":"2326"}
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="테스트-결과-2">테스트 결과</h2>
+
+<p>테스트 결과 parser 타입을 사용하여 파싱이 가능함을 확인하였다.</p>
+
+<p>테스트 과정에서 Apache access log를 수집하여 json 형식의 파일로 저장하는 것을 확인하였다.</p>
+
+<p>다음은 파싱전후의 예시이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] "GET /apache_pb.gif HTTP/1.0" 100 2326
+127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] "POST /registration.html HTTP/1.0" 200 2326
+127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] "POST /registration.html HTTP/1.0" 300 2326
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"300","size":"2326"}
+{"host":"127.0.0.1","identd":"-","user":"-","method":"GET","path":"/apache_pb.gif","code":"400","size":"2326"}
+{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"500","size":"2326"}
+
+</code></pre></div></div>
+
+<p>파싱된 후 저장된 json형식의 로그는 다음과 같은 형식으로 저장된다.</p>
+
+<p>{“host”: “클라이언트 아이피”, “identd” : “클라이언트 RFC1413 신원”, “user” : “클라이언트 이름”, “method” : “http 메서드”, “path”: “접근하려는 경로”, “code” : “http 상태코드”, “size” : “응답용량”}
+ㄴ</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#fluentd" class="page__taxonomy-item" rel="tag">Fluentd</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#fluentd" class="page__taxonomy-item" rel="tag">Fluentd</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-12-10T00:00:00+09:00">December 10, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5B%ED%85%8C%EC%8A%A4%ED%8A%B8%5D+Fluentd%28td-agent%29+output+plugin+%EB%8F%99%EC%9E%91+%ED%99%95%EC%9D%B8%20http%3A%2F%2Flocalhost%3A4000%2Ffluentd%2Ffluentd_filter_plugin_operation_check%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Ffluentd%2Ffluentd_filter_plugin_operation_check%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Ffluentd%2Ffluentd_filter_plugin_operation_check%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/fluentd/fluentd_file_path_test/" class="pagination--pager" title="[테스트] Fluentd - 입력 로그 파일 경로 설정에 관한 테스트
+">Previous</a>
+    
+    
+      <a href="/fluentd/fluentd_install/" class="pagination--pager" title="Fluentd(td-agent) 설치 및 실행 방법
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/fluentd/fluentd_output_plugin_operation_check/" rel="permalink">[테스트] Fluentd(td-agent) output plugin 동작 확인
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  11 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 단순 동작 확인에 목적을 두고 있다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/fluentd/fluentd_install/" rel="permalink">Fluentd(td-agent) 설치 및 실행 방법
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">아래 내용은 Mac에서 td-agent를 설치하고 기본 동작을 확인하는 것을 기준으로 작성된 내용이다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/fluentd/fluentd_file_path_test/" rel="permalink">[테스트] Fluentd - 입력 로그 파일 경로 설정에 관한 테스트
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Fluentd(이하 td-agent)로 로그 파일의 로그를 수집할 때 파일 경로에 관하여 다음과 같은 케이스가 존재한다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/fluentd/fluentd_basic/" rel="permalink">Fluentd 기초 사용법
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Fluentd(td-agent) 사용함에 있어 다음과 같은 사용법을 정리하기 위하여 작성 되었다.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Andro. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

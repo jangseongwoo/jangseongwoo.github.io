@@ -3,9 +3,12 @@ title:  "Fluentd로 데이터 수집해 AWS Kinesis firehose로 보내기"
 excerpt: "이 문서는 Fluentd에서 AWS Kinesis firehose로 데이터 보내는 테스트의 과정과 결과를 기록하기 위해 작성하였다."
 
 categories:
-  - Blog
+  - Fluentd
 tags:
-  - Fluentd, AWS_Kinesis_firehose, Elasticsearch, AWS
+  - Fluentd
+  - AWS_Kinesis_firehose
+  - Elasticsearch
+  - AWS
 ---
 
 목적
@@ -105,7 +108,7 @@ Fluentd에서 AWS Kinesis firehose로 데이터 보내기
 
 테스트를 위해 먼저 AWS Kinesis Firehose를 생성한다. 
 
-생성시 위에 서술한 테스트 환경에 해당하는 스펙과 설정으로 생성한다. 생성 시 유의 사항은 다음과 같다. Index rotation 기능을 활성화한 이유는 커넥츠 15초 데이터 수집 플랫폼에서 해당 기능을 이용하기 때문이다.
+생성시 위에 서술한 테스트 환경에 해당하는 스펙과 설정으로 생성한다. 생성 시 유의 사항은 다음과 같다.
 
 *   AWS Kinesis Firehose의 설정 중 Index rotation의 시간을 Hour으로 설정한다.
     

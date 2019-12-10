@@ -1,6 +1,2887 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-10T00:18:26+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andro’s tech blog</title><subtitle>Andro의 블로그입니다. 학습했던 것을 정리해 블로그에 올리고 있습니다.</subtitle><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><entry><title type="html">first post</title><link href="http://localhost:4000/blog/first-post/" rel="alternate" type="text/html" title="first post" /><published>2019-12-09T00:00:00+09:00</published><updated>2019-12-09T14:20:00+09:00</updated><id>http://localhost:4000/blog/first-post</id><content type="html" xml:base="http://localhost:4000/blog/first-post/">&lt;p&gt;YFM에서 정의한 제목을 이중 괄호 구문으로 본문에 추가할 수 있다.
-이 글의 제목은 first post이고
-마지막으로 수정된 시간은 2019-12-09 00:20:00 -0500이다.&lt;/p&gt;</content><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><category term="Blog" /><summary type="html">first post excerpt</summary></entry><entry><title type="html">Fluentd로 데이터 수집해 AWS Kinesis firehose로 보내기</title><link href="http://localhost:4000/blog/second-post/" rel="alternate" type="text/html" title="Fluentd로 데이터 수집해 AWS Kinesis firehose로 보내기" /><published>2019-12-09T00:00:00+09:00</published><updated>2019-12-09T00:00:00+09:00</updated><id>http://localhost:4000/blog/second-post</id><content type="html" xml:base="http://localhost:4000/blog/second-post/">&lt;h1 id=&quot;목적&quot;&gt;목적&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-10T20:36:33+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andro’s tech blog</title><subtitle>Andro의 블로그입니다. 학습했던 것을 정리해 블로그에 올리고 있습니다.</subtitle><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><entry><title type="html">Fluentd 기초 사용법</title><link href="http://localhost:4000/fluentd/fluentd_basic/" rel="alternate" type="text/html" title="Fluentd 기초 사용법" /><published>2019-12-10T00:00:00+09:00</published><updated>2019-12-10T00:00:00+09:00</updated><id>http://localhost:4000/fluentd/fluentd_basic</id><content type="html" xml:base="http://localhost:4000/fluentd/fluentd_basic/">&lt;h1 id=&quot;목적&quot;&gt;목적&lt;/h1&gt;
+
+&lt;p&gt;이 문서는 Fluentd(td-agent) 사용함에 있어 다음과 같은 사용법을 정리하기 위하여 작성 되었다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent의 실행과 종료&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 로그파일&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정파일 경로를 변경하는 방법&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;환경&quot;&gt;환경&lt;/h1&gt;
+
+&lt;p&gt;다음과 같은 환경에서 Fluentd를 구동하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;OS : macOS Mojave 10.14.5&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fluentd : 1.0.2 (td-agent : 3.1.1.0)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;사용법&quot;&gt;사용법&lt;/h1&gt;
+
+&lt;h2 id=&quot;실행-종료&quot;&gt;실행, 종료&lt;/h2&gt;
+
+&lt;p&gt;td-agent의 실행은 다음과 같은 명령으로 한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo launchctl load /Library/LaunchDaemons/td-agent.plist
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;td-agent의 종료는 다음과 같은 명령으로 한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo launchctl unload /Library/LaunchDaemons/td-agent.plist
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;편의를 위하여 다음과 같이 디렉터리에 접근하여 실행, 종료 하기도 한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd /Library/LaunchDaemons
+$ sudo launchctl load td-agent.plist
+$ sudo launchctl unload td-agent.plist
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;로그-파일&quot;&gt;로그 파일&lt;/h2&gt;
+
+&lt;p&gt;td-agent의 로그는 다음과 같은 경로의 파일에 저장된다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/var/log/td-agent/td-agent.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다음과 같이 td-agent 로그 파일을 테일링하여 td-agent의 동작을 확인하기도 한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tail -50f td-agent.log
+2019-09-18 14:47:33 +0900 [info]: #0 shutting down input plugin type=:tail plugin_id=&quot;object:3fe4d84363e8&quot;
+2019-09-18 14:47:33 +0900 [info]: #0 shutting down output plugin type=:file plugin_id=&quot;object:3fe4d859ffcc&quot;
+2019-09-18 14:47:33 +0900 [info]: Worker 0 finished with status 0
+2019-09-18 15:18:32 +0900 [info]: parsing config file is succeeded path=&quot;/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf&quot;
+2019-09-18 15:18:32 +0900 [info]: using configuration file: &amp;lt;ROOT&amp;gt;
+  &amp;lt;source&amp;gt;
+    @type tail
+    tag &quot;file_path&quot;
+    path &quot;/Users/kevin/dev/fluentd/test/file_path/source/prefix*&quot;
+    pos_file &quot;/Users/kevin/dev/fluentd/test/file_path/pos/pos_file.pos&quot;
+    refresh_interval 5s
+    read_from_head true
+    &amp;lt;parse&amp;gt;
+      @type &quot;none&quot;
+    &amp;lt;/parse&amp;gt;
+  &amp;lt;/source&amp;gt;
+  &amp;lt;match file_path*&amp;gt;
+    @type file
+    path &quot;/Users/kevin/dev/fluentd/test/file_path/match/${tag}_output&quot;
+    add_path_suffix true
+    path_suffix &quot;.log&quot;
+    append true
+    &amp;lt;buffer tag&amp;gt;
+      flush_mode interval
+      flush_interval 5s
+      path &quot;/Users/kevin/dev/fluentd/test/file_path/match/${tag}_output&quot;
+    &amp;lt;/buffer&amp;gt;
+    &amp;lt;format&amp;gt;
+      @type &quot;out_file&quot;
+      output_tag false
+      output_time true
+    &amp;lt;/format&amp;gt;
+  &amp;lt;/match&amp;gt;
+&amp;lt;/ROOT&amp;gt;
+2019-09-18 15:18:32 +0900 [info]: starting fluentd-1.0.2 pid=2152 ruby=&quot;2.4.2&quot;
+2019-09-18 15:18:32 +0900 [info]: spawn command to main:  cmdline=[&quot;/opt/td-agent/embedded/bin/ruby&quot;, &quot;-Eascii-8bit:ascii-8bit&quot;, &quot;/opt/td-agent/usr/sbin/td-agent&quot;, &quot;--log&quot;, &quot;/var/log/td-agent/td-agent.log&quot;, &quot;--use-v1-config&quot;, &quot;--under-supervisor&quot;]
+2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-elasticsearch' version '2.4.0'
+2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-kafka' version '0.6.5'
+2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-rewrite-tag-filter' version '2.0.1'
+2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-s3' version '1.1.0'
+2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-td' version '1.0.0'
+2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-td-monitoring' version '0.2.3'
+2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-webhdfs' version '1.2.2'
+2019-09-18 15:18:32 +0900 [info]: gem 'fluentd' version '1.0.2'
+2019-09-18 15:18:32 +0900 [info]: adding match pattern=&quot;file_path*&quot; type=&quot;file&quot;
+2019-09-18 15:18:32 +0900 [info]: adding source type=&quot;tail&quot;
+2019-09-18 15:18:32 +0900 [info]: #0 starting fluentd worker pid=2159 ppid=2152 worker=0
+2019-09-18 15:18:32 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.txt
+2019-09-18 15:18:32 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.log
+2019-09-18 15:18:32 +0900 [info]: #0 fluentd worker is now running worker=0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;설정파일-경로를-변경하는-방법&quot;&gt;설정파일 경로를 변경하는 방법&lt;/h1&gt;
+
+&lt;p&gt;td-agent 설정파일의 기본 경로는 다음과 같다.&lt;/p&gt;
+
+&lt;p&gt;/etc/td-agent/td-agent.conf&lt;/p&gt;
+
+&lt;p&gt;설정파일의 경로를 변경하기 위해서는 다음 경로의 파일에 접근해야 한다.&lt;/p&gt;
+
+&lt;p&gt;/opt/td-agent/usr/sbin/td-agent&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat /opt/td-agent/usr/sbin/td-agent
+#!/opt/td-agent/embedded/bin/ruby
+ENV[&quot;GEM_HOME&quot;]=&quot;/opt/td-agent/embedded/lib/ruby/gems/2.4.0/&quot;
+ENV[&quot;GEM_PATH&quot;]=&quot;/opt/td-agent/embedded/lib/ruby/gems/2.4.0/&quot;
+ENV[&quot;FLUENT_CONF&quot;]=&quot;/etc/td-agent/td-agent.conf&quot;
+ENV[&quot;FLUENT_PLUGIN&quot;]=&quot;/etc/td-agent/plugin&quot;
+ENV[&quot;FLUENT_SOCKET&quot;]=&quot;/var/run/td-agent/td-agent.sock&quot;
+load &quot;/opt/td-agent/embedded/bin/fluentd&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 파일 내용중 ENV[“FLUENT_CONF”]=”/etc/td-agent/td-agent.conf”을 원하는 설정파일의 경로를 변경해주면 된다.&lt;/p&gt;
+
+&lt;p&gt;다음은 변경한 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vim /opt/td-agent/usr/sbin/td-agent
+#!/opt/td-agent/embedded/bin/ruby
+ENV[&quot;GEM_HOME&quot;]=&quot;/opt/td-agent/embedded/lib/ruby/gems/2.4.0/&quot;
+ENV[&quot;GEM_PATH&quot;]=&quot;/opt/td-agent/embedded/lib/ruby/gems/2.4.0/&quot;
+ENV[&quot;FLUENT_CONF&quot;]=&quot;/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf&quot;
+ENV[&quot;FLUENT_PLUGIN&quot;]=&quot;/etc/td-agent/plugin&quot;
+ENV[&quot;FLUENT_SOCKET&quot;]=&quot;/var/run/td-agent/td-agent.sock&quot;
+load &quot;/opt/td-agent/embedded/bin/fluentd&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;참고자료&quot;&gt;참고자료&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/installation/install-by-dmg&quot;&gt;https://docs.fluentd.org/installation/install-by-dmg&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/installation/post-installation-guide&quot;&gt;https://docs.fluentd.org/installation/post-installation-guide&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><category term="Fluentd" /><summary type="html">이 문서는 Fluentd(td-agent) 사용함에 있어 다음과 같은 사용법을 정리하기 위하여 작성 되었다.</summary></entry><entry><title type="html">[테스트] Fluentd - 입력 로그 파일 경로 설정에 관한 테스트</title><link href="http://localhost:4000/fluentd/fluentd_file_path_test/" rel="alternate" type="text/html" title="[테스트] Fluentd - 입력 로그 파일 경로 설정에 관한 테스트" /><published>2019-12-10T00:00:00+09:00</published><updated>2019-12-10T00:00:00+09:00</updated><id>http://localhost:4000/fluentd/fluentd_file_path_test</id><content type="html" xml:base="http://localhost:4000/fluentd/fluentd_file_path_test/">&lt;h1 id=&quot;테스트-목적&quot;&gt;테스트 목적&lt;/h1&gt;
+
+&lt;p&gt;Fluentd(이하 td-agent)로 로그 파일의 로그를 수집할 때 파일 경로에 관하여 다음과 같은 케이스가 존재한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;파일 경로를 지정하는 경우 (예 : log/access.log)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;디렉터리와 확장자만 지정하는 경우 (예 : log/*.log)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;디렉터리와 파일명의 prefix만 지정하는 경우 (예: log/access*)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;이 테스트는 위와 같은 케이스에 대하여 td-agent를 실행하고 로그 파일을 생성할 때 td-agent의 동작을 확인하는 데에 목적이 있다.&lt;/p&gt;
+
+&lt;h1 id=&quot;테스트-환경&quot;&gt;테스트 환경&lt;/h1&gt;
+
+&lt;p&gt;테스트 환경은 다음과 같다.&lt;/p&gt;
+
+&lt;p&gt;OS : macOS Mojave 10.14.6&lt;/p&gt;
+
+&lt;p&gt;td-agent : v1.0.2&lt;/p&gt;
+
+&lt;h1 id=&quot;테스트에-필요한-사전-지식&quot;&gt;테스트에 필요한 사전 지식&lt;/h1&gt;
+
+&lt;p&gt;다음과 같은 사전 지식이 필요하다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Source Plug In : tail&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;read_from_head에 관한 옵션&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Match Plug In : match&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 관련 정보&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;td-agent 실행, 종료&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;td-agent 동작 로그 확인 방법&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;td-agent 설정 경로&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;source-plug-in--tail&quot;&gt;Source Plug In : tail&lt;/h2&gt;
+
+&lt;p&gt;다음 링크들을 참고 한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.fluentd.org/input/tail&quot;&gt;Fluentd - Input Plugin : tail&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;read_from_head-옵션&quot;&gt;read_from_head 옵션&lt;/h3&gt;
+
+&lt;p&gt;다음 링크들을 참고 한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.fluentd.org/input/tail#read_from_head&quot;&gt;Fluentd - Input Plugin : tail - read_from_head&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;match-plug-in--match&quot;&gt;Match Plug In : match&lt;/h2&gt;
+
+&lt;p&gt;다음 링크들을 참고 한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.fluentd.org/output/file&quot;&gt;Fluentd - Output Plugin : file&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;td-agent-기초-사용법&quot;&gt;td-agent 기초 사용법&lt;/h2&gt;
+
+&lt;p&gt;Fluentd 기초 사용법을 확인하여 td-agent 기초 동작을 확인하면 된다.&lt;/p&gt;
+
+&lt;h1 id=&quot;테스트간-공통사항&quot;&gt;테스트간 공통사항&lt;/h1&gt;
+
+&lt;p&gt;td-agent의 설정 파일의 경로를 다음과 같이 지정한다.&lt;/p&gt;
+
+&lt;p&gt;/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat /opt/td-agent/usr/sbin/td-agent
+
+... 중략 ...
+
+ENV[&quot;FLUENT_CONF&quot;]=&quot;/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf&quot;
+
+... 중략 ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;케이스--파일-경로를-지정하는-경우&quot;&gt;케이스 : 파일 경로를 지정하는 경우&lt;/h1&gt;
+
+&lt;p&gt;td-agent 설정 파일을 다음과 같이 수정하고 실행한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat config/td-agent.log 
+&amp;lt;source&amp;gt;
+  @type tail
+  tag file_path
+  path /Users/kevin/dev/fluentd/test/file_path/source/fixed_file_path.log
+  pos_file /Users/kevin/dev/fluentd/test/file_path/pos/pos_file.pos
+  &amp;lt;parse&amp;gt;
+    @type none
+  &amp;lt;/parse&amp;gt;
+  refresh_interval 5s
+  read_from_head true
+&amp;lt;/source&amp;gt;
+
+&amp;lt;match file_path*&amp;gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/file_path/match/${tag}_output
+  add_path_suffix true
+  path_suffix &quot;.log&quot;
+  append true
+  &amp;lt;buffer tag&amp;gt;
+    flush_mode interval
+    flush_interval 5s
+  &amp;lt;/buffer&amp;gt;
+  &amp;lt;format&amp;gt;
+    @type out_file
+    output_tag false
+    output_time true
+  &amp;lt;/format&amp;gt;
+&amp;lt;/match&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo launchctl load td-agent.plist
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다음과 같이 로그를 파일에 저장한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo &quot;fixed_file_path_line_1&quot; &amp;gt; source/fixed_file_path.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat /var/log/td-agent/td-agent.log
+ 
+... 중략 ...
+ 
+2019-08-30 14:28:35 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/fixed_file_path.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;출력용 파일을 확인하면 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tail -10f match/file_path_output.log
+2019-08-30T14:28:35+09:00	{&quot;message&quot;:&quot;fixed_file_path_line_1&quot;}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다시 한번 다음과 같이 파일에 로그를 저장한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo &quot;fixed_file_path_line_2&quot; &amp;gt;&amp;gt; source/fixed_file_path.log
+$ echo &quot;fixed_file_path_line_3&quot; &amp;gt;&amp;gt; source/fixed_file_path.log
+$ echo &quot;fixed_file_path_line_4&quot; &amp;gt;&amp;gt; source/fixed_file_path.log
+$ echo &quot;fixed_file_path_line_5&quot; &amp;gt;&amp;gt; source/fixed_file_path.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;출력용 파일을 확인하면 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tail -10f match/file_path_output.log
+2019-08-30T14:28:35+09:00	{&quot;message&quot;:&quot;fixed_file_path_line_1&quot;}
+2019-08-30T14:29:30+09:00	{&quot;message&quot;:&quot;fixed_file_path_line_2&quot;}
+2019-08-30T14:29:34+09:00	{&quot;message&quot;:&quot;fixed_file_path_line_3&quot;}
+2019-08-30T14:29:38+09:00	{&quot;message&quot;:&quot;fixed_file_path_line_4&quot;}
+2019-08-30T14:29:47+09:00	{&quot;message&quot;:&quot;fixed_file_path_line_5&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;테스트 결과를 정리하면 다음과 같다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정 파일상의 입력 파일이 실제로 존재하지 않아도 td-agent는 실행된다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 파일이 생성되고 로그를 저장하면 출력용 파일에 로그의 형식은 바뀌지만 로그가 저장된다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;케이스-디렉터리와-확장자만-지정하는-경우&quot;&gt;케이스 : 디렉터리와 확장자만 지정하는 경우&lt;/h1&gt;
+
+&lt;p&gt;td-agent 설정 파일을 다음과 같이 수정하고 실행한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat config/td-agent.log 
+&amp;lt;source&amp;gt;
+  @type tail
+  tag file_path
+  path /Users/kevin/dev/fluentd/test/file_path/source/*.log
+  pos_file /Users/kevin/dev/fluentd/test/file_path/pos/pos_file.pos
+  &amp;lt;parse&amp;gt;
+    @type none
+  &amp;lt;/parse&amp;gt;
+  refresh_interval 5s
+  read_from_head true
+&amp;lt;/source&amp;gt;
+
+&amp;lt;match file_path*&amp;gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/file_path/match/${tag}_output
+  add_path_suffix true
+  path_suffix &quot;.log&quot;
+  append true
+  &amp;lt;buffer tag&amp;gt;
+    flush_mode interval
+    flush_interval 5s
+  &amp;lt;/buffer&amp;gt;
+  &amp;lt;format&amp;gt;
+    @type out_file
+    output_tag false
+    output_time true
+  &amp;lt;/format&amp;gt;
+&amp;lt;/match&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo launchctl load td-agent.plist
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;log에-로그-저장&quot;&gt;*.log에 로그 저장&lt;/h3&gt;
+
+&lt;p&gt;다음과 같이 로그를 파일에 저장한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo &quot;filename_extension_log_line_1&quot; &amp;gt; source/log_file.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat /var/log/td-agent/td-agent.log
+ 
+... 중략 ...
+ 
+2019-08-30 15:05:01 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/log_file.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;출력용 파일을 확인하면 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tail -10f match/file_path_output.log
+2019-08-30T15:05:01+09:00	{&quot;message&quot;:&quot;filename_extension_log_line_1&quot;}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다시 한번 다음과 같이 파일에 로그를 저장한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo &quot;filename_extension_log_line_2&quot; &amp;gt;&amp;gt; source/log_file.log
+$ echo &quot;filename_extension_log_line_3&quot; &amp;gt;&amp;gt; source/log_file.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;출력용 파일을 확인하면 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tail -10f match/file_path_output.log
+2019-08-30T15:05:01+09:00	{&quot;message&quot;:&quot;filename_extension_log_line_1&quot;}
+2019-08-30T15:08:01+09:00	{&quot;message&quot;:&quot;filename_extension_log_line_2&quot;}
+2019-08-30T15:08:06+09:00	{&quot;message&quot;:&quot;filename_extension_log_line_3&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;log가-아닌-경우&quot;&gt;*.log가 아닌 경우&lt;/h3&gt;
+
+&lt;p&gt;다음과 같이 로그를 파일에 저장한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo &quot;filename_extension_txt_line_1&quot; &amp;gt; source/text_file.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다음과 같이 td-agent가 파일 생성을 인지하지 못한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat /var/log/td-agent/td-agent.log
+ 
+... 중략 ...
+
+파일 생성 인지 관한 로그가 저장되지 않는다.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;출력용 파일을 확인 했을때 로그가 저장되지 않는 것을 알 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tail -10f match/file_path_output.log
+입력용 파일에 저장한 로그가 저장되지 않는다.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다시 한번 다음과 같이 파일에 로그를 저장한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo &quot;filename_extension_txt_line_2&quot; &amp;gt;&amp;gt; source/text_file.txt
+$ echo &quot;filename_extension_txt_line_3&quot; &amp;gt;&amp;gt; source/text_file.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;출력용 파일을 확인 했을때 로그가 저장되지 않는 것을 알 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tail -10f match/file_path_output.log
+입력용 파일에 저장한 로그가 저장되지 않는다.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;테스트 결과를 정리하면 다음과 같다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정 파일상 설정한 경로와 확장자가 일치하는 파일의 경우&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;입력용 파일이 생성되고 로그를 저장하면 출력용 파일에 로그의 형식은 바뀌지만 로그가 저장된다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정 파일상 설정한 경로는 일치하고 확장자가 일치하지 않는 경우&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;출력용 파일에 로그가 저장되지 않는다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;케이스-디렉터리와-파일명의-prefix만-지정하는-경우&quot;&gt;케이스 : 디렉터리와 파일명의 prefix만 지정하는 경우&lt;/h1&gt;
+
+&lt;p&gt;td-agent 설정 파일을 다음과 같이 수정하고 실행한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat config/td-agent.log 
+&amp;lt;source&amp;gt;
+  @type tail
+  tag file_path
+  path /Users/kevin/dev/fluentd/test/file_path/source/prefix*
+  pos_file /Users/kevin/dev/fluentd/test/file_path/pos/pos_file.pos
+  &amp;lt;parse&amp;gt;
+    @type none
+  &amp;lt;/parse&amp;gt;
+  refresh_interval 5s
+  read_from_head true
+&amp;lt;/source&amp;gt;
+
+&amp;lt;match file_path*&amp;gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/file_path/match/${tag}_output
+  add_path_suffix true
+  path_suffix &quot;.log&quot;
+  append true
+  &amp;lt;buffer tag&amp;gt;
+    flush_mode interval
+    flush_interval 5s
+  &amp;lt;/buffer&amp;gt;
+  &amp;lt;format&amp;gt;
+    @type out_file
+    output_tag false
+    output_time true
+  &amp;lt;/format&amp;gt;
+&amp;lt;/match&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo launchctl load td-agent.plist
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;prefix가-일치하는-경우&quot;&gt;prefix가 일치하는 경우&lt;/h3&gt;
+
+&lt;p&gt;다음과 같이 로그를 파일에 저장한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo &quot;prefix_line_1&quot; &amp;gt; source/prefix_test.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat /var/log/td-agent/td-agent.log
+ 
+... 중략 ...
+ 
+2019-08-30 15:35:45 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;출력용 파일을 확인하면 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tail -10f match/file_path_output.log
+2019-08-30T15:35:45+09:00	{&quot;message&quot;:&quot;prefix_line_1&quot;}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다시 한번 다음과 같이 파일에 로그를 저장한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo &quot;prefix_line_2&quot; &amp;gt;&amp;gt; source/prefix_test.txt
+$ echo &quot;prefix_line_3&quot; &amp;gt;&amp;gt; source/prefix_test.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;출력용 파일을 확인하면 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tail -10f match/file_path_output.log
+2019-08-30T15:35:45+09:00	{&quot;message&quot;:&quot;prefix_line_1&quot;}
+2019-08-30T15:36:58+09:00	{&quot;message&quot;:&quot;prefix_line_2&quot;}
+2019-08-30T15:37:01+09:00	{&quot;message&quot;:&quot;prefix_line_3&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다음과 같이 파일에 로그를 저장한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo &quot;prefix_line_1&quot; &amp;gt; source/prefix_test.log
+$ echo &quot;prefix_line_2&quot; &amp;gt;&amp;gt; source/prefix_test.log
+$ echo &quot;prefix_line_3&quot; &amp;gt;&amp;gt; source/prefix_test.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat /var/log/td-agent/td-agent.log
+ 
+... 중략 ...
+ 
+2019-08-30 15:40:00 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;출력용 파일을 확인하면 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tail -10f match/file_path_output.log
+2019-08-30T15:40:00+09:00	{&quot;message&quot;:&quot;prefix_line_1&quot;}
+2019-08-30T15:40:09+09:00	{&quot;message&quot;:&quot;prefix_line_2&quot;}
+2019-08-30T15:40:13+09:00	{&quot;message&quot;:&quot;prefix_line_3&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;prefix가-일치하지-않는-경우&quot;&gt;prefix가 일치하지 않는 경우&lt;/h3&gt;
+
+&lt;p&gt;다음과 같이 로그를 파일에 저장한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo &quot;prefix_line_1&quot; &amp;gt; none.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다음과 같이 td-agent가 파일 생성을 인지하지 못한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat /var/log/td-agent/td-agent.log
+ 
+... 중략 ...
+
+파일 생성 인지 관한 로그가 저장되지 않는다.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;출력용 파일을 확인 했을때 로그가 저장되지 않는 것을 알 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tail -10f match/file_path_output.log
+입력용 파일에 저장한 로그가 저장되지 않는다.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;다시 한번 다음과 같이 파일에 로그를 저장한다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ echo &quot;prefix_line_2&quot; &amp;gt;&amp;gt; none.txt
+$ echo &quot;prefix_line_3&quot; &amp;gt;&amp;gt; none.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;출력용 파일을 확인 했을때 로그가 저장되지 않는 것을 알 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tail -10f match/file_path_output.log
+입력용 파일에 저장한 로그가 저장되지 않는다.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;테스트 결과를 정리하면 다음과 같다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정 파일상 설정한 경로와 prefix가 일치하는 파일의 경우&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;입력용 파일이 생성되고 로그를 저장하면 출력용 파일에 로그의 형식은 바뀌지만 로그가 저장된다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정 파일상 설정한 경로는 일치하지만 prefix가 일치하지 않는 파일의 경우&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;출력용 파일에 로그가 저장되지 않는다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;테스트-결과&quot;&gt;테스트 결과&lt;/h1&gt;
+
+&lt;p&gt;테스트 결과는 다음과 같이 정리할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;파일 경로를 지정하는 경우&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정 파일상의 입력 파일이 실제로 존재하지 않아도 td-agent는 실행된다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 파일이 생성되고 로그를 저장하면 출력용 파일에 로그의 형식은 바뀌지만 로그가 저장된다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;디렉터리와 확장자만 지정하는 경우&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정 파일상 설정한 경로와 확장자가 일치하는 파일의 경우 : 입력용 파일이 생성되고 로그를 저장하면 출력용 파일에 로그의 형식은 바뀌지만 로그가 저장된다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정 파일상 설정한 경로는 일치하고 확장자가 일치하지 않는 경우 : 출력용 파일에 로그가 저장되지 않는다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;디렉터리와 파일명의 prefix만 지정하는 경우&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정 파일상 설정한 경로와 prefix가 일치하는 파일의 경우 : 입력용 파일이 생성되고 로그를 저장하면 출력용 파일에 로그의 형식은 바뀌지만 로그가 저장된다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정 파일상 설정한 경로는 일치하지만 prefix가 일치하지 않는 파일의 경우 : 출력용 파일에 로그가 저장되지 않는다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><category term="Fluentd" /><summary type="html">Fluentd(이하 td-agent)로 로그 파일의 로그를 수집할 때 파일 경로에 관하여 다음과 같은 케이스가 존재한다.</summary></entry><entry><title type="html">[테스트] Fluentd(td-agent) output plugin 동작 확인</title><link href="http://localhost:4000/fluentd/fluentd_filter_plugin_operation_check/" rel="alternate" type="text/html" title="[테스트] Fluentd(td-agent) output plugin 동작 확인" /><published>2019-12-10T00:00:00+09:00</published><updated>2019-12-10T00:00:00+09:00</updated><id>http://localhost:4000/fluentd/fluentd_filter_plugin_operation_check</id><content type="html" xml:base="http://localhost:4000/fluentd/fluentd_filter_plugin_operation_check/">&lt;h1 id=&quot;테스트-목적&quot;&gt;테스트 목적&lt;/h1&gt;
+
+&lt;p&gt;이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 Filter plugin의 단순 동작 확인에 목적을 두고 있다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;필드를 가공해야하는 경우&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;로그 값을 확인하여 필터링 하는 경우&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;로그를 파싱하여 저장하는 경우&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;테스트-환경&quot;&gt;테스트 환경&lt;/h1&gt;
+
+&lt;p&gt;다음과 같은 환경에서 테스트 하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;OS : masOS Mojave v10.14.6&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fluentd : 1.0.2 (td-agent : 3.1.1.0)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;테스트-사전-정보&quot;&gt;테스트 사전 정보&lt;/h1&gt;
+
+&lt;p&gt;Fluentd 기초 사용법을 확인하여 td-agent 기초 동작을 확인하면 된다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;테스트-케이스--필드를-가공해야하는-경우-filter---record_transformer&quot;&gt;테스트 케이스 : 필드를 가공해야하는 경우 (Filter - record_transformer)&lt;/h1&gt;
+
+&lt;p&gt;td-agent로 로그를 수집하여 저장하는 과정에서 필드의 가공이 필요한 경우가 있다.&lt;/p&gt;
+
+&lt;p&gt;이러한 경우 Filter plugin중 record_transformer 타입을 사용하면 된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;테스트-목적-1&quot;&gt;테스트 목적&lt;/h2&gt;
+
+&lt;p&gt;이 테스트는 학습차원에서 다음과 같은 td-agent의 단순 동작 확인이 목적이다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;파일에서 로그를 수집하여 저장하는 과정에서 Filter plugin의 record_transformer 타입을 사용하여 필드 가공&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;테스트-시나리오&quot;&gt;테스트 시나리오&lt;/h2&gt;
+
+&lt;p&gt;이 테스트는 다음과 같은 시나리오를 바탕으로 진행된다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;다음과 같은 형태 json로그가 파일에 생성된다.&lt;/p&gt;
+
+    &lt;p&gt;{ “user_id” : “javascript0247”, “created_at” : “2019-08-16T01:23:45+0900”, “os” : “Android” }&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;파일에서 로그를 수집하고 다음과 같은 조건으로 필드를 가공한다.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;로그 수집 시각인 “collected_at” 필드 추가&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;만들어진 시각인 “created_at” 필드 삭제&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;“os”필드를 “device_os”로 변경&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;필드가 가공된 로그는 다음과 같은 형태의 파일로 출력된다.&lt;/p&gt;
+
+    &lt;p&gt;{ “user_id” : “javascript0247”, “collected_at” : “2019-08-16T14:22:00+0900”, “device_os” : “Android” }&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;테스트-plugin-정보&quot;&gt;테스트 Plugin 정보&lt;/h2&gt;
+
+&lt;h3 id=&quot;source-plugin---tail&quot;&gt;Source Plugin - tail&lt;/h3&gt;
+
+&lt;p&gt;다음은 테스트에서 사용할 tail 설정 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;source&amp;gt;  
+  @type tail
+  path /Users/kevin/dev/fluentd/test/filter_record_transformer/source/*
+  pos_file /Users/kevin/dev/fluentd/test/filter_record_transformer/pos/filter_record_transformer.pos
+  &amp;lt;parse&amp;gt;
+    @type json
+  &amp;lt;/parse&amp;gt;
+  tag filter_record_transformer.test
+  refresh_interval 5s
+&amp;lt;/source&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;@type : tail type을 사용한다. 자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;path : 읽어오고자 하는 파일의 경로를 의미한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;pos_file : td-agent는 파일마다 읽었던 위치를 파일로 저장해두는데 그 파일의 경로를 지정한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;parse&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;@type : json를 사용한다. 자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;tag : 이벤트를 구분짓기 위한 tag name을 의미한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;refresh_interval : td-agent가 수집하려는 파일리스트의 갱신주기를 의미한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/input/tail&quot;&gt;Fluentd - Input Plugin : tail&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/parser/json&quot;&gt;Fluentd - Parser Plugin : json&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;filter-plugin---record_transformer&quot;&gt;Filter Plugin - record_transformer&lt;/h3&gt;
+
+&lt;p&gt;다음은 테스트에서 사용할 grep 설정 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;filter filter_record_transformer.*&amp;gt;  
+  @type record_transformer
+  enable_ruby true
+  &amp;lt;record&amp;gt;
+    collected_at ${time.strftime('%Y-%m-%dT%H:%M:%S%z')}
+    device_os ${record[&quot;os&quot;]}
+  &amp;lt;/record&amp;gt;
+  remove_keys [ &quot;os&quot;, &quot;created_at&quot; ]
+&amp;lt;/filter&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&amp;lt;filter pattern&amp;gt; : pattern 부분에 filter plugin을 적용시키고자 하는 이벤트(tag명)를 명시한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;@type : record을 사용한다. 자세한 내용은 아래의 링크를 참고한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;enable_ruby : 필드 가공시 ‘Ruby’식 표현을 사용하는 지에 대하여 묻는다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;record : 필드의 추가를 의미한다. “필드명 : 필드값” 형태로 추가한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;remove_keys : 삭제할 필드명을 지정한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.fluentd.org/filter/record_transformer&quot;&gt;Fluentd - Filter plugin : record_transformer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;match-plugin---file&quot;&gt;Match Plugin - file&lt;/h3&gt;
+
+&lt;p&gt;다음은 테스트에서 사용하게 될 file 설정 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;match filter_record_transformer.*&amp;gt;  
+  @type file
+  path /Users/kevin/dev/fluentd/test/filter_record_transformer/match/${tag}
+  path_suffix &quot;.json&quot;
+  add_path_suffix true
+  append true
+  &amp;lt;format&amp;gt;
+    @type json
+  &amp;lt;/format&amp;gt;
+  &amp;lt;buffer tag&amp;gt;
+    path /Users/kevin/dev/fluentd/test/filter_record_transformer/match/
+    flush_mode interval
+    flush_interval 10s
+  &amp;lt;/buffer&amp;gt;
+&amp;lt;/match&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;테스트 과정에서 사용하는 설정과 간단한 설명이다. required 설정은 녹색으로 표기하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&amp;lt;match pattern&amp;gt; : pattern 부분에 match plugin을 적용시키고자 하는 이벤트(tag명)를 명시한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;@type : file을 사용한다. 자세한 내용은 아래의 링크를 참고한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;path : 출력할 파일의 경로를 의미한다. 예약어(예: tag)를 사용할 수 있다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;path_suffix : 확장자명을 지정한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;add_path_suffix : path_suffix 사용유무를 지정한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;append : 한 파일에 출력하는지 여부를 지정한다. 원할한 테스트를 위하여 설정한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;format : json으로 설정한다. 자세한 내용은 아래의 링크를 참고한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;buffer : 자세한 내용은 아래의 링크를 참고한다. 원할한 테스트를 위하여 설정한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/output/file&quot;&gt;Fluentd - Output Plugin : file&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/formatter/json&quot;&gt;Fluentd - Fommatter Plugin : json&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/configuration/buffer-section&quot;&gt;Fluentd - Config : Buffer Section&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;테스트-과정&quot;&gt;테스트 과정&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;파일을 생성하고 정상적으로 생성 되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ touch filter_record_transformer.json | stat filter_record_transformer.json
+16777223 8192640 -rw-r--r-- 1 kevin staff 0 0 &quot;Aug 14 14:01:39 2019&quot; &quot;Aug 14 14:01:39 2019&quot; &quot;Aug 14 14:01:39 2019&quot; &quot;Aug 14 14:01:39 2019&quot; 4096 0 0 filter_record_transformer.json
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정파일 경로를 수정한다. &lt;br /&gt;
+다음은 경로 예시이다.&lt;/p&gt;
+
+    &lt;p&gt;/Users/kevin/dev/fluentd/test/filter_record_transformer/config/td-agent_filter_record_transformer.conf&lt;/p&gt;
+
+    &lt;p&gt;수정한 경로에 td-agent 설정 파일을 생성한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ touch td-agent_filter_record_transformer.conf | stat td-agent_filter_record_transformer.conf
+16777223 8192245 -rw-r--r-- 1 kevin staff 0 0 &quot;Aug 14 13:50:42 2019&quot; &quot;Aug 14 13:50:42 2019&quot; &quot;Aug 14 13:50:42 2019&quot; &quot;Aug 14 13:50:42 2019&quot; 4096 0 0 td-agent_filter_record_transformer.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;td-agent 설정 파일을 다음과 같이 수정한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vim td-agent_filter_record_transformer.conf
+&amp;lt;source&amp;gt;
+  @type tail
+  tag filter_record_transformer.test
+  path /Users/kevin/dev/fluentd/test/filter_record_transformer/source/*
+  pos_file /Users/kevin/dev/fluentd/test/filter_record_transformer/pos/filter_record_transformer.pos
+  &amp;lt;parse&amp;gt;
+    @type json
+  &amp;lt;/parse&amp;gt;
+  refresh_interval 5s
+&amp;lt;/source&amp;gt;
+&amp;lt;filter filter_record_transformer.*&amp;gt;
+  @type record_transformer
+  enable_ruby true
+  &amp;lt;record&amp;gt;
+    collected_at ${time.strftime('%Y-%m-%dT%H:%M:%S%z')}
+    device_os ${record[&quot;os&quot;]}
+  &amp;lt;/record&amp;gt;
+  remove_keys [ &quot;os&quot;, &quot;created_at&quot; ]
+&amp;lt;/filter&amp;gt;
+&amp;lt;match filter_record_transformer.*&amp;gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/filter_record_transformer/match/${tag}
+  add_path_suffix true
+  path_suffix &quot;.json&quot;
+  append true
+  &amp;lt;format&amp;gt;
+    @type json
+  &amp;lt;/format&amp;gt;
+  &amp;lt;buffer tag&amp;gt;
+    path /Users/kevin/dev/fluentd/test/filter_record_transformer/match/
+    flush_mode interval
+    flush_interval 10s
+  &amp;lt;/buffer&amp;gt;
+&amp;lt;/match&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;이제 td-agent를 실행한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 파일에 로그를 출력하고 정상적으로 출력되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat filter_record_transformer.json
+{ &quot;user_id&quot; : &quot;javascript0247&quot;, &quot;created_at&quot; : &quot;2019-08-16T01:23:45+0900&quot;, &quot;os&quot; : &quot;Android&quot; }
+{ &quot;user_id&quot; : &quot;kotlin_0247&quot;, &quot;created_at&quot; : &quot;2019-08-16T14:28:10+0900&quot;, &quot;os&quot; : &quot;Android&quot; }
+{ &quot;user_id&quot; : &quot;java_8615&quot;, &quot;created_at&quot; : &quot;2019-08-16T14:30:00+0900&quot;, &quot;os&quot; : &quot;iOS&quot; }
+{ &quot;user_id&quot; : &quot;python_1574&quot;, &quot;created_at&quot; : &quot;2019-08-16T14:30:00+0900&quot;, &quot;os&quot; : &quot;iOS&quot; }
+{ &quot;user_id&quot; : &quot;cpp_2464&quot;, &quot;created_at&quot; : &quot;2019-08-16T14:30:00+0900&quot;, &quot;os&quot; : &quot;iOS&quot; }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;출력용 파일에 출력된 로그를 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat filter_record_transformer.test.json
+{&quot;user_id&quot;:&quot;javascript0247&quot;,&quot;collected_at&quot;:&quot;2019-08-16T15:14:29+0900&quot;,&quot;device_os&quot;:&quot;Android&quot;}
+{&quot;user_id&quot;:&quot;kotlin_0247&quot;,&quot;collected_at&quot;:&quot;2019-08-16T15:14:29+0900&quot;,&quot;device_os&quot;:&quot;Android&quot;}
+{&quot;user_id&quot;:&quot;java_8615&quot;,&quot;collected_at&quot;:&quot;2019-08-16T15:14:29+0900&quot;,&quot;device_os&quot;:&quot;iOS&quot;}
+{&quot;user_id&quot;:&quot;python_1574&quot;,&quot;collected_at&quot;:&quot;2019-08-16T15:14:29+0900&quot;,&quot;device_os&quot;:&quot;iOS&quot;}
+{&quot;user_id&quot;:&quot;cpp_2464&quot;,&quot;collected_at&quot;:&quot;2019-08-16T15:14:29+0900&quot;,&quot;device_os&quot;:&quot;iOS&quot;} 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;테스트-결과&quot;&gt;테스트 결과&lt;/h2&gt;
+
+&lt;p&gt;테스트 결과 record_transformer 타입을 사용하여 필드 가공이 이루어지는지 확인하였다.&lt;/p&gt;
+
+&lt;p&gt;테스트 과정에서 json 형태 로그에 관하여 다음과 같은 필드에 관한 수정이 이루어짐을 확인하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;필드 추가 - collected_at&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;필드 삭제 - created_at&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;필드명 변경 - os / device_os&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;다음은 위의 필드수정 항목에 대한 예시이다.&lt;/p&gt;
+
+&lt;p&gt;{ “user_id” : “javascript0247”, “created_at” : “2019-08-16T01:23:45+0900”, “os” : “Android” }&lt;/p&gt;
+
+&lt;p&gt; {“user_id”:”javascript0247”,”collected_at”:”2019-08-16T15:14:29+0900”,”device_os”:”Android”}&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;테스트-케이스--로그-값을-확인하여-필터링-하는-경우-filter---grep&quot;&gt;테스트 케이스 : 로그 값을 확인하여 필터링 하는 경우 (Filter - grep)&lt;/h1&gt;
+
+&lt;p&gt;td-agent로 로그를 수집하여 저장하는 과정에서 필터링하여 원하는 로그만 출력해야하는 경우가 있다.&lt;/p&gt;
+
+&lt;p&gt;이러한 경우 Filter plugin중 grep 타입을 사용하면 된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;테스트-목적-2&quot;&gt;테스트 목적&lt;/h2&gt;
+
+&lt;p&gt;이 테스트는 학습차원에서 다음과 같은 td-agent의 단순 동작 확인이 목적이다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;파일에서 로그를 수집하여 저장하는 과정에서 Filter plugin의 grep타입을 사용하여 원하는 로그만 필터링 가능&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;테스트-시나리오-1&quot;&gt;테스트 시나리오&lt;/h2&gt;
+
+&lt;p&gt;이 테스트는 다음과 같은 시나리오를 바탕으로 진행된다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Apache access log가 파일로 생성된다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Apache access log중 다음과 같은 요구사항에 충족되는 로그만 필터링한다.&lt;/p&gt;
+
+    &lt;p&gt;요청 method가 “POST”이면서 status가 2XX이 아닌 경우&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;필터링된 결과는 파일로 출력한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;테스트-필요-정보&quot;&gt;테스트 필요 정보&lt;/h2&gt;
+
+&lt;h3 id=&quot;apache-access-log&quot;&gt;Apache Access Log&lt;/h3&gt;
+
+&lt;p&gt;테스트 과정에서 다음과 같은 Combined 로그 형식(Combined Log Format)을 사용한다.&lt;/p&gt;
+
+&lt;p&gt;%h %l %u %t \“%r\” %&amp;gt;s %b  \”%{Referer}i\” \”%{User-agent}i\”&lt;/p&gt;
+
+&lt;p&gt;%h : 서버에 요청을 한 클라이언트의 IP 주소를 의미한다.&lt;/p&gt;
+
+&lt;p&gt;%l : 클라이언트 컴퓨터의 identd가 제공하는 클라이언트의 RFC 1413 신원이다. 만약 요청한 정보가 없다면 “-“로 표기한다.&lt;/p&gt;
+
+&lt;p&gt;%u : HTTP 인증으로 알아낸 문서를 요청한 사용자의 userid이다. 문서를 암호로 보호하지 않는다면 “-“ 으로 표기한다.&lt;/p&gt;
+
+&lt;p&gt;%t : 서버가 요청처리를 마친 시간을 의미한다. [day/month/year:hour:minute:second zone] 형식이다.&lt;/p&gt;
+
+&lt;p&gt;\“%r\” : 클라이언트의 요청줄을 쌍따옴표로 묶어 표현한다. &lt;/p&gt;
+
+&lt;p&gt;%&amp;gt;s : 서버가 클라이언트에게 보내는 상태코드이다.&lt;/p&gt;
+
+&lt;p&gt;%b : 응답 헤더를 제외하고 클라이언트에게 보내는 내용의 크기를 나타낸다. 보내는 내용이 없다면 “-“으로 표기한다.&lt;/p&gt;
+
+&lt;p&gt;\”%{Referer}i\” : 클라이언트가 참조하였다고 서버에게 알린 사이트이다.&lt;/p&gt;
+
+&lt;p&gt;\”%{User-agent}i\” : 클라이언트 브라우저가 자신에 대해 알리는 식별 정보를 의미한다.&lt;/p&gt;
+
+&lt;p&gt;다음은 Combined 로그 형식의 예시이다.&lt;/p&gt;
+
+&lt;p&gt;127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] “GET /apache_pb.gif HTTP/1.0” 200 2326 “&lt;a href=&quot;http://www.example.com/start.html&quot;&gt;http://www.example.com/start.html&lt;/a&gt;” “Mozilla/4.08 [en] (Win98; I ;Nav)”&lt;/p&gt;
+
+&lt;p&gt;자세한 내용은 다음의 링크를 참고한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://httpd.apache.org/docs/2.4/ko/logs.html&quot;&gt;로그파일 - Apache HTTP Server Version 2.4&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;source-plugin---tail-1&quot;&gt;Source Plugin - tail&lt;/h3&gt;
+
+&lt;p&gt;다음은 테스트에서 사용할 tail 설정 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;source&amp;gt;
+  @type tail
+  path /Users/kevin/dev/fluentd/test/filter_grep/source/*
+  pos_file /Users/kevin/dev/fluentd/test/pos/filter_grep.pos
+  tag filter_grep.test
+  &amp;lt;parse&amp;gt;
+    @type apache2
+  &amp;lt;/parse&amp;gt;
+  refresh_interval 1s
+&amp;lt;/source&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;@type : tail type을 사용한다. 자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;path : 읽어오고자 하는 파일의 경로를 의미한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;pos_file : td-agent는 파일마다 읽었던 위치를 파일로 저장해두는데 그 파일의 경로를 지정한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;parse&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;@type : apache2를 사용한다. 자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;tag : 이벤트를 구분짓기 위한 tag name을 의미한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;refresh_interval : td-agent가 수집하려는 파일리스트의 갱신주기를 의미한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/input/tail&quot;&gt;Fluentd - Input Plugins : tail&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/parser/apache2&quot;&gt;Fluentd - Parser plugins : apache2&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;filter-plugin---grep&quot;&gt;Filter Plugin - grep&lt;/h3&gt;
+
+&lt;p&gt;다음은 테스트에서 사용할 grep 설정 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;filter filter_grep*&amp;gt;
+  @type grep
+  &amp;lt;regexp&amp;gt;
+    key method
+    pattern ^POST$
+  &amp;lt;/regexp&amp;gt;
+  &amp;lt;regexp&amp;gt;
+    key code
+    pattern ^[1-1|3-5]\d\d$
+  &amp;lt;/regexp&amp;gt;
+&amp;lt;/filter&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&amp;lt;filter pattern&amp;gt; : pattern 부분에 filter plugin을 적용시키고자 하는 이벤트(tag명)를 명시한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;@type : grep을 사용한다. 자세한 내용은 아래의 링크를 참고한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;regexp&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;key : 필드명을 지정한다.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;pattern : “Ruby의 정규표현식 표현”을 사용하여 표현한다.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;공식 문서 상에는 “pattern /정규표현식/”으로 표현되어 있으나 “pattern 정규표현식” 형태로 표기하여야 정상적으로 동작한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;and&gt; &lt;or&gt;의 설정은 fluentd 1.2 부터 지원한다.
+    
+
+  
+
+  
+
+&lt;/or&gt;&lt;/and&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.fluentd.org/filter/grep&quot;&gt;Fluentd - Filter plugins : grep&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;match-plugin---file-1&quot;&gt;Match Plugin - file&lt;/h3&gt;
+
+&lt;p&gt;다음은 테스트에서 사용하게 될 file 설정 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;match filter_grep.*&amp;gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/filter_grep/match/${tag}_output
+  path_suffix &quot;.log&quot;
+  add_path_suffix true
+  append true
+  &amp;lt;format&amp;gt;
+    @type out_file
+    output_tag false
+    output_time true
+  &amp;lt;/format&amp;gt;
+  &amp;lt;buffer tag&amp;gt;    
+    flush_mode interval
+    flush_interval 10s
+  &amp;lt;/buffer&amp;gt;
+&amp;lt;/match&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;테스트 과정에서 사용하는 설정과 간단한 설명이다. required 설정은 녹색으로 표기하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&amp;lt;match pattern&amp;gt; : pattern 부분에 match plugin을 적용시키고자 하는 이벤트(tag명)를 명시한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;@type : file을 사용한다. 자세한 내용은 아래의 링크를 참고한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;path : 출력할 파일의 경로를 의미한다. 예약어(예: tag)를 사용할 수 있다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;path_suffix : 확장자명을 지정한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;add_path_suffix : path_suffix 사용유무를 지정한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;append : 한 파일에 출력하는지 여부를 지정한다. 원할한 테스트를 위하여 설정한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;format : 아래의 &lt;strong&gt;Formatter Plugins - out_file&lt;/strong&gt;을 참고한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;buffer : 자세한 내용은 아래의 링크를 참고한다. 원할한 테스트를 위하여 설정한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/output/file&quot;&gt;Fluentd - Output plugins : file&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/configuration/buffer-section&quot;&gt;Fluentd - Config : Buffer Section&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;formatter-plugins---out_file&quot;&gt;Formatter Plugins - out_file&lt;/h3&gt;
+
+&lt;p&gt;다음은 테스트에서 사용하게 될 out_file 설정 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;format&amp;gt;
+    @type out_file
+    output_tag false
+    output_time true
+  &amp;lt;/format&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;@type : out_file을 사용한다. 자세한 내용은 아래의 링크를 참고한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;output_tag : tag(이벤트 명)의 출력 여부를 설정한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;output_time : 로그 수집 시간 출력 여부를 설정한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.fluentd.org/formatter/out_file&quot;&gt;Fluentd - Formatter Plugins : out_file&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;테스트-과정-1&quot;&gt;테스트 과정&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 파일을 생성하고 정상적으로 생성 되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ touch filter_grep_input.log | stat filter_grep_input.log
+16777223 8232044 -rw-r--r-- 1 kevin staff 0 0 &quot;Aug 19 20:20:14 2019&quot; &quot;Aug 19 20:20:14 2019&quot; &quot;Aug 19 20:20:14 2019&quot; &quot;Aug 19 20:20:14 2019&quot; 4096 0 0 filter_grep_input.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정 경로를 수정한다.&lt;/p&gt;
+
+    &lt;p&gt;다음은 경로 예시이다.&lt;/p&gt;
+
+    &lt;p&gt;/Users/kevin/dev/fluentd/test/filter_grep/config/td-agent.conf&lt;/p&gt;
+
+    &lt;p&gt;위에서 수정한 경로에 td-agent 설정파일을 생성한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ touch td-agent.conf | stat td-agent.conf
+16777223 8226646 -rw-r--r-- 1 kevin staff 0 0 &quot;Aug 19 15:54:04 2019&quot; &quot;Aug 19 15:54:04 2019&quot; &quot;Aug 19 15:54:04 2019&quot; &quot;Aug 19 15:54:04 2019&quot; 4096 0 0 td-agent.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;td-agent 설정 파일을 다음과 같이 수정한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat td-agent.conf
+    
+&amp;lt;source&amp;gt;
+  @type tail
+  tag filter_grep
+  path /Users/kevin/dev/fluentd/test/filter_grep/source/*
+  pos_file /Users/kevin/dev/fluentd/test/filter_grep/pos/filter_grep.pos
+  &amp;lt;parse&amp;gt;
+    @type apache2
+  &amp;lt;/parse&amp;gt;
+  refresh_interval 5s
+&amp;lt;/source&amp;gt;
+    
+&amp;lt;filter filter_grep*&amp;gt;
+  @type grep
+  &amp;lt;regexp&amp;gt;
+    key method
+    pattern ^POST$
+  &amp;lt;/regexp&amp;gt;
+  &amp;lt;regexp&amp;gt;
+    key code
+    pattern ^[1-1|3-5]\d\d$
+  &amp;lt;/regexp&amp;gt;
+&amp;lt;/filter&amp;gt;
+ 
+&amp;lt;match filter_grep*&amp;gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/filter_grep/match/${tag}_output
+  add_path_suffix true
+  path_suffix &quot;.log&quot;
+  append true
+  &amp;lt;buffer tag&amp;gt;
+    flush_mode interval
+    flush_interval 10s
+  &amp;lt;/buffer&amp;gt;
+  &amp;lt;format&amp;gt;
+    @type out_file
+    output_tag false
+    output_time true
+  &amp;lt;/format&amp;gt;
+&amp;lt;/match&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;td-agent를 실행한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 파일에 로그를 출력하고 정상적으로 출력 되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cat source/filter_grep_input.log
+127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] &quot;GET /apache_pb.gif HTTP/1.0&quot; 100 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] &quot;POST /regist.html HTTP/1.0&quot; 200 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] &quot;POST /regist.html HTTP/1.0&quot; 300 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:03 +0900] &quot;GET /apache_pb.gif HTTP/1.0&quot; 400 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:04 +0900] &quot;POST /regist.html HTTP/1.0&quot; 500 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:05 +0900] &quot;POST /regist.html HTTP/1.0&quot; 100 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:06 +0900] &quot;GET /apache_pb.gif HTTP/1.0&quot; 200 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:07 +0900] &quot;POST /regist.html HTTP/1.0&quot; 300 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:08 +0900] &quot;POST /regist.html HTTP/1.0&quot; 400 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:09 +0900] &quot;GET /apache_pb.gif HTTP/1.0&quot; 500 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;출력용 파일이 정상적으로 출력 되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cat match/filter_grep_output.log
+2019-08-20T00:40:02+09:00   {&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;user&quot;:null,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/regist.html&quot;,&quot;code&quot;:300,&quot;size&quot;:2326,&quot;referer&quot;:&quot;http://www.example.com/start.html&quot;,&quot;agent&quot;:&quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;}
+2019-08-20T00:40:04+09:00   {&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;user&quot;:null,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/regist.html&quot;,&quot;code&quot;:500,&quot;size&quot;:2326,&quot;referer&quot;:&quot;http://www.example.com/start.html&quot;,&quot;agent&quot;:&quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;}
+2019-08-20T00:40:05+09:00   {&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;user&quot;:null,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/regist.html&quot;,&quot;code&quot;:100,&quot;size&quot;:2326,&quot;referer&quot;:&quot;http://www.example.com/start.html&quot;,&quot;agent&quot;:&quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;}
+2019-08-20T00:40:07+09:00   {&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;user&quot;:null,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/regist.html&quot;,&quot;code&quot;:300,&quot;size&quot;:2326,&quot;referer&quot;:&quot;http://www.example.com/start.html&quot;,&quot;agent&quot;:&quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;}
+2019-08-20T00:40:08+09:00   {&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;user&quot;:null,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/regist.html&quot;,&quot;code&quot;:400,&quot;size&quot;:2326,&quot;referer&quot;:&quot;http://www.example.com/start.html&quot;,&quot;agent&quot;:&quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;테스트-결과-1&quot;&gt;테스트 결과&lt;/h2&gt;
+
+&lt;p&gt;테스트 결과 grep 타입을 사용하여 필터링 가능함을 확인하였다.&lt;/p&gt;
+
+&lt;p&gt;테스트 과정에서 다음과 같은 요구사항에 대하여 필터링 되는지 확인하였다.&lt;/p&gt;
+
+&lt;p&gt;요청 method가 “POST”이면서 status가 2XX이 아닌 경우&lt;/p&gt;
+
+&lt;p&gt;다음은 위의 요구사항대로 필터링된 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] &quot;GET /apache_pb.gif HTTP/1.0&quot; 100 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] &quot;POST /regist.html HTTP/1.0&quot; 200 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] &quot;POST /regist.html HTTP/1.0&quot; 300 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:03 +0900] &quot;GET /apache_pb.gif HTTP/1.0&quot; 400 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:04 +0900] &quot;POST /regist.html HTTP/1.0&quot; 500 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:05 +0900] &quot;POST /regist.html HTTP/1.0&quot; 100 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:06 +0900] &quot;GET /apache_pb.gif HTTP/1.0&quot; 200 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:07 +0900] &quot;POST /regist.html HTTP/1.0&quot; 300 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:08 +0900] &quot;POST /regist.html HTTP/1.0&quot; 400 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+127.0.0.1 - - [20/Aug/2019:00:40:09 +0900] &quot;GET /apache_pb.gif HTTP/1.0&quot; 500 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2019-08-20T00:40:02+09:00   {&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;user&quot;:null,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/regist.html&quot;,&quot;code&quot;:300,&quot;size&quot;:2326,&quot;referer&quot;:&quot;http://www.example.com/start.html&quot;,&quot;agent&quot;:&quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;}
+2019-08-20T00:40:04+09:00   {&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;user&quot;:null,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/regist.html&quot;,&quot;code&quot;:500,&quot;size&quot;:2326,&quot;referer&quot;:&quot;http://www.example.com/start.html&quot;,&quot;agent&quot;:&quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;}
+2019-08-20T00:40:05+09:00   {&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;user&quot;:null,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/regist.html&quot;,&quot;code&quot;:100,&quot;size&quot;:2326,&quot;referer&quot;:&quot;http://www.example.com/start.html&quot;,&quot;agent&quot;:&quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;}
+2019-08-20T00:40:07+09:00   {&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;user&quot;:null,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/regist.html&quot;,&quot;code&quot;:300,&quot;size&quot;:2326,&quot;referer&quot;:&quot;http://www.example.com/start.html&quot;,&quot;agent&quot;:&quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;}
+2019-08-20T00:40:08+09:00   {&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;user&quot;:null,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/regist.html&quot;,&quot;code&quot;:400,&quot;size&quot;:2326,&quot;referer&quot;:&quot;http://www.example.com/start.html&quot;,&quot;agent&quot;:&quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;필터링 후에는 다음과 같은 형식으로 저장됨을 알 수 있다.&lt;/p&gt;
+
+&lt;p&gt;로그를 기록한 날짜 { host : “클라이언트 아이피”, … 중략… agent : “클라이언트 브라우저 식별정보”}&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;테스트-케이스--로그를-파싱하여-저장하는-경우-filter---parser&quot;&gt;테스트 케이스 : 로그를 파싱하여 저장하는 경우 (Filter - parser)&lt;/h1&gt;
+
+&lt;p&gt;td-agent로 로그를 수집하여 저장하는 과정에서 원하는 형식으로 파싱하여 저장해야 하는 경우가 있다.&lt;/p&gt;
+
+&lt;p&gt;이러한 경우에 Filter plugin중 parser 타입을 사용하면된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;테스트-목적-3&quot;&gt;테스트 목적&lt;/h2&gt;
+
+&lt;p&gt;이 테스트는 학습차원에서 다음과 같은 td-agent의 동작 확인이 목적이다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;파일에서 로그를 수집하여 저장하는 과정에서 Filter plugin의 parser를 사용하여 파싱 가능&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;테스트-시나리오-2&quot;&gt;테스트 시나리오&lt;/h2&gt;
+
+&lt;p&gt;이 테스트는 다음과 같은 시나리오를 바탕으로 진행된다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Apache access log가 입력용 파일에 생성된다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent로 Apache access log를 수집하고 파싱한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;파싱된 결과는 출력용 파일에 json 형태로 출력한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;테스트에-필요한-사전-지식&quot;&gt;테스트에 필요한 사전 지식&lt;/h2&gt;
+
+&lt;h3 id=&quot;appache-access-log&quot;&gt;Appache Access Log&lt;/h3&gt;
+
+&lt;p&gt;테스트에서 다음과 같은 Common 로그 형식(Common Log Format)을 사용한다.&lt;/p&gt;
+
+&lt;p&gt;%h %l %u %t \“%r\” %&amp;gt;s %b&lt;/p&gt;
+
+&lt;p&gt;%h : 서버에 요청을 한 클라이언트의 IP 주소를 의미한다.&lt;/p&gt;
+
+&lt;p&gt;%l : 클라이언트 컴퓨터의 identd가 제공하는 클라이언트의 RFC 1413 신원이다. 만약 요청한 정보가 없다면 “-“로 표기한다.&lt;/p&gt;
+
+&lt;p&gt;%u : HTTP 인증으로 알아낸 문서를 요청한 사용자의 userid이다. 문서를 암호로 보호하지 않는다면 “-“ 으로 표기한다.&lt;/p&gt;
+
+&lt;p&gt;%t : 서버가 요청처리를 마친 시간을 의미한다. [day/month/year:hour:minute:second zone] 형식이다.&lt;/p&gt;
+
+&lt;p&gt;\“%r\” : 클라이언트의 요청줄을 쌍따옴표로 묶어 표현한다. &lt;/p&gt;
+
+&lt;p&gt;%&amp;gt;s : 서버가 클라이언트에게 보내는 상태코드이다.&lt;/p&gt;
+
+&lt;p&gt;%b : 응답 헤더를 제외하고 클라이언트에게 보내는 내용의 크기를 나타낸다. 보내는 내용이 없다면 “-“으로 표기한다.&lt;/p&gt;
+
+&lt;p&gt;다음은 Common 로그 형식의 예시이다.&lt;/p&gt;
+
+&lt;p&gt;127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] “GET /apache_pb.gif HTTP/1.0” 200 2326&lt;/p&gt;
+
+&lt;p&gt;자세한 내용은 다음의 링크를 참고한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://httpd.apache.org/docs/2.4/ko/logs.html&quot;&gt;로그파일 - Apache HTTP Server Version 2.4&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;json&quot;&gt;Json&lt;/h3&gt;
+
+&lt;p&gt;json에 대한 설명은 다음의 링크를 참고한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://json.org/&quot;&gt;JSON - 공식 사이트&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;source-plugin---tail-2&quot;&gt;Source Plugin - tail&lt;/h3&gt;
+
+&lt;p&gt;다음은 테스트에서 사용할 tail 설정 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;source&amp;gt;
+  @type tail
+  path /Users/kevin/dev/fluentd/test/filter_parser/source/*
+  pos_file /Users/kevin/dev/fluentd/test/filter_parser/pos/pos_file.pos
+  tag filter_parser
+  &amp;lt;parse&amp;gt;
+    @type none
+  &amp;lt;/parse&amp;gt;
+  refresh_interval 1s
+&amp;lt;/source&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;@type : tail type을 사용한다. 자세한 설명은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;path : 읽어오고자 하는 파일의 경로를 의미한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;pos_file : td-agent는 파일마다 읽었던 위치를 파일로 저장해두는데 그 파일의 경로를 지정한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;parse&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;@type : none을 사용한다. 자세한 설명은 아래의 링크를 통하여 확인한다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;tag : 이벤트를 구분짓기 위한 tag name을 의미한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;refresh_interval : td-agent가 수집하려는 파일리스트의 갱신주기를 의미한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;자세한 내용은 아래의 링크를 참고한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/input/tail&quot;&gt;Fluentd - Input Plugin : tail&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/parser/none&quot;&gt;Fluentd - Parser Plugin : none&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;filter-plugin---parser&quot;&gt;Filter Plugin - parser&lt;/h3&gt;
+
+&lt;p&gt;다음은 테스트에서 사용하게 될 parser 설정 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;filter filter_parser*&amp;gt;
+  @type parser
+  key_name message
+  &amp;lt;parse&amp;gt;
+    @type regexp
+    expression ^(?&amp;lt;host&amp;gt;[^ ]*) (?&amp;lt;identd&amp;gt;[^ ]*) (?&amp;lt;user&amp;gt;[^ ]*) \[(?&amp;lt;time&amp;gt;[^\]]*)\] &quot;(?&amp;lt;method&amp;gt;\S+)(?: +(?&amp;lt;path&amp;gt;[^ ]*) +\S*)?&quot; (?&amp;lt;code&amp;gt;[^ ]*) (?&amp;lt;size&amp;gt;[^ ]*)$
+    time_format %d/%b/%Y:%H:%M:%S %z
+  &amp;lt;/parse&amp;gt;
+&amp;lt;/filter&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&amp;lt;filter pattern&amp;gt; : pattern 부분에 filter plugin을 적용시키고자 하는 이벤트(tag명)를 명시한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;@type : parser를 사용한다. 자세한 내용은 아래의 링크를 참고한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;key_name : 파싱하고자 하는 필드명을 명시한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;parse : 아래의 &lt;strong&gt;Parser Plugins - regexp&lt;/strong&gt;를 참고한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;자세한 내용은 아래의 링크를 참고한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.fluentd.org/filter/parser&quot;&gt;Fluentd - Filter Plugin : parser&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;parser-plugin---regexp&quot;&gt;Parser Plugin - regexp&lt;/h3&gt;
+
+&lt;p&gt;다음은 테스트에서 사용하게 될 regexp 설정 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;parse&amp;gt;
+    @type regexp
+    expression ^(?&amp;lt;host&amp;gt;[^ ]*) [^ ]* (?&amp;lt;user&amp;gt;[^ ]*) \[(?&amp;lt;time&amp;gt;[^\]]*)\] &quot;(?&amp;lt;method&amp;gt;\S+)(?: +(?&amp;lt;path&amp;gt;[^ ]*) +\S*)?&quot; (?&amp;lt;code&amp;gt;[^ ]*) (?&amp;lt;size&amp;gt;[^ ]*)$
+    time_format %d/%b/%Y:%H:%M:%S %z
+  &amp;lt;/parse&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;@type : regexp를 사용한다. 자세한 내용은 아래의 링크를 참고한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;expression : 파싱하고자 하는 형식에 대하여 “Ruby의 정규표현식 표현”을 사용하여 표현한다. 위의 예시는 Apache access log중 Common 로그 형식을 의미한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;time_format : 시간형식을 어떻게 지정할 지에 대한 형식을 지정한다. 위의 예시의 샘플은 “20/Aug/2019:13:55:36 +0900” 이다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;자세한 내용은 아래의 링크를 참고한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/parser/regexp&quot;&gt;Fluentd - Parser Plugins : regexp&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://ruby-doc.org/core-2.4.1/Regexp.html#class-Regexp-label-Options&quot;&gt;Ruby’s Regexp document&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;match-plugin---file-2&quot;&gt;Match Plugin - file&lt;/h3&gt;
+
+&lt;p&gt;다음은 테스트에서 사용하게 될 file 설정 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;match filter_parser*&amp;gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/filter_parser/match/${tag}_output
+  path_suffix &quot;.json&quot;
+  add_path_suffix true  
+  append true
+  &amp;lt;format&amp;gt;
+    @type json
+  &amp;lt;/format&amp;gt;
+  &amp;lt;buffer tag&amp;gt;
+    flush_mode interval
+    flush_interval 10s
+  &amp;lt;/buffer&amp;gt;
+&amp;lt;/match&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&amp;lt;match pattern&amp;gt; : pattern 부분에 match plugin을 적용시키고자 하는 이벤트(tag명)를 명시한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;@type : file을 사용한다. 자세한 내용은 아래의 링크를 참고한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;path : 출력할 파일의 경로를 의미한다. 예약어(예: tag)를 사용할 수 있다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;path_suffix : 확장자명을 지정한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;add_path_suffix : path_suffix 사용유무를 지정한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;append : 한 파일에 출력하는지 여부를 지정한다. 원할한 테스트를 위하여 설정한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;format&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;@type : json으로 설정한다. 자세한 내용은 아래의 링크를 참고한다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;buffer : 자세한 내용은 아래의 링크를 참고한다. 원할한 테스트를 위하여 설정한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/output/file&quot;&gt;Fluentd - Output plugins : file&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/formatter/json&quot;&gt;Fluentd - Formatter plugins : json&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/configuration/buffer-section&quot;&gt;Fluentd - Config : Buffer Section&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;테스트-과정-2&quot;&gt;테스트 과정&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;파일을 생성하고 정상적으로 생성 되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ touch filter_parser_input.log | stat filter_parser_input.log
+16777223 8251706 -rw-r--r-- 1 kevin staff 0 0 &quot;Aug 20 18:26:05 2019&quot; &quot;Aug 20 18:26:05 2019&quot; &quot;Aug 20 18:26:05 2019&quot; &quot;Aug 20 18:26:05 2019&quot; 4096 0 0 filter_parser_input.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 설정파일의 경로를 수정한다.&lt;br /&gt;
+다음은 경로예시이다.&lt;/p&gt;
+
+    &lt;p&gt;/Users/kevin/dev/fluentd/test/filter_parser/config/td-agent.conf&lt;/p&gt;
+
+    &lt;p&gt;위에서 수정한 경로에 td-agent 설정파일을 생성한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ touch td-agent.conf | stat td-agent.conf
+16777223 8251793 -rw-r--r-- 1 kevin staff 0 0 &quot;Aug 20 18:29:43 2019&quot; &quot;Aug 20 18:29:43 2019&quot; &quot;Aug 20 18:29:43 2019&quot; &quot;Aug 20 18:29:43 2019&quot; 4096 0 0 td-agent.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;td-agent 설정 파일을 다음과 같이 수정한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat td-agent.conf
+&amp;lt;source&amp;gt;
+  @type tail
+  path /Users/kevin/dev/fluentd/test/filter_parser/source/*
+  pos_file /Users/kevin/dev/fluentd/test/filter_parser/pos/pos_file.pos
+  tag filter_parser
+  &amp;lt;parse&amp;gt;
+    @type none
+  &amp;lt;/parse&amp;gt;
+  refresh_interval 1s
+&amp;lt;/source&amp;gt;
+&amp;lt;filter filter_parser*&amp;gt;
+  @type parser
+  key_name message
+  &amp;lt;parse&amp;gt;
+    @type regexp
+    expression ^(?&amp;lt;host&amp;gt;[^ ]*) (?&amp;lt;identd&amp;gt;[^ ]*) (?&amp;lt;user&amp;gt;[^ ]*) \[(?&amp;lt;time&amp;gt;[^\]]*)\] &quot;(?&amp;lt;method&amp;gt;\S+)(?: +(?&amp;lt;path&amp;gt;[^ ]*) +\S*)?&quot; (?&amp;lt;code&amp;gt;[^ ]*) (?&amp;lt;size&amp;gt;[^ ]*)$
+    time_format %d/%b/%Y:%H:%M:%S %z
+  &amp;lt;/parse&amp;gt;
+&amp;lt;/filter&amp;gt;
+&amp;lt;match filter_parser*&amp;gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/filter_parser/match/${tag}_output
+  add_path_suffix true
+  path_suffix &quot;.json&quot;
+  append true
+  &amp;lt;format&amp;gt;
+    @type json
+  &amp;lt;/format&amp;gt;
+  &amp;lt;buffer tag&amp;gt;
+    flush_mode interval
+    flush_interval 10s
+  &amp;lt;/buffer&amp;gt;
+&amp;lt;/match&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;이제 td-agent를 실행한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 파일에 로그를 출력하고 정상적으로 출력 되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat source/filter_parser_input.log
+127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] &quot;GET /apache_pb.gif HTTP/1.0&quot; 100 2326
+127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] &quot;POST /registration.html HTTP/1.0&quot; 200 2326
+127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] &quot;POST /registration.html HTTP/1.0&quot; 300 2326
+127.0.0.1 - - [20/Aug/2019:00:40:03 +0900] &quot;GET /apache_pb.gif HTTP/1.0&quot; 400 2326
+127.0.0.1 - - [20/Aug/2019:00:40:04 +0900] &quot;POST /registration.html HTTP/1.0&quot; 500 2326
+127.0.0.1 - - [20/Aug/2019:00:40:05 +0900] &quot;POST /registration.html HTTP/1.0&quot; 100 2326
+127.0.0.1 - - [20/Aug/2019:00:40:06 +0900] &quot;GET /apache_pb.gif HTTP/1.0&quot; 200 2326
+127.0.0.1 - - [20/Aug/2019:00:40:07 +0900] &quot;POST /registration.html HTTP/1.0&quot; 300 2326
+127.0.0.1 - - [20/Aug/2019:00:40:08 +0900] &quot;POST /registration.html HTTP/1.0&quot; 400 2326
+127.0.0.1 - - [20/Aug/2019:00:40:09 +0900] &quot;GET /apache_pb.gif HTTP/1.0&quot; 500 2326
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;출력용 파일이 정상적으로 출력 되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat match/filter_parser_output.json
+{&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;identd&quot;:&quot;-&quot;,&quot;user&quot;:&quot;-&quot;,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/registration.html&quot;,&quot;code&quot;:&quot;300&quot;,&quot;size&quot;:&quot;2326&quot;}
+{&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;identd&quot;:&quot;-&quot;,&quot;user&quot;:&quot;-&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/apache_pb.gif&quot;,&quot;code&quot;:&quot;400&quot;,&quot;size&quot;:&quot;2326&quot;}
+{&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;identd&quot;:&quot;-&quot;,&quot;user&quot;:&quot;-&quot;,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/registration.html&quot;,&quot;code&quot;:&quot;500&quot;,&quot;size&quot;:&quot;2326&quot;}
+{&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;identd&quot;:&quot;-&quot;,&quot;user&quot;:&quot;-&quot;,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/registration.html&quot;,&quot;code&quot;:&quot;100&quot;,&quot;size&quot;:&quot;2326&quot;}
+{&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;identd&quot;:&quot;-&quot;,&quot;user&quot;:&quot;-&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/apache_pb.gif&quot;,&quot;code&quot;:&quot;200&quot;,&quot;size&quot;:&quot;2326&quot;}
+{&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;identd&quot;:&quot;-&quot;,&quot;user&quot;:&quot;-&quot;,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/registration.html&quot;,&quot;code&quot;:&quot;300&quot;,&quot;size&quot;:&quot;2326&quot;}
+{&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;identd&quot;:&quot;-&quot;,&quot;user&quot;:&quot;-&quot;,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/registration.html&quot;,&quot;code&quot;:&quot;400&quot;,&quot;size&quot;:&quot;2326&quot;}
+{&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;identd&quot;:&quot;-&quot;,&quot;user&quot;:&quot;-&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/apache_pb.gif&quot;,&quot;code&quot;:&quot;500&quot;,&quot;size&quot;:&quot;2326&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;테스트-결과-2&quot;&gt;테스트 결과&lt;/h2&gt;
+
+&lt;p&gt;테스트 결과 parser 타입을 사용하여 파싱이 가능함을 확인하였다.&lt;/p&gt;
+
+&lt;p&gt;테스트 과정에서 Apache access log를 수집하여 json 형식의 파일로 저장하는 것을 확인하였다.&lt;/p&gt;
+
+&lt;p&gt;다음은 파싱전후의 예시이다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] &quot;GET /apache_pb.gif HTTP/1.0&quot; 100 2326
+127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] &quot;POST /registration.html HTTP/1.0&quot; 200 2326
+127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] &quot;POST /registration.html HTTP/1.0&quot; 300 2326
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;identd&quot;:&quot;-&quot;,&quot;user&quot;:&quot;-&quot;,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/registration.html&quot;,&quot;code&quot;:&quot;300&quot;,&quot;size&quot;:&quot;2326&quot;}
+{&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;identd&quot;:&quot;-&quot;,&quot;user&quot;:&quot;-&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/apache_pb.gif&quot;,&quot;code&quot;:&quot;400&quot;,&quot;size&quot;:&quot;2326&quot;}
+{&quot;host&quot;:&quot;127.0.0.1&quot;,&quot;identd&quot;:&quot;-&quot;,&quot;user&quot;:&quot;-&quot;,&quot;method&quot;:&quot;POST&quot;,&quot;path&quot;:&quot;/registration.html&quot;,&quot;code&quot;:&quot;500&quot;,&quot;size&quot;:&quot;2326&quot;}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;파싱된 후 저장된 json형식의 로그는 다음과 같은 형식으로 저장된다.&lt;/p&gt;
+
+&lt;p&gt;{“host”: “클라이언트 아이피”, “identd” : “클라이언트 RFC1413 신원”, “user” : “클라이언트 이름”, “method” : “http 메서드”, “path”: “접근하려는 경로”, “code” : “http 상태코드”, “size” : “응답용량”}
+ㄴ&lt;/p&gt;</content><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><category term="Fluentd" /><summary type="html">이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 Filter plugin의 단순 동작 확인에 목적을 두고 있다.</summary></entry><entry><title type="html">Fluentd(td-agent) 설치 및 실행 방법</title><link href="http://localhost:4000/fluentd/fluentd_install/" rel="alternate" type="text/html" title="Fluentd(td-agent) 설치 및 실행 방법" /><published>2019-12-10T00:00:00+09:00</published><updated>2019-12-10T00:00:00+09:00</updated><id>http://localhost:4000/fluentd/fluentd_install</id><content type="html" xml:base="http://localhost:4000/fluentd/fluentd_install/">&lt;h1 id=&quot;td-agent-설치-및-확인&quot;&gt;Td-agent 설치 및 확인&lt;/h1&gt;
+
+&lt;p&gt;아래 내용은 Mac에서 td-agent를 설치하고 기본 동작을 확인하는 것을 기준으로 작성된 내용이다.&lt;/p&gt;
+
+&lt;p&gt;참고:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.fluentd.org/installation/install-by-dmg&quot;&gt;https://docs.fluentd.org/installation/install-by-dmg&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;설치 완료되면 아래 경로에 td-agent가 설치된다.&lt;br /&gt;
+/opt/td-agent/usr/sbin/&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ls -l /opt/td-agent/usr/sbin/
+total 16
+-rwxr-xr-x  1 root  wheel  348 Feb  1  2018 td-agent
+-rwxr-xr-x  1 root  wheel  177 Feb  1  2018 td-agent-gem
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;디폴트 설정 파일은 아래 경로에서 확인할 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ls -l /etc/td-agent/
+total 8
+drwxr-xr-x  2 root  wheel    64 Jun 12 22:27 plugin
+-rw-r--r--  1 root  wheel  2381 Jun 12 22:27 td-agent.conf
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;/etc/td-agent/td-agent.conf 파일의 내용 일부는 아래와 같다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;... 중략 ...
+
+# HTTP input
+# POST http://localhost:8888/&amp;lt;tag&amp;gt;?json=&amp;lt;json&amp;gt;
+# POST http://localhost:8888/td.myapp.login?json={&quot;user&quot;%3A&quot;me&quot;}
+# @see http://docs.fluentd.org/articles/in_http
+&amp;lt;source&amp;gt;
+  @type http
+  @id input_http
+  port 8888
+&amp;lt;/source&amp;gt;
+
+... 중략 ...
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;start-td-agent-on-mac&quot;&gt;Start td-agent on Mac&lt;/h2&gt;
+
+&lt;p&gt;Daemon 방식 실행&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo launchctl load /Library/LaunchDaemons/td-agent.plist
+$ less /var/log/td-agent/td-agent.log
+
+$ ps -ef | grep td-agent
+    0 47678     1   0 10:42PM ??         0:00.37 /opt/td-agent/embedded/bin/ruby /opt/td-agent/usr/sbin/td-agent --log /var/log/td-agent/td-agent.log --use-v1-config
+    0 47679 47678   0 10:42PM ??         0:00.46 /opt/td-agent/embedded/bin/ruby -Eascii-8bit:ascii-8bit /opt/td-agent/usr/sbin/td-agent --log /var/log/td-agent/td-agent.log --use-v1-config --under-supervisor
+  502 47713 47688   0 10:44PM ttys025    0:00.00 grep td-agent
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;데몬으로 실행하는 경우 stdout이 없고 stdout으로 출력되는 로그가 /var/log/td-agent/td-agent.log에 남겨진다.&lt;/p&gt;
+
+&lt;p&gt;기본 foreground로 실행하기&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ /opt/td-agent/usr/sbin/td-agent -c /etc/td-agent/td-agent.conf
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;이 경우 stdout으로 출력된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;test&quot;&gt;Test&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl -X POST -d 'json={&quot;json&quot;:&quot;message&quot;}' http://localhost:8888/debug.test
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;stop-td-agent-damon-on-mac&quot;&gt;Stop td-agent damon on Mac&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo launchctl unload /Library/LaunchDaemons/td-agent.plist
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;참고자료&quot;&gt;참고자료&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/installation/install-by-dmg&quot;&gt;https://docs.fluentd.org/installation/install-by-dmg&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://bcho.tistory.com/1115&quot;&gt;https://bcho.tistory.com/1115&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://brunch.co.kr/@zigzag/16?utm_source=gaerae.com&amp;amp;utm_campaign=%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%8A%A4%EB%9F%BD%EB%8B%A4&amp;amp;utm_medium=social&amp;amp;fbclid=IwAR1pVa1grnRrsxpiOIHJBLyT_ATjBjpeuyA1v7GxsK0Aj8_DoqKeUbndIdQ&quot;&gt;https://brunch.co.kr/@zigzag/16?utm_source=gaerae.com&amp;amp;utm_campaign=%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%8A%A4%EB%9F%BD%EB%8B%A4&amp;amp;utm_medium=social&amp;amp;fbclid=IwAR1pVa1grnRrsxpiOIHJBLyT_ATjBjpeuyA1v7GxsK0Aj8_DoqKeUbndIdQ&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><category term="Fluentd" /><summary type="html">아래 내용은 Mac에서 td-agent를 설치하고 기본 동작을 확인하는 것을 기준으로 작성된 내용이다.</summary></entry><entry><title type="html">[테스트] Fluentd(td-agent) output plugin 동작 확인</title><link href="http://localhost:4000/fluentd/fluentd_output_plugin_operation_check/" rel="alternate" type="text/html" title="[테스트] Fluentd(td-agent) output plugin 동작 확인" /><published>2019-12-10T00:00:00+09:00</published><updated>2019-12-10T00:00:00+09:00</updated><id>http://localhost:4000/fluentd/fluentd_output_plugin_operation_check</id><content type="html" xml:base="http://localhost:4000/fluentd/fluentd_output_plugin_operation_check/">&lt;h1 id=&quot;테스트-목적&quot;&gt;테스트 목적&lt;/h1&gt;
+
+&lt;p&gt;이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 단순 동작 확인에 목적을 두고 있다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;로그 파일을 읽고 표준 출력하기&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;로그 파일을 읽고 파일로 출력하기&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;로그 파일을 읽고 Elasticsearch에 Insert하기&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;로그 파일을 읽고 Amazone S3에 저장하기&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;테스트-환경&quot;&gt;테스트 환경&lt;/h1&gt;
+
+&lt;p&gt;다음과 같은 환경에서 테스트 하였다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;OS : macOS Mojave 10.14.5&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fluentd : 1.0.2 (td-agent : 3.1.1.0)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;테스트에-필요한-사전정보&quot;&gt;테스트에 필요한 사전정보&lt;/h1&gt;
+
+&lt;p&gt;Fluentd 기초 사용법을 확인하여 td-agent 기초 동작을 확인하면 된다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;테스트-케이스--로그-파일을-읽고-표준-출력하기&quot;&gt;테스트 케이스 : 로그 파일을 읽고 표준 출력하기&lt;/h1&gt;
+
+&lt;h2 id=&quot;테스트-목적-1&quot;&gt;테스트 목적&lt;/h2&gt;
+
+&lt;p&gt;td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;파일의 로그를 읽고 표준 출력하기&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;테스트-과정&quot;&gt;테스트 과정&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 파일을 생성한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ touch file_to_stdout_test.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;파일이 정상적으로 생성되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ls -l file_to_stdout_test.log
+drwxr-xr-x  4 kevin  staff  0  8  6 16:52 file_to_stdout_test.log 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent.conf 파일을 다음과 같이 수정한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vim /etc/td-agent/td-agent.conf
+&amp;lt;source&amp;gt;
+  @type tail 
+  path /Users/kevin/dev/fluentd/test/file_to_stdout/source/file_to_stdout_test.log 
+  pos_file /home/kevin/dev/fluentd/test/pos_file/file_to_stdout.pos 
+  tag file_to_stdout.test 
+  &amp;lt;parse&amp;gt;
+    @type none
+  &amp;lt;/parse&amp;gt;
+&amp;lt;/source&amp;gt;
+&amp;lt;match file_to_stdout.*&amp;gt;
+  @type stdout
+&amp;lt;/match&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;tail, stdout은 default plugin으로 별도의 plugin 설치가 필요하지 않다.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;source&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;path : 읽어오고자 하는 로그 파일의 경로를 지정하는 parameter로 wildcard(*)를 사용하여 디렉터리를 지정할 수도 있다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;pos_file : td-agent는 입력용 로그 파일에 접근하여 읽었던 위치를 파일로 저장한다. 그 파일의 경로를 지정하는 parameter이다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;parse : 로그 파일 포맷을 의미한다. none은 라인 단위 구문 분석을 의미한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;tag : 이벤트를 구분짓기 위한 tag name을 의미한다.&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;match&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;match tag명=&quot;&quot;&gt; : tag명에 대한 이벤트를 출력하겠다는 의미이다.
+            
+    
+      
+    
+&lt;/match&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p&gt;설정에 관하여 더 자세한 내용은 아래의 링크를 통하여 확인할 수 있다.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/input/tail&quot;&gt;Fluentd - Input Plugins : tail&lt;/a&gt; &lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/output/stdout&quot;&gt;Fluentd - Output Plugins : stdout&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;이제 td-agent를 한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;파일에 다음과 같은 로그를 저장하고 이를 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vim file_to_stdout_test.log
+file_to_stdout_test 1
+file_to_stdout_test 2
+file_to_stdout_test 3
+file_to_stdout_test 4
+file_to_stdout_test 5
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;td-agent의 표준 출력을 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tail -5f /var/log/td-agent/td-agent.log
+2019-08-06 20:30:20.191939654 +0900 file_to_stdout.test: {&quot;message&quot;:&quot;file_to_stdout_test 1&quot;}
+2019-08-06 20:30:25.738923745 +0900 file_to_stdout.test: {&quot;message&quot;:&quot;file_to_stdout_test 2&quot;}
+2019-08-06 20:30:31.243424029 +0900 file_to_stdout.test: {&quot;message&quot;:&quot;file_to_stdout_test 3&quot;}
+2019-08-06 20:30:35.698592603 +0900 file_to_stdout.test: {&quot;message&quot;:&quot;file_to_stdout_test 4&quot;}
+2019-08-06 20:30:40.123402487 +0900 file_to_stdout.test: {&quot;message&quot;:&quot;file_to_stdout_test 5&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;테스트-결과&quot;&gt;테스트 결과&lt;/h2&gt;
+
+&lt;p&gt;파일에 저장된 로그는 라인 단위로 읽어와 “로그를 수집한 날짜”, “이벤트 Tag명”, “로그”를 표준출력하며 형식은 다음과 같음을 알 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(로그를 수집한 날짜) (이벤트 Tag명): {&quot;message&quot;:&quot;(로그)&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;테스트-케이스--로그-파일을-읽고-파일로-출력하기&quot;&gt;테스트 케이스 : 로그 파일을 읽고 파일로 출력하기&lt;/h1&gt;
+
+&lt;h2 id=&quot;테스트-목적-2&quot;&gt;테스트 목적&lt;/h2&gt;
+
+&lt;p&gt;td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;디렉터리내 파일들의 로그를 읽고 파일 출력하기(출력 파일의 파일명 양식지정)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;테스트-과정-1&quot;&gt;테스트 과정&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 파일을 생성한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ touch file_to_file_01.log file_to_file_02.log file_to_file_03.log 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;파일이 정상적으로 생성되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ls -l file_to_file_0*.log
+-rw-r--r--  1 kevin  staff  0  8 13 21:09 file_to_file_01.log
+-rw-r--r--  1 kevin  staff  0  8 13 21:09 file_to_file_02.log
+-rw-r--r--  1 kevin  staff  0  8 13 21:09 file_to_file_03.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent.conf 파일을 다음과 같이 수정한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vim /etc/td-agent/td-agent.conf
+&amp;lt;source&amp;gt;
+  @type tail
+  path /Users/kevin/dev/fluentd/test/file_to_file/source/*
+  pos_file /Users/kevin/dev/fluentd/test/pos/file_to_file.pos
+  tag file_to_file.test
+  &amp;lt;parse&amp;gt;
+    @type none
+  &amp;lt;/parse&amp;gt;
+  refresh_interval 1s
+&amp;lt;/source&amp;gt;
+&amp;lt;match file_to_file.*&amp;gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/file_to_file/match/${tag}
+  &amp;lt;buffer tag&amp;gt;
+    flush_mode interval
+    flush_interval 10s
+  &amp;lt;/buffer&amp;gt;
+&amp;lt;/match&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;tail, file은 default plugin으로 별도의 plugin 설치가 필요하지 않다.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;source&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;path : 읽어오고자 하는 로그 파일의 경로를 지정하는 parameter로 wildcard(*)를 사용하여 디렉터리를 지정할 수도 있다. 디렉터리를 지정하기 위하여 wildcard(*)로 지정한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;pos_file : td-agent는 입력용 로그 파일에 접근하여 읽었던 위치를 파일로 저장한다. 그 파일의 경로를 지정하는 parameter이다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;parse : 로그 파일 포맷을 의미한다. none은 라인 단위 구문 분석을 의미한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;tag : 이벤트를 구분짓기 위한 tag name을 의미한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;refresh_interval : td-agent가 수집하려는 파일리스트의 갱신주기를 의미한다.&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;match&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;match tag명=&quot;&quot;&gt; : tag명에 대한 이벤트를 출력하겠다는 의미이다.
+            
+&lt;/match&gt;
+          &lt;/li&gt;
+          &lt;li&gt;path : 저장할 경로를 지정한다. 예약어 tag를 사용한다.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;buffer&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;buffer 예약어=&quot;&quot;&gt; : 예약어에 대한 필터를 지정한다.
+            
+&lt;/buffer&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;flush_mode : flush의 mode를 설정한다.(lazy, interval, immediate)&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;flush_interval : flush_mode가 interval일 경우에만 지정하며, flush의 주기를 설정한다.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;더 자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/input/tail&quot;&gt;Fluentd - Input Plugins : tail&lt;/a&gt; &lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/output/file&quot;&gt;Fluentd - Output Plugins : file&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/configuration/buffer-section&quot;&gt;Fluentd - Configuration : Buffer Section&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;이제 td-agent를 실행한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 로그 파일 1개에 다음과 같이 로그를 출력한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vim file_to_file_01.log
+file_to_file_01    line 1
+file_to_file_01    line 2
+file_to_file_01    line 3
+file_to_file_01    line 4
+file_to_file_01    line 5
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;출력용 파일을 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat file_to_file.test_0.log
+2019-08-13T21:58:56+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_01    line 1&quot;}
+2019-08-13T21:58:56+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_01    line 2&quot;}
+2019-08-13T21:58:56+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_01    line 3&quot;}
+2019-08-13T21:58:56+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_01    line 4&quot;}
+2019-08-13T21:58:56+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_01    line 5&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;파일명은 ${tag]_${index}.log형태로 출력된다.&lt;/p&gt;
+
+    &lt;p&gt;만약 ${tag}.log형태로 출력하려면 다음과 같이 match의 append 옵션을 수정하면 된다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;match 이벤트 tag명&amp;gt;
+  ...중략...
+      
+  append true
+      
+  ...중략...
+&amp;lt;match&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;나머지 파일에도 로그를 출력한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vim file_to_file_02.log
+file_to_file_02    line 1
+file_to_file_02    line 2
+file_to_file_02    line 3
+file_to_file_02    line 4
+file_to_file_02    line 5
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vim file_to_file_03.log
+file_to_file_03    line 1
+file_to_file_03    line 2
+file_to_file_03    line 3
+file_to_file_03    line 4
+file_to_file_03    line 5
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;출력용 파일을 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat file_to_file.test_1.log
+2019-08-13T22:07:06+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_02    line 1&quot;}
+2019-08-13T22:07:06+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_02    line 2&quot;}
+2019-08-13T22:07:06+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_02    line 3&quot;}
+2019-08-13T22:07:06+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_02    line 4&quot;}
+2019-08-13T22:07:06+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_02    line 5&quot;}
+2019-08-13T22:07:17+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_03    line 1&quot;}
+2019-08-13T22:07:17+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_03    line 2&quot;}
+2019-08-13T22:07:17+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_03    line 3&quot;}
+2019-08-13T22:07:17+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_03    line 4&quot;}
+2019-08-13T22:07:17+09:00	file_to_file.test	{&quot;message&quot;:&quot;file_to_file_03    line 5&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;테스트-결과-1&quot;&gt;테스트 결과&lt;/h2&gt;
+
+&lt;p&gt;테스트 결과는 다음과 같다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 파일에 저장된 로그는 라인 단위로 읽어와 “로그를 수집한 날짜”, “이벤트 Tag명”, “로그”를 파일로 출력하며 형식은 다음과 같다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(로그를 수집한 날짜) (이벤트 Tag명) {&quot;message&quot;:&quot;(로그)&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;디렉터리내 여러개 파일의 로그가 파일로 출력된다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;파일명 양식을 설정하면 다음과 같은 형태로 출력된다.&lt;/p&gt;
+
+    &lt;p&gt;파일명양식_{index}.log&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;테스트-케이스--로그-파일을-읽고-elasticsearch에-insert하기&quot;&gt;테스트 케이스 : 로그 파일을 읽고 Elasticsearch에 Insert하기&lt;/h1&gt;
+
+&lt;h2 id=&quot;테스트-목적-3&quot;&gt;테스트 목적&lt;/h2&gt;
+
+&lt;p&gt;td-agent가 다음과 같은 의도대로 동작하는지 확인한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;파일의 json 로그를 읽고 elasticsearch에 insert하기&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;테스트-환경-추가-구성&quot;&gt;테스트 환경 추가 구성&lt;/h2&gt;
+
+&lt;p&gt;이 테스트를 위하여 다음과 같은 아키텍쳐를 추가 구성해야한다.&lt;/p&gt;
+
+&lt;p&gt;Elasticsearch 6.7.1&lt;/p&gt;
+
+&lt;h2 id=&quot;테스트-과정-2&quot;&gt;테스트 과정&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 파일을 생성한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ touch json_file_to_es_test.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;파일이 정상적으로 생성되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ls -l
+total 0
+-rw-r--r--  1 kevin  staff  0  8 13 13:48 json_file_to_es.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent.conf 파일을 다음과 같이 수정한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vim /etc/td-agent/td-agent.conf
+&amp;lt;source&amp;gt;
+  @type tail
+  path /Users/kevin/dev/fluentd/test/json_file_to_es/source/**
+  pos_file /Users/kevin/dev/fluentd/test/pos/json_file_to_es.pos
+  tag json_file_to_es.test
+  &amp;lt;parse&amp;gt;
+    @type json
+  &amp;lt;/parse&amp;gt;
+&amp;lt;/source&amp;gt;
+&amp;lt;match json_file_to_es.**&amp;gt;
+  @type elasticsearch
+  host localhost
+  port 9200
+  index_name json_file_to_es
+  type_name _doc
+&amp;lt;/match&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;tail은 default plugin으로 별도의 plugin설치가 필요하지 않다.&lt;/p&gt;
+
+    &lt;p&gt;es는 td-agent v3.0.1 이상부터 default plugin이다. 따라서 테스트 환경(td-agent v3.1.1.0)에서는 별도의 plugin 설치가 필요하지 않다.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;source&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;path : 읽어오고자 하는 로그 파일의 경로를 지정하는 parameter로 wildcard(*)를 사용하여 디렉터리를 지정할 수도 있다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;pos_file : td-agent는 입력용 로그 파일에 접근하여 읽었던 위치를 파일로 저장한다. 그 파일의 경로를 지정하는 parameter이다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;parse : 로그 파일 포맷을 의미한다. json은 라인 별로 json으로 파싱한다는 의미한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;tag : 이벤트를 구분짓기 위한 tag name을 의미한다.&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;match&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;match tag명=&quot;&quot;&gt; : tag명에 대한 이벤트를 출력하겠다는 의미이다.
+            
+&lt;/match&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;host : 로그를 출력할 elasticsearch의 host를 의미한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;port: 로그를 출력할 elasticsearch의 port를 의미한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;index_name : 로그를 출력할 elasticsearch index의 이름을 지정한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;type_name : 로그를 출력할 elasticsearch index의 type을 의미하며 별도로 지정하지 않는다면 elasticsearch v6.7.1 기준 _doc type에 저장된다.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;더 자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/input/tail&quot;&gt;Fluentd - Input Plugins : tail&lt;/a&gt; &lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/output/elasticsearch&quot;&gt;Fluentd - Output Plugins : Elasticsearch&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://github.com/uken/fluent-plugin-elasticsearch&quot;&gt;fluent-plugin-elasticsearch repository&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;이제 td-agent를 실행한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;elasticsearch는 local 환경에서 구동하기 때문에 다음의 설정을 확인한다.&lt;/p&gt;
+
+    &lt;p&gt;port 확인(default : 9200)&lt;/p&gt;
+
+    &lt;p&gt;elasticsearch를 실행한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./bin/elasticsearch
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;elasticsearch가 구동되는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl -X GET &quot;localhost:9200&quot;
+{
+  &quot;name&quot; : &quot;kevin_es_node_name&quot;,
+  &quot;cluster_name&quot; : &quot;kevin_es_cluster_name&quot;,
+  &quot;cluster_uuid&quot; : &quot;G_WJqbiFS7Srdm4S1mUKWA&quot;,
+  &quot;version&quot; : {
+    &quot;number&quot; : &quot;6.7.1&quot;,
+    &quot;build_flavor&quot; : &quot;default&quot;,
+    &quot;build_type&quot; : &quot;tar&quot;,
+    &quot;build_hash&quot; : &quot;2f32220&quot;,
+    &quot;build_date&quot; : &quot;2019-04-02T15:59:27.961366Z&quot;,
+    &quot;build_snapshot&quot; : false,
+    &quot;lucene_version&quot; : &quot;7.7.0&quot;,
+    &quot;minimum_wire_compatibility_version&quot; : &quot;5.6.0&quot;,
+    &quot;minimum_index_compatibility_version&quot; : &quot;5.0.0&quot;
+  },
+  &quot;tagline&quot; : &quot;You Know, for Search&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;elasticsearch에 index가 생성되고 document가 추가되는지 확인하기 위하여 document를 추가한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl -H 'Content-Type: application/json' -XPOST localhost:9200/json_file_to_es/_doc/1/ -d '{&quot;file_name&quot; : &quot;creat_index_add_document&quot;, &quot;tag_name&quot; : &quot;test&quot;, &quot;lines&quot; : 1}'
+{&quot;_index&quot;:&quot;json_file_to_es&quot;,&quot;_type&quot;:&quot;_doc&quot;,&quot;_id&quot;:&quot;1&quot;,&quot;_version&quot;:1,&quot;result&quot;:&quot;created&quot;,&quot;_shards&quot;:{&quot;total&quot;:2,&quot;successful&quot;:1,&quot;failed&quot;:0},&quot;_seq_no&quot;:0,&quot;_primary_term&quot;:1}%
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;정상적으로 document가 추가 되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl -XGET 'localhost:9200/json_file_to_es/_search?pretty'
+{
+  &quot;took&quot; : 0,
+  &quot;timed_out&quot; : false,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 5,
+    &quot;successful&quot; : 5,
+    &quot;skipped&quot; : 0,
+    &quot;failed&quot; : 0
+  },
+  &quot;hits&quot; : {
+    &quot;total&quot; : 1,
+    &quot;max_score&quot; : 1.0,
+    &quot;hits&quot; : [
+      {
+        &quot;_index&quot; : &quot;json_file_to_es&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;1&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;file_name&quot; : &quot;creat_index_add_document&quot;,
+          &quot;tag_name&quot; : &quot;test&quot;,
+          &quot;lines&quot; : 1
+        }
+      }
+    ]
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;정상적으로 document가 추가된 것을 확인하였으면 테스트 진행을 위하여 index를 삭제한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl -XDELETE 'localhost:9200/json_file_to_es?pretty'
+{
+  &quot;acknowledged&quot; : true
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 로그파일에 로그를 출력한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vim json_file_to_es.log
+{ &quot;file_name&quot; : &quot;json_file_to_es&quot;, &quot;tag_name&quot; : &quot;json_file_to_es&quot;, &quot;lines&quot; : 1 }
+{ &quot;file_name&quot; : &quot;json_file_to_es&quot;, &quot;tag_name&quot; : &quot;json_file_to_es&quot;, &quot;lines&quot; : 2 }
+{ &quot;file_name&quot; : &quot;json_file_to_es&quot;, &quot;tag_name&quot; : &quot;json_file_to_es&quot;, &quot;lines&quot; : 3 }
+{ &quot;file_name&quot; : &quot;json_file_to_es&quot;, &quot;tag_name&quot; : &quot;json_file_to_es&quot;, &quot;lines&quot; : 4 }
+{ &quot;file_name&quot; : &quot;json_file_to_es&quot;, &quot;tag_name&quot; : &quot;json_file_to_es&quot;, &quot;lines&quot; : 5 }
+{ &quot;file_name&quot; : &quot;json_file_to_es&quot;, &quot;tag_name&quot; : &quot;json_file_to_es&quot;, &quot;lines&quot; : 6 }
+{ &quot;file_name&quot; : &quot;json_file_to_es&quot;, &quot;tag_name&quot; : &quot;json_file_to_es&quot;, &quot;lines&quot; : 7 }
+{ &quot;file_name&quot; : &quot;json_file_to_es&quot;, &quot;tag_name&quot; : &quot;json_file_to_es&quot;, &quot;lines&quot; : 8 }
+{ &quot;file_name&quot; : &quot;json_file_to_es&quot;, &quot;tag_name&quot; : &quot;json_file_to_es&quot;, &quot;lines&quot; : 9 }
+{ &quot;file_name&quot; : &quot;json_file_to_es&quot;, &quot;tag_name&quot; : &quot;json_file_to_es&quot;, &quot;lines&quot; : 10 } 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;elasticsearch에 index에 정상적으로 insert 되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl -X GET 'localhost:9200/json_file_to_es/_search?filter_path=hits&amp;amp;pretty'
+{
+  &quot;hits&quot; : {
+    &quot;total&quot; : 10,
+    &quot;max_score&quot; : 1.0,
+    &quot;hits&quot; : [
+      {
+        &quot;_index&quot; : &quot;json_file_to_es&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;boabimwBFFtJqSTvn084&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;file_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;tag_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;lines&quot; : 2
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;json_file_to_es&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;cYabimwBFFtJqSTvn084&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;file_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;tag_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;lines&quot; : 5
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;json_file_to_es&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;dYabimwBFFtJqSTvn084&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;file_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;tag_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;lines&quot; : 9
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;json_file_to_es&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;doabimwBFFtJqSTvn084&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;file_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;tag_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;lines&quot; : 10
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;json_file_to_es&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;coabimwBFFtJqSTvn084&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;file_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;tag_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;lines&quot; : 6
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;json_file_to_es&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;dIabimwBFFtJqSTvn084&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;file_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;tag_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;lines&quot; : 8
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;json_file_to_es&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;bYabimwBFFtJqSTvn084&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;file_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;tag_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;lines&quot; : 1
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;json_file_to_es&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;b4abimwBFFtJqSTvn084&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;file_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;tag_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;lines&quot; : 3
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;json_file_to_es&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;cIabimwBFFtJqSTvn084&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;file_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;tag_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;lines&quot; : 4
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;json_file_to_es&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;c4abimwBFFtJqSTvn084&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;file_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;tag_name&quot; : &quot;json_file_to_es&quot;,
+          &quot;lines&quot; : 7
+        }
+      }
+    ]
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;테스트-결과-2&quot;&gt;테스트 결과&lt;/h2&gt;
+
+&lt;p&gt;테스트 결과는 다음과 같다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 파일에 로그를 라인 단위로 읽고 json으로 파싱한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;파싱한 로그는 Elasticsearch index에 Insert 된다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;테스트-케이스--로그-파일을-읽고-amazon-s3에-저장하기&quot;&gt;테스트 케이스 : 로그 파일을 읽고 Amazon S3에 저장하기&lt;/h1&gt;
+
+&lt;h2 id=&quot;테스트-목적-4&quot;&gt;테스트 목적&lt;/h2&gt;
+
+&lt;p&gt;td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;파일의 로그를 읽고 Amazon S3 저장하기&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;Amazone S3 저장하기 전, 미리 설정한 경로에 임시저장 여부&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Amazone S3 저장할 때, 미리 설정한 경로와 파일명 양식에 맞추어 저장여부&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;테스트-과정-3&quot;&gt;테스트 과정&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용으로 사용할 로그 파일 생성한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ touch source.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;파일이 정상적으로 생성 되었는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ls -l
+total 0
+-rw-r--r--  1 kevin  staff  0  8  9 15:00 source.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;td-agent 파일은 다음과 같이 수정한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vim /etc/td-agent/td-agent.conf
+&amp;lt;source&amp;gt;
+  @type tail
+  path /Users/kevin/dev/fluentd/test/file_to_s3/source/*
+  pos_file /Users/kevin/dev/fluentd/test/pos/file_to_s3.pos
+  tag file_to_s3.test
+  &amp;lt;parse&amp;gt;
+    @type none
+  &amp;lt;/parse&amp;gt;  
+  refresh_interval 1s
+&amp;lt;/source&amp;gt;
+&amp;lt;match file_to_s3.*&amp;gt;
+  @type s3
+  aws_key_id ### access key id를 입력
+  aws_sec_key ### access secret key를 입력
+  s3_bucket ### s3_bucket
+  s3_region ### s3_region
+  store_as text
+  path fluentd-raw-test
+  s3_object_key_format %{path}/${tag}_%{index}.log
+  &amp;lt;buffer tag&amp;gt;
+    @type file
+    path /Users/kevin/dev/fluentd/test/file_to_s3/match
+    flush_mode interval
+    flush_interval 50s
+  &amp;lt;/buffer&amp;gt;
+&amp;lt;/match&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;tail은 default plugin으로 별도의 plugin 설치가 필요하지 않다.&lt;/p&gt;
+
+    &lt;p&gt;s3는 테스트 환경(td-agent v3.1.1)에서는 별도의 plugin 설치가 필요하지 않다.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;source&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;path : 읽어오고자 하는 로그 파일의 경로를 지정하는 parameter로 wildcard(*)를 사용하여 디렉터리를 지정할 수도 있다. 편의상 파일명을 지정하지 않고 wildcard를 사용한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;pos_file : td-agent는 입력용 로그 파일에 접근하여 읽었던 위치를 파일로 저장한다. 그 파일의 경로를 지정하는 parameter이다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;parse : 로그 파일 포맷을 의미한다. none은 라인 단위 구문 분석을 의미한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;tag : 이벤트를 구분짓기 위한 tag name을 의미한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;refresh_interval : td-agent가 수집하려는 파일리스트의 갱신주기를 의미한다.&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;match&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;match tag명=&quot;&quot;&gt; : tag명에 대한 이벤트를 출력하겠다는 의미이다.
+            
+&lt;/match&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;aws_key_id : AWS access key id를 입력한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;aws_sec_key : AWS secret key를 입력한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;s3_bucket : bucket 이름을 지정한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;s3_region : region을 입력한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;store_as : 저장할 파일 포맷을 지정한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;path : bucket 하위의 저장되는 경로를 지정한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;s3_object_key_format : 파일의 저장하는 양식을 지정한다.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;buffer&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;buffer 예약어=&quot;&quot;&gt; : 예약어에 대한 필터를 지정한다.
+            
+&lt;/buffer&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;path : 임시 저장 파일의 경로를 지정한다.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;flush_mode : flush의 mode를 설정한다.(lazy, interval, immediate)&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;flush_interval : flush_mode가 interval일 경우에만 지정하며, flush의 주기를 설정한다.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;더 자세한 내용은 아래의 링크를 통하여 확인한다.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/input/tail&quot;&gt;Fluentd - Input Plugins : tail&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/output/s3&quot;&gt;Fluentd - Output Plugins : s3&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://github.com/fluent/fluent-plugin-s3&quot;&gt;fluent-plugin-s3 repository&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/configuration/buffer-section&quot;&gt;Fluentd - Configuration : Buffer Section&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;이제 td-agent를 실행한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력 로그 파일에 로그를 출력한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vim source.log
+     
+./source/source.log - Loop seq 1
+./source/source.log - Loop seq 2
+./source/source.log - Loop seq 3
+     
+... 중략 ...
+    
+./source/source.log - Loop seq 98
+./source/source.log - Loop seq 99
+./source/source.log - Loop seq 100
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;미리 설정한 임시 저장 경로에 파일이 생성되는지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ls -al
+total 32
+drwxr-xr-x  4 kevin  staff   128  8 12 21:49 .
+drwxr-xr-x  6 kevin  staff   192  8  9 17:04 ..
+-rw-r--r--  1 root   staff  8992  8 12 21:49 buffer.b58feaf4165048e338efa067db3a22de5.log
+-rw-r--r--  1 root   staff    79  8 12 21:49 buffer.b58feaf4165048e338efa067db3a22de5.log.meta
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;입력 파일에 로그 출력후 flush_interval 시간이 지나기 전에 확인해야한다.&lt;/p&gt;
+
+    &lt;p&gt;파일에 접근하여 내용을 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat *.log
+2019-08-12T21:49:23+09:00	file_to_s3.test	{&quot;message&quot;:&quot;./source/source.log - Loop seq 1&quot;}
+2019-08-12T21:49:23+09:00	file_to_s3.test	{&quot;message&quot;:&quot;./source/source.log - Loop seq 2&quot;}
+    
+    
+...중략...
+    
+2019-08-12T21:49:23+09:00	file_to_s3.test	{&quot;message&quot;:&quot;./source/source.log - Loop seq 98&quot;}
+2019-08-12T21:49:23+09:00	file_to_s3.test	{&quot;message&quot;:&quot;./source/source.log - Loop seq 99&quot;}
+2019-08-12T21:49:23+09:00	file_to_s3.test	{&quot;message&quot;:&quot;./source/source.log - Loop seq 100&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Amazon S3 페이지에서 파일이 설정한 경로와 파일명 양식으로 저장되었는지 확인한다.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;http://wiki.stunitas.com:8443/download/attachments/19498010/S3.png?version=1&amp;amp;modificationDate=1565705351000&amp;amp;api=v2&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;해당 파일을 다운로드하여 정상적으로 출력되었는 지 확인한다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat file_to_s3.test_0.txt
+2019-08-09T19:15:22+09:00	file_to_s3.test	{&quot;message&quot;:&quot;./source/source.log - Loop seq 1&quot;}
+2019-08-09T19:15:22+09:00	file_to_s3.test	{&quot;message&quot;:&quot;./source/source.log - Loop seq 2&quot;}
+    
+... 중략 ...
+    
+2019-08-09T19:15:22+09:00	file_to_s3.test	{&quot;message&quot;:&quot;./source/source.log - Loop seq 99&quot;}
+2019-08-09T19:15:22+09:00	file_to_s3.test	{&quot;message&quot;:&quot;./source/source.log - Loop seq 100&quot;}
+    
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;테스트-결과-3&quot;&gt;테스트 결과&lt;/h2&gt;
+
+&lt;p&gt;테스트 결과는 다음과 같다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;입력용 파일에 저장된 로그는 라인 단위로 읽어와 “로그를 수집한 날짜”, “이벤트Tag명”, “로그”를 파일로 출력하며 형식은 다음과 같다.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(로그를 수집한 날짜) (이벤트 Tag명) {&quot;message&quot;:&quot;(로그)&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Amazone S3에 저장하기 전, 미리 설정한 경로에 파일을 생성하여 임시 저장하게 할 수 있다. &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Amazone S3 저장시 미리 설정한 경로와 파일명 양식에 맞추어 저장할 수 있다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;참고자료&quot;&gt;참고자료&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/input&quot;&gt;Fluentd - Input Plugins&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/output&quot;&gt;Fluentd - Output Plugins&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><category term="Fluentd" /><summary type="html">이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 단순 동작 확인에 목적을 두고 있다.</summary></entry><entry><title type="html">Fluentd로 데이터 수집해 AWS Kinesis firehose로 보내기</title><link href="http://localhost:4000/fluentd/fluentd_to_aws_kinesis/" rel="alternate" type="text/html" title="Fluentd로 데이터 수집해 AWS Kinesis firehose로 보내기" /><published>2019-12-09T00:00:00+09:00</published><updated>2019-12-09T00:00:00+09:00</updated><id>http://localhost:4000/fluentd/fluentd_to_aws_kinesis</id><content type="html" xml:base="http://localhost:4000/fluentd/fluentd_to_aws_kinesis/">&lt;h1 id=&quot;목적&quot;&gt;목적&lt;/h1&gt;
 
 &lt;hr /&gt;
 
@@ -119,7 +3000,7 @@
 
 &lt;p&gt;테스트를 위해 먼저 AWS Kinesis Firehose를 생성한다. &lt;/p&gt;
 
-&lt;p&gt;생성시 위에 서술한 테스트 환경에 해당하는 스펙과 설정으로 생성한다. 생성 시 유의 사항은 다음과 같다. Index rotation 기능을 활성화한 이유는 커넥츠 15초 데이터 수집 플랫폼에서 해당 기능을 이용하기 때문이다.&lt;/p&gt;
+&lt;p&gt;생성시 위에 서술한 테스트 환경에 해당하는 스펙과 설정으로 생성한다. 생성 시 유의 사항은 다음과 같다.&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;AWS Kinesis Firehose의 설정 중 Index rotation의 시간을 Hour으로 설정한다.&lt;/li&gt;
@@ -541,143 +3422,4 @@ if __name__ == &quot;__main__&quot;:
 
 &lt;hr /&gt;
 
-&lt;p&gt;테스트 결과 Fluentd에서 Firehose로 데이터가 정상적으로 입력되며 Firehose에서 Elasticsearch, S3로 데이터가 정상적으로 입력됨을 확인할 수 있다.&lt;/p&gt;</content><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><category term="Fluentd, AWS_Kinesis_firehose, Elasticsearch, AWS" /><summary type="html">이 문서는 Fluentd에서 AWS Kinesis firehose로 데이터 보내는 테스트의 과정과 결과를 기록하기 위해 작성하였다.</summary></entry><entry><title type="html">first post</title><link href="http://localhost:4000/blog/test-post/" rel="alternate" type="text/html" title="first post" /><published>2019-12-09T00:00:00+09:00</published><updated>2019-12-09T14:20:00+09:00</updated><id>http://localhost:4000/blog/test-post</id><content type="html" xml:base="http://localhost:4000/blog/test-post/">&lt;p&gt;&amp;lt;!DOCTYPE html PUBLIC “-//W3C//DTD XHTML 1.0 Strict//EN” “http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd”&amp;gt;
-&lt;!-- Sun Dec 08 15:38:20 UTC 2019 --&gt;&lt;/p&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;combined.css&quot; /&gt;
-    &lt;script src=&quot;split/split.min.js&quot;&gt;&lt;/script&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;inline_styles.css&quot; /&gt;
-    &lt;style type=&quot;text/css&quot;&gt;
-        /* &lt;![CDATA[ */
-            
-        /* ]]&gt; */
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-&lt;div class=&quot;full-height-container&quot;&gt;
-&lt;div id=&quot;sidebar&quot; class=&quot;split&quot;&gt;
-&lt;div class=&quot;navgroup&quot; id=&quot;search&quot;&gt;
-&lt;form action=&quot;search.html&quot; class=&quot;aui&quot;&gt;
-&lt;input type=&quot;text&quot; name=&quot;q&quot; id=&quot;tipue_search_input&quot; class=&quot;medium-field text&quot; /&gt;
-&lt;input class=&quot;button submit&quot; type=&quot;submit&quot; value=&quot;Search&quot; /&gt;&lt;/form&gt;
-&lt;/div&gt;
-&lt;div class=&quot;navgroup&quot; id=&quot;navigation&quot;&gt;
-&lt;ul&gt;&lt;li&gt;&lt;span&gt;Fluentd 기초 사용법&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;content&quot; class=&quot;split&quot;&gt;
-&lt;div class=&quot;wiki-page&quot;&gt;
-&lt;div class=&quot;wiki-title&quot;&gt;
-&lt;h1 class=&quot;page-title-lvl-cover&quot; id=&quot;Bookmark1&quot;&gt;Fluentd 기초 사용법&lt;/h1&gt;
-&lt;/div&gt;
-&lt;div class=&quot;wiki-content&quot;&gt;
-&lt;p&gt;&lt;/p&gt;&lt;div class=&quot;table-wrap&quot;&gt;&lt;table data-layout=&quot;default&quot; class=&quot;confluenceTable&quot; style=&quot;font-size:1.0em&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;confluenceTd&quot; style=&quot;padding:0.5em&quot;&gt;&lt;!--inline_style_1--&gt;&lt;div class=&quot;toc-macro rbtoc1575819500472&quot;&gt;
-&lt;ul class=&quot;toc-indentation&quot;&gt;
-&lt;li&gt;&lt;a href=&quot;#Bookmark2&quot; title=&quot;목적&quot;&gt;목적&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#Bookmark3&quot; title=&quot;환경&quot;&gt;환경&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#Bookmark4&quot; title=&quot;사용법&quot;&gt;사용법&lt;/a&gt;
-&lt;ul class=&quot;toc-indentation&quot;&gt;
-&lt;li&gt;&lt;a href=&quot;#Bookmark5&quot; title=&quot;실행, 종료&quot;&gt;실행, 종료&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#Bookmark6&quot; title=&quot;로그 파일&quot;&gt;로그 파일&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#Bookmark7&quot; title=&quot;설정파일 경로를 변경하는 방법&quot;&gt;설정파일 경로를 변경하는 방법&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#Bookmark8&quot; title=&quot;참고자료&quot;&gt;참고자료&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;a name=&quot;Bookmark2&quot;&gt;&lt;/a&gt;&lt;h1 id=&quot;Bookmark2&quot;&gt;목적&lt;/h1&gt;&lt;p&gt;이 문서는 Fluentd(td-agent) 사용함에 있어 다음과 같은 사용법을 정리하기 위하여 작성 되었다.&lt;/p&gt;&lt;div class=&quot;table-wrap&quot;&gt;&lt;table data-layout=&quot;default&quot; class=&quot;confluenceTable&quot; style=&quot;font-size:1.0em&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;confluenceTd&quot; style=&quot;padding:0.5em&quot;&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;td-agent의 실행과 종료&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;td-agent 로그파일&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;td-agent 설정파일 경로를 변경하는 방법&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;a name=&quot;Bookmark3&quot;&gt;&lt;/a&gt;&lt;h1 id=&quot;Bookmark3&quot;&gt;환경&lt;/h1&gt;&lt;p&gt;다음과 같은 환경에서 Fluentd를 구동하였다.&lt;/p&gt;&lt;div class=&quot;table-wrap&quot;&gt;&lt;table data-layout=&quot;default&quot; class=&quot;confluenceTable&quot; style=&quot;font-size:1.0em&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;confluenceTd&quot; style=&quot;padding:0.5em&quot;&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;OS : macOS Mojave 10.14.5&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Fluentd : 1.0.2 (td-agent : 3.1.1.0)&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;a name=&quot;Bookmark4&quot;&gt;&lt;/a&gt;&lt;h1 id=&quot;Bookmark4&quot;&gt;사용법&lt;/h1&gt;&lt;a name=&quot;Bookmark5&quot;&gt;&lt;/a&gt;&lt;h2 id=&quot;Bookmark5&quot;&gt;실행, 종료&lt;/h2&gt;&lt;p&gt;td-agent의 실행은 다음과 같은 명령으로 한다.&lt;/p&gt;&lt;div class=&quot;table-wrap&quot;&gt;&lt;table data-layout=&quot;default&quot; class=&quot;confluenceTable&quot; style=&quot;font-size:1.0em&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;confluenceTd&quot; style=&quot;padding:0.5em&quot;&gt;&lt;div class=&quot;code panel pdl&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent pdl&quot;&gt;
-&lt;pre class=&quot;syntaxhighlighter-pre&quot; data-syntaxhighlighter-params=&quot;brush: java; gutter: false; theme: Confluence&quot; data-theme=&quot;Confluence&quot;&gt;$ sudo launchctl load /Library/LaunchDaemons/td-agent.plist&lt;/pre&gt;
-&lt;/div&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;p&gt;td-agent의 종료는 다음과 같은 명령으로 한다.&lt;/p&gt;&lt;div class=&quot;table-wrap&quot;&gt;&lt;table data-layout=&quot;default&quot; class=&quot;confluenceTable&quot; style=&quot;font-size:1.0em&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;confluenceTd&quot; style=&quot;padding:0.5em&quot;&gt;&lt;div class=&quot;code panel pdl&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent pdl&quot;&gt;
-&lt;pre class=&quot;syntaxhighlighter-pre&quot; data-syntaxhighlighter-params=&quot;brush: java; gutter: false; theme: Confluence&quot; data-theme=&quot;Confluence&quot;&gt;$ sudo launchctl unload /Library/LaunchDaemons/td-agent.plist&lt;/pre&gt;
-&lt;/div&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;p&gt;편의를 위하여 다음과 같이 디렉터리에 접근하여 실행, 종료 하기도 한다.&lt;/p&gt;&lt;div class=&quot;table-wrap&quot;&gt;&lt;table data-layout=&quot;default&quot; class=&quot;confluenceTable&quot; style=&quot;font-size:1.0em&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;confluenceTd&quot; style=&quot;padding:0.5em&quot;&gt;&lt;div class=&quot;code panel pdl&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent pdl&quot;&gt;
-&lt;pre class=&quot;syntaxhighlighter-pre&quot; data-syntaxhighlighter-params=&quot;brush: java; gutter: false; theme: Confluence&quot; data-theme=&quot;Confluence&quot;&gt;$ cd /Library/LaunchDaemons
-$ sudo launchctl load td-agent.plist
-$ sudo launchctl unload td-agent.plist&lt;/pre&gt;
-&lt;/div&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;a name=&quot;Bookmark6&quot;&gt;&lt;/a&gt;&lt;h2 id=&quot;Bookmark6&quot;&gt;로그 파일&lt;/h2&gt;&lt;p&gt;td-agent의 로그는 다음과 같은 경로의 파일에 저장된다.&lt;/p&gt;&lt;div class=&quot;table-wrap&quot;&gt;&lt;table data-layout=&quot;default&quot; class=&quot;confluenceTable&quot; style=&quot;font-size:1.0em&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;confluenceTd&quot; style=&quot;padding:0.5em&quot;&gt;&lt;div class=&quot;code panel pdl&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent pdl&quot;&gt;
-&lt;pre class=&quot;syntaxhighlighter-pre&quot; data-syntaxhighlighter-params=&quot;brush: java; gutter: false; theme: Confluence&quot; data-theme=&quot;Confluence&quot;&gt;/var/log/td-agent/td-agent.log&lt;/pre&gt;
-&lt;/div&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;p&gt;다음과 같이 td-agent 로그 파일을 테일링하여 td-agent의 동작을 확인하기도 한다.&lt;/p&gt;&lt;div class=&quot;table-wrap&quot;&gt;&lt;table data-layout=&quot;default&quot; class=&quot;confluenceTable&quot; style=&quot;font-size:1.0em&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;confluenceTd&quot; style=&quot;padding:0.5em&quot;&gt;&lt;div class=&quot;code panel pdl&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent pdl&quot;&gt;
-&lt;pre class=&quot;syntaxhighlighter-pre&quot; data-syntaxhighlighter-params=&quot;brush: java; gutter: false; theme: Confluence&quot; data-theme=&quot;Confluence&quot;&gt;$ tail -50f td-agent.log
-2019-09-18 14:47:33 +0900 [info]: #0 shutting down input plugin type=:tail plugin_id=&amp;quot;object:3fe4d84363e8&amp;quot;
-2019-09-18 14:47:33 +0900 [info]: #0 shutting down output plugin type=:file plugin_id=&amp;quot;object:3fe4d859ffcc&amp;quot;
-2019-09-18 14:47:33 +0900 [info]: Worker 0 finished with status 0
-2019-09-18 15:18:32 +0900 [info]: parsing config file is succeeded path=&amp;quot;/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf&amp;quot;
-2019-09-18 15:18:32 +0900 [info]: using configuration file: &amp;lt;ROOT&amp;gt;
-  &amp;lt;source&amp;gt;
-    @type tail
-    tag &amp;quot;file_path&amp;quot;
-    path &amp;quot;/Users/kevin/dev/fluentd/test/file_path/source/prefix*&amp;quot;
-    pos_file &amp;quot;/Users/kevin/dev/fluentd/test/file_path/pos/pos_file.pos&amp;quot;
-    refresh_interval 5s
-    read_from_head true
-    &amp;lt;parse&amp;gt;
-      @type &amp;quot;none&amp;quot;
-    &amp;lt;/parse&amp;gt;
-  &amp;lt;/source&amp;gt;
-  &amp;lt;match file_path*&amp;gt;
-    @type file
-    path &amp;quot;/Users/kevin/dev/fluentd/test/file_path/match/${tag}_output&amp;quot;
-    add_path_suffix true
-    path_suffix &amp;quot;.log&amp;quot;
-    append true
-    &amp;lt;buffer tag&amp;gt;
-      flush_mode interval
-      flush_interval 5s
-      path &amp;quot;/Users/kevin/dev/fluentd/test/file_path/match/${tag}_output&amp;quot;
-    &amp;lt;/buffer&amp;gt;
-    &amp;lt;format&amp;gt;
-      @type &amp;quot;out_file&amp;quot;
-      output_tag false
-      output_time true
-    &amp;lt;/format&amp;gt;
-  &amp;lt;/match&amp;gt;
-&amp;lt;/ROOT&amp;gt;
-2019-09-18 15:18:32 +0900 [info]: starting fluentd-1.0.2 pid=2152 ruby=&amp;quot;2.4.2&amp;quot;
-2019-09-18 15:18:32 +0900 [info]: spawn command to main:  cmdline=[&amp;quot;/opt/td-agent/embedded/bin/ruby&amp;quot;, &amp;quot;-Eascii-8bit:ascii-8bit&amp;quot;, &amp;quot;/opt/td-agent/usr/sbin/td-agent&amp;quot;, &amp;quot;--log&amp;quot;, &amp;quot;/var/log/td-agent/td-agent.log&amp;quot;, &amp;quot;--use-v1-config&amp;quot;, &amp;quot;--under-supervisor&amp;quot;]
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-elasticsearch' version '2.4.0'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-kafka' version '0.6.5'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-rewrite-tag-filter' version '2.0.1'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-s3' version '1.1.0'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-td' version '1.0.0'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-td-monitoring' version '0.2.3'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-webhdfs' version '1.2.2'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluentd' version '1.0.2'
-2019-09-18 15:18:32 +0900 [info]: adding match pattern=&amp;quot;file_path*&amp;quot; type=&amp;quot;file&amp;quot;
-2019-09-18 15:18:32 +0900 [info]: adding source type=&amp;quot;tail&amp;quot;
-2019-09-18 15:18:32 +0900 [info]: #0 starting fluentd worker pid=2159 ppid=2152 worker=0
-2019-09-18 15:18:32 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.txt
-2019-09-18 15:18:32 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.log
-2019-09-18 15:18:32 +0900 [info]: #0 fluentd worker is now running worker=0&lt;/pre&gt;
-&lt;/div&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;a name=&quot;Bookmark7&quot;&gt;&lt;/a&gt;&lt;h1 id=&quot;Bookmark7&quot;&gt;설정파일 경로를 변경하는 방법&lt;/h1&gt;&lt;p&gt;td-agent 설정파일의 기본 경로는 다음과 같다.&lt;/p&gt;&lt;div class=&quot;table-wrap&quot;&gt;&lt;table data-layout=&quot;default&quot; class=&quot;confluenceTable&quot; style=&quot;font-size:1.0em&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;confluenceTd&quot; style=&quot;padding:0.5em&quot;&gt;&lt;p&gt;/etc/td-agent/td-agent.conf&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;p&gt;설정파일의 경로를 변경하기 위해서는 다음 경로의 파일에 접근해야 한다.&lt;/p&gt;&lt;div class=&quot;table-wrap&quot;&gt;&lt;table data-layout=&quot;default&quot; class=&quot;confluenceTable&quot; style=&quot;font-size:1.0em&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;confluenceTd&quot; style=&quot;padding:0.5em&quot;&gt;&lt;p&gt;/opt/td-agent/usr/sbin/td-agent&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;div class=&quot;table-wrap&quot;&gt;&lt;table data-layout=&quot;default&quot; class=&quot;confluenceTable&quot; style=&quot;font-size:1.0em&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;confluenceTd&quot; style=&quot;padding:0.5em&quot;&gt;&lt;div class=&quot;code panel pdl&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent pdl&quot;&gt;
-&lt;pre class=&quot;syntaxhighlighter-pre&quot; data-syntaxhighlighter-params=&quot;brush: java; gutter: false; theme: Confluence&quot; data-theme=&quot;Confluence&quot;&gt;$&amp;nbsp;cat /opt/td-agent/usr/sbin/td-agent
-#!/opt/td-agent/embedded/bin/ruby
-ENV[&amp;quot;GEM_HOME&amp;quot;]=&amp;quot;/opt/td-agent/embedded/lib/ruby/gems/2.4.0/&amp;quot;
-ENV[&amp;quot;GEM_PATH&amp;quot;]=&amp;quot;/opt/td-agent/embedded/lib/ruby/gems/2.4.0/&amp;quot;
-ENV[&amp;quot;FLUENT_CONF&amp;quot;]=&amp;quot;/etc/td-agent/td-agent.conf&amp;quot;
-ENV[&amp;quot;FLUENT_PLUGIN&amp;quot;]=&amp;quot;/etc/td-agent/plugin&amp;quot;
-ENV[&amp;quot;FLUENT_SOCKET&amp;quot;]=&amp;quot;/var/run/td-agent/td-agent.sock&amp;quot;
-load &amp;quot;/opt/td-agent/embedded/bin/fluentd&amp;quot;&lt;/pre&gt;
-&lt;/div&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;p&gt;위의 파일 내용중&amp;nbsp;ENV[&amp;quot;FLUENT_CONF&amp;quot;]=&amp;quot;/etc/td-agent/td-agent.conf&amp;quot;을 원하는 설정파일의 경로를 변경해주면 된다.&lt;/p&gt;&lt;p&gt;다음은 변경한 예시이다.&lt;/p&gt;&lt;div class=&quot;table-wrap&quot;&gt;&lt;table data-layout=&quot;default&quot; class=&quot;confluenceTable&quot; style=&quot;font-size:1.0em&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;confluenceTd&quot; style=&quot;padding:0.5em&quot;&gt;&lt;div class=&quot;code panel pdl&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent pdl&quot;&gt;
-&lt;pre class=&quot;syntaxhighlighter-pre&quot; data-syntaxhighlighter-params=&quot;brush: java; gutter: false; theme: Confluence&quot; data-theme=&quot;Confluence&quot;&gt;$ vim /opt/td-agent/usr/sbin/td-agent
-#!/opt/td-agent/embedded/bin/ruby
-ENV[&amp;quot;GEM_HOME&amp;quot;]=&amp;quot;/opt/td-agent/embedded/lib/ruby/gems/2.4.0/&amp;quot;
-ENV[&amp;quot;GEM_PATH&amp;quot;]=&amp;quot;/opt/td-agent/embedded/lib/ruby/gems/2.4.0/&amp;quot;
-ENV[&amp;quot;FLUENT_CONF&amp;quot;]=&amp;quot;/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf&amp;quot;
-ENV[&amp;quot;FLUENT_PLUGIN&amp;quot;]=&amp;quot;/etc/td-agent/plugin&amp;quot;
-ENV[&amp;quot;FLUENT_SOCKET&amp;quot;]=&amp;quot;/var/run/td-agent/td-agent.sock&amp;quot;
-load &amp;quot;/opt/td-agent/embedded/bin/fluentd&amp;quot;&lt;/pre&gt;
-&lt;/div&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;a name=&quot;Bookmark8&quot;&gt;&lt;/a&gt;&lt;h1 id=&quot;Bookmark8&quot;&gt;&lt;br /&gt;참고자료&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/installation/install-by-dmg&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;https://docs.fluentd.org/installation/install-by-dmg&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://docs.fluentd.org/installation/post-installation-guide&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;https://docs.fluentd.org/installation/post-installation-guide&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br /&gt;&lt;/p&gt;&lt;p&gt;&lt;br /&gt;&lt;/p&gt;&lt;p&gt;&lt;br /&gt;&lt;/p&gt;&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;script&gt;
-Split(['#sidebar', '#content'], {
-    sizes: [15, 85],
-    minSize: 100
-});
-&lt;/script&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;</content><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><category term="Blog" /><summary type="html">first post excerpt</summary></entry></feed>
+&lt;p&gt;테스트 결과 Fluentd에서 Firehose로 데이터가 정상적으로 입력되며 Firehose에서 Elasticsearch, S3로 데이터가 정상적으로 입력됨을 확인할 수 있다.&lt;/p&gt;</content><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><category term="Fluentd" /><category term="AWS_Kinesis_firehose" /><category term="Elasticsearch" /><category term="AWS" /><summary type="html">이 문서는 Fluentd에서 AWS Kinesis firehose로 데이터 보내는 테스트의 과정과 결과를 기록하기 위해 작성하였다.</summary></entry></feed>

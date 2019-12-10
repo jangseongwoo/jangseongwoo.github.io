@@ -1,0 +1,1578 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[테스트] Fluentd(td-agent) output plugin 동작 확인 - Andro’s tech blog</title>
+<meta name="description" content="이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 단순 동작 확인에 목적을 두고 있다.">
+
+
+  <meta name="author" content="Andro">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Andro's tech blog">
+<meta property="og:title" content="[테스트] Fluentd(td-agent) output plugin 동작 확인">
+<meta property="og:url" content="http://localhost:4000/fluentd/fluentd_output_plugin_operation_check/">
+
+
+  <meta property="og:description" content="이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 단순 동작 확인에 목적을 두고 있다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-12-10T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/fluentd/fluentd_output_plugin_operation_check/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Andro",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Andro's tech blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Andro's tech blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/" >Quick-Start Guide</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="Andro" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Andro</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[테스트] Fluentd(td-agent) output plugin 동작 확인">
+    <meta itemprop="description" content="이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 단순 동작 확인에 목적을 두고 있다.">
+    <meta itemprop="datePublished" content="December 10, 2019">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">[테스트] Fluentd(td-agent) output plugin 동작 확인
+</h1>
+          
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  11 minute read
+
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h1 id="테스트-목적">테스트 목적</h1>
+
+<p>이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 단순 동작 확인에 목적을 두고 있다.</p>
+
+<ul>
+  <li>
+    <p>로그 파일을 읽고 표준 출력하기</p>
+  </li>
+  <li>
+    <p>로그 파일을 읽고 파일로 출력하기</p>
+  </li>
+  <li>
+    <p>로그 파일을 읽고 Elasticsearch에 Insert하기</p>
+  </li>
+  <li>
+    <p>로그 파일을 읽고 Amazone S3에 저장하기</p>
+  </li>
+</ul>
+
+<h1 id="테스트-환경">테스트 환경</h1>
+
+<p>다음과 같은 환경에서 테스트 하였다.</p>
+
+<ul>
+  <li>
+    <p>OS : macOS Mojave 10.14.5</p>
+  </li>
+  <li>
+    <p>Fluentd : 1.0.2 (td-agent : 3.1.1.0)</p>
+  </li>
+</ul>
+
+<h1 id="테스트에-필요한-사전정보">테스트에 필요한 사전정보</h1>
+
+<p>Fluentd 기초 사용법을 확인하여 td-agent 기초 동작을 확인하면 된다.</p>
+
+<hr />
+
+<h1 id="테스트-케이스--로그-파일을-읽고-표준-출력하기">테스트 케이스 : 로그 파일을 읽고 표준 출력하기</h1>
+
+<h2 id="테스트-목적-1">테스트 목적</h2>
+
+<p>td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.</p>
+
+<ul>
+  <li>파일의 로그를 읽고 표준 출력하기</li>
+</ul>
+
+<h2 id="테스트-과정">테스트 과정</h2>
+
+<ol>
+  <li>
+    <p>입력용 파일을 생성한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ touch file_to_stdout_test.log
+</code></pre></div>    </div>
+
+    <p>파일이 정상적으로 생성되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -l file_to_stdout_test.log
+drwxr-xr-x  4 kevin  staff  0  8  6 16:52 file_to_stdout_test.log 
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>td-agent.conf 파일을 다음과 같이 수정한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim /etc/td-agent/td-agent.conf
+&lt;source&gt;
+  @type tail 
+  path /Users/kevin/dev/fluentd/test/file_to_stdout/source/file_to_stdout_test.log 
+  pos_file /home/kevin/dev/fluentd/test/pos_file/file_to_stdout.pos 
+  tag file_to_stdout.test 
+  &lt;parse&gt;
+    @type none
+  &lt;/parse&gt;
+&lt;/source&gt;
+&lt;match file_to_stdout.*&gt;
+  @type stdout
+&lt;/match&gt; 
+</code></pre></div>    </div>
+
+    <p>tail, stdout은 default plugin으로 별도의 plugin 설치가 필요하지 않다.</p>
+
+    <ul>
+      <li>
+        <p>source</p>
+
+        <ul>
+          <li>
+            <p>path : 읽어오고자 하는 로그 파일의 경로를 지정하는 parameter로 wildcard(*)를 사용하여 디렉터리를 지정할 수도 있다.</p>
+          </li>
+          <li>
+            <p>pos_file : td-agent는 입력용 로그 파일에 접근하여 읽었던 위치를 파일로 저장한다. 그 파일의 경로를 지정하는 parameter이다.</p>
+          </li>
+          <li>
+            <p>parse : 로그 파일 포맷을 의미한다. none은 라인 단위 구문 분석을 의미한다.</p>
+          </li>
+          <li>
+            <p>tag : 이벤트를 구분짓기 위한 tag name을 의미한다.</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>match</p>
+
+        <ul>
+          <li>
+            <match tag명=""> : tag명에 대한 이벤트를 출력하겠다는 의미이다.
+            
+    
+      
+    
+</match>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>설정에 관하여 더 자세한 내용은 아래의 링크를 통하여 확인할 수 있다.</p>
+
+    <ul>
+      <li>
+        <p><a href="https://docs.fluentd.org/input/tail">Fluentd - Input Plugins : tail</a> </p>
+      </li>
+      <li>
+        <p><a href="https://docs.fluentd.org/output/stdout">Fluentd - Output Plugins : stdout</a></p>
+      </li>
+    </ul>
+
+    <p>이제 td-agent를 한다.</p>
+  </li>
+  <li>
+    <p>파일에 다음과 같은 로그를 저장하고 이를 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim file_to_stdout_test.log
+file_to_stdout_test 1
+file_to_stdout_test 2
+file_to_stdout_test 3
+file_to_stdout_test 4
+file_to_stdout_test 5
+</code></pre></div>    </div>
+
+    <p>td-agent의 표준 출력을 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -5f /var/log/td-agent/td-agent.log
+2019-08-06 20:30:20.191939654 +0900 file_to_stdout.test: {"message":"file_to_stdout_test 1"}
+2019-08-06 20:30:25.738923745 +0900 file_to_stdout.test: {"message":"file_to_stdout_test 2"}
+2019-08-06 20:30:31.243424029 +0900 file_to_stdout.test: {"message":"file_to_stdout_test 3"}
+2019-08-06 20:30:35.698592603 +0900 file_to_stdout.test: {"message":"file_to_stdout_test 4"}
+2019-08-06 20:30:40.123402487 +0900 file_to_stdout.test: {"message":"file_to_stdout_test 5"}
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="테스트-결과">테스트 결과</h2>
+
+<p>파일에 저장된 로그는 라인 단위로 읽어와 “로그를 수집한 날짜”, “이벤트 Tag명”, “로그”를 표준출력하며 형식은 다음과 같음을 알 수 있다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(로그를 수집한 날짜) (이벤트 Tag명): {"message":"(로그)"}
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="테스트-케이스--로그-파일을-읽고-파일로-출력하기">테스트 케이스 : 로그 파일을 읽고 파일로 출력하기</h1>
+
+<h2 id="테스트-목적-2">테스트 목적</h2>
+
+<p>td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.</p>
+
+<ul>
+  <li>디렉터리내 파일들의 로그를 읽고 파일 출력하기(출력 파일의 파일명 양식지정)</li>
+</ul>
+
+<h2 id="테스트-과정-1">테스트 과정</h2>
+
+<ol>
+  <li>
+    <p>입력용 파일을 생성한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch file_to_file_01.log file_to_file_02.log file_to_file_03.log 
+</code></pre></div>    </div>
+
+    <p>파일이 정상적으로 생성되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -l file_to_file_0*.log
+-rw-r--r--  1 kevin  staff  0  8 13 21:09 file_to_file_01.log
+-rw-r--r--  1 kevin  staff  0  8 13 21:09 file_to_file_02.log
+-rw-r--r--  1 kevin  staff  0  8 13 21:09 file_to_file_03.log
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>td-agent.conf 파일을 다음과 같이 수정한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim /etc/td-agent/td-agent.conf
+&lt;source&gt;
+  @type tail
+  path /Users/kevin/dev/fluentd/test/file_to_file/source/*
+  pos_file /Users/kevin/dev/fluentd/test/pos/file_to_file.pos
+  tag file_to_file.test
+  &lt;parse&gt;
+    @type none
+  &lt;/parse&gt;
+  refresh_interval 1s
+&lt;/source&gt;
+&lt;match file_to_file.*&gt;
+  @type file
+  path /Users/kevin/dev/fluentd/test/file_to_file/match/${tag}
+  &lt;buffer tag&gt;
+    flush_mode interval
+    flush_interval 10s
+  &lt;/buffer&gt;
+&lt;/match&gt;
+</code></pre></div>    </div>
+
+    <p>tail, file은 default plugin으로 별도의 plugin 설치가 필요하지 않다.</p>
+
+    <ul>
+      <li>
+        <p>source</p>
+
+        <ul>
+          <li>
+            <p>path : 읽어오고자 하는 로그 파일의 경로를 지정하는 parameter로 wildcard(*)를 사용하여 디렉터리를 지정할 수도 있다. 디렉터리를 지정하기 위하여 wildcard(*)로 지정한다.</p>
+          </li>
+          <li>
+            <p>pos_file : td-agent는 입력용 로그 파일에 접근하여 읽었던 위치를 파일로 저장한다. 그 파일의 경로를 지정하는 parameter이다.</p>
+          </li>
+          <li>
+            <p>parse : 로그 파일 포맷을 의미한다. none은 라인 단위 구문 분석을 의미한다.</p>
+          </li>
+          <li>
+            <p>tag : 이벤트를 구분짓기 위한 tag name을 의미한다.</p>
+          </li>
+          <li>
+            <p>refresh_interval : td-agent가 수집하려는 파일리스트의 갱신주기를 의미한다.</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>match</p>
+
+        <ul>
+          <li>
+            <match tag명=""> : tag명에 대한 이벤트를 출력하겠다는 의미이다.
+            
+</match>
+          </li>
+          <li>path : 저장할 경로를 지정한다. 예약어 tag를 사용한다.</li>
+        </ul>
+      </li>
+      <li>
+        <p>buffer</p>
+
+        <ul>
+          <li>
+            <buffer 예약어=""> : 예약어에 대한 필터를 지정한다.
+            
+</buffer>
+          </li>
+          <li>
+            <p>flush_mode : flush의 mode를 설정한다.(lazy, interval, immediate)</p>
+          </li>
+          <li>flush_interval : flush_mode가 interval일 경우에만 지정하며, flush의 주기를 설정한다.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <p>더 자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+
+    <ul>
+      <li>
+        <p><a href="https://docs.fluentd.org/input/tail">Fluentd - Input Plugins : tail</a> </p>
+      </li>
+      <li>
+        <p><a href="https://docs.fluentd.org/output/file">Fluentd - Output Plugins : file</a></p>
+      </li>
+      <li>
+        <p><a href="https://docs.fluentd.org/configuration/buffer-section">Fluentd - Configuration : Buffer Section</a></p>
+      </li>
+    </ul>
+
+    <p>이제 td-agent를 실행한다.</p>
+  </li>
+  <li>
+    <p>입력용 로그 파일 1개에 다음과 같이 로그를 출력한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim file_to_file_01.log
+file_to_file_01    line 1
+file_to_file_01    line 2
+file_to_file_01    line 3
+file_to_file_01    line 4
+file_to_file_01    line 5
+</code></pre></div>    </div>
+
+    <p>출력용 파일을 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat file_to_file.test_0.log
+2019-08-13T21:58:56+09:00	file_to_file.test	{"message":"file_to_file_01    line 1"}
+2019-08-13T21:58:56+09:00	file_to_file.test	{"message":"file_to_file_01    line 2"}
+2019-08-13T21:58:56+09:00	file_to_file.test	{"message":"file_to_file_01    line 3"}
+2019-08-13T21:58:56+09:00	file_to_file.test	{"message":"file_to_file_01    line 4"}
+2019-08-13T21:58:56+09:00	file_to_file.test	{"message":"file_to_file_01    line 5"}
+</code></pre></div>    </div>
+
+    <p>파일명은 ${tag]_${index}.log형태로 출력된다.</p>
+
+    <p>만약 ${tag}.log형태로 출력하려면 다음과 같이 match의 append 옵션을 수정하면 된다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;match 이벤트 tag명&gt;
+  ...중략...
+      
+  append true
+      
+  ...중략...
+&lt;match&gt;
+</code></pre></div>    </div>
+
+    <p>나머지 파일에도 로그를 출력한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim file_to_file_02.log
+file_to_file_02    line 1
+file_to_file_02    line 2
+file_to_file_02    line 3
+file_to_file_02    line 4
+file_to_file_02    line 5
+</code></pre></div>    </div>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim file_to_file_03.log
+file_to_file_03    line 1
+file_to_file_03    line 2
+file_to_file_03    line 3
+file_to_file_03    line 4
+file_to_file_03    line 5
+</code></pre></div>    </div>
+
+    <p>출력용 파일을 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat file_to_file.test_1.log
+2019-08-13T22:07:06+09:00	file_to_file.test	{"message":"file_to_file_02    line 1"}
+2019-08-13T22:07:06+09:00	file_to_file.test	{"message":"file_to_file_02    line 2"}
+2019-08-13T22:07:06+09:00	file_to_file.test	{"message":"file_to_file_02    line 3"}
+2019-08-13T22:07:06+09:00	file_to_file.test	{"message":"file_to_file_02    line 4"}
+2019-08-13T22:07:06+09:00	file_to_file.test	{"message":"file_to_file_02    line 5"}
+2019-08-13T22:07:17+09:00	file_to_file.test	{"message":"file_to_file_03    line 1"}
+2019-08-13T22:07:17+09:00	file_to_file.test	{"message":"file_to_file_03    line 2"}
+2019-08-13T22:07:17+09:00	file_to_file.test	{"message":"file_to_file_03    line 3"}
+2019-08-13T22:07:17+09:00	file_to_file.test	{"message":"file_to_file_03    line 4"}
+2019-08-13T22:07:17+09:00	file_to_file.test	{"message":"file_to_file_03    line 5"}
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="테스트-결과-1">테스트 결과</h2>
+
+<p>테스트 결과는 다음과 같다.</p>
+
+<ul>
+  <li>
+    <p>입력용 파일에 저장된 로그는 라인 단위로 읽어와 “로그를 수집한 날짜”, “이벤트 Tag명”, “로그”를 파일로 출력하며 형식은 다음과 같다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(로그를 수집한 날짜) (이벤트 Tag명) {"message":"(로그)"}
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>디렉터리내 여러개 파일의 로그가 파일로 출력된다.</p>
+  </li>
+  <li>
+    <p>파일명 양식을 설정하면 다음과 같은 형태로 출력된다.</p>
+
+    <p>파일명양식_{index}.log</p>
+  </li>
+</ul>
+
+<hr />
+
+<h1 id="테스트-케이스--로그-파일을-읽고-elasticsearch에-insert하기">테스트 케이스 : 로그 파일을 읽고 Elasticsearch에 Insert하기</h1>
+
+<h2 id="테스트-목적-3">테스트 목적</h2>
+
+<p>td-agent가 다음과 같은 의도대로 동작하는지 확인한다.</p>
+
+<ul>
+  <li>파일의 json 로그를 읽고 elasticsearch에 insert하기</li>
+</ul>
+
+<h2 id="테스트-환경-추가-구성">테스트 환경 추가 구성</h2>
+
+<p>이 테스트를 위하여 다음과 같은 아키텍쳐를 추가 구성해야한다.</p>
+
+<p>Elasticsearch 6.7.1</p>
+
+<h2 id="테스트-과정-2">테스트 과정</h2>
+
+<ol>
+  <li>
+    <p>입력용 파일을 생성한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch json_file_to_es_test.log
+</code></pre></div>    </div>
+
+    <p>파일이 정상적으로 생성되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -l
+total 0
+-rw-r--r--  1 kevin  staff  0  8 13 13:48 json_file_to_es.log
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>td-agent.conf 파일을 다음과 같이 수정한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim /etc/td-agent/td-agent.conf
+&lt;source&gt;
+  @type tail
+  path /Users/kevin/dev/fluentd/test/json_file_to_es/source/**
+  pos_file /Users/kevin/dev/fluentd/test/pos/json_file_to_es.pos
+  tag json_file_to_es.test
+  &lt;parse&gt;
+    @type json
+  &lt;/parse&gt;
+&lt;/source&gt;
+&lt;match json_file_to_es.**&gt;
+  @type elasticsearch
+  host localhost
+  port 9200
+  index_name json_file_to_es
+  type_name _doc
+&lt;/match&gt;
+</code></pre></div>    </div>
+
+    <p>tail은 default plugin으로 별도의 plugin설치가 필요하지 않다.</p>
+
+    <p>es는 td-agent v3.0.1 이상부터 default plugin이다. 따라서 테스트 환경(td-agent v3.1.1.0)에서는 별도의 plugin 설치가 필요하지 않다.</p>
+
+    <ul>
+      <li>
+        <p>source</p>
+
+        <ul>
+          <li>
+            <p>path : 읽어오고자 하는 로그 파일의 경로를 지정하는 parameter로 wildcard(*)를 사용하여 디렉터리를 지정할 수도 있다.</p>
+          </li>
+          <li>
+            <p>pos_file : td-agent는 입력용 로그 파일에 접근하여 읽었던 위치를 파일로 저장한다. 그 파일의 경로를 지정하는 parameter이다.</p>
+          </li>
+          <li>
+            <p>parse : 로그 파일 포맷을 의미한다. json은 라인 별로 json으로 파싱한다는 의미한다.</p>
+          </li>
+          <li>
+            <p>tag : 이벤트를 구분짓기 위한 tag name을 의미한다.</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>match</p>
+
+        <ul>
+          <li>
+            <match tag명=""> : tag명에 대한 이벤트를 출력하겠다는 의미이다.
+            
+</match>
+          </li>
+          <li>
+            <p>host : 로그를 출력할 elasticsearch의 host를 의미한다.</p>
+          </li>
+          <li>
+            <p>port: 로그를 출력할 elasticsearch의 port를 의미한다.</p>
+          </li>
+          <li>
+            <p>index_name : 로그를 출력할 elasticsearch index의 이름을 지정한다.</p>
+          </li>
+          <li>type_name : 로그를 출력할 elasticsearch index의 type을 의미하며 별도로 지정하지 않는다면 elasticsearch v6.7.1 기준 _doc type에 저장된다.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <p>더 자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+
+    <ul>
+      <li>
+        <p><a href="https://docs.fluentd.org/input/tail">Fluentd - Input Plugins : tail</a> </p>
+      </li>
+      <li>
+        <p><a href="https://docs.fluentd.org/output/elasticsearch">Fluentd - Output Plugins : Elasticsearch</a></p>
+      </li>
+      <li>
+        <p><a href="https://github.com/uken/fluent-plugin-elasticsearch">fluent-plugin-elasticsearch repository</a></p>
+      </li>
+    </ul>
+
+    <p>이제 td-agent를 실행한다.</p>
+  </li>
+  <li>
+    <p>elasticsearch는 local 환경에서 구동하기 때문에 다음의 설정을 확인한다.</p>
+
+    <p>port 확인(default : 9200)</p>
+
+    <p>elasticsearch를 실행한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./bin/elasticsearch
+</code></pre></div>    </div>
+
+    <p>elasticsearch가 구동되는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -X GET "localhost:9200"
+{
+  "name" : "kevin_es_node_name",
+  "cluster_name" : "kevin_es_cluster_name",
+  "cluster_uuid" : "G_WJqbiFS7Srdm4S1mUKWA",
+  "version" : {
+    "number" : "6.7.1",
+    "build_flavor" : "default",
+    "build_type" : "tar",
+    "build_hash" : "2f32220",
+    "build_date" : "2019-04-02T15:59:27.961366Z",
+    "build_snapshot" : false,
+    "lucene_version" : "7.7.0",
+    "minimum_wire_compatibility_version" : "5.6.0",
+    "minimum_index_compatibility_version" : "5.0.0"
+  },
+  "tagline" : "You Know, for Search"
+}
+</code></pre></div>    </div>
+
+    <p>elasticsearch에 index가 생성되고 document가 추가되는지 확인하기 위하여 document를 추가한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -H 'Content-Type: application/json' -XPOST localhost:9200/json_file_to_es/_doc/1/ -d '{"file_name" : "creat_index_add_document", "tag_name" : "test", "lines" : 1}'
+{"_index":"json_file_to_es","_type":"_doc","_id":"1","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1}%
+</code></pre></div>    </div>
+
+    <p>정상적으로 document가 추가 되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET 'localhost:9200/json_file_to_es/_search?pretty'
+{
+  "took" : 0,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 1,
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "json_file_to_es",
+        "_type" : "_doc",
+        "_id" : "1",
+        "_score" : 1.0,
+        "_source" : {
+          "file_name" : "creat_index_add_document",
+          "tag_name" : "test",
+          "lines" : 1
+        }
+      }
+    ]
+  }
+}
+</code></pre></div>    </div>
+
+    <p>정상적으로 document가 추가된 것을 확인하였으면 테스트 진행을 위하여 index를 삭제한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XDELETE 'localhost:9200/json_file_to_es?pretty'
+{
+  "acknowledged" : true
+}
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>입력용 로그파일에 로그를 출력한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim json_file_to_es.log
+{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 1 }
+{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 2 }
+{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 3 }
+{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 4 }
+{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 5 }
+{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 6 }
+{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 7 }
+{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 8 }
+{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 9 }
+{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 10 } 
+</code></pre></div>    </div>
+
+    <p>elasticsearch에 index에 정상적으로 insert 되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -X GET 'localhost:9200/json_file_to_es/_search?filter_path=hits&amp;pretty'
+{
+  "hits" : {
+    "total" : 10,
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "json_file_to_es",
+        "_type" : "_doc",
+        "_id" : "boabimwBFFtJqSTvn084",
+        "_score" : 1.0,
+        "_source" : {
+          "file_name" : "json_file_to_es",
+          "tag_name" : "json_file_to_es",
+          "lines" : 2
+        }
+      },
+      {
+        "_index" : "json_file_to_es",
+        "_type" : "_doc",
+        "_id" : "cYabimwBFFtJqSTvn084",
+        "_score" : 1.0,
+        "_source" : {
+          "file_name" : "json_file_to_es",
+          "tag_name" : "json_file_to_es",
+          "lines" : 5
+        }
+      },
+      {
+        "_index" : "json_file_to_es",
+        "_type" : "_doc",
+        "_id" : "dYabimwBFFtJqSTvn084",
+        "_score" : 1.0,
+        "_source" : {
+          "file_name" : "json_file_to_es",
+          "tag_name" : "json_file_to_es",
+          "lines" : 9
+        }
+      },
+      {
+        "_index" : "json_file_to_es",
+        "_type" : "_doc",
+        "_id" : "doabimwBFFtJqSTvn084",
+        "_score" : 1.0,
+        "_source" : {
+          "file_name" : "json_file_to_es",
+          "tag_name" : "json_file_to_es",
+          "lines" : 10
+        }
+      },
+      {
+        "_index" : "json_file_to_es",
+        "_type" : "_doc",
+        "_id" : "coabimwBFFtJqSTvn084",
+        "_score" : 1.0,
+        "_source" : {
+          "file_name" : "json_file_to_es",
+          "tag_name" : "json_file_to_es",
+          "lines" : 6
+        }
+      },
+      {
+        "_index" : "json_file_to_es",
+        "_type" : "_doc",
+        "_id" : "dIabimwBFFtJqSTvn084",
+        "_score" : 1.0,
+        "_source" : {
+          "file_name" : "json_file_to_es",
+          "tag_name" : "json_file_to_es",
+          "lines" : 8
+        }
+      },
+      {
+        "_index" : "json_file_to_es",
+        "_type" : "_doc",
+        "_id" : "bYabimwBFFtJqSTvn084",
+        "_score" : 1.0,
+        "_source" : {
+          "file_name" : "json_file_to_es",
+          "tag_name" : "json_file_to_es",
+          "lines" : 1
+        }
+      },
+      {
+        "_index" : "json_file_to_es",
+        "_type" : "_doc",
+        "_id" : "b4abimwBFFtJqSTvn084",
+        "_score" : 1.0,
+        "_source" : {
+          "file_name" : "json_file_to_es",
+          "tag_name" : "json_file_to_es",
+          "lines" : 3
+        }
+      },
+      {
+        "_index" : "json_file_to_es",
+        "_type" : "_doc",
+        "_id" : "cIabimwBFFtJqSTvn084",
+        "_score" : 1.0,
+        "_source" : {
+          "file_name" : "json_file_to_es",
+          "tag_name" : "json_file_to_es",
+          "lines" : 4
+        }
+      },
+      {
+        "_index" : "json_file_to_es",
+        "_type" : "_doc",
+        "_id" : "c4abimwBFFtJqSTvn084",
+        "_score" : 1.0,
+        "_source" : {
+          "file_name" : "json_file_to_es",
+          "tag_name" : "json_file_to_es",
+          "lines" : 7
+        }
+      }
+    ]
+  }
+}
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="테스트-결과-2">테스트 결과</h2>
+
+<p>테스트 결과는 다음과 같다.</p>
+
+<ul>
+  <li>
+    <p>입력용 파일에 로그를 라인 단위로 읽고 json으로 파싱한다.</p>
+  </li>
+  <li>
+    <p>파싱한 로그는 Elasticsearch index에 Insert 된다.</p>
+  </li>
+</ul>
+
+<hr />
+
+<h1 id="테스트-케이스--로그-파일을-읽고-amazon-s3에-저장하기">테스트 케이스 : 로그 파일을 읽고 Amazon S3에 저장하기</h1>
+
+<h2 id="테스트-목적-4">테스트 목적</h2>
+
+<p>td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.</p>
+
+<ul>
+  <li>
+    <p>파일의 로그를 읽고 Amazon S3 저장하기</p>
+
+    <ul>
+      <li>
+        <p>Amazone S3 저장하기 전, 미리 설정한 경로에 임시저장 여부</p>
+      </li>
+      <li>
+        <p>Amazone S3 저장할 때, 미리 설정한 경로와 파일명 양식에 맞추어 저장여부</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="테스트-과정-3">테스트 과정</h2>
+
+<ol>
+  <li>
+    <p>입력용으로 사용할 로그 파일 생성한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch source.log
+</code></pre></div>    </div>
+
+    <p>파일이 정상적으로 생성 되었는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -l
+total 0
+-rw-r--r--  1 kevin  staff  0  8  9 15:00 source.log
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>td-agent 파일은 다음과 같이 수정한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim /etc/td-agent/td-agent.conf
+&lt;source&gt;
+  @type tail
+  path /Users/kevin/dev/fluentd/test/file_to_s3/source/*
+  pos_file /Users/kevin/dev/fluentd/test/pos/file_to_s3.pos
+  tag file_to_s3.test
+  &lt;parse&gt;
+    @type none
+  &lt;/parse&gt;  
+  refresh_interval 1s
+&lt;/source&gt;
+&lt;match file_to_s3.*&gt;
+  @type s3
+  aws_key_id ### access key id를 입력
+  aws_sec_key ### access secret key를 입력
+  s3_bucket ### s3_bucket
+  s3_region ### s3_region
+  store_as text
+  path fluentd-raw-test
+  s3_object_key_format %{path}/${tag}_%{index}.log
+  &lt;buffer tag&gt;
+    @type file
+    path /Users/kevin/dev/fluentd/test/file_to_s3/match
+    flush_mode interval
+    flush_interval 50s
+  &lt;/buffer&gt;
+&lt;/match&gt;
+</code></pre></div>    </div>
+
+    <p>tail은 default plugin으로 별도의 plugin 설치가 필요하지 않다.</p>
+
+    <p>s3는 테스트 환경(td-agent v3.1.1)에서는 별도의 plugin 설치가 필요하지 않다.</p>
+
+    <ul>
+      <li>
+        <p>source</p>
+
+        <ul>
+          <li>
+            <p>path : 읽어오고자 하는 로그 파일의 경로를 지정하는 parameter로 wildcard(*)를 사용하여 디렉터리를 지정할 수도 있다. 편의상 파일명을 지정하지 않고 wildcard를 사용한다.</p>
+          </li>
+          <li>
+            <p>pos_file : td-agent는 입력용 로그 파일에 접근하여 읽었던 위치를 파일로 저장한다. 그 파일의 경로를 지정하는 parameter이다.</p>
+          </li>
+          <li>
+            <p>parse : 로그 파일 포맷을 의미한다. none은 라인 단위 구문 분석을 의미한다.</p>
+          </li>
+          <li>
+            <p>tag : 이벤트를 구분짓기 위한 tag name을 의미한다.</p>
+          </li>
+          <li>
+            <p>refresh_interval : td-agent가 수집하려는 파일리스트의 갱신주기를 의미한다.</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>match</p>
+
+        <ul>
+          <li>
+            <match tag명=""> : tag명에 대한 이벤트를 출력하겠다는 의미이다.
+            
+</match>
+          </li>
+          <li>
+            <p>aws_key_id : AWS access key id를 입력한다.</p>
+          </li>
+          <li>
+            <p>aws_sec_key : AWS secret key를 입력한다.</p>
+          </li>
+          <li>
+            <p>s3_bucket : bucket 이름을 지정한다.</p>
+          </li>
+          <li>
+            <p>s3_region : region을 입력한다.</p>
+          </li>
+          <li>
+            <p>store_as : 저장할 파일 포맷을 지정한다.</p>
+          </li>
+          <li>
+            <p>path : bucket 하위의 저장되는 경로를 지정한다.</p>
+          </li>
+          <li>s3_object_key_format : 파일의 저장하는 양식을 지정한다.</li>
+        </ul>
+      </li>
+      <li>
+        <p>buffer</p>
+
+        <ul>
+          <li>
+            <buffer 예약어=""> : 예약어에 대한 필터를 지정한다.
+            
+</buffer>
+          </li>
+          <li>
+            <p>path : 임시 저장 파일의 경로를 지정한다.</p>
+          </li>
+          <li>
+            <p>flush_mode : flush의 mode를 설정한다.(lazy, interval, immediate)</p>
+          </li>
+          <li>flush_interval : flush_mode가 interval일 경우에만 지정하며, flush의 주기를 설정한다.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <p>더 자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+
+    <ul>
+      <li>
+        <p><a href="https://docs.fluentd.org/input/tail">Fluentd - Input Plugins : tail</a></p>
+      </li>
+      <li>
+        <p><a href="https://docs.fluentd.org/output/s3">Fluentd - Output Plugins : s3</a></p>
+      </li>
+      <li>
+        <p><a href="https://github.com/fluent/fluent-plugin-s3">fluent-plugin-s3 repository</a></p>
+      </li>
+      <li>
+        <p><a href="https://docs.fluentd.org/configuration/buffer-section">Fluentd - Configuration : Buffer Section</a></p>
+      </li>
+    </ul>
+
+    <p>이제 td-agent를 실행한다.</p>
+  </li>
+  <li>
+    <p>입력 로그 파일에 로그를 출력한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim source.log
+     
+./source/source.log - Loop seq 1
+./source/source.log - Loop seq 2
+./source/source.log - Loop seq 3
+     
+... 중략 ...
+    
+./source/source.log - Loop seq 98
+./source/source.log - Loop seq 99
+./source/source.log - Loop seq 100
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>미리 설정한 임시 저장 경로에 파일이 생성되는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -al
+total 32
+drwxr-xr-x  4 kevin  staff   128  8 12 21:49 .
+drwxr-xr-x  6 kevin  staff   192  8  9 17:04 ..
+-rw-r--r--  1 root   staff  8992  8 12 21:49 buffer.b58feaf4165048e338efa067db3a22de5.log
+-rw-r--r--  1 root   staff    79  8 12 21:49 buffer.b58feaf4165048e338efa067db3a22de5.log.meta
+</code></pre></div>    </div>
+
+    <p>입력 파일에 로그 출력후 flush_interval 시간이 지나기 전에 확인해야한다.</p>
+
+    <p>파일에 접근하여 내용을 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat *.log
+2019-08-12T21:49:23+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 1"}
+2019-08-12T21:49:23+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 2"}
+    
+    
+...중략...
+    
+2019-08-12T21:49:23+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 98"}
+2019-08-12T21:49:23+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 99"}
+2019-08-12T21:49:23+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 100"}
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Amazon S3 페이지에서 파일이 설정한 경로와 파일명 양식으로 저장되었는지 확인한다.</p>
+
+    <p><img src="http://wiki.stunitas.com:8443/download/attachments/19498010/S3.png?version=1&amp;modificationDate=1565705351000&amp;api=v2" alt="" /></p>
+
+    <p>해당 파일을 다운로드하여 정상적으로 출력되었는 지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat file_to_s3.test_0.txt
+2019-08-09T19:15:22+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 1"}
+2019-08-09T19:15:22+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 2"}
+    
+... 중략 ...
+    
+2019-08-09T19:15:22+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 99"}
+2019-08-09T19:15:22+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 100"}
+    
+    
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="테스트-결과-3">테스트 결과</h2>
+
+<p>테스트 결과는 다음과 같다.</p>
+
+<ul>
+  <li>
+    <p>입력용 파일에 저장된 로그는 라인 단위로 읽어와 “로그를 수집한 날짜”, “이벤트Tag명”, “로그”를 파일로 출력하며 형식은 다음과 같다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(로그를 수집한 날짜) (이벤트 Tag명) {"message":"(로그)"}
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Amazone S3에 저장하기 전, 미리 설정한 경로에 파일을 생성하여 임시 저장하게 할 수 있다. </p>
+  </li>
+  <li>
+    <p>Amazone S3 저장시 미리 설정한 경로와 파일명 양식에 맞추어 저장할 수 있다.</p>
+  </li>
+</ul>
+
+<hr />
+
+<h1 id="참고자료">참고자료</h1>
+
+<ul>
+  <li>
+    <p><a href="https://docs.fluentd.org/input">Fluentd - Input Plugins</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.fluentd.org/output">Fluentd - Output Plugins</a></p>
+  </li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#fluentd" class="page__taxonomy-item" rel="tag">Fluentd</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#fluentd" class="page__taxonomy-item" rel="tag">Fluentd</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-12-10T00:00:00+09:00">December 10, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5B%ED%85%8C%EC%8A%A4%ED%8A%B8%5D+Fluentd%28td-agent%29+output+plugin+%EB%8F%99%EC%9E%91+%ED%99%95%EC%9D%B8%20http%3A%2F%2Flocalhost%3A4000%2Ffluentd%2Ffluentd_output_plugin_operation_check%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Ffluentd%2Ffluentd_output_plugin_operation_check%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Ffluentd%2Ffluentd_output_plugin_operation_check%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/fluentd/fluentd_install/" class="pagination--pager" title="Fluentd(td-agent) 설치 및 실행 방법
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/fluentd/fluentd_install/" rel="permalink">Fluentd(td-agent) 설치 및 실행 방법
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">아래 내용은 Mac에서 td-agent를 설치하고 기본 동작을 확인하는 것을 기준으로 작성된 내용이다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/fluentd/fluentd_filter_plugin_operation_check/" rel="permalink">[테스트] Fluentd(td-agent) output plugin 동작 확인
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  15 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 Filter plugin의 단순 동작 확인에 목적을 두고 있다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/fluentd/fluentd_file_path_test/" rel="permalink">[테스트] Fluentd - 입력 로그 파일 경로 설정에 관한 테스트
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Fluentd(이하 td-agent)로 로그 파일의 로그를 수집할 때 파일 경로에 관하여 다음과 같은 케이스가 존재한다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/fluentd/fluentd_basic/" rel="permalink">Fluentd 기초 사용법
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Fluentd(td-agent) 사용함에 있어 다음과 같은 사용법을 정리하기 위하여 작성 되었다.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Andro. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
