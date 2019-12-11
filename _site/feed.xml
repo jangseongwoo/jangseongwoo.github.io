@@ -1,4 +1,123 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-10T20:36:33+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andro’s tech blog</title><subtitle>Andro의 블로그입니다. 학습했던 것을 정리해 블로그에 올리고 있습니다.</subtitle><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><entry><title type="html">Fluentd 기초 사용법</title><link href="http://localhost:4000/fluentd/fluentd_basic/" rel="alternate" type="text/html" title="Fluentd 기초 사용법" /><published>2019-12-10T00:00:00+09:00</published><updated>2019-12-10T00:00:00+09:00</updated><id>http://localhost:4000/fluentd/fluentd_basic</id><content type="html" xml:base="http://localhost:4000/fluentd/fluentd_basic/">&lt;h1 id=&quot;목적&quot;&gt;목적&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-11T23:52:27+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andro’s tech blog</title><subtitle>Andro의 블로그입니다. 학습했던 것을 정리해 블로그에 올리고 있습니다.</subtitle><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><entry><title type="html">Slackbot API 중 Webhooks,Web API를 이용한 메시지 보내기</title><link href="http://localhost:4000/slack/slack_api_webhook/" rel="alternate" type="text/html" title="Slackbot API 중 Webhooks,Web API를 이용한 메시지 보내기" /><published>2019-12-11T00:00:00+09:00</published><updated>2019-12-11T00:00:00+09:00</updated><id>http://localhost:4000/slack/slack_api_webhook</id><content type="html" xml:base="http://localhost:4000/slack/slack_api_webhook/">&lt;h1 id=&quot;문서목적&quot;&gt;문서목적&lt;/h1&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;이 문서는 Slackbot에 대해 학습한 부분을 정리하기 위해 작성하였다.&lt;br /&gt;
+이 문서에서 Slackbot과 관련된 모든 내용을 정리하는 것은 아니며, 자세한 내용은 문서에 포함되어 있는 공식 사이트를 참고하도록 한다.&lt;/p&gt;
+
+&lt;h1 id=&quot;학습-범위&quot;&gt;학습 범위&lt;/h1&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;아래와 같은 내용 포함하고 있다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;특정 채널에 Slackbot으로 메시지 보내기&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;Webhooks API를 이용한 메시지 전달&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Web API를 이용한 메시지 전달&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;특정 채널에 예약 메시지 보내기&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;본 문서에 포함된 테스트는 워크 스페이스에 test-slackbot이라는 채널을 만들어 진행하였다. 아래 정리한 내용은 공식 사이트에 관련 내용이 문서로 있으며 문서 참고 시 필요한 내용을 위주로 기록하였다.&lt;/p&gt;
+
+&lt;h1 id=&quot;특정-채널에-slackbot으로-메시지-보내기&quot;&gt;특정 채널에 Slackbot으로 메시지 보내기&lt;/h1&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;slackbot-webhook-api를-통한-메시지-전달&quot;&gt;Slackbot webhook API를 통한 메시지 전달&lt;/h2&gt;
+
+&lt;p&gt;Slackbot webhook API로 특정 채널에 메시지를 보내기 위해서는 아래와 같은 작업을 진행해야 한다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;메시지를 보내고 싶은 슬랙 워크스페이스에 슬랙앱을 생성한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;슬랙앱에 Webhook을 추가한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;생성한 Webhook을 슬랙 워크스페이스의 특정 채널에 추가한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;위의 작업을 완료하면 설정한 채널에 Webhook API를 이용하여 메시지를 보낼 수 있다. 슬랙 앱 Webhook 콘솔에 보면 Sample curl request이 있는데 이것을 복사해 메시지가 정상적으로 보내지는 지 확인 할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;위에 기술된 작업 내용은 &lt;a href=&quot;https://api.slack.com/messaging/webhooks&quot;&gt;슬랙 공식 사이트 Webhook&lt;/a&gt; 문서를 참조해 진행하도록 한다.&lt;/p&gt;
+
+&lt;p&gt;이 문서의 내용 중 &lt;strong&gt;Getting started with Incoming Webhooks&lt;/strong&gt; 항목의 1~4번 내용을 따라하면 된다.&lt;/p&gt;
+
+&lt;p&gt;위의 링크 문서 내용 중 슬랙으로 Webhook API를 이용해 메시지 보내는 샘플 명령어와 결과는 아래와 같다. &lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl -X POST -H 'Content-type: application/json' --data '{&quot;text&quot;:&quot;Hello, World!&quot;}' https://hooks.slack.com/services/{token}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;결과는 다음과 같다. 슬랙 채널 #test-slackbot에 가면 결과를 바로 볼 수 있다. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/webhook1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;slackbot-web-api를-통한-메시지-전달&quot;&gt;Slackbot web API를 통한 메시지 전달&lt;/h2&gt;
+
+&lt;p&gt;Slackbot web API로 특정 채널에 메시지를 보내기 위해서는 아래와 같은 작업을 진행해야 한다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;메시지를 보내고 싶은 슬랙 워크스페이스에 슬랙앱을 생성한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;슬랙앱에 채널 메시지 읽기, 쓰기에 대한 권한을 부여한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;발급된 토큰을 가지고 Message payload를 만들어 전송한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;위의 작업을 통해 설정한 채널에 Web API를 이용하여 메시지를 보낼 수 있다. 위에 기술된 작업과 관련된 자세한 설명은  &lt;a href=&quot;https://api.slack.com/messaging/sending&quot;&gt;슬랙 공식 사이트 Web API&lt;/a&gt; 문서를 참조해 진행하도록 한다.&lt;/p&gt;
+
+&lt;p&gt;Web API, Webhook API 차이점은 web API가 더 많은 부분들을 커스터마이징해 메시지를 보낼 수 있다는 것이다. 기본적인 메시지 기능을 주로 쓴다고 하면 Webhook API를 이용하는 것이 편리하다.&lt;/p&gt;
+
+&lt;p&gt;아래의 명령어는 실제 메시지를 채널에 보낼 때 Slackbot의 이름과 채널을 변경할 수 있는데 권한과 다양한 옵션들을 통해 여러 가지 기능들을 수행할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;위의 링크 문서 내용 중 슬랙으로 Web API를 이용해 메시지 보내는 샘플 명령어와 결과는 아래와 같다. &lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl -X POST -d &quot;token={token}3&amp;amp;channel=#test-slackbot&amp;amp;text=“asdasd”&amp;amp;username=seongwoo&quot; https://slack.com/api/chat.postMessage
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;결과는 다음과 같다. 슬랙 채널 #test-slackbot에 가면 결과를 바로 볼 수 있다. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/webhook2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;특정-채널에slackbot으로-예약-메시지-보내기&quot;&gt;특정 채널에 Slackbot으로 예약 메시지 보내기&lt;/h1&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;특정 채널에 Slackbot으로 메시지를 보낼 수 있는 방법에 대한 구체적인 설명은  &lt;a href=&quot;https://api.slack.com/messaging/scheduling&quot;&gt;슬랙 공식 사이트 스케줄링 메시지 전송&lt;/a&gt; 문서를 참고하도록 한다.&lt;/p&gt;
+
+&lt;p&gt;메시지를 보낼 때 유의해야 되는 부분은 chat.scheduleMessage API의 필수 파라미터 중 “post_at” 필드는 Unix EPOCH timestamp이므로 메시지 예약하고자 하는 시간을 Unix EPOCH timestamp으로 변환해 값을 넣어야 한다는 것이다.&lt;/p&gt;
+
+&lt;p&gt;위의 링크 문서 내용 중 슬랙으로 예약된 메시지를 보내는 샘플 명령어와 결과는 아래와 같다. &lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ curl -X POST -H 'Authorization: Bearer {token}' \
+-H 'Content-type: application/json' \
+--data '{&quot;channel&quot;:&quot;#test-slackbot&quot;,&quot;text&quot;:&quot;I hope the tour went well, Mr. Wonka.&quot;, &quot;post_at&quot;:&quot;1571730289&quot;}' \
+https://slack.com/api/chat.scheduleMessage
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;결과는 다음과 같다. 슬랙 채널 #test-slackbot에서 예약된 시간에 결과를 볼 수 있다. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/webhook3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;</content><author><name>Andro</name><email>seongwoo.dev@gmail.com</email></author><category term="Slack_API" /><category term="Slack" /><summary type="html">이 문서는 Slackbot에 대해 학습한 부분을 정리하기 위해 작성하였다.</summary></entry><entry><title type="html">Fluentd 기초 사용법</title><link href="http://localhost:4000/fluentd/fluentd_basic/" rel="alternate" type="text/html" title="Fluentd 기초 사용법" /><published>2019-12-10T00:00:00+09:00</published><updated>2019-12-10T00:00:00+09:00</updated><id>http://localhost:4000/fluentd/fluentd_basic</id><content type="html" xml:base="http://localhost:4000/fluentd/fluentd_basic/">&lt;h1 id=&quot;목적&quot;&gt;목적&lt;/h1&gt;
 
 &lt;p&gt;이 문서는 Fluentd(td-agent) 사용함에 있어 다음과 같은 사용법을 정리하기 위하여 작성 되었다.&lt;/p&gt;
 

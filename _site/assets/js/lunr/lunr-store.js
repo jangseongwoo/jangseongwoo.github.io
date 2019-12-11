@@ -28,4 +28,9 @@ var store = [{
         "excerpt":"테스트 목적 이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 단순 동작 확인에 목적을 두고 있다. 로그 파일을 읽고 표준 출력하기 로그 파일을 읽고 파일로 출력하기 로그 파일을 읽고 Elasticsearch에 Insert하기 로그 파일을 읽고 Amazone S3에 저장하기 테스트 환경 다음과 같은 환경에서 테스트 하였다. OS : macOS Mojave...","categories": ["Fluentd"],
         "tags": ["Fluentd"],
         "url": "http://localhost:4000/fluentd/fluentd_output_plugin_operation_check/",
+        "teaser":"http://localhost:4000/assets/images/logo.png"},{
+        "title": "Slackbot API 중 Webhooks,Web API를 이용한 메시지 보내기",
+        "excerpt":"문서목적 이 문서는 Slackbot에 대해 학습한 부분을 정리하기 위해 작성하였다. 이 문서에서 Slackbot과 관련된 모든 내용을 정리하는 것은 아니며, 자세한 내용은 문서에 포함되어 있는 공식 사이트를 참고하도록 한다. 학습 범위 아래와 같은 내용 포함하고 있다. 특정 채널에 Slackbot으로 메시지 보내기 Webhooks API를 이용한 메시지 전달 Web API를 이용한 메시지 전달...","categories": ["Slack"],
+        "tags": ["Slack_API","Slack"],
+        "url": "http://localhost:4000/slack/slack_api_webhook/",
         "teaser":"http://localhost:4000/assets/images/logo.png"}]
