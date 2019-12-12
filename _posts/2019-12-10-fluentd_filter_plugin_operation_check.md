@@ -1,5 +1,5 @@
 ---
-title:  "[테스트] Fluentd(td-agent) output plugin 동작 확인"
+title:  "Fluentd(td-agent) Filter plugin"
 excerpt: "이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 Filter plugin의 단순 동작 확인에 목적을 두고 있다."
 
 categories:

@@ -1,5 +1,5 @@
 ---
-title:  "[테스트] Fluentd - 입력 로그 파일 경로 설정에 관한 테스트"
+title:  "Fluentd - 입력 로그 파일 경로 설정"
 excerpt: "Fluentd(이하 td-agent)로 로그 파일의 로그를 수집할 때 파일 경로에 관하여 다음과 같은 케이스가 존재한다."
 
 categories:
