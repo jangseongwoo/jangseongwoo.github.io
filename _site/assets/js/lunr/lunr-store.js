@@ -9,12 +9,12 @@ var store = [{
         "tags": ["Fluentd"],
         "url": "http://localhost:4000/fluentd/fluentd_basic/",
         "teaser":"http://localhost:4000/assets/images/logo.png"},{
-        "title": "[테스트] Fluentd - 입력 로그 파일 경로 설정에 관한 테스트",
+        "title": "Fluentd - 입력 로그 파일 경로 설정",
         "excerpt":"테스트 목적 Fluentd(이하 td-agent)로 로그 파일의 로그를 수집할 때 파일 경로에 관하여 다음과 같은 케이스가 존재한다. 파일 경로를 지정하는 경우 (예 : log/access.log) 디렉터리와 확장자만 지정하는 경우 (예 : log/*.log) 디렉터리와 파일명의 prefix만 지정하는 경우 (예: log/access*) 이 테스트는 위와 같은 케이스에 대하여 td-agent를 실행하고 로그 파일을 생성할 때 td-agent의...","categories": ["Fluentd"],
         "tags": ["Fluentd"],
         "url": "http://localhost:4000/fluentd/fluentd_file_path_test/",
         "teaser":"http://localhost:4000/assets/images/logo.png"},{
-        "title": "[테스트] Fluentd(td-agent) output plugin 동작 확인",
+        "title": "Fluentd(td-agent) Filter plugin",
         "excerpt":"테스트 목적 이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 Filter plugin의 단순 동작 확인에 목적을 두고 있다. 필드를 가공해야하는 경우 로그 값을 확인하여 필터링 하는 경우 로그를 파싱하여 저장하는 경우 테스트 환경 다음과 같은 환경에서 테스트 하였다. OS : masOS Mojave v10.14.6 Fluentd : 1.0.2 (td-agent :...","categories": ["Fluentd"],
         "tags": ["Fluentd"],
         "url": "http://localhost:4000/fluentd/fluentd_filter_plugin_operation_check/",
@@ -24,7 +24,7 @@ var store = [{
         "tags": ["Fluentd"],
         "url": "http://localhost:4000/fluentd/fluentd_install/",
         "teaser":"http://localhost:4000/assets/images/logo.png"},{
-        "title": "[테스트] Fluentd(td-agent) output plugin 동작 확인",
+        "title": "Fluentd(td-agent) output plugin",
         "excerpt":"테스트 목적 이 문서는 Fluentd의 학습 차원에서 다음과 같은 테스트 케이스 별 단순 동작 확인에 목적을 두고 있다. 로그 파일을 읽고 표준 출력하기 로그 파일을 읽고 파일로 출력하기 로그 파일을 읽고 Elasticsearch에 Insert하기 로그 파일을 읽고 Amazone S3에 저장하기 테스트 환경 다음과 같은 환경에서 테스트 하였다. OS : macOS Mojave...","categories": ["Fluentd"],
         "tags": ["Fluentd"],
         "url": "http://localhost:4000/fluentd/fluentd_output_plugin_operation_check/",
