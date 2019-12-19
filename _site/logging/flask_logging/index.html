@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Fluentd 기초 사용법 - Andro’s tech blog</title>
-<meta name="description" content="이 문서는 Fluentd(td-agent) 사용함에 있어 다음과 같은 사용법을 정리하기 위하여 작성 되었다.">
+<!-- begin _includes/seo.html --><title>Python logging을 활용해 Flask에서 logging하는 방법 - Andro’s tech blog</title>
+<meta name="description" content="Flask Logging 하는 방법">
 
 
   <meta name="author" content="Andro">
@@ -19,30 +19,30 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="Andro's tech blog">
-<meta property="og:title" content="Fluentd 기초 사용법">
-<meta property="og:url" content="http://localhost:4000/fluentd/fluentd_basic/">
+<meta property="og:title" content="Python logging을 활용해 Flask에서 logging하는 방법">
+<meta property="og:url" content="http://localhost:4000/logging/flask_logging/">
 
 
-  <meta property="og:description" content="이 문서는 Fluentd(td-agent) 사용함에 있어 다음과 같은 사용법을 정리하기 위하여 작성 되었다.">
-
-
-
-
-
-
-
-  <meta property="article:published_time" content="2019-12-10T00:00:00+09:00">
+  <meta property="og:description" content="Flask Logging 하는 방법">
 
 
 
 
 
-  
+
+
+  <meta property="article:published_time" content="2019-12-13T00:00:00+09:00">
+
+
+
+
 
   
 
+  
 
-<link rel="canonical" href="http://localhost:4000/fluentd/fluentd_basic/">
+
+<link rel="canonical" href="http://localhost:4000/logging/flask_logging/">
 
 
 
@@ -276,15 +276,15 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Fluentd 기초 사용법">
-    <meta itemprop="description" content="이 문서는 Fluentd(td-agent) 사용함에 있어 다음과 같은 사용법을 정리하기 위하여 작성 되었다.">
-    <meta itemprop="datePublished" content="December 10, 2019">
+    <meta itemprop="headline" content="Python logging을 활용해 Flask에서 logging하는 방법">
+    <meta itemprop="description" content="Flask Logging 하는 방법">
+    <meta itemprop="datePublished" content="December 13, 2019">
     
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Fluentd 기초 사용법
+          <h1 id="page-title" class="page__title" itemprop="headline">Python logging을 활용해 Flask에서 logging하는 방법
 </h1>
           
             <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
@@ -292,7 +292,7 @@
 
 
 
-  2 minute read
+  1 minute read
 
 </p>
           
@@ -301,162 +301,128 @@
 
       <section class="page__content" itemprop="text">
         
-        <h1 id="목적">목적</h1>
+        <h1 id="flask-logging-하는-방법">Flask Logging 하는 방법</h1>
 
-<p>이 문서는 Fluentd(td-agent) 사용함에 있어 다음과 같은 사용법을 정리하기 위하여 작성 되었다.</p>
-
-<ul>
-  <li>
-    <p>td-agent의 실행과 종료</p>
-  </li>
-  <li>
-    <p>td-agent 로그파일</p>
-  </li>
-  <li>
-    <p>td-agent 설정파일 경로를 변경하는 방법</p>
-  </li>
-</ul>
-
-<h1 id="환경">환경</h1>
-
-<p>다음과 같은 환경에서 Fluentd를 구동하였다.</p>
+<h2 id="python-logging-모듈을-사용하여-로그를-남겨봅시다">python logging 모듈을 사용하여 로그를 남겨봅시다.</h2>
 
 <ul>
   <li>
-    <p>OS : macOS Mojave 10.14.5</p>
+    <p>logging 모듈은 python에서 기본으로 제공하는 library입니다. 따라서 pip로 따로 설치할 필요가 없습니다.</p>
   </li>
   <li>
-    <p>Fluentd : 1.0.2 (td-agent : 3.1.1.0)</p>
+    <p>가장 기본적인 방식은 아래와 같습니다.</p>
   </li>
 </ul>
 
-<h1 id="사용법">사용법</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from flask import Flask
+import logging
+ 
+logging.basicConfig(filename = "logs/project.log", level = logging.DEBUG)
+application=Flask(__name__)
+ 
+@application.route("/")
+def hello():
+	return "hello"
+  
 
-<h2 id="실행-종료">실행, 종료</h2>
+if __name__=="__main__":
+    application.run(host="0.0.0.0", debug=True) 
 
-<p>td-agent의 실행은 다음과 같은 명령으로 한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo launchctl load /Library/LaunchDaemons/td-agent.plist
 </code></pre></div></div>
-
-<p>td-agent의 종료는 다음과 같은 명령으로 한다.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo launchctl unload /Library/LaunchDaemons/td-agent.plist
-</code></pre></div></div>
-
-<p>편의를 위하여 다음과 같이 디렉터리에 접근하여 실행, 종료 하기도 한다.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /Library/LaunchDaemons
-$ sudo launchctl load td-agent.plist
-$ sudo launchctl unload td-agent.plist
-</code></pre></div></div>
-
-<h2 id="로그-파일">로그 파일</h2>
-
-<p>td-agent의 로그는 다음과 같은 경로의 파일에 저장된다.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/log/td-agent/td-agent.log
-</code></pre></div></div>
-
-<p>다음과 같이 td-agent 로그 파일을 테일링하여 td-agent의 동작을 확인하기도 한다.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -50f td-agent.log
-2019-09-18 14:47:33 +0900 [info]: #0 shutting down input plugin type=:tail plugin_id="object:3fe4d84363e8"
-2019-09-18 14:47:33 +0900 [info]: #0 shutting down output plugin type=:file plugin_id="object:3fe4d859ffcc"
-2019-09-18 14:47:33 +0900 [info]: Worker 0 finished with status 0
-2019-09-18 15:18:32 +0900 [info]: parsing config file is succeeded path="/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf"
-2019-09-18 15:18:32 +0900 [info]: using configuration file: &lt;ROOT&gt;
-  &lt;source&gt;
-    @type tail
-    tag "file_path"
-    path "/Users/kevin/dev/fluentd/test/file_path/source/prefix*"
-    pos_file "/Users/kevin/dev/fluentd/test/file_path/pos/pos_file.pos"
-    refresh_interval 5s
-    read_from_head true
-    &lt;parse&gt;
-      @type "none"
-    &lt;/parse&gt;
-  &lt;/source&gt;
-  &lt;match file_path*&gt;
-    @type file
-    path "/Users/kevin/dev/fluentd/test/file_path/match/${tag}_output"
-    add_path_suffix true
-    path_suffix ".log"
-    append true
-    &lt;buffer tag&gt;
-      flush_mode interval
-      flush_interval 5s
-      path "/Users/kevin/dev/fluentd/test/file_path/match/${tag}_output"
-    &lt;/buffer&gt;
-    &lt;format&gt;
-      @type "out_file"
-      output_tag false
-      output_time true
-    &lt;/format&gt;
-  &lt;/match&gt;
-&lt;/ROOT&gt;
-2019-09-18 15:18:32 +0900 [info]: starting fluentd-1.0.2 pid=2152 ruby="2.4.2"
-2019-09-18 15:18:32 +0900 [info]: spawn command to main:  cmdline=["/opt/td-agent/embedded/bin/ruby", "-Eascii-8bit:ascii-8bit", "/opt/td-agent/usr/sbin/td-agent", "--log", "/var/log/td-agent/td-agent.log", "--use-v1-config", "--under-supervisor"]
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-elasticsearch' version '2.4.0'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-kafka' version '0.6.5'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-rewrite-tag-filter' version '2.0.1'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-s3' version '1.1.0'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-td' version '1.0.0'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-td-monitoring' version '0.2.3'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-webhdfs' version '1.2.2'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluentd' version '1.0.2'
-2019-09-18 15:18:32 +0900 [info]: adding match pattern="file_path*" type="file"
-2019-09-18 15:18:32 +0900 [info]: adding source type="tail"
-2019-09-18 15:18:32 +0900 [info]: #0 starting fluentd worker pid=2159 ppid=2152 worker=0
-2019-09-18 15:18:32 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.txt
-2019-09-18 15:18:32 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.log
-2019-09-18 15:18:32 +0900 [info]: #0 fluentd worker is now running worker=0
-</code></pre></div></div>
-
-<h1 id="설정파일-경로를-변경하는-방법">설정파일 경로를 변경하는 방법</h1>
-
-<p>td-agent 설정파일의 기본 경로는 다음과 같다.</p>
-
-<p>/etc/td-agent/td-agent.conf</p>
-
-<p>설정파일의 경로를 변경하기 위해서는 다음 경로의 파일에 접근해야 한다.</p>
-
-<p>/opt/td-agent/usr/sbin/td-agent</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /opt/td-agent/usr/sbin/td-agent
-#!/opt/td-agent/embedded/bin/ruby
-ENV["GEM_HOME"]="/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"
-ENV["GEM_PATH"]="/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"
-ENV["FLUENT_CONF"]="/etc/td-agent/td-agent.conf"
-ENV["FLUENT_PLUGIN"]="/etc/td-agent/plugin"
-ENV["FLUENT_SOCKET"]="/var/run/td-agent/td-agent.sock"
-load "/opt/td-agent/embedded/bin/fluentd"
-</code></pre></div></div>
-
-<p>위의 파일 내용중 ENV[“FLUENT_CONF”]=”/etc/td-agent/td-agent.conf”을 원하는 설정파일의 경로를 변경해주면 된다.</p>
-
-<p>다음은 변경한 예시이다.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim /opt/td-agent/usr/sbin/td-agent
-#!/opt/td-agent/embedded/bin/ruby
-ENV["GEM_HOME"]="/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"
-ENV["GEM_PATH"]="/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"
-ENV["FLUENT_CONF"]="/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf"
-ENV["FLUENT_PLUGIN"]="/etc/td-agent/plugin"
-ENV["FLUENT_SOCKET"]="/var/run/td-agent/td-agent.sock"
-load "/opt/td-agent/embedded/bin/fluentd"
-</code></pre></div></div>
-
-<h1 id="참고자료">참고자료</h1>
 
 <ul>
   <li>
-    <p><a href="https://docs.fluentd.org/installation/install-by-dmg">https://docs.fluentd.org/installation/install-by-dmg</a></p>
+    <p>basicConfig 안에 filename은 로그파일을 저장할 경로입니다.</p>
   </li>
   <li>
-    <p><a href="https://docs.fluentd.org/installation/post-installation-guide">https://docs.fluentd.org/installation/post-installation-guide</a></p>
+    <p>level은 CRITICAL, ERROR, WARNING, INFO, DEBUG 가 있습니다. </p>
+  </li>
+  <li>
+    <p>CRITICAL로 지정하면 CRITICAL한 상황일 때만 로그로 기록됩니다.</p>
+  </li>
+  <li>
+    <p>WARNING로 지정하면 CRITICAL, ERROR, WARNING한 상황일 때만 로그로 기록됩니다.</p>
+  </li>
+  <li>
+    <p>위 처럼 설정했을 때 아래와 같이 로그가 남게됩니다.</p>
   </li>
 </ul>
+
+<p>INFO:werkzeug:127.0.0.1 - - [14/Feb/2019 14:40:42] ”POST /{project}/api/v1.0/test HTTP/1.1” 200 -</p>
+
+<p>INFO:werkzeug: * Detected change in ’/{project_path}/app.py’, reloading</p>
+
+<p>INFO:werkzeug: * Restarting with stat</p>
+
+<p>WARNING:werkzeug: * Debugger is active!</p>
+
+<ul>
+  <li>위 로그는 내가 원하는 정보가 아닐 수 있습니다. 로그를 남길때 원하는 정보만 남기고 싶다면 커스텀하면 됩니다.</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import logging
+import datetime
+from pytz import timezone
+
+logging.basicConfig(filename = "logs/test.log", level = logging.DEBUG)
+
+def log(request, message):
+    log_date = get_log_date()
+    log_message = "{0}/{1}/{2}".format(log_date, str(request), message)
+    logging.info(log_message)
+def error_log(request, error_code, error_message):
+    log_date = get_log_date()
+    log_message = "{0}/{1}/{2}/{3}".format(log_date, str(request), error_code, error_message)
+    logging.info(log_message)
+
+def get_log_date():
+    dt = datetime.datetime.now(timezone("Asia/Seoul"))
+    log_date = dt.strftime("%Y%m%d_%H:%M:%S")
+    return log_date
+
+
+</code></pre></div></div>
+
+<ul>
+  <li>위에서 커스텀한 로그를 사용하면 됩니다.</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from flask import Flask
+import log
+
+
+logging.basicConfig(filename = "logs/test.log", level = logging.DEBUG)
+application=Flask(__name__)
+
+
+@application.route("/")
+def hello():
+	log.log(request, "hello route")
+	return "hello"
+  
+
+if __name__=="__main__":
+    application.run(host="0.0.0.0", debug=True) 
+</code></pre></div></div>
+
+<ul>
+  <li>실행을 하면 아래와 같이 원하는 정보를 남길 수 있습니다.</li>
+</ul>
+
+<p>INFO:werkzeug: * Restarting with stat</p>
+
+<p>WARNING:werkzeug: * Debugger is active!</p>
+
+<p>INFO:werkzeug: * Debugger PIN: 137-884-933</p>
+
+<p>INFO:root:20190218_16:08:42/&lt;Request ’<a href="http://localhost:5000/project/api/v1.0/test">http://localhost:5000/project/api/v1.0/test</a>‘ [POST]&gt;/</p>
+
+<p>INFO:root:20190218_16:08:51/&lt;Request ’<a href="http://localhost:5000/project/api/v1.0/test">http://localhost:5000/projectct/api/v1.0/test</a>‘ [POST]&gt;/500/(17, ’File exists’)
+`
+INFO:werkzeug:127.0.0.1 - - [18/Feb/2019 16:08:51] ”POST /project/api/v1.0/test HTTP/1.1” 500 -</p>
+
+<p>INFO:werkzeug: * Detected change in ’/Users/ns/project/project_ml/project.py’, reloading`</p>
 
         
       </section>
@@ -477,7 +443,15 @@ load "/opt/td-agent/embedded/bin/fluentd"
     
       
       
-      <a href="/tags/#fluentd" class="page__taxonomy-item" rel="tag">Fluentd</a>
+      <a href="/tags/#flask" class="page__taxonomy-item" rel="tag">Flask</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#logging" class="page__taxonomy-item" rel="tag">Logging</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#python" class="page__taxonomy-item" rel="tag">Python</a>
     
     </span>
   </p>
@@ -498,36 +472,36 @@ load "/opt/td-agent/embedded/bin/fluentd"
     
       
       
-      <a href="/categories/#fluentd" class="page__taxonomy-item" rel="tag">Fluentd</a>
+      <a href="/categories/#logging" class="page__taxonomy-item" rel="tag">Logging</a>
     
     </span>
   </p>
 
 
         
-          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-12-10T00:00:00+09:00">December 10, 2019</time></p>
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-12-13T00:00:00+09:00">December 13, 2019</time></p>
         
       </footer>
 
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=Fluentd+%EA%B8%B0%EC%B4%88+%EC%82%AC%EC%9A%A9%EB%B2%95%20http%3A%2F%2Flocalhost%3A4000%2Ffluentd%2Ffluentd_basic%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Python+logging%EC%9D%84+%ED%99%9C%EC%9A%A9%ED%95%B4+Flask%EC%97%90%EC%84%9C+logging%ED%95%98%EB%8A%94+%EB%B0%A9%EB%B2%95%20http%3A%2F%2Flocalhost%3A4000%2Flogging%2Fflask_logging%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Ffluentd%2Ffluentd_basic%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Flogging%2Fflask_logging%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Ffluentd%2Ffluentd_basic%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Flogging%2Fflask_logging%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/fluentd/fluentd_to_aws_kinesis/" class="pagination--pager" title="Fluentd로 데이터 수집해 AWS Kinesis firehose로 보내기
+      <a href="/django/django_make_board/" class="pagination--pager" title="Django framework를 이용해 게시판 만들고 AWS에 배포하기
 ">Previous</a>
     
     
-      <a href="/fluentd/fluentd_file_path_test/" class="pagination--pager" title="Fluentd - 입력 로그 파일 경로 설정
+      <a href="/monitoring/newrelic_basic/" class="pagination--pager" title="New Relic 교육 - 오버뷰
 ">Next</a>
     
   </nav>
@@ -671,7 +645,7 @@ load "/opt/td-agent/embedded/bin/fluentd"
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/logging/flask_logging/" rel="permalink">Python logging을 활용해 Flask에서 logging하는 방법
+        <a href="/django/django_make_board/" rel="permalink">Django framework를 이용해 게시판 만들고 AWS에 배포하기
 </a>
       
     </h2>
@@ -681,11 +655,11 @@ load "/opt/td-agent/embedded/bin/fluentd"
 
 
 
-  1 minute read
+  3 minute read
 
 </p>
     
-    <p class="archive__item-excerpt" itemprop="description">Flask Logging 하는 방법
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Django, python을 모르는 개발자를 대상으로 작성했으며 추후 다른 사람이 개발 할 경우 시행착오를 줄이는데 도움을 주기 위하여 작성하였다.
 </p>
   </article>
 </div>

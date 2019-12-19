@@ -33,4 +33,34 @@ var store = [{
         "excerpt":"문서목적 이 문서는 Slackbot에 대해 학습한 부분을 정리하기 위해 작성하였다. 이 문서에서 Slackbot과 관련된 모든 내용을 정리하는 것은 아니며, 자세한 내용은 문서에 포함되어 있는 공식 사이트를 참고하도록 한다. 학습 범위 아래와 같은 내용 포함하고 있다. 특정 채널에 Slackbot으로 메시지 보내기 Webhooks API를 이용한 메시지 전달 Web API를 이용한 메시지 전달...","categories": ["Slack"],
         "tags": ["Slack_API","Slack"],
         "url": "http://localhost:4000/slack/slack_api_webhook/",
+        "teaser":"http://localhost:4000/assets/images/logo.png"},{
+        "title": "Python logging module 기초적인 사용법에 대한 학습",
+        "excerpt":"목적 이 문서는 Python Logging 모듈에 대한 공식 문서 중 아래와 같은 내용을 정리하고 공유하기 위하여 작성했다. Logging HOWTO 튜토리얼 Logging facility for Python 로깅 모듈과 관련된 클래스, 메서드 등 설명이 나와있는 문서 Logging cook book 다양한 사례가 나와 있는 문서 실행 환경 다음과 같은 환경에서 학습을 진행했다. Python 3.7.5...","categories": ["Logging"],
+        "tags": ["Python","Logging"],
+        "url": "http://localhost:4000/logging/python_logging_basic/",
+        "teaser":"http://localhost:4000/assets/images/logo.png"},{
+        "title": "Django framework를 이용해 게시판 만들고 AWS에 배포하기",
+        "excerpt":"문서 목적 이 문서는 Django, python을 모르는 개발자를 대상으로 작성했으며 추후 다른 사람이 개발 할 경우 시행착오를 줄이는데 도움을 주기 위하여 작성하였다. 처음 배울 때 겪었던 시행착오와 찾아봤던 정보들, 사이트를 중심으로 기술하였다. 장고를 배우기 위해 토이프로젝트를 진행했으며 프로젝트의 목적은 Django와 AWS를 이용해 상용화 서버를 만드는 것이며 기능 구현 후 Test...","categories": ["Django"],
+        "tags": ["Python","Django","AWS","AWS_EC2"],
+        "url": "http://localhost:4000/django/django_make_board/",
+        "teaser":"http://localhost:4000/assets/images/logo.png"},{
+        "title": "Python logging을 활용해 Flask에서 logging하는 방법",
+        "excerpt":"Flask Logging 하는 방법 python logging 모듈을 사용하여 로그를 남겨봅시다. logging 모듈은 python에서 기본으로 제공하는 library입니다. 따라서 pip로 따로 설치할 필요가 없습니다. 가장 기본적인 방식은 아래와 같습니다. from flask import Flask import logging   logging.basicConfig(filename = \"logs/project.log\", level = logging.DEBUG) application=Flask(__name__)   @application.route(\"/\") def hello(): return \"hello\" if __name__==\"__main__\": application.run(host=\"0.0.0.0\",...","categories": ["Logging"],
+        "tags": ["Python","Logging","Flask"],
+        "url": "http://localhost:4000/logging/flask_logging/",
+        "teaser":"http://localhost:4000/assets/images/logo.png"},{
+        "title": "New Relic 교육 - 오버뷰",
+        "excerpt":"문서목적 New Relic에서 제공하는 기능에 대한 간단한 오버뷰 교육과 관련되어 사전 학습 내용과 교육 내용 일부를 개인적으로 정리한 문서이다. New Relic 전반적인 내용을 다루는 상세 문서가 아니므로 정확하고, 구체적인 내용은 New Relic 공식 사이트나 다른 자료를 확인하도록 한다. New Relic이 말하는 New Relic(오버뷰) New Relic에서 제공하는 다양한 제품을 통해 데이터 기반...","categories": ["Monitoring"],
+        "tags": ["Newrelic","Monitoring"],
+        "url": "http://localhost:4000/monitoring/newrelic_basic/",
+        "teaser":"http://localhost:4000/assets/images/logo.png"},{
+        "title": "Boto3를 이용한 Amazon S3, Kinesis Data Firehose 사용하기",
+        "excerpt":"테스트 목적 AWS를 Python 개발환경에서 사용하기 위한 방법중 하나는 Boto3 라이브러리를 이용하는 것이다. 이 테스트는 Boto3를 이용하여 아래의 서비스에 접근하여 사용하는 방법을 공유하기 위한 목적이 있다. Amazon S3 Kinesis Firehose 테스트 환경 테스트 환경은 다음과 같다. OS : macOS mojave 10.14.6 Python 버전 : 3.7.3 Boto3 버전 : 1.9.215 AWS CLI...","categories": ["Boto3"],
+        "tags": ["Boto3","AWS_S3","AWS_Kinesis_firehose"],
+        "url": "http://localhost:4000/boto3/boto3_basic/",
+        "teaser":"http://localhost:4000/assets/images/logo.png"},{
+        "title": "Docker 공식 사이트 Chapter 1~3 학습 내용 정리",
+        "excerpt":"목적 이 문서는 2019. 9. 2 기준 Docker 시작하기를 따라하며 개인적인 학습과 추후 이 내용을 리마인드 할 때 참고하려는 목적을 가지고 있다. 진행 Docker 시작하기는 6개의 part로 나뉘어져 있으며 다음과 같다. 이 중 part 3까지만 진행한다. 오리엔테이션 컨테이너 서비스 스웜 스택 앱 배포 스웜의 경우 쿠버네티스를 사용하는 트렌드 비춰 학습에서 제외한다. 스택, 6. 앱...","categories": ["Docker"],
+        "tags": ["Docker"],
+        "url": "http://localhost:4000/docker/docker_basic/",
         "teaser":"http://localhost:4000/assets/images/logo.png"}]

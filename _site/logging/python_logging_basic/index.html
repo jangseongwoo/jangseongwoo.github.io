@@ -1,0 +1,947 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Python logging module 기초적인 사용법에 대한 학습 - Andro’s tech blog</title>
+<meta name="description" content="이 문서는 Python Logging 모듈에 대한 공식 문서 중 아래와 같은 내용을 정리하고 공유하기 위하여 작성했다.">
+
+
+  <meta name="author" content="Andro">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="Andro's tech blog">
+<meta property="og:title" content="Python logging module 기초적인 사용법에 대한 학습">
+<meta property="og:url" content="http://localhost:4000/logging/python_logging_basic/">
+
+
+  <meta property="og:description" content="이 문서는 Python Logging 모듈에 대한 공식 문서 중 아래와 같은 내용을 정리하고 공유하기 위하여 작성했다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-12-12T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/logging/python_logging_basic/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Andro",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Andro's tech blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Andro's tech blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/" >Quick-Start Guide</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="Andro" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Andro</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Python logging module 기초적인 사용법에 대한 학습">
+    <meta itemprop="description" content="이 문서는 Python Logging 모듈에 대한 공식 문서 중 아래와 같은 내용을 정리하고 공유하기 위하여 작성했다.">
+    <meta itemprop="datePublished" content="December 12, 2019">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Python logging module 기초적인 사용법에 대한 학습
+</h1>
+          
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h1 id="목적">목적</h1>
+
+<hr />
+
+<p>이 문서는 Python Logging 모듈에 대한 공식 문서 중 아래와 같은 내용을 정리하고 공유하기 위하여 작성했다.</p>
+
+<ul>
+  <li>
+    <p><a href="https://docs.python.org/ko/3/howto/logging.html#logging-advanced-tutorial">Logging HOWTO</a></p>
+
+    <ul>
+      <li>튜토리얼</li>
+    </ul>
+  </li>
+  <li>
+    <p><a href="https://docs.python.org/ko/3/library/logging.html">Logging facility for Python</a></p>
+
+    <ul>
+      <li>로깅 모듈과 관련된 클래스, 메서드 등 설명이 나와있는 문서</li>
+    </ul>
+  </li>
+  <li>
+    <p><a href="https://docs.python.org/3/howto/logging-cookbook.html#logging-cookbook">Logging cook book</a></p>
+
+    <ul>
+      <li>다양한 사례가 나와 있는 문서</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="실행-환경">실행 환경</h1>
+
+<hr />
+
+<p>다음과 같은 환경에서 학습을 진행했다.</p>
+
+<ul>
+  <li>
+    <p>Python 3.7.5</p>
+  </li>
+  <li>
+    <p>MacOS Catalina</p>
+  </li>
+</ul>
+
+<h1 id="학습한-내용">학습한 내용</h1>
+
+<hr />
+
+<p>파이썬 로깅 모듈 중 다음과 같은 내용을 학습했다.</p>
+
+<ul>
+  <li>
+    <p>로거</p>
+  </li>
+  <li>
+    <p>핸들러</p>
+  </li>
+  <li>
+    <p>포메터</p>
+  </li>
+  <li>
+    <p>필터</p>
+  </li>
+  <li>
+    <p>멀티 핸들러 사용 (표준 출력, 파일 출력)</p>
+  </li>
+  <li>
+    <p>로그 로테이팅</p>
+  </li>
+</ul>
+
+<h1 id="logging-기초-자습서">Logging 기초 자습서</h1>
+
+<hr />
+
+<p><a href="https://docs.python.org/ko/3/howto/logging.html#basic-logging-tutorial">Logging 기초 자습서</a>는 로깅 모듈에 대한 기본적인 기능을 다루고 있다. 따라서 해당 문서를 참조해 기본 기능을 학습하도록 한다.</p>
+
+<p>해당 문서는 다음과 같은 내용을 포함하고 있다.</p>
+
+<ul>
+  <li>
+    <p>로깅을 사용할 때</p>
+  </li>
+  <li>
+    <p>로깅 사용의 간단한 예</p>
+  </li>
+  <li>
+    <p>파일에 로깅하기</p>
+  </li>
+  <li>
+    <p>여러 모듈에서의 로깅</p>
+  </li>
+  <li>
+    <p>변수 데이터 로깅</p>
+  </li>
+  <li>
+    <p>표시된 메시지의 포맷 변경</p>
+  </li>
+  <li>
+    <p>메시지에 날짜/시간 표시</p>
+  </li>
+</ul>
+
+<h1 id="필터">필터</h1>
+
+<hr />
+
+<p>필터에 관한 자세한 설명은 <a href="https://docs.python.org/ko/3/library/logging.html#filter-objects">Logging facility for Python - Filter 객체</a>를 참고한다.</p>
+
+<p>해당 문서로 필터에 관하여 이해되지 않는 부분이 있어 <a href="https://has3ong.tistory.com/382">https://has3ong.tistory.com/382</a>에서 발췌한 내용을 남겨두었다.</p>
+
+<p><strong>Filter</strong></p>
+
+<p>로그 레코드가 로거에서 핸들러로 넘겨질 때, 필터를 사용해서 로그 레코드에 추가적인 제어를 할 수 있다.</p>
+
+<p>필터를 적용하면 로그 처리 기준을 추가할 수 있다.</p>
+
+<p>예를 들어 필터를 추가하여 ERROR 메시지 중에서 특정 소스로부터 오는 메시지만 핸들러로 넘길 수 있습니다.</p>
+
+<p>로그 레코드는 로거에서 로그를 기록할 때 호출되는 인스턴스이다.</p>
+
+<p>자세한 내용은 <a href="https://docs.python.org/ko/3/library/logging.html#logrecord-objects">Logging facility for Python - LogRecord 객체</a> 참고 한다.</p>
+
+<p>아래는 <a href="https://docs.python.org/ko/3/howto/logging-cookbook.html#using-filters-to-impart-contextual-information">Logging cook book - 문맥 정보 전달에 필터 사용하기</a>를 따라하며 실습한 내용이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import logging
+from random import choice
+
+class ContextFilter(logging.Filter):
+    USERS = ['wind', 'harry', 'kevin']
+    IPS = ['123.231.231.123', '127.0.0.1', '192.168.0.1']
+
+    def filter(self, record):
+
+        record.ip = choice(ContextFilter.IPS)
+        record.user = choice(ContextFilter.USERS)
+        return True
+
+
+if __name__ == '__main__':
+    levels = (logging.DEBUG, logging.INFO, logging.WARNING,
+              logging.ERROR, logging.CRITICAL)
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)-15s %(name)-5s %(levelname)-8s IP: %(ip)-15s User: %(user)-8s %(message)s')
+    a1 = logging.getLogger('a.b.c')
+    a2 = logging.getLogger('d.e.f')
+
+    f = ContextFilter()
+
+    a1.addFilter(f)
+    a2.addFilter(f)
+
+    a1.debug('A debug message')
+    a1.info('An info message with %s', 'some parameters')
+
+    for x in range(10):
+        lvl = choice(levels)
+        lvlname = logging.getLevelName(lvl)
+        a2.log(lvl, 'A message at %s level with %d %s',
+               lvlname, 2, 'parameters')
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 main.py
+2019-10-18 11:54:03,246 a.b.c DEBUG    IP: 192.168.0.1     User: wind     A debug message
+2019-10-18 11:54:03,249 a.b.c INFO     IP: 123.231.231.123 User: harry    An info message with some parameters
+2019-10-18 11:54:03,249 d.e.f ERROR    IP: 192.168.0.1     User: kevin    A message at ERROR level with 2 parameters
+2019-10-18 11:54:03,250 d.e.f CRITICAL IP: 127.0.0.1       User: wind     A message at CRITICAL level with 2 parameters
+2019-10-18 11:54:03,250 d.e.f WARNING  IP: 127.0.0.1       User: wind     A message at WARNING level with 2 parameters
+2019-10-18 11:54:03,250 d.e.f DEBUG    IP: 192.168.0.1     User: kevin    A message at DEBUG level with 2 parameters
+2019-10-18 11:54:03,250 d.e.f INFO     IP: 123.231.231.123 User: kevin    A message at INFO level with 2 parameters
+2019-10-18 11:54:03,251 d.e.f INFO     IP: 127.0.0.1       User: wind     A message at INFO level with 2 parameters
+2019-10-18 11:54:03,251 d.e.f ERROR    IP: 127.0.0.1       User: harry    A message at ERROR level with 2 parameters
+2019-10-18 11:54:03,251 d.e.f ERROR    IP: 123.231.231.123 User: harry    A message at ERROR level with 2 parameters
+2019-10-18 11:54:03,252 d.e.f CRITICAL IP: 127.0.0.1       User: wind     A message at CRITICAL level with 2 parameters
+2019-10-18 11:54:03,252 d.e.f WARNING  IP: 192.168.0.1     User: harry    A message at WARNING level with 2 parameters
+</code></pre></div></div>
+
+<h1 id="멀티-핸들러-사용">멀티 핸들러 사용</h1>
+
+<hr />
+
+<p>로거 객체에 2종류의 핸들러(StreamHandler - 표준출력, FileHandler - 파일출력)를 추가하는 실습을 진행한다.</p>
+
+<p>다음은 실습한 내용의 Python 코드이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import logging
+
+seong_logger = logging.getLogger("seongwoo")
+
+seong_logger.setLevel(logging.DEBUG)
+
+seong_logger.addHandler(logging.FileHandler("log/seong.log"))
+seong_logger.addHandler(logging.StreamHandler())
+
+seong_logger.info("test")
+</code></pre></div></div>
+
+<p>표준 출력과 파일 출력(seong.log)이 되는 지 확인하였다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 main.py
+test
+
+$ cat seong.log
+test
+</code></pre></div></div>
+
+<h1 id="로그-로테이팅">로그 로테이팅</h1>
+
+<hr />
+
+<p><a href="https://docs.python.org/ko/3/library/logging.handlers.html">logging.handlers</a>를 보면 로그 로테이팅과 관련하여 다음과 같은 3가지 핸들러를 설명하고 있다.</p>
+
+<ul>
+  <li>
+    <p>BaseRotatingHandler</p>
+  </li>
+  <li>
+    <p>RotatingFileHandler</p>
+  </li>
+  <li>
+    <p>TimedRotatingFileHandler</p>
+  </li>
+</ul>
+
+<p>이 중에서 RotatingFileHandler와 TimedRotatingFileHandler에 대해 학습 및 실습한다.</p>
+
+<h2 id="rotatingfilehandler">RotatingFileHandler</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class logging.handlers.RotatingFileHandler(filename, mode='a', maxBytes=0, backupCount=0, encoding=None, delay=False)
+</code></pre></div></div>
+
+<p>RotatingFileHandler의 자세한 설명은 <a href="https://docs.python.org/ko/3/library/logging.handlers.html#rotatingfilehandler">logging.handler - rotatingfilehandler</a>를 참고한다. 문서 내용 중 기록될 필요가 있다고 생각되는 내용만 정리했다.</p>
+
+<ul>
+  <li>
+    <p>maxBytes 파라미터는 로그 파일 최대 허용 크기를 의미한다. maxBytes가 0일 경우 로그 로테이팅은 발생하지 않는다.</p>
+  </li>
+  <li>
+    <p>backupCount 파라미터는 롤오버(로그 로테이팅)가 발생하였을 때 백업 파일의 개수를 의미한다. <br />
+가장 최근에 발생한 로그는 filename 파일에 저장되어있으며 filename.1, filename.2 … 형식로 저장된다.</p>
+  </li>
+</ul>
+
+<p>다음은 <a href="https://docs.python.org/ko/3/howto/logging-cookbook.html#using-file-rotation">Logging cook book - 파일 회전하기</a>에 코드를  일부 수정하여 실습한 코드이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import glob
+import logging
+import logging.handlers
+
+LOG_FILENAME = 'logging_rotatingfile_example.out'
+
+my_logger = logging.getLogger("MyLogger")
+my_logger.setLevel(logging.DEBUG)
+
+handlers = logging.handlers.RotatingFileHandler(
+    LOG_FILENAME, maxBytes=200, backupCount=2)
+my_logger.addHandler(handlers)
+
+for i in range(20):
+    my_logger.debug('file log rotating test line %3d' % i)
+
+logfiles = glob.glob('%s*' % LOG_FILENAME)
+
+for filename in logfiles:
+    print(filename)
+</code></pre></div></div>
+
+<p>아래의 코드를 여러번 실행할 경우에는 mode 인자의 디폴트 값이 ‘a’이므로 기존에 생성 되었던 로그 파일들을 삭제하고 실행 해야 한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 file_rotating_test.py
+logging_rotatingfile_example.out.2
+logging_rotatingfile_example.out.1
+logging_rotatingfile_example.out
+</code></pre></div></div>
+
+<h2 id="timedrotatingfilehandler">TimedRotatingFileHandler</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class logging.handlers.TimedRotatingFileHandler(filename, when='h', interval=1, backupCount=0, encoding=None, delay=False, utc=False, atTime=None)
+</code></pre></div></div>
+
+<p>TimeRotatingHandler의 자세한 설명은 <a href="https://docs.python.org/ko/3/library/logging.handlers.html#timedrotatingfilehandler">logging.handler - timerotatinghandler</a>를 참고한다. 문서 내용 중 기록될 필요가 있다고 생각되는 내용만 정리했다.</p>
+
+<ul>
+  <li>1분마다 롤오버가 되도록 설정되어 있는데, 5분간 로그가 발생하지 않으면 롤오버가 발생하지 않는다.</li>
+</ul>
+
+<p>다음과 같은 시나리오를 바탕으로 TimeRotatingHandler를 테스트했다.</p>
+
+<ol>
+  <li>
+    <p>로거 인스턴스 생성후 시작시간 측정</p>
+  </li>
+  <li>
+    <p>시작 시간으로 부터 1초, 5초, 6초뒤 현재 시간 로그 출력</p>
+  </li>
+  <li>
+    <p>생성된 로그 파일명 출력</p>
+  </li>
+</ol>
+
+<p>위의 시나리오를 바탕으로 다음과 같은 파이썬 코드를 작성하였다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import glob
+import logging
+import logging.handlers
+from time import time, sleep
+
+LOG_FILENAME = 'timerotating_logtest.out'
+
+
+def main():
+    my_logger = logging.getLogger("MyLogger")
+    my_logger.setLevel(logging.DEBUG)
+
+    handlers = logging.handlers.TimedRotatingFileHandler(
+        LOG_FILENAME, when='s', interval=1, backupCount=10)
+    my_logger.addHandler(handlers)
+
+    start_time = time()
+
+    delay_timetable = [1., 5., 6.]
+
+    for delay_time in delay_timetable:
+        while True:
+            if start_time + delay_time &lt; time():
+                my_logger.debug('time log rotating test - %f' % time())
+                break
+
+    logfiles = glob.glob('%s*' % LOG_FILENAME)
+
+    for filename in logfiles:
+        print(filename)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 time_rotating_test.py
+timerotating_logtest.out.2019-10-17_20-05-52
+timerotating_logtest.out
+timerotating_logtest.out.2019-10-17_20-05-56
+timerotating_logtest.out.2019-10-17_20-05-51
+</code></pre></div></div>
+
+<p>실행 결과를 통해 시작 시간으로부터 1초, 5초, 6초뒤 로그가 출력된 것을 알 수 있으며 “timerotating_logtest.out.2019-10-17_20-05-51” 파일을 통하여 처음 로거를 생성하고 1초뒤 로그가 출력된 것을 알 수 있다.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#logging" class="page__taxonomy-item" rel="tag">Logging</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#python" class="page__taxonomy-item" rel="tag">Python</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#logging" class="page__taxonomy-item" rel="tag">Logging</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-12-12T00:00:00+09:00">December 12, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Python+logging+module+%EA%B8%B0%EC%B4%88%EC%A0%81%EC%9D%B8+%EC%82%AC%EC%9A%A9%EB%B2%95%EC%97%90+%EB%8C%80%ED%95%9C+%ED%95%99%EC%8A%B5%20http%3A%2F%2Flocalhost%3A4000%2Flogging%2Fpython_logging_basic%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Flogging%2Fpython_logging_basic%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Flogging%2Fpython_logging_basic%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/slack/slack_api_webhook/" class="pagination--pager" title="Slackbot API 중 Webhooks,Web API를 이용한 메시지 보내기
+">Previous</a>
+    
+    
+      <a href="/django/django_make_board/" class="pagination--pager" title="Django framework를 이용해 게시판 만들고 AWS에 배포하기
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/docker/docker_basic/" rel="permalink">Docker 공식 사이트 Chapter 1~3 학습 내용 정리
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 2019. 9. 2 기준 Docker 시작하기를 따라하며 개인적인 학습과 추후 이 내용을 리마인드 할 때 참고하려는 목적을 가지고 있다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/boto3/boto3_basic/" rel="permalink">Boto3를 이용한 Amazon S3, Kinesis Data Firehose 사용하기
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  12 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">AWS를 Python 개발환경에서 사용하기 위한 방법중 하나는 Boto3 라이브러리를 이용하는 것이다. 이 테스트는 Boto3를 이용하여 아래의 서비스에 접근하여 사용하는 방법을 공유하기 위한 목적이 있다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/monitoring/newrelic_basic/" rel="permalink">New Relic 교육 - 오버뷰
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">New Relic에서 제공하는 기능에 대한 간단한 오버뷰 교육과 관련되어 사전 학습 내용과 교육 내용 일부를 개인적으로 정리한 문서이다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/logging/flask_logging/" rel="permalink">Python logging을 활용해 Flask에서 logging하는 방법
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Flask Logging 하는 방법
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Andro. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
