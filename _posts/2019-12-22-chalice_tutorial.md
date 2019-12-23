@@ -795,7 +795,9 @@ Date: Tue, 17 Sep 2019 07:13:51 GMT
 
 수동으로 정책을 제공할 수 있다. 다음과 같은 경로에 정책에 관하여 정의해주면 된다. 이 부분은 추후 학습하여 수정할 예정이다.
 
+```
 <projectdir>/.chalice/policy.json
+```
 
 예) andro-chalice-test/policy-dev.json
 
