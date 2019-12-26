@@ -155,7 +155,7 @@ K8S 아키텍처
 *   Service- L4 Load balancer
     
 
-![](/assets/images/kube4.jpg)
+![](/assets/images/kube5.jpg)
 
 K8S ingress
 
@@ -166,7 +166,7 @@ K8S ingress
 *   Google Cloud의 Load balancer
     
 
-![](/assets/images/kube5.jpg)
+![](/assets/images/kube6.jpg)
 
 ### K8S Deployments& ReplicaSet
 
