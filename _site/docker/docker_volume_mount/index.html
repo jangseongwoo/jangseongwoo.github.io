@@ -1,0 +1,1222 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Docker 컨테이너간 볼륨 공유에 대한 학습 - kelpin’s blog</title>
+<meta name="description" content="다수의 Docker 컨테이너(이하 컨테이너)를 운영하다가 보면 컨테이너 간에 볼륨 공유가 필요할 상황이 있다.">
+
+
+  <meta name="author" content="kelpin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="kelpin's blog">
+<meta property="og:title" content="Docker 컨테이너간 볼륨 공유에 대한 학습">
+<meta property="og:url" content="http://localhost:4000/docker/docker_volume_mount/">
+
+
+  <meta property="og:description" content="다수의 Docker 컨테이너(이하 컨테이너)를 운영하다가 보면 컨테이너 간에 볼륨 공유가 필요할 상황이 있다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-12-19T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/docker/docker_volume_mount/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "kelpin",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="kelpin's blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          kelpin's blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="kelpin" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">kelpin</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Docker 컨테이너간 볼륨 공유에 대한 학습">
+    <meta itemprop="description" content="다수의 Docker 컨테이너(이하 컨테이너)를 운영하다가 보면 컨테이너 간에 볼륨 공유가 필요할 상황이 있다.">
+    <meta itemprop="datePublished" content="December 19, 2019">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Docker 컨테이너간 볼륨 공유에 대한 학습
+</h1>
+          
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 분 소요
+
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h1 id="문서-목적">문서 목적</h1>
+
+<p>다수의 Docker 컨테이너(이하 컨테이너)를 운영하다가 보면 컨테이너 간에 볼륨 공유가 필요할 상황이 있다.</p>
+
+<p>예를 들면 Apache 서버 컨테이너의 로그 파일을 Fluentd 컨테이너로 수집하는 경우이다.</p>
+
+<p>이 경우 Fluentd가 Apache 서버의 로그 파일을 접근하려면 다음과 같이 두 가지 방법이 존재한다.</p>
+
+<ul>
+  <li>
+    <p>Fluentd가 Apache 서버 컨테이너 볼륨에 접근하여 로그 파일을 수집하는 방법</p>
+  </li>
+  <li>
+    <p>호스트 OS에 공유 볼륨을 생성한 후 이 공간에 Apache 서버는 로그 파일을 저장하고 Fluentd는 로그 파일을 수집하는 방법</p>
+  </li>
+</ul>
+
+<p><a href="https://medium.com/dtevangelist/docker-%EA%B8%B0%EB%B3%B8-5-8-volume%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%9C-data-%EA%B4%80%EB%A6%AC-9a9ac1db978c">Volume을 활용한 Data 관리</a>를 살펴보면 후자의 방법이 합리적이라고 설명하고 있다.</p>
+
+<p>이 문서에서는 컨테이너간 볼륨 공유를 위하여 호스트 OS에 공유 볼륨을 생성하는 방법과 실제로 테스트하여 동작 확인 한다.</p>
+
+<h1 id="docker로-호스트-os에-볼륨을-공유하는-방법">Docker로 호스트 OS에 볼륨을 공유하는 방법</h1>
+
+<p><a href="https://docs.docker.com/storage/">Docker 공식 문서 - 저장 공간</a>을 살펴보면 mount 하는 방법에 따라 다음과 같이 구분한다. </p>
+
+<ul>
+  <li>
+    <p>Bind mount</p>
+  </li>
+  <li>
+    <p>Volume</p>
+  </li>
+  <li>
+    <p>Tmpfs</p>
+  </li>
+</ul>
+
+<p>이 문서에서는 휘발성 메모리에 mount 하는 tmpfs에 대하여는 다루지 않는다.</p>
+
+<h1 id="테스트-환경">테스트 환경</h1>
+
+<p>다음과 같은 환경에서 테스트 하였다.</p>
+
+<ul>
+  <li>
+    <p>OS </p>
+
+    <ul>
+      <li>버전 : masOS Mojave v10.14.6</li>
+    </ul>
+  </li>
+  <li>
+    <p>Docker</p>
+
+    <ul>
+      <li>
+        <p>버전 : 19.03.2</p>
+      </li>
+      <li>
+        <p>Python 이미지 - 버전 : 3.6</p>
+      </li>
+      <li>
+        <p>Fluentd 이미지 - 버전 : v1.0.2 </p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="사용되는-docker-cli-명령어">사용되는 Docker CLI 명령어</h1>
+
+<p>이 문서에서는 다음과 같은 Docker 명령어를 사용한다.</p>
+
+<ul>
+  <li>
+    <p>docker build</p>
+  </li>
+  <li>
+    <p>docker container</p>
+  </li>
+  <li>
+    <p>docker image</p>
+  </li>
+  <li>
+    <p>docker run</p>
+  </li>
+  <li>
+    <p>docker stop</p>
+  </li>
+  <li>
+    <p>docker rm</p>
+  </li>
+  <li>
+    <p>docker volume</p>
+  </li>
+</ul>
+
+<p>위의 나열된 명령어의 설명과 사용법은 다음의 링크를 참고하면 된다.</p>
+
+<ul>
+  <li>
+    <p><a href="https://docs.docker.com/engine/reference/commandline/build/">Docker 공식문서 - docker build</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.docker.com/engine/reference/commandline/container/">Docker 공식문서 - docker container</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.docker.com/engine/reference/commandline/image/">Docker 공식문서 - docker image</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.docker.com/engine/reference/commandline/run/">Docker 공식문서 - docker run</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.docker.com/engine/reference/commandline/stop/">Docker 공식문서 - docker stop</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.docker.com/engine/reference/commandline/stop/">Docker 공식문서 - docker rm</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.docker.com/engine/reference/commandline/stop/">Docker 공식문서 - docker volume</a></p>
+  </li>
+</ul>
+
+<p>mount와 관련하여 다음과 같은 주의사항이 있다.</p>
+
+<ul>
+  <li>
+    <p>-v 옵션: Host OS에서 해당 경로의 디렉터리가 존재하지 않으면 새롭게 생성한다.</p>
+  </li>
+  <li>
+    <p>-mount 옵션 : Host OS에서 해당 경로의 디렉터리가 존재하지 않으면 mount 자체가 안 된다.</p>
+  </li>
+</ul>
+
+<h1 id="테스트-사전-정보">테스트 사전 정보</h1>
+
+<h2 id="환경-변수-등록">환경 변수 등록</h2>
+
+<p>테스트 편의를 위하여 다음과 같이 환경 변수를 등록하여 사용한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ export DOCKER_SHARED_VOLUME_TEST_PATH=/Users/kevin/dev/docker/test/shared_volume
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ env
+... 중략 ...
+
+DOCKER_SHARED_VOLUME_TEST_PATH=/Users/kevin/dev/docker/test/shared_volume
+
+... 중략 ...
+</code></pre></div></div>
+
+<h2 id="로그생성-컨테이너-이미지-생성">“로그생성” 컨테이너 이미지 생성</h2>
+
+<p>이 테스트에서는 “로그생성” 컨테이너의 이미지 생성은 다음과 같이 한다.</p>
+
+<ol>
+  <li>
+    <p>다음과 같이 Dockerfile을 생성한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat image_of_make_logfile/Dockerfile
+FROM python:3.6
+RUN mkdir -p /app
+RUN mkdir -p /app/input
+WORKDIR /app
+COPY . /app
+ENV NAME Make_Log_File
+CMD ["python", "make_log.py", "5", "60", "/app/input/"]
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>다음과 같은 Python 코드를 작성한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### image_of_make_logfile/make_log.py
+    
+import random
+import sys
+import datetime
+import time
+    
+    
+def main():
+    sys_argv = sys.argv
+    batch_count = 5
+    make_log_running_time = 60
+    log_file_dir_path = "./"
+    
+    if len(sys_argv) &gt; 3:
+        batch_count = int(sys_argv[1])
+        make_log_running_time = int(sys_argv[2])
+        log_file_dir_path = sys_argv[3]
+    
+    choice_list = ["c++", "python", "java",
+                   "javascript", "kotlin", "scala", "ruby"]
+    
+    now_date = datetime.datetime.today()
+    filename = "".join([log_file_dir_path, str(now_date.date()), ".log"])
+    
+    for batch_no in range(batch_count):
+        with open(filename, "a") as file_object:
+            for i in range(make_log_running_time):
+                time.sleep(0.999999)
+                created_at = time.strftime("%Y/%m/%dT%H:%M:%S")
+                log_message = "{}-{}    {}    {}\n".format(
+                    batch_no, i, created_at, random.choice(choice_list))
+                file_object.write(log_message)
+    print("make log end!")
+    
+    
+if __name__ == "__main__":
+    main()
+    
+    
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>다음과 같이 Docker 이미지를 생성한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd image_of_make_logfile
+$ docker build --tag=make_logfile_image .
+Sending build context to Docker daemon  11.26kB
+Step 1/7 : FROM python:3.6
+ ---&gt; 1c515a624542
+Step 2/7 : RUN mkdir -p /app
+ ---&gt; Running in a993e327f25c
+Removing intermediate container a993e327f25c
+ ---&gt; b4b52d6451f8
+Step 3/7 : RUN mkdir -p /app/input
+ ---&gt; Running in a944e3182d51
+Removing intermediate container a944e3182d51
+ ---&gt; 20d3277a9ee7
+Step 4/7 : WORKDIR /app
+ ---&gt; Running in 09577255b80a
+Removing intermediate container 09577255b80a
+ ---&gt; 2d6f8cbc1cde
+Step 5/7 : COPY . /app
+ ---&gt; dcbd7f937bad
+Step 6/7 : ENV NAME Make_Log_File
+ ---&gt; Running in b41268eb0611
+Removing intermediate container b41268eb0611
+ ---&gt; 1c2d3febff85
+Step 7/7 : CMD ["python", "make_log.py", "5", "60", "/app/input/"]
+ ---&gt; Running in 630ce115c0e4
+Removing intermediate container 630ce115c0e4
+ ---&gt; 5a345b58606c
+Successfully built 5a345b58606c
+Successfully tagged make_logfile_image:latest
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="로그수집-컨테이너-설정파일">“로그수집” 컨테이너 설정파일</h2>
+
+<p>Fluentd 이미지를 사용할 예정이며 td-agent 설정 파일은 다음과 같다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat fluentd/td_agent.conf
+&lt;source&gt;
+  @type tail
+  tag docker_log_collect
+  path /input/*
+  &lt;parse&gt;
+    @type none
+  &lt;/parse&gt;
+  refresh_interval 5s
+  read_from_head true
+&lt;/source&gt;
+
+&lt;match docker_log_collect*&gt;
+  @type file
+  path /output/${tag}_output
+  add_path_suffix true
+  path_suffix ".log"
+  append true
+  &lt;buffer tag&gt;
+    flush_mode interval
+    flush_interval 3s
+  &lt;/buffer&gt;
+  &lt;format&gt;
+    @type out_file
+    output_tag false
+    output_time true
+  &lt;/format&gt;
+&lt;/match&gt;
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="bind-mount">Bind mount</h1>
+
+<p>Bind mount는 Host OS에 종속적이다.</p>
+
+<p>컨테이너를 실행하면 –mount 혹은 -v 옵션에서 Host OS 로컬 경로와 컨테이너 경로를 mount만 하면 사용할 수 있다.</p>
+
+<p>만약 컨테이너와 Bind mount된 Storage에 파일이 저장된다면 Host OS에서도 확인할 수도 있다.</p>
+
+<p>더 자세한 내용은 다음의 링크를 참고하면 된다.</p>
+
+<ul>
+  <li><a href="https://docs.docker.com/storage/bind-mounts/">Docker 공식 문서 - 저장 공간 / Bind mounts</a></li>
+</ul>
+
+<h2 id="테스트">테스트</h2>
+
+<p>다음과 같은 시나리오를 바탕으로 테스트를 할 예정이다.</p>
+
+<ol>
+  <li>
+    <p>“로그생성” 컨테이너를 구성하고 실행한다.</p>
+  </li>
+  <li>
+    <p>“로그수집” 컨테이너를 구성하고 실행한다.</p>
+  </li>
+  <li>
+    <p>Host OS 상에서 입력용 로그 파일과 출력용 로그 파일을 비교한다.</p>
+  </li>
+</ol>
+
+<h3 id="1-로그-생성-컨테이너-실행">1. 로그 생성 컨테이너 실행</h3>
+
+<p>테스트 사전 정보에서 생성한 Docker 이미지를 바탕으로 컨테이너를 실행한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -d --name=make_logfile_container --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/host_storage/input,target=/app/input make_logfile_image:latest
+bd31f0fb4e4a03eb16375e5ff6fcd1e95998dec26802cb457f56f5ff31572b46
+</code></pre></div></div>
+
+<p>컨테이너의 상태를 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker container ps --all
+CONTAINER ID        IMAGE                       COMMAND                  CREATED              STATUS              PORTS               NAMES
+bd31f0fb4e4a        make_logfile_image:latest   "python make_log.py …"   About a minute ago   Up About a minute                       make_logfile_container
+
+</code></pre></div></div>
+
+<p>컨테이너의 Mount상태를 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker inspect make_logfile_container
+[
+    ... 중략 ...
+    "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/Users/kevin/dev/docker/test/shared_volume/host_storage/input",
+                "Destination": "/app/input",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+]
+
+</code></pre></div></div>
+
+<p>입력용 로그 파일에 로그가 저장되는지 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/input/2019-09-10.log
+0-0    2019/09/10T05:49:19    scala
+0-1    2019/09/10T05:49:20    ruby
+0-2    2019/09/10T05:49:21    c++
+0-3    2019/09/10T05:49:22    c++
+0-4    2019/09/10T05:49:23    c++
+
+... 중략 ...
+</code></pre></div></div>
+
+<p>초당 1개 로그를  5분간 파일에 저장한다.</p>
+
+<h3 id="2-로그-수집-컨테이너-실행">2. 로그 수집 컨테이너 실행</h3>
+
+<p>테스트 사전 정보의 td-agent 설정 파일을 바탕으로 Fluentd 컨테이너를 다음과 같이 실행한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -d --name=log_collector_container --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/host_storage/input,target=/input --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/host_storage/output,target=/output --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/fluentd,target=/fluentd/etc -e FLUENTD_CONF=td_agent.conf fluent/fluentd:v1.0.2
+47a6f572fdb2427a0872266ce373b9e99da1e2cae5ee4dc83f0d5aaaf6f56cd2
+</code></pre></div></div>
+
+<p>컨테이너가 실행되었는지 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker container ps --all
+CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS                      PORTS                 NAMES
+47a6f572fdb2        fluent/fluentd:v1.0.2       "/bin/entrypoint.sh …"   5 minutes ago       Up 5 minutes                5140/tcp, 24224/tcp   log_collector_container
+bd31f0fb4e4a        make_logfile_image:latest   "python make_log.py …"   22 minutes ago      Exited (0) 17 minutes ago                         make_logfile_container
+</code></pre></div></div>
+
+<p>컨테이너의 Mount상태를 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker inspect log_collector_container
+[
+    ... 중략 ...
+    "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/Users/kevin/dev/docker/test/shared_volume/host_storage/input",
+                "Destination": "/input",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+{
+                "Type": "bind",
+                "Source": "/Users/kevin/dev/docker/test/shared_volume/host_storage/output",
+                "Destination": "/output",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/Users/kevin/dev/docker/test/shared_volume/fluentd",
+                "Destination": "/fluentd/etc",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+]
+
+</code></pre></div></div>
+
+<p>출력용 로그파일에 저장되는지 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/output/docker_log_collect_output.log
+019-09-10T06:06:39+00:00	{"message":"0-0    2019/09/10T05:49:19    scala"}
+2019-09-10T06:06:39+00:00	{"message":"0-1    2019/09/10T05:49:20    ruby"}
+2019-09-10T06:06:39+00:00	{"message":"0-2    2019/09/10T05:49:21    c++"}
+2019-09-10T06:06:39+00:00	{"message":"0-3    2019/09/10T05:49:22    c++"}
+2019-09-10T06:06:39+00:00	{"message":"0-4    2019/09/10T05:49:23    c++"}
+
+... 중략 ...
+</code></pre></div></div>
+
+<h3 id="3-입출력용-로그-파일-확인">3. 입,출력용 로그 파일 확인</h3>
+
+<p>입력용 로그 파일을 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/input/2019-09-10.log
+0-0    2019/09/10T05:49:19    scala
+0-1    2019/09/10T05:49:20    ruby
+0-2    2019/09/10T05:49:21    c++
+0-3    2019/09/10T05:49:22    c++
+0-4    2019/09/10T05:49:23    c++
+
+... 중략 ...
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/input/2019-09-10.log| wc -l
+300
+</code></pre></div></div>
+
+<p>출력용 로그 파일을 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/output/docker_log_collect_output.log
+019-09-10T06:06:39+00:00	{"message":"0-0    2019/09/10T05:49:19    scala"}
+2019-09-10T06:06:39+00:00	{"message":"0-1    2019/09/10T05:49:20    ruby"}
+2019-09-10T06:06:39+00:00	{"message":"0-2    2019/09/10T05:49:21    c++"}
+2019-09-10T06:06:39+00:00	{"message":"0-3    2019/09/10T05:49:22    c++"}
+2019-09-10T06:06:39+00:00	{"message":"0-4    2019/09/10T05:49:23    c++"}
+
+... 중략 ...
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/output/docker_log_collect_output.log| wc -l
+300
+</code></pre></div></div>
+
+<p>입력용 로그 파일과 출력용 로그 파일을 비교한 결과는 다음과 같이 정리할 수 있다.</p>
+
+<p>입력용 로그 파일의 내용은 출력용 로그 파일에 ‘수집날짜 { “message” : “로그 내용” } 형태로 저장된다.</p>
+
+<hr />
+
+<h1 id="volume">Volume</h1>
+
+<p>Volume 마운트는 Host OS에 파일 시스템에 종속적이지 않으며 Docker에서 완전히 관리 한다. </p>
+
+<p>volume 마운트를 사용하기 위해서는 Docker 명령으로 volume 생성이 필요하다.</p>
+
+<p>더 자세한 내용은 다음의 링크를 참고하면 된다.</p>
+
+<ul>
+  <li><a href="https://docs.docker.com/storage/volumes/">Docker 공식 문서 - 저장 공간 / Volume</a></li>
+</ul>
+
+<h2 id="테스트-1">테스트</h2>
+
+<p>다음과 같은 시나리오를 바탕으로 테스트를 할 예정이다.</p>
+
+<ol>
+  <li>
+    <p>Volume을 생성한다.</p>
+  </li>
+  <li>
+    <p>“로그생성” 컨테이너를 구성하고 실행한다.</p>
+  </li>
+  <li>
+    <p>“로그수집” 컨테이너를 구성하고 실행한다.</p>
+  </li>
+  <li>
+    <p>Host OS 상에서 입력용 로그 파일과 출력용 로그 파일을 비교한다.</p>
+  </li>
+</ol>
+
+<h3 id="1-volume-생성">1. Volume 생성</h3>
+
+<p>다음과 같이 Volume을 생성한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker volume create logfile_input
+logfile_input
+</code></pre></div></div>
+
+<p>다음과 같은 명령으로 Volume의 상태를 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker volume inspect logfile_input
+[
+    {
+        "CreatedAt": "2019-09-10T08:41:41Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/logfile_input/_data",
+        "Name": "logfile_input",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+</code></pre></div></div>
+
+<h3 id="2-로그-생성-컨테이너-실행">2. 로그 생성 컨테이너 실행</h3>
+
+<p>테스트 사전 정보에서 생성한 Docker 이미지를 바탕으로 컨테이너를 실행한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -d --name=make_logfile_container --mount type=volume,source=logfile_input,target=/app/input make_logfile_image:latest
+7a265902761be76af2957140e0966b99d297e0fda78f5dffe17df9daca4c7453
+</code></pre></div></div>
+
+<p>컨테이너의 동작을 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker container ps --all
+CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS               NAMES
+1dcc4e6c3181        make_logfile_image:latest   "python make_log.py …"   2 minutes ago       Up 2 minutes                            make_logfile_container
+
+</code></pre></div></div>
+
+<p>컨테이너의 Mount상태를 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker inspect make_logfile_container
+[
+    ... 중략 ...
+    "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "logfile_input",
+                "Source": "/var/lib/docker/volumes/logfile_input/_data",
+                "Destination": "/app/input",
+                "Driver": "local",
+                "Mode": "z",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+]
+
+</code></pre></div></div>
+
+<h3 id="3-로그-수집-컨테이너-실행">3. 로그 수집 컨테이너 실행</h3>
+
+<p>테스트 사전 정보의 td-agent 설정 파일을 바탕으로 Fluentd 컨테이너를 다음과 같이 실행한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -d --name=log_collector_container --mount type=volume,source=logfile_input,target=/input --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/host_storage/output,target=/output -v ${DOCKER_SHARED_VOLUME_TEST_PATH}/fluentd:/fluentd/etc -e FLUENTD_CONF=td_agent.conf fluent/fluentd:v1.0.2
+ba7be8af4dc7ddea4ba30ebccb80736f9700717289748b74e27ab45e9ab22195
+</code></pre></div></div>
+
+<p>컨테이너가 실행되었는지 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker container ps --all
+CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS                 NAMES
+ba7be8af4dc7        fluent/fluentd:v1.0.2       "/bin/entrypoint.sh …"   5 seconds ago       Up 4 seconds        5140/tcp, 24224/tcp   log_collector_container
+1dcc4e6c3181        make_logfile_image:latest   "python make_log.py …"   4 minutes ago       Up 4 minutes
+</code></pre></div></div>
+
+<h3 id="3-출력용-로그-파일-확인">3. 출력용 로그 파일 확인</h3>
+
+<p>출력용 로그 파일을 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/output/docker_log_collect_output.log
+2019-09-16T00:41:33+00:00	{"message":"0-0    2019/09/10T09:39:39    kotlin"}
+2019-09-16T00:41:33+00:00	{"message":"0-1    2019/09/10T09:39:40    ruby"}
+2019-09-16T00:41:33+00:00	{"message":"0-2    2019/09/10T09:39:41    c++"}
+2019-09-16T00:41:33+00:00	{"message":"0-3    2019/09/10T09:39:42    kotlin"}
+2019-09-16T00:41:33+00:00	{"message":"0-4    2019/09/10T09:39:43    scala"}
+
+... 중략 ...
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/output/docker_log_collect_output.log| wc -l
+300
+</code></pre></div></div>
+
+<p>출력용 로그 파일을 확인한 결과 다음과 같이 정리할 수 있다.</p>
+
+<p>입력용 로그 파일의 내용이 출력용 로그 파일에 ‘수집날짜 { “message” : “로그 내용” } 형태로 저장된다.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#docker" class="page__taxonomy-item" rel="tag">Docker</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#docker" class="page__taxonomy-item" rel="tag">Docker</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2019-12-19T00:00:00+09:00">December 19, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Docker+%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%EA%B0%84+%EB%B3%BC%EB%A5%A8+%EA%B3%B5%EC%9C%A0%EC%97%90+%EB%8C%80%ED%95%9C+%ED%95%99%EC%8A%B5%20http%3A%2F%2Flocalhost%3A4000%2Fdocker%2Fdocker_volume_mount%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fdocker%2Fdocker_volume_mount%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fdocker%2Fdocker_volume_mount%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/docker/docker_basic/" class="pagination--pager" title="Docker 공식 사이트 Chapter 1~3 학습 내용 정리
+">이전</a>
+    
+    
+      <a href="/test/pytest_basic/" class="pagination--pager" title="PyTest 프레임워크 기초 사용법
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kubernetes/kubernetes_basic/" rel="permalink">Kubernetes 입문자를 위한 기초 내용 정리
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 분 소요
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Kuberetes에 대한 기초 내용을 개인적으로 내용을 정리하기 위하여 작성되었다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/aws_cli/aws_cli_basic/" rel="permalink">AWS CLI 기초 학습 공유
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 분 소요
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 AWS Command Line Interface 사용 설명서를 살펴보며 AWS CLI에 대한 학습했던 내용을 개인적으로 정리하기 위하여 작성되었다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/test/jmeter_basic/" rel="permalink">JMeter 기본 사용법
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 분 소요
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description"> JMeter는 java로 만들어진 성능 테스트 툴이다. 구매한 솔루션의 Spec을 확인하거나 서버의 스케일링을 위해 사용한다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/lambda/chalice_tutorial/" rel="permalink">AWS Chalice - Tutorial 기초 학습 정리
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 분 소요
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 AWS Chalice Github README 문서를 학습하며 개인적인 학습정리를 위하여 작성되었다.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 kelpin. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/docker/docker_volume_mount/";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/docker/docker_volume_mount"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kelpin.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

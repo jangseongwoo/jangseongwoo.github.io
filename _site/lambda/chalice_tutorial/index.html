@@ -1,0 +1,1385 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>AWS Chalice - Tutorial 기초 학습 정리 - kelpin’s blog</title>
+<meta name="description" content="이 문서는 AWS Chalice Github README 문서를 학습하며 개인적인 학습정리를 위하여 작성되었다.">
+
+
+  <meta name="author" content="kelpin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="kelpin's blog">
+<meta property="og:title" content="AWS Chalice - Tutorial 기초 학습 정리">
+<meta property="og:url" content="http://localhost:4000/lambda/chalice_tutorial/">
+
+
+  <meta property="og:description" content="이 문서는 AWS Chalice Github README 문서를 학습하며 개인적인 학습정리를 위하여 작성되었다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-12-22T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/lambda/chalice_tutorial/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "kelpin",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="kelpin's blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          kelpin's blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="kelpin" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">kelpin</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="AWS Chalice - Tutorial 기초 학습 정리">
+    <meta itemprop="description" content="이 문서는 AWS Chalice Github README 문서를 학습하며 개인적인 학습정리를 위하여 작성되었다.">
+    <meta itemprop="datePublished" content="December 22, 2019">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">AWS Chalice - Tutorial 기초 학습 정리
+</h1>
+          
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 분 소요
+
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h1 id="목적">목적</h1>
+
+<p>이 문서는 <a href="https://github.com/aws/chalice">AWS Chalice Github README 문서</a>를 학습하며 개인적인 학습정리를 위하여 작성되었다.</p>
+
+<p>문서의 내용을 따라한 내용들을 정리한 내용이 주를 이루며 추후 학습이 더 필요한 부분은 그린으로 표시하였다.</p>
+
+<h1 id="테스트-환경">테스트 환경</h1>
+
+<ul>
+  <li>
+    <p>OS : macOS Mojave 10.14.6</p>
+  </li>
+  <li>
+    <p>Chalice 1.11.0</p>
+  </li>
+  <li>
+    <p>Python 3.6.5</p>
+  </li>
+  <li>
+    <p>darwin 18.7.0</p>
+  </li>
+</ul>
+
+<h1 id="학습에-필요한-사전-정보">학습에 필요한 사전 정보</h1>
+
+<h2 id="aws-lambda">AWS Lambda</h2>
+
+<p>다음과 같은 문서의 내용의 숙지가 선행되어야 한다.</p>
+
+<ul>
+  <li>
+    <p><a href="https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/with-userapp.html">https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/with-userapp.html</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/getting-started-create-function.html">https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/getting-started-create-function.html</a></p>
+  </li>
+</ul>
+
+<h2 id="http">HTTP</h2>
+
+<p>원할한 테스트를 위하여 다음과 같이 http 라이브러리를 설치한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pip install http
+</code></pre></div></div>
+
+<h2 id="curl">CURL</h2>
+
+<p>원할한 테스트를 위하여 다음과 같이 curl 라이브러리를 설치한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ brew install curl
+</code></pre></div></div>
+
+<h1 id="학습-진행">학습 진행</h1>
+
+<h2 id="quick-start">Quick Start</h2>
+
+<p>다음과 같이 Quick start를 위한 디렉터리를 구성한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir chalice-demo
+$ cd chlice-demo
+</code></pre></div></div>
+
+<p>다음과 같이 Virtual env를 구성하고 활성화 한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ virtualenv --python=3.6 .venv
+$ source .venv/bin/activate
+</code></pre></div></div>
+
+<p>Chalice를 설치하고, chalice 프로젝트를 생성한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pip install chalice
+$ chalice new-project andro-test-chalice
+</code></pre></div></div>
+
+<h2 id="tutorial-local-mode">Tutorial: Local Mode</h2>
+
+<p>로컬 빌드를 위하여 다음과 같이 app.py를 수정한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice
+
+app = Chalice(app_name='helloworld')
+
+
+@app.route('/')
+def index():
+    return {'hello': 'world'}
+
+</code></pre></div></div>
+
+<p>다음과 같은 명령어로 로컬 빌드를 한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ chalice local --port=8080
+Restarting local dev server.
+Serving on http://127.0.0.1:8080
+</code></pre></div></div>
+
+<p>다음과 같은 명령어로 로컬 빌드의 동작을 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ http localhost:8080
+HTTP/1.1 200 OK
+Content-Length: 17
+Content-Type: application/json
+Date: Tue, 17 Sep 2019 06:12:51 GMT
+Server: BaseHTTP/0.6 Python/3.6.5
+
+{
+    "hello": "world"
+}
+</code></pre></div></div>
+
+<h2 id="deploying">Deploying</h2>
+
+<p>배포를 위하여 다음과 같이 config.json 파일을 수정한다.
+{iam_role_arn}은 각자 람다 사용을 위해 생성한 iam의 arn를 입력한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim .chalice/config.json
+{
+  "version": "2.0",
+  "app_name": "andro-test-chalice",
+  "api_gateway_stage": "api",
+  "lambda_timeout": 120,
+  "lambda_memory_size": 1024,
+  "stages": {
+    "qa": {
+      "api_gateway_stage": "qa",
+      "autogen_policy": false,
+      "iam_role_arn": "{iam_role_arn}"
+    },
+    "prod": {
+      "api_gateway_stage": "prod",
+      "autogen_policy": false,
+      "iam_role_arn": "{iam_role_arn}"
+    }
+  },
+  "manage_iam_role":false,
+  "iam_role_arn":"{iam_role_arn}"
+}
+</code></pre></div></div>
+
+<p>다음과 같이 배포한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ chalice deploy
+Creating deployment package.
+Updating lambda function: andro-test-chalice-dev
+Updating rest API
+Resources deployed:
+  - Lambda ARN: 
+  - Rest API URL: {lambda_url}
+</code></pre></div></div>
+
+<p>배포된 lambda가 동작하는지 다음과 같이 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET {lambda_url}
+{"hello":"world"}%
+</code></pre></div></div>
+
+<h2 id="tutorial-url-parameters">Tutorial: URL Parameters</h2>
+
+<p>경로에 따라 다르게 보이기 위하여 다음과 같이 app.py를 수정한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice
+
+app = Chalice(app_name='helloworld')
+
+CITIES_TO_STATE = {
+    'seattle': 'WA',
+    'portland': 'OR',
+}
+
+
+@app.route('/')
+def index():
+    return {'hello': 'world'}
+
+@app.route('/cities/{city}')
+def state_of_city(city):
+    return {'state': CITIES_TO_STATE[city]}
+</code></pre></div></div>
+
+<p>배포한다.</p>
+
+<p>배포된 lambda가 동작하는지 다음과 같이 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET {lambda_url}
+{"hello":"world"}%
+
+$ curl -XGET {lambda_url}cities/seattle
+{"state":"WA"}%
+
+$ curl -XGET {lambda_url}cities/portland
+{"state":"OR"}%
+
+$ curl -XGET {lambda_url}cities/vancouver
+{"Code":"InternalServerError","Message":"An internal server error occurred."}%
+</code></pre></div></div>
+
+<h2 id="tutorial-error-messages">Tutorial: Error Messages</h2>
+
+<p>에러가 발생하였을 때 처리하기 위하여는 디버그 모드를 활성화 해야한다.</p>
+
+<p>또한 에러가 발생할 것으로 예측되는 함수나 구문에서 try~except 구문으로 예외처리한다.</p>
+
+<p>위의 app.py를 다음과 같이 수정한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice
+from chalice import BadRequestError
+
+app = Chalice(app_name='helloworld')
+app.debug = True
+
+CITIES_TO_STATE = {
+    'seattle': 'WA',
+    'portland': 'OR',
+}
+
+
+@app.route('/')
+def index():
+    return {'hello': 'world'}
+
+
+@app.route('/cities/{city}')
+def state_of_city(city):
+    try:
+        return {'state': CITIES_TO_STATE[city]}
+    except KeyError:
+        raise BadRequestError("Unknown city '%s', valid choices are: %s" % (
+            city, ', '.join(CITIES_TO_STATE.keys())))
+
+
+</code></pre></div></div>
+
+<p>배포한다.</p>
+
+<p>배포된 lambda가 동작하는지 다음과 같이 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET {lambda_url}
+{"hello":"world"}%
+
+$ curl -XGET {lambda_url}cities/seattle
+{"state":"WA"}%
+
+$ curl -XGET {lambda_url}cities/portland
+{"state":"OR"}%
+
+$ curl -XGET {lambda_url}cities/vancouver
+{"Code":"BadRequestError","Message":"BadRequestError: Unknown city 'vancouver', valid choices are: seattle, portland"}%
+</code></pre></div></div>
+
+<h2 id="tutorial-additional-routing">Tutorial: Additional Routing</h2>
+
+<p>GET method이외에 PUT, POST를 추가해본다.</p>
+
+<p>데코레이션 /myview는 method에 따라 다른 응답을 제공하고자 한다.</p>
+
+<p>다음과 같이 app.py를 수정한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice
+
+app = Chalice(app_name='helloworld')
+
+
+@app.route('/')
+def index():
+    return {'hello': 'world'}
+
+
+@app.route('/resource/{value}', methods=['PUT'])
+def put_test(value):
+    return {"value": value}
+
+
+@app.route('/myview/{value}', methods=['POST'])
+def myview_post(value):
+    return {"value": value, "method", "post"}
+
+
+@app.route('/myview/{value}', methods=['PUT'])
+def myview_put(value):
+    return {"value": value, "method", "put"}
+</code></pre></div></div>
+
+<p>배포한다.</p>
+
+<p>배포된 lambda가 동작하는지 다음과 같이 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XPUT {lambda_url}/resource/foo
+{"value":"foo"}%
+
+$ curl -XPUT {lambda_url}/myview/foo
+{"value":"foo","mothod":"put"}%
+
+$ curl -XPOST {lambda_url}/myview/foo
+{"value":"foo","mothod":"post"}%
+</code></pre></div></div>
+
+<h2 id="tutorial-request-metadata">Tutorial: Request Metadata</h2>
+
+<p>메타데이터를 활용하기 위한 섹터이다.</p>
+
+<p>우선 메소드 종류에 따라 다른 응답을 위하여 다음과 같이 app.py를 수정한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice
+from chalice import NotFoundError
+
+app = Chalice(app_name='helloworld')
+
+
+@app.route('/')
+def index():
+    return {'hello': 'world'}
+
+
+OBJECTS = {
+}
+
+
+@app.route('/objects/{key}', methods=['GET', 'PUT'])
+def myobject(key):
+    request = app.current_request
+    if request.method == 'PUT':
+        OBJECTS[key] = request.json_body
+    elif request.method == 'GET':
+        try:
+            return {key: OBJECTS[key]}
+        except KeyError:
+            raise NotFoundError(key)
+
+</code></pre></div></div>
+
+<p>배포한다.</p>
+
+<p>배포된 lambda의 동작을 확인하기 위하여 다음과 같이 커널 명령으로 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET {lambda_url}/objects/banana
+{"Code":"NotFoundError","Message":"NotFoundError: banana"}%
+
+$ curl -X PUT -H "Content-Type: application/json; charset=utf-8" -d '"yellow"' {lambda_url}/objects/banana
+null%
+
+$ curl -XGET {lambda_url}/objects/banana
+{"banana":"yellow"}%
+</code></pre></div></div>
+
+<p>위의 코드에서 app.current_request 인스턴스에 관하여 다음과 같은 속성들이 존재하고 속성들에 대한 설명은 <a href="https://github.com/aws/chalice/tree/1791175cb30eaa3fd89a177e21dbba654d352b0c">Github AWS-Chalice README 페이지</a>를 참고한다.</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">current_request.query_params</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">current_request.headers</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">current_request.uri_params</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">current_request.method</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">current_request.json_body</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">current_request.raw_body</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">current_request.context</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">current_request.stage_vars</code></p>
+  </li>
+</ul>
+
+<p>current_request.to_dict()를 이용하여 메타데이터를 확인하기 위하여 다음과 같이 app.py를 수정한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice
+
+app = Chalice(app_name='helloworld')
+
+
+@app.route('/')
+def index():
+    return {'hello': 'world'}
+
+
+@app.route('/introspect')
+def introspect():
+    return app.current_request.to_dict()
+
+</code></pre></div></div>
+
+<p>배포한다.</p>
+
+<p>배포된 lambda의 동작을 확인하기 위하여 다음과 같이 커널 명령으로 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ http '{lambda_url}/introspect?query1=value1&amp;query2=value2' 'X-TestHeader: Foo'
+</code></pre></div></div>
+
+<h2 id="tutorial-request-content-types">Tutorial: Request Content Types</h2>
+
+<p>컨텐트 타입에 따른 응답을 지정할 수 있다.</p>
+
+<p>app.py를 다음과 같이 수정한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import sys
+
+from chalice import Chalice
+if sys.version_info[0] == 3:
+    # Python 3 imports.
+    from urllib.parse import urlparse, parse_qs
+else:
+    # Python 2 imports.
+    from urlparse import urlparse, parse_qs
+
+
+app = Chalice(app_name='helloworld')
+
+
+@app.route('/', methods=['POST'],
+           content_types=['application/x-www-form-urlencoded'])
+def index():
+    parsed = parse_qs(app.current_request.raw_body.decode())
+    return {
+        'states': parsed.get('states', [])
+    }
+
+</code></pre></div></div>
+
+<p>배포한다.</p>
+
+<p>배포된 lambda는 다음과 같이 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### Content-Type application/json
+$ http POST {lambda_url} states=WA states=CA --debug
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### ContentType application/x-www-form-urlencoded
+$ http --form POST {lambda_url} states=WA states=CA --debug
+</code></pre></div></div>
+
+<ul>
+  <li>-form은 Content-Type 헤더를 application/x-www-form-urlencoded로 세팅하는 것의 의미한다.</li>
+</ul>
+
+<p>app.current_request.json_body는 ContentType application/json에서 정상적인 dict 객체가 존재하고, ContentType application/json 아닐 경우는 None이다.</p>
+
+<h2 id="tutorial-customizing-the-http-response">Tutorial: Customizing the HTTP Response</h2>
+
+<p>커스터 마이징한 응답으로 응답할 수 있다.</p>
+
+<p>app.py를 다음과 같이 수정한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice, Response
+
+app = Chalice(app_name='custom-response')
+
+
+@app.route('/')
+def index():
+    return Response(body='hello world!',
+                    status_code=200,
+                    headers={'Content-Type': 'text/plain'})
+    }
+
+</code></pre></div></div>
+
+<p>배포한다.</p>
+
+<p>배포된 lambda는 다음과 같이 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ http {lambda_url}
+</code></pre></div></div>
+
+<h2 id="tutorial-gzip-compression-for-json">Tutorial: GZIP compression for json</h2>
+
+<p>이 섹터는 사용빈도가 낮을 것으로 판단되어 스킵한다.</p>
+
+<h2 id="tutorial-cors-support">Tutorial: CORS Support</h2>
+
+<p>이 섹터는 전반적으로 추후 내용 보충이 필요하다.</p>
+
+<p>CORS(Cross-Origin Resource Share)의 개념은 <a href="https://developer.mozilla.org/ko/docs/Web/HTTP/Access_control_CORS">HTTP 접근 (CORS)</a>을 참고하면 된다.</p>
+
+<p>다음과 같이 app.py를 수정한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import CORSConfig
+
+cors_config = CORSConfig(
+    allow_origin='https://foo.example.com',
+    allow_headers=['X-Special-Header'],
+    max_age=600,
+    expose_headers=['X-Special-Header'],
+    allow_credentials=True
+)
+
+@app.route('/custom_cors', methods=['GET'], cors=cors_config)
+def supports_custom_cors():
+    return {'cors': True}
+
+</code></pre></div></div>
+
+<p>배포한다.</p>
+
+<p>배포한 lambda를 확인하면 다음과 같다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ http {lambda_url}custom_cors
+HTTP/1.1 200 OK
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Headers: Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header
+Access-Control-Allow-Origin: https://foo.example.com
+Access-Control-Expose-Headers: X-Special-Header
+Access-Control-Max-Age: 600
+...
+중략
+...
+
+{
+    "cors": true
+}
+</code></pre></div></div>
+
+<p>다음과 같이 app.py를 수정한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice, Response
+
+app = Chalice(app_name='multipleorigincors')
+
+_ALLOWED_ORIGINS = set([
+    'http://allowed1.example.com',
+    'http://allowed2.example.com',
+])
+
+
+@app.route('/cors_multiple_origins', methods=['GET', 'OPTIONS'])
+def supports_cors_multiple_origins():
+    method = app.current_request.method
+    if method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Method': 'GET,OPTIONS',
+            'Access-Control-Allow-Origin': ','.join(_ALLOWED_ORIGINS),
+            'Access-Control-Allow-Headers': 'X-Some-Header',
+        }
+        origin = app.current_request.headers.get('origin', '')
+        if origin in _ALLOWED_ORIGINS:
+            headers.update({'Access-Control-Allow-Origin': origin})
+        return Response(
+            body=None,
+            headers=headers,
+        )
+    elif method == 'GET':
+        return 'Foo'
+
+</code></pre></div></div>
+
+<p>배포한다.</p>
+
+<p>배포한 lambda를 확인하면 다음과 같다. Access-Control-Allow-*를 살펴보면 된다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ http OPTIONS {lambda_url}cors_multiple_origins
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers: X-Some-Header
+Access-Control-Allow-Method: GET,OPTIONS
+Access-Control-Allow-Origin: http://allowed2.example.com,http://allowed1.example.com
+...
+중략
+...
+
+null
+</code></pre></div></div>
+
+<h2 id="tutorial-policy-generation">Tutorial: Policy Generation</h2>
+
+<p>다음과 같이 app.py를 수정한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import json
+import boto3
+from botocore.exceptions import ClientError
+
+from chalice import NotFoundError, Chalice
+
+app = Chalice(app_name="boto3_test")
+
+S3 = boto3.client('s3', region_name='us-east-1')
+BUCKET = {bucket}
+PATH = 'andro-chalice-test'
+
+
+@app.route('/objects/{key}', methods=['GET', 'PUT'])
+def s3objects(key):
+    fullpath_key = "/".join([PATH, key])
+    request = app.current_request
+    if request.method == 'PUT':
+        S3.put_object(Bucket=BUCKET, Key=fullpath_key,
+                      Body=json.dumps(request.json_body))
+    elif request.method == 'GET':
+        try:
+            response = S3.get_object(Bucket=BUCKET, Key=fullpath_key)
+            return json.loads(response['Body'].read())
+        except ClientError as e:
+            raise NotFoundError(key)
+
+
+
+</code></pre></div></div>
+
+<p>로컬 빌드나 배포하여 확인하나 기능상 차이가 없기에 로컬 빌드로 확인한다. 로컬로 빌드한다.</p>
+
+<p>다음과 같이 로컬 chalice의 동작을 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo '{"foo":"bar"}' | http PUT localhost:8080/objects/banana
+HTTP/1.1 200 OK
+Content-Length: 4
+Content-Type: application/json
+Date: Tue, 17 Sep 2019 06:38:28 GMT
+Server: BaseHTTP/0.6 Python/3.6.5
+
+null
+
+$ http localhost:8080/objects/banana
+HTTP/1.1 200 OK
+Content-Length: 13
+Content-Type: application/json
+Date: Tue, 17 Sep 2019 06:38:33 GMT
+Server: BaseHTTP/0.6 Python/3.6.5
+
+{
+    "foo": "bar"
+}
+</code></pre></div></div>
+
+<p>aws cli로 실제 버킷에 저장되었는지 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ s3 ls s3://{s3_address}/andro-chalice-test --recursive
+2019-09-17 15:38:28         14 andro-chalice-test/banana
+</code></pre></div></div>
+
+<p>배포한다.</p>
+
+<p>배포한 lambda의 동작을 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo '"red"' | http PUT {lambda_url}objects/apple
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 4
+Content-Type: application/json
+...
+하략
+
+null
+
+$ http {lambda_url}objects/apple
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 3
+Content-Type: application/json
+Date: Tue, 17 Sep 2019 07:13:51 GMT
+...
+하략
+</code></pre></div></div>
+
+<p>수동으로 정책을 제공할 수 있다. 다음과 같은 경로에 정책에 관하여 정의해주면 된다. 이 부분은 추후 학습하여 수정할 예정이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;projectdir&gt;/.chalice/policy.json
+</code></pre></div></div>
+
+<p>예) andro-chalice-test/policy-dev.json</p>
+
+<h2 id="tutorial-using-custom-authentication">Tutorial: Using Custom Authentication</h2>
+
+<p>문서에서 소개하는 인증방법은 다음과 같고, 이 중 Cognito User Pools를 제외한 내용을 실습한다.</p>
+
+<ul>
+  <li>
+    <p>API Key</p>
+  </li>
+  <li>
+    <p>AWS IAM</p>
+  </li>
+  <li>
+    <p>Cognito User Pools</p>
+  </li>
+  <li>
+    <p>Custom Auth Handler</p>
+  </li>
+</ul>
+
+<p>app.py를 다음과 같이 수정한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice, IAMAuthorizer, CustomAuthorizer
+
+app = Chalice(app_name="boto3_test")
+
+iam_authorizer = IAMAuthorizer()
+custom_authorizer = CustomAuthorizer(
+    'MyCustomAuth', header='Authorization',
+    authorizer_uri=('arn:aws:apigateway:region:lambda:path/2015-03-31'
+                    '/functions/arn:aws:lambda:region:account-id:'
+                    'function:FunctionName/invocations'))
+
+
+@app.route('/authenticated', methods=['GET'], api_key_required=True)
+def authenticated():
+    return {"secure": True}
+
+
+@app.route('/iam-role', methods=['GET'], authorizer=iam_authorizer)
+def authenticated():
+    return {"secure": True}
+
+
+@app.route('/custom-auth', methods=['GET'], authorizer=custom_authorizer)
+def authenticated():
+    return {"secure": True}
+
+
+</code></pre></div></div>
+
+<p>다음과 같이 로컬 chalice의 동작을 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ http localhost:8080/authenticated
+HTTP/1.1 200 OK
+Content-Length: 15
+Content-Type: application/json
+Date: Tue, 17 Sep 2019 08:57:24 GMT
+Server: BaseHTTP/0.6 Python/3.6.5
+{
+    "secure": true
+}
+
+
+$ http localhost:8080/iam-role
+HTTP/1.1 200 OK
+Content-Length: 15
+Content-Type: application/json
+Date: Tue, 17 Sep 2019 08:57:35 GMT
+Server: BaseHTTP/0.6 Python/3.6.5
+{
+    "secure": true
+}
+
+
+$ http localhost:8080/custom-auth
+HTTP/1.1 200 OK
+Content-Length: 15
+Content-Type: application/json
+Date: Tue, 17 Sep 2019 08:57:40 GMT
+Server: BaseHTTP/0.6 Python/3.6.5
+
+{
+    "secure": true
+}
+</code></pre></div></div>
+
+<h1 id="참고-자료">참고 자료</h1>
+
+<ul>
+  <li>AWS Chalice 기본 학습 공유</li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#aws-chalice" class="page__taxonomy-item" rel="tag">AWS_Chalice</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#lambda" class="page__taxonomy-item" rel="tag">Lambda</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#lambda" class="page__taxonomy-item" rel="tag">Lambda</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2019-12-22T00:00:00+09:00">December 22, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=AWS+Chalice+-+Tutorial+%EA%B8%B0%EC%B4%88+%ED%95%99%EC%8A%B5+%EC%A0%95%EB%A6%AC%20http%3A%2F%2Flocalhost%3A4000%2Flambda%2Fchalice_tutorial%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Flambda%2Fchalice_tutorial%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Flambda%2Fchalice_tutorial%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/test/pytest_basic/" class="pagination--pager" title="PyTest 프레임워크 기초 사용법
+">이전</a>
+    
+    
+      <a href="/test/jmeter_basic/" class="pagination--pager" title="JMeter 기본 사용법
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kubernetes/kubernetes_basic/" rel="permalink">Kubernetes 입문자를 위한 기초 내용 정리
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 분 소요
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Kuberetes에 대한 기초 내용을 개인적으로 내용을 정리하기 위하여 작성되었다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/aws_cli/aws_cli_basic/" rel="permalink">AWS CLI 기초 학습 공유
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 분 소요
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 AWS Command Line Interface 사용 설명서를 살펴보며 AWS CLI에 대한 학습했던 내용을 개인적으로 정리하기 위하여 작성되었다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/test/jmeter_basic/" rel="permalink">JMeter 기본 사용법
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 분 소요
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description"> JMeter는 java로 만들어진 성능 테스트 툴이다. 구매한 솔루션의 Spec을 확인하거나 서버의 스케일링을 위해 사용한다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/test/pytest_basic/" rel="permalink">PyTest 프레임워크 기초 사용법
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  11 분 소요
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Pytest framework에 관하여 학습한 내용을 정리하기 위해 작성되었다.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 kelpin. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/lambda/chalice_tutorial/";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/lambda/chalice_tutorial"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kelpin.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

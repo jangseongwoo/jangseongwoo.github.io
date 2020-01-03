@@ -9,16 +9,16 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Python logging module 기초적인 사용법에 대한 학습 - Andro’s tech blog</title>
+<!-- begin _includes/seo.html --><title>Python logging module 기초적인 사용법에 대한 학습 - kelpin’s blog</title>
 <meta name="description" content="이 문서는 Python Logging 모듈에 대한 공식 문서 중 아래와 같은 내용을 정리하고 공유하기 위하여 작성했다.">
 
 
-  <meta name="author" content="Andro">
+  <meta name="author" content="kelpin">
 
 
 <meta property="og:type" content="article">
-<meta property="og:locale" content="ko_KR">
-<meta property="og:site_name" content="Andro's tech blog">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="kelpin's blog">
 <meta property="og:title" content="Python logging module 기초적인 사용법에 대한 학습">
 <meta property="og:url" content="http://localhost:4000/logging/python_logging_basic/">
 
@@ -52,7 +52,7 @@
     "@context": "https://schema.org",
     
       "@type": "Person",
-      "name": "Andro",
+      "name": "kelpin",
       "url": "http://localhost:4000/"
     
   }
@@ -66,7 +66,7 @@
 <!-- end _includes/seo.html -->
 
 
-<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Andro's tech blog Feed">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="kelpin's blog Feed">
 
 <!-- https://t.co/dKP3o1e -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -125,15 +125,19 @@
       <nav id="site-nav" class="greedy-nav">
         
         <a class="site-title" href="/">
-          Andro's tech blog
+          kelpin's blog
           <span class="site-subtitle">To the best</span>
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
-              <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/" >Quick-Start Guide</a>
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
             </li></ul>
         
         <button class="greedy-nav__toggle hidden" type="button">
-          <span class="visually-hidden">Toggle menu</span>
+          <span class="visually-hidden">토글 메뉴</span>
           <div class="navicon"></div>
         </button>
         <ul class="hidden-links hidden"></ul>
@@ -161,14 +165,14 @@
       
 
       
-        <img src="/assets/images/avata.png" alt="Andro" itemprop="image">
+        <img src="/assets/images/avata.png" alt="kelpin" itemprop="image">
       
     </div>
   
 
   <div class="author__content">
     
-      <h3 class="author__name" itemprop="name">Andro</h3>
+      <h3 class="author__name" itemprop="name">kelpin</h3>
     
     
       <div class="author__bio" itemprop="description">
@@ -179,7 +183,7 @@
   </div>
 
   <div class="author__urls-wrapper">
-    <button class="btn btn--inverse">Follow</button>
+    <button class="btn btn--inverse">팔로우</button>
     <ul class="author__urls social-icons">
       
         <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
@@ -211,7 +215,7 @@
         <li>
           <a href="mailto:seongwoo.dev@gmail.com">
             <meta itemprop="email" content="seongwoo.dev@gmail.com" />
-            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
           </a>
         </li>
       
@@ -292,7 +296,7 @@
 
 
 
-  4 minute read
+  4 분 소요
 
 </p>
           
@@ -663,7 +667,7 @@ timerotating_logtest.out.2019-10-17_20-05-51
   
 
   <p class="page__taxonomy">
-    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
     <span itemprop="keywords">
     
       
@@ -688,7 +692,7 @@ timerotating_logtest.out.2019-10-17_20-05-51
   
 
   <p class="page__taxonomy">
-    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
     <span itemprop="keywords">
     
       
@@ -700,18 +704,20 @@ timerotating_logtest.out.2019-10-17_20-05-51
 
 
         
-          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-12-12T00:00:00+09:00">December 12, 2019</time></p>
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2019-12-12T00:00:00+09:00">December 12, 2019</time></p>
         
       </footer>
 
       <section class="page__share">
   
+    <h4 class="page__share-title">공유하기</h4>
+  
 
-  <a href="https://twitter.com/intent/tweet?text=Python+logging+module+%EA%B8%B0%EC%B4%88%EC%A0%81%EC%9D%B8+%EC%82%AC%EC%9A%A9%EB%B2%95%EC%97%90+%EB%8C%80%ED%95%9C+%ED%95%99%EC%8A%B5%20http%3A%2F%2Flocalhost%3A4000%2Flogging%2Fpython_logging_basic%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Python+logging+module+%EA%B8%B0%EC%B4%88%EC%A0%81%EC%9D%B8+%EC%82%AC%EC%9A%A9%EB%B2%95%EC%97%90+%EB%8C%80%ED%95%9C+%ED%95%99%EC%8A%B5%20http%3A%2F%2Flocalhost%3A4000%2Flogging%2Fpython_logging_basic%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Flogging%2Fpython_logging_basic%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Flogging%2Fpython_logging_basic%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Flogging%2Fpython_logging_basic%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Flogging%2Fpython_logging_basic%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
@@ -719,11 +725,11 @@ timerotating_logtest.out.2019-10-17_20-05-51
   <nav class="pagination">
     
       <a href="/slack/slack_api_webhook/" class="pagination--pager" title="Slackbot API 중 Webhooks,Web API를 이용한 메시지 보내기
-">Previous</a>
+">이전</a>
     
     
       <a href="/django/django_make_board/" class="pagination--pager" title="Django framework를 이용해 게시판 만들고 AWS에 배포하기
-">Next</a>
+">다음</a>
     
   </nav>
 
@@ -735,7 +741,7 @@ timerotating_logtest.out.2019-10-17_20-05-51
   
   
     <div class="page__related">
-      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <h4 class="page__related-title">참고</h4>
       <div class="grid__wrapper">
         
           
@@ -755,7 +761,7 @@ timerotating_logtest.out.2019-10-17_20-05-51
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/docker/docker_basic/" rel="permalink">Docker 공식 사이트 Chapter 1~3 학습 내용 정리
+        <a href="/kubernetes/kubernetes_basic/" rel="permalink">Kubernetes 입문자를 위한 기초 내용 정리
 </a>
       
     </h2>
@@ -765,11 +771,11 @@ timerotating_logtest.out.2019-10-17_20-05-51
 
 
 
-  6 minute read
+  2 분 소요
 
 </p>
     
-    <p class="archive__item-excerpt" itemprop="description">이 문서는 2019. 9. 2 기준 Docker 시작하기를 따라하며 개인적인 학습과 추후 이 내용을 리마인드 할 때 참고하려는 목적을 가지고 있다.
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Kuberetes에 대한 기초 내용을 개인적으로 내용을 정리하기 위하여 작성되었다.
 </p>
   </article>
 </div>
@@ -792,7 +798,7 @@ timerotating_logtest.out.2019-10-17_20-05-51
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/boto3/boto3_basic/" rel="permalink">Boto3를 이용한 Amazon S3, Kinesis Data Firehose 사용하기
+        <a href="/aws_cli/aws_cli_basic/" rel="permalink">AWS CLI 기초 학습 공유
 </a>
       
     </h2>
@@ -802,11 +808,11 @@ timerotating_logtest.out.2019-10-17_20-05-51
 
 
 
-  12 minute read
+  3 분 소요
 
 </p>
     
-    <p class="archive__item-excerpt" itemprop="description">AWS를 Python 개발환경에서 사용하기 위한 방법중 하나는 Boto3 라이브러리를 이용하는 것이다. 이 테스트는 Boto3를 이용하여 아래의 서비스에 접근하여 사용하는 방법을 공유하기 위한 목적이 있다.
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 AWS Command Line Interface 사용 설명서를 살펴보며 AWS CLI에 대한 학습했던 내용을 개인적으로 정리하기 위하여 작성되었다.
 </p>
   </article>
 </div>
@@ -829,7 +835,7 @@ timerotating_logtest.out.2019-10-17_20-05-51
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/monitoring/newrelic_basic/" rel="permalink">New Relic 교육 - 오버뷰
+        <a href="/test/jmeter_basic/" rel="permalink">JMeter 기본 사용법
 </a>
       
     </h2>
@@ -839,11 +845,11 @@ timerotating_logtest.out.2019-10-17_20-05-51
 
 
 
-  5 minute read
+  2 분 소요
 
 </p>
     
-    <p class="archive__item-excerpt" itemprop="description">New Relic에서 제공하는 기능에 대한 간단한 오버뷰 교육과 관련되어 사전 학습 내용과 교육 내용 일부를 개인적으로 정리한 문서이다.
+    <p class="archive__item-excerpt" itemprop="description"> JMeter는 java로 만들어진 성능 테스트 툴이다. 구매한 솔루션의 Spec을 확인하거나 서버의 스케일링을 위해 사용한다.
 </p>
   </article>
 </div>
@@ -866,7 +872,7 @@ timerotating_logtest.out.2019-10-17_20-05-51
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/logging/flask_logging/" rel="permalink">Python logging을 활용해 Flask에서 logging하는 방법
+        <a href="/lambda/chalice_tutorial/" rel="permalink">AWS Chalice - Tutorial 기초 학습 정리
 </a>
       
     </h2>
@@ -876,11 +882,11 @@ timerotating_logtest.out.2019-10-17_20-05-51
 
 
 
-  1 minute read
+  7 분 소요
 
 </p>
     
-    <p class="archive__item-excerpt" itemprop="description">Flask Logging 하는 방법
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 AWS Chalice Github README 문서를 학습하며 개인적인 학습정리를 위하여 작성되었다.
 </p>
   </article>
 </div>
@@ -904,6 +910,8 @@ timerotating_logtest.out.2019-10-17_20-05-51
         <div class="page__footer-follow">
   <ul class="social-icons">
     
+      <li><strong>팔로우:</strong></li>
+    
 
     
       
@@ -921,11 +929,11 @@ timerotating_logtest.out.2019-10-17_20-05-51
       
     
 
-    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2019 Andro. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2020 kelpin. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>
@@ -938,6 +946,25 @@ timerotating_logtest.out.2019-10-17_20-05-51
 
 
 
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/logging/python_logging_basic/";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/logging/python_logging_basic"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kelpin.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
 
 
 

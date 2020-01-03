@@ -63,4 +63,34 @@ var store = [{
         "excerpt":"목적 이 문서는 2019. 9. 2 기준 Docker 시작하기를 따라하며 개인적인 학습과 추후 이 내용을 리마인드 할 때 참고하려는 목적을 가지고 있다. 진행 Docker 시작하기는 6개의 part로 나뉘어져 있으며 다음과 같다. 이 중 part 3까지만 진행한다. 오리엔테이션 컨테이너 서비스 스웜 스택 앱 배포 스웜의 경우 쿠버네티스를 사용하는 트렌드 비춰 학습에서 제외한다. 스택, 6. 앱...","categories": ["Docker"],
         "tags": ["Docker"],
         "url": "http://localhost:4000/docker/docker_basic/",
+        "teaser":"http://localhost:4000/assets/images/logo.png"},{
+        "title": "Docker 컨테이너간 볼륨 공유에 대한 학습",
+        "excerpt":"문서 목적 다수의 Docker 컨테이너(이하 컨테이너)를 운영하다가 보면 컨테이너 간에 볼륨 공유가 필요할 상황이 있다. 예를 들면 Apache 서버 컨테이너의 로그 파일을 Fluentd 컨테이너로 수집하는 경우이다. 이 경우 Fluentd가 Apache 서버의 로그 파일을 접근하려면 다음과 같이 두 가지 방법이 존재한다. Fluentd가 Apache 서버 컨테이너 볼륨에 접근하여 로그 파일을 수집하는 방법 호스트...","categories": ["Docker"],
+        "tags": ["Docker"],
+        "url": "http://localhost:4000/docker/docker_volume_mount/",
+        "teaser":"http://localhost:4000/assets/images/logo.png"},{
+        "title": "PyTest 프레임워크 기초 사용법",
+        "excerpt":"목적 이 문서는 Pytest framework에 관하여 학습한 내용을 정리하기 위해 작성되었다. Pytest 공식 가이드 문서 내용 중 아래의 카테고리에 해당하는 내용을 정리했다. Asserting with the assert statement pytest fixtures: explicit, modular, scalable Parametrizing fixtures and test functions 학습 환경 학습 환경은 다음과 같다. Python 버전 : 3.7.4 PyTest 버전 : 5.2.1 환경...","categories": ["Test"],
+        "tags": ["Pytest","Python","Test"],
+        "url": "http://localhost:4000/test/pytest_basic/",
+        "teaser":"http://localhost:4000/assets/images/logo.png"},{
+        "title": "AWS Chalice - Tutorial 기초 학습 정리",
+        "excerpt":"목적 이 문서는 AWS Chalice Github README 문서를 학습하며 개인적인 학습정리를 위하여 작성되었다. 문서의 내용을 따라한 내용들을 정리한 내용이 주를 이루며 추후 학습이 더 필요한 부분은 그린으로 표시하였다. 테스트 환경 OS : macOS Mojave 10.14.6 Chalice 1.11.0 Python 3.6.5 darwin 18.7.0 학습에 필요한 사전 정보 AWS Lambda 다음과 같은 문서의 내용의 숙지가...","categories": ["Lambda"],
+        "tags": ["Lambda","AWS_Chalice"],
+        "url": "http://localhost:4000/lambda/chalice_tutorial/",
+        "teaser":"http://localhost:4000/assets/images/logo.png"},{
+        "title": "JMeter 기본 사용법",
+        "excerpt":"JMeter란?  JMeter는 java로 만들어진 성능 테스트 툴이다. 구매한 솔루션의 Spec을 확인하거나 서버의 스케일링을 위해 사용한다. 설치하기 oracle site ( https://www.oracle.com/technetwork/java/javase/downloads/index.html ) 에서 java (version : 8+) 을 다운받는다. java를 설치한다. apach jmeter site( https://jmeter.apache.org/download_jmeter.cgi ) 로 이동한다. binary file 을 다운받는다. ( zip 또는 tgz ) 압축을 푼다. 실행하기 JMeter에는 GUI mode 와  CLI...","categories": ["Test"],
+        "tags": ["JMeter","Test"],
+        "url": "http://localhost:4000/test/jmeter_basic/",
+        "teaser":"http://localhost:4000/assets/images/logo.png"},{
+        "title": "AWS CLI 기초 학습 공유",
+        "excerpt":"문서 목적 이 문서는 AWS Command Line Interface 사용 설명서를 살펴보며 AWS CLI에 대한 학습했던 내용을 개인적으로 정리하기 위하여 작성되었다. AWS Command Line Interface 사용 설명서에서 필요한 부분만 정리하였다. macOS로 진행하였고 이와 관련 된 것만 정리하였다. AWS CLI란? AWS CLI는 Amazon Web Service Command Line Interface의 약자로 셸의 명령을 사용하여 AWS 서비스와 상호...","categories": ["AWS_CLI"],
+        "tags": ["AWS_CLI"],
+        "url": "http://localhost:4000/aws_cli/aws_cli_basic/",
+        "teaser":"http://localhost:4000/assets/images/logo.png"},{
+        "title": "Kubernetes 입문자를 위한 기초 내용 정리",
+        "excerpt":"문서목적 이 문서는 Kuberetes에 대한 기초 내용을 개인적으로 내용을 정리하기 위하여 작성되었다. 자세한 내용이나 특정 항목에 대한 서비스의 구체적인 정보는 공식사이트 자료를 참고하도록 한다. Docker 기초 개념 가상화의 정의 동일한 또는 상이한 여러 개의 운영체제를 완전히 독립된 방식으로 동시에 실행하는 것 (ex. 하나의 머신 위에 Linux와 Window 운영 체제를 동시에 실행)...","categories": ["Kubernetes"],
+        "tags": ["Kubernetes"],
+        "url": "http://localhost:4000/kubernetes/kubernetes_basic/",
         "teaser":"http://localhost:4000/assets/images/logo.png"}]

@@ -1,0 +1,841 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>AWS CLI 기초 학습 공유 - kelpin’s blog</title>
+<meta name="description" content="이 문서는 AWS Command Line Interface 사용 설명서를 살펴보며 AWS CLI에 대한 학습했던 내용을 개인적으로 정리하기 위하여 작성되었다.">
+
+
+  <meta name="author" content="kelpin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="kelpin's blog">
+<meta property="og:title" content="AWS CLI 기초 학습 공유">
+<meta property="og:url" content="http://localhost:4000/aws_cli/aws_cli_basic/">
+
+
+  <meta property="og:description" content="이 문서는 AWS Command Line Interface 사용 설명서를 살펴보며 AWS CLI에 대한 학습했던 내용을 개인적으로 정리하기 위하여 작성되었다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-12-26T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/aws_cli/aws_cli_basic/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "kelpin",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="kelpin's blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          kelpin's blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="kelpin" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">kelpin</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="AWS CLI 기초 학습 공유">
+    <meta itemprop="description" content="이 문서는 AWS Command Line Interface 사용 설명서를 살펴보며 AWS CLI에 대한 학습했던 내용을 개인적으로 정리하기 위하여 작성되었다.">
+    <meta itemprop="datePublished" content="December 26, 2019">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">AWS CLI 기초 학습 공유
+</h1>
+          
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 분 소요
+
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h1 id="문서-목적">문서 목적</h1>
+
+<p>이 문서는 <a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-chap-welcome.html">AWS Command Line Interface 사용 설명서</a>를 살펴보며 AWS CLI에 대한 학습했던 내용을 개인적으로 정리하기 위하여 작성되었다.</p>
+
+<p><a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-chap-welcome.html">AWS Command Line Interface 사용 설명서</a>에서 필요한 부분만 정리하였다.</p>
+
+<p>macOS로 진행하였고 이와 관련 된 것만 정리하였다.</p>
+
+<h1 id="aws-cli란">AWS CLI란?</h1>
+
+<p>AWS CLI는 Amazon Web Service Command Line Interface의 약자로 셸의 명령을 사용하여 AWS 서비스와 상호 작용할 수 있는 오픈 소스 도구이다.</p>
+
+<p>AWS Management 콘솔과 동일한 기능을 제공을 해준다. </p>
+
+<p> 자세한 내용은 <a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-chap-welcome.html">AWS Command Line Interface이란 무엇입니까?</a>를 참고한다.</p>
+
+<h1 id="설치방법">설치방법</h1>
+
+<h2 id="macos">macOS</h2>
+
+<p>다음과 같은 환경에서 AWS CLI 설치를 진행하였다.</p>
+
+<ul>
+  <li>macOS Mojave 버전 10.14.6(18G87)</li>
+</ul>
+
+<p>AWS CLI를 설치하기 위하여 아래의 Python 버전이상이 설치 되어 있어야 한다.</p>
+
+<p>2019. 8. 27 기준 </p>
+
+<p>Python 2 버전 2.6.5+ 또는 Python 3 버전 3.3+</p>
+
+<p>Python이 설치 되어있지 않다면 설치방법에 대하여 구글링을 하거나 다음과 같은 brew 명령을 활용하여 설치하면 된다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ brew intall python3
+</code></pre></div></div>
+
+<p>다른 설치 방법도 있지만 AWS CLI의 기본 배포 방법은 pip이며, 그중 pip3로 설치하는 것을 권장하고 있으므로 pip3로 설치를 진행한다.</p>
+
+<p>다음과 같이 AWS CLI를 설치를 진행한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pip3 install awscli --upgrade --user
+</code></pre></div></div>
+
+<p>다음과 같은 명령으로 AWS CLI 설치 확인겸 버전 확인을 한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ aws --version
+aws-cli/1.16.222 Python/2.7.16 Darwin/18.7.0 botocore/1.12.212
+</code></pre></div></div>
+
+<p>더 자세한 내용은 <a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-chap-install.html">AWS CLI 설치 - macOS</a>를 참고한다.</p>
+
+<h2 id="다른-os">다른 OS</h2>
+
+<p><a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-chap-install.html">AWS CLI 설치</a>에서 OS에 맞는 설치법으로 설치하면 된다.</p>
+
+<h1 id="구성-및-자격-증명-저장">구성 및 자격 증명 저장</h1>
+
+<p>AWS CLI는 자주 사용하는 구성 및 자격 증명을 파일로 저장하여 관리할 수 있다.</p>
+
+<h2 id="구성-및-자격-증명의-구조">구성 및 자격 증명의 구조</h2>
+
+<p>구성 및 자격 증명은 다음과 같은 구조로 저장된다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Users/user/.aws/
+├── config
+└── credentials
+</code></pre></div></div>
+
+<p>각각의 파일에 담기는 내용은 다음과 같다.</p>
+
+<p>config</p>
+
+<ul>
+  <li>
+    <p>output : aws cli로 부터 응답을 받는 형식 (예 : json, text)</p>
+  </li>
+  <li>
+    <p>region : aws region을 의미한다. region 코드표는 <a href="https://docs.aws.amazon.com/ko_kr/general/latest/gr/rande.html">AWS 서비스 엔드포인트</a>를 참고하여 설정해주면 된다.</p>
+  </li>
+</ul>
+
+<p>credentials</p>
+
+<ul>
+  <li>
+    <p>aws_access_key_id : 액세스 키 아이디를 입력한다.</p>
+  </li>
+  <li>
+    <p>aws_secret_access_key : 시크릿 액세스 키를 입력한다.</p>
+  </li>
+</ul>
+
+<p>자세한 내용은 <a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-files.html">구성 및 자격 증명 파일</a>을 참고한다.</p>
+
+<h2 id="프로필-파일">프로필 파일</h2>
+
+<p>AWS CLI에서는 프로필 별로 구성 및 자격 증명을 설정할 수 있다.</p>
+
+<p>프로필 별로 구성 및 자격증명을 지정하는 방법은 다음과 같다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ aws configure --profile "프로필명"
+</code></pre></div></div>
+
+<p>설정된 프로필을 확인하면 다음과 같다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat ~/.aws/config
+[default]
+region=us-west-2
+output=json
+[profile user1]
+region=us-east-1
+output=text
+ 
+$ cat ~/.aws/credential
+[default]
+aws_access_key_id="디폴트 엑세스 키 아이디"
+aws_secret_access_key="디폴트 시크릿 엑세스 키"
+[프로필명]
+aws_access_key_id="프로필명 엑세스 키 아이디"
+aws_secret_access_key="프로필명 시크릿 엑세스 키"
+</code></pre></div></div>
+
+<h1 id="aws-cli-사용--amazon-s3">AWS CLI 사용 : Amazon S3</h1>
+
+<p><a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html">AWS CLI에서 상위 수준(s3) 명령 사용</a>을 참고하여 문서에서 기술한대로 동작하는 지 확인했다.</p>
+
+<p>각 명령어 별로 케이스 염두하여 테스트 하였다.</p>
+
+<h3 id="cp-명령어">cp 명령어</h3>
+
+<p>케이스 : 로컬 파일을 s3로 복사</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls
+cp                local_cp_test.txt
+
+$ aws s3 ls s3://bucket/user-s3-cli-test/
+2019-08-22 21:10:50          0
+
+$ aws s3 cp local_cp_test.txt s3://bucket/user-s3-cli-test/s3_cp_test.txt
+upload: ./local_cp_test.txt to s3://bucket/user-s3-cli-test/s3_cp_test.txt
+
+$ aws s3 ls s3://bucket/user-s3-cli-test/
+2019-08-22 21:10:50          0
+2019-08-22 22:23:05         21 s3_cp_test.txt
+</code></pre></div></div>
+
+<p>케이스 : s3 파일을 로컬로 복사</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -al
+total 16
+drwxr-xr-x  3 user  staff    96  8 22 22:25 .
+drwxr-xr-x  7 user  staff   224  8 22 20:59 ..
+-rw-r--r--@ 1 user  staff  6148  8 22 22:19 .DS_Store
+
+$ aws s3 ls s3://bucket/user-s3-cli-test/
+2019-08-22 21:10:50          0
+2019-08-22 22:23:05         21 s3_cp_test.txt
+
+$ aws s3 cp s3://bucket/user-s3-cli-test/s3_cp_test.txt ./local_cp_test.txt
+download: s3://bucket/user-s3-cli-test/s3_cp_test.txt to ./local_cp_test.txt
+
+$ ls
+local_cp_test.txt
+</code></pre></div></div>
+
+<p>케이스 : s3 파일을 s3로 복사</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ aws s3 ls s3://bucket/user-s3-cli-test/
+2019-08-22 21:10:50          0
+2019-08-22 22:23:05         21 s3_cp_test.txt
+
+$ aws s3 cp s3://bucket/user-s3-cli-test/s3_cp_test.txt s3://bucket/user-s3-cli-test/s3_cp_test_copy.txt
+copy: s3://bucket/user-s3-cli-test/s3_cp_test.txt to s3://bucket/user-s3-cli-test/s3_cp_test_copy.txt
+
+$ aws s3 ls s3://bucket/user-s3-cli-test/
+2019-08-22 21:10:50          0
+2019-08-22 22:23:05         21 s3_cp_test.txt
+2019-08-22 22:30:43         21 s3_cp_test_copy.txt
+</code></pre></div></div>
+
+<p>케이스 : 로컬 디렉터리를 s3로 복사</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls ./cp_dir_test/
+local_cp_test.txt
+
+$ aws s3 ls s3://bucket/user-s3-cli-test/
+2019-08-22 21:10:50          0
+2019-08-22 22:23:05         21 s3_cp_test.txt
+2019-08-22 22:30:43         21 s3_cp_test_copy.txt
+
+$ aws s3 cp ./cp_dir_test s3://bucket/user-s3-cli-test/s3_cp_dir_test --recursive
+upload: cp_dir_test/local_cp_test.txt to s3://bucket/user-s3-cli-test/s3_cp_dir_test/local_cp_test.txt
+
+$ aws s3 ls s3://bucket/user-s3-cli-test/s3_cp_dir_test
+                           PRE s3_cp_dir_test/
+
+$ aws s3 ls s3://bucket/user-s3-cli-test/s3_cp_dir_test/
+2019-08-22 22:34:48         21 local_cp_test.txt
+</code></pre></div></div>
+
+<h3 id="lsmv-rm-명령">ls, mv, rm 명령</h3>
+
+<p><a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html">AWS CLI에서 상위 수준(s3) 명령 사용</a>을 참고하여 테스트한다.</p>
+
+<h1 id="참고-자료">참고 자료</h1>
+
+<ul>
+  <li>
+    <p><a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-chap-welcome.html">AWS Command Line Interface 사용 설명서</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-chap-install.html">AWS CLI 설치</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html">AWS CLI에서 상위 수준(s3) 명령 사용</a></p>
+  </li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#aws-cli" class="page__taxonomy-item" rel="tag">AWS_CLI</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#aws-cli" class="page__taxonomy-item" rel="tag">AWS_CLI</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2019-12-26T00:00:00+09:00">December 26, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=AWS+CLI+%EA%B8%B0%EC%B4%88+%ED%95%99%EC%8A%B5+%EA%B3%B5%EC%9C%A0%20http%3A%2F%2Flocalhost%3A4000%2Faws_cli%2Faws_cli_basic%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Faws_cli%2Faws_cli_basic%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Faws_cli%2Faws_cli_basic%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/test/jmeter_basic/" class="pagination--pager" title="JMeter 기본 사용법
+">이전</a>
+    
+    
+      <a href="/kubernetes/kubernetes_basic/" class="pagination--pager" title="Kubernetes 입문자를 위한 기초 내용 정리
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kubernetes/kubernetes_basic/" rel="permalink">Kubernetes 입문자를 위한 기초 내용 정리
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 분 소요
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Kuberetes에 대한 기초 내용을 개인적으로 내용을 정리하기 위하여 작성되었다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/test/jmeter_basic/" rel="permalink">JMeter 기본 사용법
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 분 소요
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description"> JMeter는 java로 만들어진 성능 테스트 툴이다. 구매한 솔루션의 Spec을 확인하거나 서버의 스케일링을 위해 사용한다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/lambda/chalice_tutorial/" rel="permalink">AWS Chalice - Tutorial 기초 학습 정리
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 분 소요
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 AWS Chalice Github README 문서를 학습하며 개인적인 학습정리를 위하여 작성되었다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src=
+          
+            "/assets/images/logo.png"
+          
+          alt="">
+      </div>
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/test/pytest_basic/" rel="permalink">PyTest 프레임워크 기초 사용법
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  11 분 소요
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Pytest framework에 관하여 학습한 내용을 정리하기 위해 작성되었다.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 kelpin. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/aws_cli/aws_cli_basic/";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/aws_cli/aws_cli_basic"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kelpin.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

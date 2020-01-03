@@ -15,24 +15,24 @@
 minimal_mistakes_skin    : "dark" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
-locale                   : "ko_KR"
-title                    : "Andro's tech blog"
+locale                   : "ko"
+title                    : "kelpin's blog"
 title_separator          : "-"
 subtitle                 : "To the best" # site tagline that appears below site title in masthead
-name                     : "Andro"
-description              : "Andro의 블로그입니다. 학습했던 것을 정리해 블로그에 올리고 있습니다."
+name                     : "kelpin"
+description              : "kelpin의 블로그입니다. 학습했던 것을 정리해 블로그에 올리고 있습니다."
 url                      : # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : "/assets/images/logo.png" # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : #"/assets/images/logo.jpg" # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
-masthead_title           : "Andro's tech blog" # overrides the website title displayed in the masthead, use " " for no title
+masthead_title           : "kelpin's blog" # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
 comments:
-  provider               : # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
+  provider               : "disqus" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
   disqus:
-    shortname            : # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
+    shortname            : "kelpin" # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
   discourse:
     server               : # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , e.g.: meta.discourse.org
   facebook:
@@ -107,7 +107,7 @@ analytics:
 
 # Site Author
 author:
-  name             : "Andro"
+  name             : "kelpin"
   avatar           : "/assets/images/avata.png" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "There are no masterpieces made by lazy artists."
   location         : "Seoul, South of korea"
@@ -290,6 +290,6 @@ defaults:
       classes: wide
       author_profile: true
       read_time: true
-      comments: # true
+      comments: true
       share: true
       related: true
