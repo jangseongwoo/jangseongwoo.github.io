@@ -21,7 +21,7 @@ title_separator          : "-"
 subtitle                 : "To the best" # site tagline that appears below site title in masthead
 name                     : "kelpin"
 description              : "kelpin의 블로그입니다. 학습했던 것을 정리해 블로그에 올리고 있습니다."
-url                      : # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+url                      : https://jangseongwoo.github.io/ # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : "/assets/images/logo1.png" # path of fallback teaser image, e.g. "/assets/images/500x300.png"
