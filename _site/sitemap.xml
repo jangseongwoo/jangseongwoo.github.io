@@ -1,120 +1,289 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url>
-<loc>http://localhost:4000/fluentd/fluentd_to_aws_kinesis/</loc>
-<lastmod>2019-12-09T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/fluentd/fluentd_basic/</loc>
-<lastmod>2019-12-10T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/fluentd/fluentd_file_path_test/</loc>
-<lastmod>2019-12-10T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/fluentd/fluentd_filter_plugin_operation_check/</loc>
-<lastmod>2019-12-10T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/fluentd/fluentd_install/</loc>
-<lastmod>2019-12-10T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/fluentd/fluentd_output_plugin_operation_check/</loc>
-<lastmod>2019-12-10T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/slack/slack_api_webhook/</loc>
-<lastmod>2019-12-11T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/logging/python_logging_basic/</loc>
-<lastmod>2019-12-12T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/django/django_make_board/</loc>
-<lastmod>2019-12-13T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/logging/flask_logging/</loc>
-<lastmod>2019-12-13T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/monitoring/newrelic_basic/</loc>
-<lastmod>2019-12-13T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/boto3/boto3_basic/</loc>
-<lastmod>2019-12-16T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/docker/docker_basic/</loc>
-<lastmod>2019-12-17T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/docker/docker_volume_mount/</loc>
-<lastmod>2019-12-19T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/test/pytest_basic/</loc>
-<lastmod>2019-12-20T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/lambda/chalice_tutorial/</loc>
-<lastmod>2019-12-22T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/test/jmeter_basic/</loc>
-<lastmod>2019-12-23T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/aws_cli/aws_cli_basic/</loc>
-<lastmod>2019-12-26T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/kubernetes/kubernetes_basic/</loc>
-<lastmod>2019-12-26T00:00:00+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/category/Docker/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/category/Fluentd/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/categories/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/collection-archive/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/page-archive/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/tags/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/year-archive/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/page2/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/page3/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/page4/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/elements.html</loc>
-<lastmod>2019-12-09T19:54:51+09:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/generic.html</loc>
-<lastmod>2019-12-09T19:54:51+09:00</lastmod>
-</url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    
+    
+    <url>
+        <loc>http://localhost:4000/kubernetes/kubernetes_basic/</loc>
+        
+        <lastmod>2019-12-26T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/aws_cli/aws_cli_basic/</loc>
+        
+        <lastmod>2019-12-26T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/test/jmeter_basic/</loc>
+        
+        <lastmod>2019-12-23T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/lambda/chalice_tutorial/</loc>
+        
+        <lastmod>2019-12-22T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/test/pytest_basic/</loc>
+        
+        <lastmod>2019-12-20T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/docker/docker_volume_mount/</loc>
+        
+        <lastmod>2019-12-19T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/docker/docker_basic/</loc>
+        
+        <lastmod>2019-12-17T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/boto3/boto3_basic/</loc>
+        
+        <lastmod>2019-12-16T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/monitoring/newrelic_basic/</loc>
+        
+        <lastmod>2019-12-13T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/logging/flask_logging/</loc>
+        
+        <lastmod>2019-12-13T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/django/django_make_board/</loc>
+        
+        <lastmod>2019-12-13T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/logging/python_logging_basic/</loc>
+        
+        <lastmod>2019-12-12T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/slack/slack_api_webhook/</loc>
+        
+        <lastmod>2019-12-11T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/fluentd/fluentd_output_plugin_operation_check/</loc>
+        
+        <lastmod>2019-12-10T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/fluentd/fluentd_install/</loc>
+        
+        <lastmod>2019-12-10T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/fluentd/fluentd_filter_plugin_operation_check/</loc>
+        
+        <lastmod>2019-12-10T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/fluentd/fluentd_file_path_test/</loc>
+        
+        <lastmod>2019-12-10T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/fluentd/fluentd_basic/</loc>
+        
+        <lastmod>2019-12-10T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/fluentd/fluentd_to_aws_kinesis/</loc>
+        
+        <lastmod>2019-12-09T00:00:00+09:00</lastmod>
+        
+        
+        <changefreq>monthly</changefreq>
+        
+        
+        <priority>0.5</priority>
+        
+    </url>
+    
+    
 </urlset>
