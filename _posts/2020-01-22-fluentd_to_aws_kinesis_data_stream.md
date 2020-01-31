@@ -1,5 +1,5 @@
 ---
-title:  "Fluentd로 데이터 수집해 AWS Kinesis Dataa stream으로 보내기"
+title:  "Fluentd로 데이터 수집해 AWS Kinesis Data stream으로 보내기"
 excerpt: "이 문서는 AWS Kinesis에 대한 학습 중 Fluentd와 AWS Kinesis Data stream을 연동 하여 데이터를 처리하는 방법에 대해 테스트하고 공유하기 위해 작성했다."
 
 categories:

@@ -76,7 +76,6 @@ $ pytest
 ```
 
   
-
 Pytest가 어떤 규칙을 통해 Testcode를 찾아 실행하는 지에 대한 자세한 내용은 [문서](https://docs.pytest.org/en/latest/goodpractices.html#test-discovery)를 클릭하면 알 수 있다.
 
 사용자가 지정한 규칙에 해당하는 테스트 코드 실행하는 방법
@@ -97,7 +96,7 @@ $ pytest ./
 
   
 
-다음과 같이 2개의 테스트 코드 test\_sample\_1.py, test\_sample\_2.py를 입력한다.
+다음과 같이 2개의 테스트 코드 test\_sample\_1.py, test\_sample\_2.py를 작성한다.
 
 ```
 def func(x):
@@ -125,7 +124,7 @@ def test_answer2():
 $ pytest test_sample_*
 ==================================== test session starts ====================================
 platform darwin -- Python 3.7.4, pytest-5.1.1, py-1.8.0, pluggy-0.12.0
-rootdir: /Users/kevin/dev/pytest_tutorial
+rootdir: /Users/kelpin/dev/pytest_tutorial
 collected 2 items
 
 test_sample_1.py F                                                                    [ 50%]
@@ -157,7 +156,7 @@ Assert 기능과 Pytest 실행 결과 설명
 
 * * *
 
-assert 기능을 테스트 하기 위해 다음과 같은 테스트 코드를 입력한다.
+assert 기능을 테스트 하기 위해 다음과 같은 테스트 코드를 작성한다.
 
 ```
 def func(x):
@@ -177,7 +176,7 @@ test\_answer를 실행하여 func(3)의 값과 5를 같은지 비교하고 같�
 $ pytest test_sample.py
 ==================================== test session starts ====================================
 platform darwin -- Python 3.7.4, pytest-5.1.1, py-1.8.0, pluggy-0.12.0
-rootdir: /Users/kevin/dev/pytest_tutorial
+rootdir: /Users/kelpin/dev/pytest_tutorial
 collected 1 item
  
 test_sample.py F                                                                      [100%]
@@ -198,7 +197,7 @@ test_sample.py:6: AssertionError
 
 테스트 결과를 설명하면 다음과 같다.
 
-*   _collected 2 item_ : 2개의 테스트 코드가 수집되었다는 것을 의미한다.
+*   _collected 2 item_ : 2개의 테스트 코드가 테스트 대상으로 확인되었다는 것을 의미한다.
     
 *   _test\_sample\_1.py F_ : test\_sample\_1.py에 있는 테스트 함수가 테스트 실패(F) 했음을 의미한다.
     
@@ -242,7 +241,7 @@ def test_even():
 $ pytest test_sample.py
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.1.1, py-1.8.0, pluggy-0.12.0
-rootdir: /Users/kevin/dev/pytest_tutorial
+rootdir: /Users/kelpin/dev/pytest_tutorial
 collected 1 item                                                                                                                                                                                                                            
 
 test_sample.py F                                                                                                                                                                                                                      [100%]
@@ -264,7 +263,7 @@ test_sample.py:10: AssertionError
 
 다음은 참고한 문서이다.
 
-*   [https://docs.pytest.org/en/latest/goodpractices.html#good-integration-practices](https://docs.pytest.org/en/latest/goodpractices.html#good-integration-practices)
+*   [https://docs.pytest.org/en/latest/assert.html#asserting-with-the-assert-statement](https://docs.pytest.org/en/latest/assert.html#asserting-with-the-assert-statement)
     
 
 AssertError시 출력되는 메세지 변경하기
@@ -347,7 +346,7 @@ PyTest framework로 test\_foocompare.py를 실행하면 다음과 같다.
 $ pytest test_foocompare.py      
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kevin/dev/pytest_tutorial/assert
+rootdir: /Users/kelpin/dev/pytest_tutorial/assert
 collected 1 item                                                                                                                                                                                                                            
 
 test_foocompare.py F                                                                                                                                                                                                                  [100%]
@@ -382,7 +381,9 @@ ExceptionError 발생 테스트하기
 
 * * *
 
-테스트할 대상에 의도적으로 ExceptionError를 발생시키는 인자를 입력하여 ExceptionError가 발생하는지 테스트 해야 하는 경우가 있다.
+테스트할 대상중에는 ExceptionError를 발생시키는 케이스에서 정상적으로 ExceptionError가 발생하는지 테스트 해야 하는 경우가 있다.
+
+대표적으로 특정 함수가 특정한 경우에 Exception을 raise시키는 로직이 포함되어 있는 경우가 있다.
 
 만약 ExceptionError를 발생시키는 인자를 입력하여 ExceptionError가 발생하면 ExceptionError가 발생한 테스트 코드 아래의 코드들은 실행되지 않는다.
 
@@ -418,7 +419,7 @@ PyTest framework로 테스트 코드를 실행하고 결과를 확인한다. 
 $ pytest test_exception_zero_division.py
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kevin/dev/pytest_tutorial
+rootdir: /Users/kelpin/dev/pytest_tutorial
 collected 2 items                                                                                                                                                                                                                           
 
 test_sample.py .F                                                                                                                                                                                                                     [100%]
@@ -483,7 +484,7 @@ PyTest framework로 test\_square\_10.py를 실행하면 다음과 같다.
 $ pytest test_square_10.py
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kevin/dev/pytest_tutorial/fixture
+rootdir: /Users/kelpin/dev/pytest_tutorial/fixture
 collected 1 item                                                                                                                                                                                                                            
 
 test_square_10.py F                                                                                                                                                                                                               [100%]
@@ -553,7 +554,7 @@ PyTest framework를 실행하고 결과를 확인한다.
 $ pytest *er.py
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kevin/dev/pytest_tutorial/fixture/over_under
+rootdir: /Users/kelpin/dev/pytest_tutorial/fixture/over_under
 collected 2 items                                                                                                                                                                                                                           
 
 test_fixture_over.py F                                                                                                                                                                                                                [ 50%]
@@ -606,14 +607,14 @@ Fixture의 실제 사용 예는 다음과 같다.
 
 1.  테스트를 위한 임시 디렉토리와 파일을 생성한다.
     
-2.  임시 파일에 데이터를 입력한다.
+2.  임시 파일에 데이터를 수집되었다는 것을 의미한다
     
 3.  데이터를 입력 완료 후 임시 디렉토리와 파일을 삭제한다.
     
 4.  테스트를 종료한다.
     
 
-위의 사례를 직접 경험하기 위해 다음과 같이 코드를 입력한다.
+위의 사례를 직접 경험하기 위해 다음과 같이 코드를 작성한다.
 
 ```
 import pytest
@@ -762,7 +763,7 @@ pytest framework로 test\_params.py를 실행하면 다음과 같다.
 $ pytest test_params.py
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kevin/dev/pytest_tutorial/fixture
+rootdir: /Users/kelpin/dev/pytest_tutorial/fixture
 collected 3 items                                                                                                                                                                                                                           
 
 test_params.py FFF                                                                                                                                                                                                           [100%]
@@ -848,7 +849,7 @@ Pytest framework를 실행하면 다음과 같다.
 $ pytest test_expectation.py
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kevin/dev/pytest_tutorial/fixture
+rootdir: /Users/kelpin/dev/pytest_tutorial/fixture
 collected 3 items                                                                                                                                                                                                                           
 
 test_expectation.py ..F                                                                                                                                                                                                           [100%]
