@@ -8,16 +8,6 @@ tags:
   - Elasticsearch
 ---
 
-*   [문서 목적](#ElasticsearchMulti-matchquery내용정리-문서목적)
-*   [테스트 환경](#ElasticsearchMulti-matchquery내용정리-테스트환경)
-*   [Multi\_match 기본 설정에 대한 설명](#ElasticsearchMulti-matchquery내용정리-Multi_match기본설정에대한설명)
-*   [Multi\_match wildcards, 가중치 설명](#ElasticsearchMulti-matchquery내용정리-Multi_matchwildcards,가중치설명)
-*   [Multi\_match Type option에 대한 설명](#ElasticsearchMulti-matchquery내용정리-Multi_matchTypeoption에대한설명)
-    *   [Best\_fields type](#ElasticsearchMulti-matchquery내용정리-Best_fieldstype)
-    *   [Most\_fields type](#ElasticsearchMulti-matchquery내용정리-Most_fieldstype)
-    *   [Phrase and Phrase\_prefix type](#ElasticsearchMulti-matchquery내용정리-PhraseandPhrase_prefixtype)
-    *   [Cross\_fields type](#ElasticsearchMulti-matchquery내용정리-Cross_fieldstype)
-*   [참고 자료 ](#ElasticsearchMulti-matchquery내용정리-참고자료)
 
 문서 목적
 =====
