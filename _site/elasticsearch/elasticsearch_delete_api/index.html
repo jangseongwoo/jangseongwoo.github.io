@@ -1,0 +1,1126 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Elasticsearch delete API 관련 테스트 및 정리 - kelpin’s blog</title>
+<meta name="description" content="Elasticsearch에 indexing된 document를 특정 필드의 값을 기준으로 삭제하는 기능에 대하여 테스트 한다.">
+
+
+  <meta name="author" content="kelpin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="kelpin's blog">
+<meta property="og:title" content="Elasticsearch delete API 관련 테스트 및 정리">
+<meta property="og:url" content="http://localhost:4000/elasticsearch/elasticsearch_delete_api/">
+
+
+  <meta property="og:description" content="Elasticsearch에 indexing된 document를 특정 필드의 값을 기준으로 삭제하는 기능에 대하여 테스트 한다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-01-07T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/elasticsearch/elasticsearch_delete_api/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "kelpin",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="kelpin's blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          kelpin's blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#elasticsearch" itemprop="item"><span itemprop="name">Elasticsearch</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Elasticsearch delete API 관련 테스트 및 정리</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="kelpin" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">kelpin</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Elasticsearch delete API 관련 테스트 및 정리">
+    <meta itemprop="description" content="Elasticsearch에 indexing된 document를 특정 필드의 값을 기준으로 삭제하는 기능에 대하여 테스트 한다.">
+    <meta itemprop="datePublished" content="January 07, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Elasticsearch delete API 관련 테스트 및 정리
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> Index</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#테스트-개요">테스트 개요</a></li>
+  <li><a href="#테스트-환경">테스트 환경</a></li>
+  <li><a href="#테스트-데이터">테스트 데이터</a></li>
+  <li><a href="#테스트-방식과정">테스트 방식/과정</a>
+    <ul>
+      <li><a href="#테스트-데이터-인덱싱">테스트 데이터 인덱싱</a></li>
+      <li><a href="#테스트-케이스-1---하나의-값을-기준으로-삭제">테스트 케이스 1 - 하나의 값을 기준으로 삭제</a></li>
+      <li><a href="#테스트-케이스-2---여러개의-값을-기준으로-삭제">테스트 케이스 2 - 여러개의 값을 기준으로 삭제</a></li>
+    </ul>
+  </li>
+  <li><a href="#테스트-결과">테스트 결과</a></li>
+  <li><a href="#참고자료">참고자료</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h1 id="테스트-개요">테스트 개요</h1>
+
+<p>Elasticsearch에 indexing된 document를 특정 필드의 값을 기준으로 삭제하는 기능에 대하여 테스트 한다.</p>
+
+<p>Elasticsearch의 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docs-delete.html">Delete API</a>는 문서의 id값을 기준으로 삭제하기 때문에 일반적으로 데이터를 삭제하는 방식으로 사용하기 어렵다.<br />
+Elasticsearch에서 document를 indexing하면서 document의 id를 특정 값으로 직접 부여하지 않고 indexing한 경우, Elasticsearch의 내부 정책에 따라 hash 형태의 값을 문서의 id값으로 부여하기 때문에 사전에 다른 확인 과정 없이 삭제 대상 문서를 id로 직접 지정하는 방식은 거의 불가능하다.</p>
+
+<p>Elasticsearch는 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docs-delete-by-query.html">Delete By Query API</a>를 통해 특정 검색 조건을 만족하는 결과 문서를 삭제하는 것이 가능하다.<br />
+이 문서는 Delete By Query API 사용에 대한 상세한 방법을 설명하기 위한 문서가 아니며 Delete By Query API를 사용하여 특정 검색 조건을 만족하는 결과 문서를 삭제하는 방법과 그와 관련된 테스트에 대한 내용을 정리하기 위하여 작성되었다.<br />
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docs-delete-by-query.html">Delete By Query API</a>에 대한 자세한 설명은 공식 문서를 참고하도록 한다.</p>
+
+<hr />
+
+<h1 id="테스트-환경">테스트 환경</h1>
+
+<p>테스트는 아래와 같은 환경에서 진행되었다.</p>
+
+<ul>
+  <li>
+    <p>macOS Mojave 10.14.4</p>
+  </li>
+  <li>
+    <p>Elasticsearch 6.7.2</p>
+  </li>
+  <li>
+    <p>Kibana 6.7.2</p>
+  </li>
+</ul>
+
+<hr />
+
+<h1 id="테스트-데이터">테스트 데이터</h1>
+
+<p>아래와 같은 형태의 데이터를 indexing하여 테스트를 진행한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    "data_text" : "string type data",
+    "db_ref" : 1,
+    "interest" : "test",
+    "subject" : "math"
+}
+
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="테스트-방식과정">테스트 방식/과정</h1>
+
+<p>Kibana의 Dev Tools 환경에서 대부분의 테스트를 진행하였다.</p>
+
+<p>테스트 인덱스, 맵핑, 데이터셋</p>
+
+<ul>
+  <li>
+    <p>테스트 인덱스 이름 : es_data_delete_test_index</p>
+  </li>
+  <li>
+    <p>테스트 인덱스 맵핑 : dynamic mapping</p>
+  </li>
+</ul>
+
+<h2 id="테스트-데이터-인덱싱">테스트 데이터 인덱싱</h2>
+
+<p>bulk API를 사용하여 테스트용 데이터를 인덱싱한다. 9개의 테스트 데이터를 인덱싱한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST _bulk
+{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
+{ "data_text" : "math text 1", "db_ref" : 1, "interest" : "test", "subject" : "math" }
+{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
+{ "data_text" : "math text 2", "db_ref" : 2, "interest" : "test", "subject" : "math" }
+{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
+{ "data_text" : "math text 3", "db_ref" : 3, "interest" : "test", "subject" : "math" }
+{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
+{ "data_text" : "english text 4", "db_ref" : 4, "interest" : "test", "subject" : "eng" }
+{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
+{ "data_text" : "english text 5", "db_ref" : 5, "interest" : "test", "subject" : "eng"}
+{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
+{ "data_text" : "english text 6", "db_ref" : 6, "interest" : "test", "subject" : "eng" }
+{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
+{ "data_text" : "한글 텍스트 7", "db_ref" : 7, "interest" : "test", "subject" : "korean" }
+{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
+{ "data_text" : "한글 텍스트 8", "db_ref" : 8, "interest" : "test", "subject" : "korean" }
+{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
+{ "data_text" : "한글 텍스트 9", "db_ref" : 9, "interest" : "test", "subject" : "korean" }
+
+</code></pre></div></div>
+
+<p>아래와 같은 명령으로 테스트 데이터가 정상적으로 저장되어 있는지 조회해본다.</p>
+
+<ul>
+  <li>
+    <p>전체 데이터 검색</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
+{
+    "query" : {
+        "match_all" : {}
+    }
+}
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>검색 결과 개수 확인. 응답에서 count 필드의 값을 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_count
+    
+GET /es_data_delete_test_index/_count
+{
+    "query" : {
+        "match_all" : {}
+    }
+}
+    
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="테스트-케이스-1---하나의-값을-기준으로-삭제">테스트 케이스 1 - 하나의 값을 기준으로 삭제</h2>
+
+<p>Elasticsearch <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/query-dsl-term-query.html">term query</a>를 사용하여 특정 필드에 대하여 정확한 term을 기준으로 데이터를 검색할 수 있다.</p>
+
+<p>아래 예는 term query를 사용하여 db_ref 필드의 값이 1인 데이터를 검색하는 예이다. db_ref 필드의 값은 유니크한 식별자 값으로 특정 db_ref값을 갖는 문서는 오직 한개만 존재하도록 테스트 데이터가 인덱싱 되어있다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
+{
+    "query": {
+        "term" : { "db_ref" : 1 }
+    }
+}
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "took" : 1,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 1,
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "es_data_delete_test_index",
+        "_type" : "_doc",
+        "_id" : "-72zOG0BAWG07ejJMX7s",
+        "_score" : 1.0,
+        "_source" : {
+          "data_text" : "math text 1",
+          "db_ref" : 1,
+          "interest" : "test",
+          "subject" : "math"
+        }
+      }
+    ]
+  }
+}
+
+</code></pre></div></div>
+
+<p>delete by query의 search 요청으로 term query를 전달하여 데이터 삭제요청을 한다. term query 조건에 만족되는 모든 데이터에 대하여 삭제를 요청하는 것이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /es_data_delete_test_index/_delete_by_query
+{
+    "query": {
+        "term" : { "db_ref" : 1 }
+    }
+}
+
+</code></pre></div></div>
+
+<p>삭제요청에 대한 응답 메시지는 아래와 같다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    "took" : 218,
+    "timed_out" : false,
+    "total" : 1,
+    "deleted" : 1,
+    "batches" : 1,
+    "version_conflicts" : 0,
+    "noops" : 0,
+    "retries" : {
+        "bulk" : 0,
+        "search" : 0
+    },
+    "throttled_millis" : 0,
+    "requests_per_second" : -1.0,
+    "throttled_until_millis" : 0,
+    "failures" : [ ]
+}
+
+</code></pre></div></div>
+
+<p>delete by query 응답을 확인하고나서 다시 term query로 해당 db_ref값을 갖는 데이터를 검색하여 삭제여부를 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
+{
+    "query": {
+        "term" : { "db_ref" : 1 }
+    }
+}
+
+# 응답
+{
+  "took" : 0,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 0,
+    "max_score" : null,
+    "hits" : [ ]
+  }
+}
+
+</code></pre></div></div>
+
+<p>앞서 진행한 테스트는 고유의 값을 갖는 db_ref필드에 대한 조건으로 삭제요청을 한 것이었다.<br />
+이제 subject 필드와 같이 같은 값을 갖는 데이터가 여러개 존재하는 필드에 대한 값을 조건으로 삭제 테스트를 해보자.</p>
+
+<ol>
+  <li>
+    <p>subject 필드값이 ‘eng’인 데이터를 검색하여 몇 개의 데이터가 검색되는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
+{
+    "query": {
+        "term" : { "subject" : "eng" }
+    }
+}
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>subject 필드의 값이 ‘eng’ 인 조건으로 삭제 요청을 한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /es_data_delete_test_index/_delete_by_query
+{
+    "query": {
+        "term" : { "subject" : "eng" }
+    }
+}
+    
+{
+  "took" : 28,
+  "timed_out" : false,
+  "total" : 3,
+  "deleted" : 3,
+  "batches" : 1,
+  "version_conflicts" : 0,
+  "noops" : 0,
+  "retries" : {
+    "bulk" : 0,
+    "search" : 0
+  },
+  "throttled_millis" : 0,
+  "requests_per_second" : -1.0,
+  "throttled_until_millis" : 0,
+  "failures" : [ ]
+}
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>subject 필드값이 ‘eng’인 데이터를 검색하여 몇 개의 데이터가 검색되는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
+{
+    "query": {
+        "term" : { "subject" : "eng" }
+    }
+}
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>검색 조건을 만족하는 모든 데이터가 삭제되었음을 확인할 수 있다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "took" : 0,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 0,
+    "max_score" : null,
+    "hits" : [ ]
+  }
+}
+    
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>삭제 테스트용 데이터를 다시 인덱싱하여 interest 필드와 같이 전체 데이터가 동일한 값을 갖는 필드를 기준으로 삭제 요청하여 전체 데이터가 삭제되는 것을 확인할 수 있다.</p>
+
+<ol>
+  <li>
+    <p>interest 필드값이 ‘test’인 데이터를 검색하여 몇 개의 데이터가 검색되는지 확인한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
+{
+    "query": {
+        "term" : { "interest" : "test" }
+    }
+}
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>interest 필드의 값이 ‘test’ 인 조건으로 삭제 요청을 한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /es_data_delete_test_index/_delete_by_query
+{
+    "query": {
+        "term" : { "subject" : "test" }
+    }
+}
+    
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="테스트-케이스-2---여러개의-값을-기준으로-삭제">테스트 케이스 2 - 여러개의 값을 기준으로 삭제</h2>
+
+<p>Elasticsearch <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/query-dsl-terms-query.html">terms query</a>를 사용하여 특정 필드에 대하여 주어진 값들에 대하여 하나라도 만족하는 경우를 기준으로 데이터를 검색할 수 있다.</p>
+
+<p>아래 예는 terms query를 사용하여 db_ref 필드의 값이 1, 3, 5 중에 하나라도 일치하는 데이터는 모두 검색하는 쿼리 예이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
+{
+    "query": {
+        "terms" : { "db_ref" : [1, 3, 5] }
+    }
+}
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "took" : 0,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 3,
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "es_data_delete_test_index",
+        "_type" : "_doc",
+        "_id" : "Gr30OG0BAWG07ejJyH_Z",
+        "_score" : 1.0,
+        "_source" : {
+          "data_text" : "english text 5",
+          "db_ref" : 5,
+          "interest" : "test",
+          "subject" : "eng"
+        }
+      },
+      {
+        "_index" : "es_data_delete_test_index",
+        "_type" : "_doc",
+        "_id" : "Fr30OG0BAWG07ejJyH_Z",
+        "_score" : 1.0,
+        "_source" : {
+          "data_text" : "math text 1",
+          "db_ref" : 1,
+          "interest" : "test",
+          "subject" : "math"
+        }
+      },
+      {
+        "_index" : "es_data_delete_test_index",
+        "_type" : "_doc",
+        "_id" : "GL30OG0BAWG07ejJyH_Z",
+        "_score" : 1.0,
+        "_source" : {
+          "data_text" : "math text 3",
+          "db_ref" : 3,
+          "interest" : "test",
+          "subject" : "math"
+        }
+      }
+    ]
+  }
+}
+
+</code></pre></div></div>
+
+<p>delete by query의 search 요청으로 terms query를 전달하여 데이터 삭제요청을 한다. terms query 조건에 만족되는 모든 데이터에 대하여 삭제를 요청하는 것이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /es_data_delete_test_index/_delete_by_query
+{
+    "query": {
+        "term" : { "db_ref" : 1 }
+    }
+}
+
+</code></pre></div></div>
+
+<p>삭제요청에 대한 응답 메시지는 아래와 같다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    "took" : 41,
+    "timed_out" : false,
+    "total" : 3,
+    "deleted" : 3,
+    "batches" : 1,
+    "version_conflicts" : 0,
+    "noops" : 0,
+    "retries" : {
+        "bulk" : 0,
+        "search" : 0
+    },
+    "throttled_millis" : 0,
+    "requests_per_second" : -1.0,
+    "throttled_until_millis" : 0,
+    "failures" : [ ]
+}
+
+</code></pre></div></div>
+
+<p>delete by query 응답을 확인하고나서 다시 term query로 해당 db_ref값을 갖는 데이터를 검색하여 삭제여부를 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
+{
+    "query": {
+        "terms" : { "db_ref" : [1, 3, 5] }
+    }
+}
+
+# 응답
+{
+    "took" : 0,
+    "timed_out" : false,
+    "_shards" : {
+        "total" : 5,
+        "successful" : 5,
+        "skipped" : 0,
+        "failed" : 0
+    },
+    "hits" : {
+        "total" : 0,
+        "max_score" : null,
+        "hits" : [ ]
+    }
+}
+
+</code></pre></div></div>
+
+<p>아래와 같이 문서들의 모든 db_ref값을 삭제 대상 조건으로 terms query에 전달하여 전체 데이터를 삭제하는 것이 가능하다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
+{
+    "query": {
+        "terms" : { "db_ref" : [1, 2, 3, 4, 5, 6, 7, 8, 9] }
+    }
+}
+
+</code></pre></div></div>
+
+<p>다양한 search query 방식으로 데이터 삭제를 테스트 해보자.<br />
+아래 예는 subject의 값이 ‘math’이거나 ‘eng’인 데이터를 삭제하는 요청이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /es_data_delete_test_index/_delete_by_query
+{
+    "query": {
+        "terms" : { "subject" : ["math", "eng"] }
+    }
+}
+
+</code></pre></div></div>
+
+<p>아래 예는 db_ref의 값이 1보다 크거나 같고, 3보다 작거나 같은 데이터를 삭제하는 요청이다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /es_data_delete_test_index/_delete_by_query
+{
+    "query": {
+        "range": {
+            "db_ref": {
+              "gte": 1,
+              "lte" : 3
+            }
+        }
+    }
+}
+
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="테스트-결과">테스트 결과</h1>
+
+<p>Elasticsearch는 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docs-delete-by-query.html">Delete By Query API</a>를 통해 특정 검색 조건을 만족하는 문서를 삭제하는 것이 가능하였다.<br />
+숫자형의 필드값을 갖는 데이터에 대해서도 terms query를 search query로 사용하여 조건에 부합하는 다수의 문서를 삭제하는 것이 가능하였다.</p>
+
+<h1 id="참고자료">참고자료</h1>
+
+<ul>
+  <li>
+    <p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docs-delete.html">Elasticsearch Delete API</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docs-delete-by-query.html">Elasticsearch Delete By Query API</a></p>
+  </li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#elasticsearch" class="page__taxonomy-item" rel="tag">Elasticsearch</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#elasticsearch" class="page__taxonomy-item" rel="tag">Elasticsearch</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2020-01-07T00:00:00+09:00">January 07, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Elasticsearch+delete+API+%EA%B4%80%EB%A0%A8+%ED%85%8C%EC%8A%A4%ED%8A%B8+%EB%B0%8F+%EC%A0%95%EB%A6%AC%20http%3A%2F%2Flocalhost%3A4000%2Felasticsearch%2Felasticsearch_delete_api%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Felasticsearch%2Felasticsearch_delete_api%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Felasticsearch%2Felasticsearch_delete_api%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/kubernetes/kubernetes_basic/" class="pagination--pager" title="Kubernetes 입문자를 위한 기초 내용 정리
+">이전</a>
+    
+    
+      <a href="/elasticsearch/elasticesarch_alias_index_test/" class="pagination--pager" title="Elasticsearch - 여러 개의 Index와 연결된 Alias를 대상으로 Indexing 요청을 하는 경우 동작 확인
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_official_documents/" rel="permalink">Kafka 공식문서
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_quick_start_guide/" rel="permalink">Kafka 설치 및 간단 사용법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/linux/how_to_running_process_in_background/" rel="permalink">Linux환경에서 Process background에서 실행하는 방법, 프로세스 확인, 종료하는 방법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Linux환경에서 Process background에서 실행하는 방법에 대해 정리하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/celery/celery_ml_model_build/" rel="permalink">Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 ML 모델 기반의 API서비스를 만든 후, 추가적으로 고도화에 대해 공부하고 개발한 부분을 남기고 공유하기 위해 작성했다. 
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 kelpin. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/elasticsearch/elasticsearch_delete_api/";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/elasticsearch/elasticsearch_delete_api"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kelpin.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

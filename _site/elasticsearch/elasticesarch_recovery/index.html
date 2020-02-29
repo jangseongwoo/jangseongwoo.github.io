@@ -1,0 +1,743 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Amazon Elasticsearch 인덱스 복구 - kelpin’s blog</title>
+<meta name="description" content="이 문서는 AWS Elasticsearch를 복구하는 과정을 정리한 문서이다.">
+
+
+  <meta name="author" content="kelpin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="kelpin's blog">
+<meta property="og:title" content="Amazon Elasticsearch 인덱스 복구">
+<meta property="og:url" content="http://localhost:4000/elasticsearch/elasticesarch_recovery/">
+
+
+  <meta property="og:description" content="이 문서는 AWS Elasticsearch를 복구하는 과정을 정리한 문서이다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-01-09T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/elasticsearch/elasticesarch_recovery/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "kelpin",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="kelpin's blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          kelpin's blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#elasticsearch" itemprop="item"><span itemprop="name">Elasticsearch</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Amazon Elasticsearch 인덱스 복구</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="kelpin" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">kelpin</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Amazon Elasticsearch 인덱스 복구">
+    <meta itemprop="description" content="이 문서는 AWS Elasticsearch를 복구하는 과정을 정리한 문서이다.">
+    <meta itemprop="datePublished" content="January 09, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Amazon Elasticsearch 인덱스 복구
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> Index</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#목적">목적</a></li>
+  <li><a href="#환경">환경</a></li>
+  <li><a href="#복구-과정">복구 과정</a>
+    <ul>
+      <li><a href="#스냅샷-존재-여부-확인">스냅샷 존재 여부 확인</a></li>
+      <li><a href="#스냅샷으로-인덱스-복구">스냅샷으로 인덱스 복구</a></li>
+    </ul>
+  </li>
+  <li><a href="#참고자료">참고자료</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h1 id="목적">목적</h1>
+
+<p>이 문서는 AWS Elasticsearch를 복구하는 과정을 정리한 문서이다.</p>
+
+<p>인덱스 복구에 대한 자세한 내용은 <a href="https://docs.aws.amazon.com/ko_kr/elasticsearch-service/latest/developerguide/es-managedomains-snapshots.html#es-managedomains-snapshot-restore">Amazon Elasticsearch Service - 인덱스 스냅샷 작업</a>을 통해 확인한다.</p>
+
+<h1 id="환경">환경</h1>
+
+<p>Amazon Elasticsearch</p>
+
+<ul>
+  <li>
+    <p>버전 : 6.7</p>
+  </li>
+  <li>
+    <p>인스턴스 유형 : t2.small.elasticsearch</p>
+  </li>
+  <li>
+    <p>인스턴스 개수 : 2</p>
+  </li>
+  <li>
+    <p>볼륨 크기 : 10 GB</p>
+  </li>
+  <li>
+    <p>복구할 인덱스 : test_index</p>
+  </li>
+</ul>
+
+<h1 id="복구-과정">복구 과정</h1>
+
+<h2 id="스냅샷-존재-여부-확인">스냅샷 존재 여부 확인</h2>
+
+<p>Amazon Elasticsearch의 스냅샷 정책은 다음과 같고 현재 시점( 2019. 11. 5 )에서 복구 희망 시점(2019. 10. 29 )의 스냅샷으로 복구 가능하다는 것을 알 수 있다.</p>
+
+<p>모든 Amazon ES 도메인은 자동 스냅샷을 생성하지만 빈도는 다릅니다.</p>
+
+<ul>
+  <li>
+    <p>Elasticsearch 5.3 이상을 실행하는 도메인의 경우 Amazon ES는 시간별 자동 스냅샷을 생성하고 최대 336개의 스냅샷을 14일 동안 보관합니다.</p>
+  </li>
+  <li>
+    <p>Elasticsearch 5.1 이하를 실행하는 도메인의 경우 Amazon ES는 일별 자동 스냅샷을 생성하고(지정한 시간 동안) 최대 14개의 스냅샷을 30일 동안 보관합니다.</p>
+  </li>
+</ul>
+
+<p>Amazon Elasticsearch는 ‘리포지토리’ 단위로 스냅샷을 저장한다.</p>
+
+<p>자동 스냅샷 ‘리포지토리’를 확인하기 위하여 다음과 같은 명령으로 ‘리포지토리’를 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET '{aws_elasticsearch_endpoint}/_snapshot'
+{"cs-automated":{"type":"s3"}}
+</code></pre></div></div>
+
+<p>“cs-automated” 리포지토리에 복구 희망 시점(2019. 10. 29 )의 스냅샷이 남아 있는지 확인한 결과 “2019-10-29t02-47-55.820cba71-42d5-4d4d-ac3e-6cb058db9b51” 스냅샵이 남아 있었다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### http://엔드포인트/_snapshot/리포지토리/_all?pretty
+
+$ curl -XGET '{aws_elasticsearch_endpoint}/_snapshot/cs-automated/_all?pretty'
+{
+  "snapshots" : [ {
+    "snapshot" : "2019-10-22t01-47-54.328ccc95-18b0-455e-bf24-abeeeaf18eeb",
+    "uuid" : "LsMY9UfnTn-gR1V751JEQQ",
+    "version_id" : 6070099,
+    "version" : "6.7.0",
+    "indices" : [ ".opendistro-alerting-alert-history-2019.06.20-000052",
+
+... 중략 ...
+
+  }, {
+    "snapshot" : "2019-10-29t02-47-55.820cba71-42d5-4d4d-ac3e-6cb058db9b51",
+    "uuid" : "HyKrNLXCRdW3DPTMkcPdFg",
+    "version_id" : 6070099,
+    "version" : "6.7.0",
+    "indices" : [ 
+
+... 중략 ... 
+
+"test_index",  
+
+... 중략 ...
+
+ ],
+    "include_global_state" : true,
+    "state" : "SUCCESS",
+    "start_time" : "2019-10-29T02:47:55.177Z",
+    "start_time_in_millis" : 1572317275177,
+    "end_time" : "2019-10-29T02:51:19.273Z",
+    "end_time_in_millis" : 1572317479273,
+    "duration_in_millis" : 204096,
+    "failures" : [ ],
+    "shards" : {
+      "total" : 968,
+      "failed" : 0,
+      "successful" : 968
+    }
+  }, {
+
+... 중략 ...
+</code></pre></div></div>
+
+<h2 id="스냅샷으로-인덱스-복구">스냅샷으로 인덱스 복구</h2>
+
+<p>복구 하려는 인덱스가 현재 시점에 존재하는 경우에는 충돌이 발생할 수 있다. 따라서 삭제하거나 명칭을 변경해야한다.</p>
+
+<p>현재 존재하는 “test_index” 인덱스를 삭제한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XDELETE '{aws_elasticsearch_endpoint}/test_index'
+{"acknowledged" : true}%
+
+</code></pre></div></div>
+
+<p>인덱스를 복구하기 위하여 복구 희망 시점의 스냅샵 ID를 알아야 한다.</p>
+
+<p>위의 “복구 가능 확인 여부”에서 확인한 스냅샵 ID는 “2019-10-29t02-47-55.820cba71-42d5-4d4d-ac3e-6cb058db9b51” 이다.</p>
+
+<p>다음과 같은 명령으로 복구 희망 시점(2019. 10. 29) “test_index” 인덱스를 복구한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### https://엔드포인트/_snapshot/리포지토리/스냅샷 ID/_restore
+### json : {"indics": 인덱스명 } 
+
+$ curl -XPOST '{aws_elasticsearch_endpoint}/_snapshot/cs-automated/2019-10-29t02-47-55.820cba71-42d5-4d4d-ac3e-6cb058db9b51/_restore' -d '{"indices": "test_index"}' -H 'Content-Type: application/json'
+{"accepted":true}%
+</code></pre></div></div>
+
+<p>“test_index” 인덱스가 복구 되었는지 확인한 결과 248265개의 다큐먼트가 존재한다는 것을 알 수 있다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET '{aws_elasticsearch_endpoint}/test_index/_count?pretty'
+{
+  "count" : 248265,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  }
+}
+
+</code></pre></div></div>
+
+<h1 id="참고자료">참고자료</h1>
+
+<ul>
+  <li><a href="https://docs.aws.amazon.com/ko_kr/elasticsearch-service/latest/developerguide/es-managedomains-snapshots.html#es-managedomains-snapshot-restore">Amazon Elasticsearch Service 인덱스 스냅샷 작업</a></li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#elasticsearch" class="page__taxonomy-item" rel="tag">Elasticsearch</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#elasticsearch" class="page__taxonomy-item" rel="tag">Elasticsearch</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2020-01-09T00:00:00+09:00">January 09, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Amazon+Elasticsearch+%EC%9D%B8%EB%8D%B1%EC%8A%A4+%EB%B3%B5%EA%B5%AC%20http%3A%2F%2Flocalhost%3A4000%2Felasticsearch%2Felasticesarch_recovery%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Felasticsearch%2Felasticesarch_recovery%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Felasticsearch%2Felasticesarch_recovery%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/elasticsearch/elasticesarch_alias_index_test/" class="pagination--pager" title="Elasticsearch - 여러 개의 Index와 연결된 Alias를 대상으로 Indexing 요청을 하는 경우 동작 확인
+">이전</a>
+    
+    
+      <a href="/fluentd/fluentd_file_created_time/" class="pagination--pager" title="Fluentd의 Read from head option에 대해 알아보기
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_official_documents/" rel="permalink">Kafka 공식문서
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_quick_start_guide/" rel="permalink">Kafka 설치 및 간단 사용법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/linux/how_to_running_process_in_background/" rel="permalink">Linux환경에서 Process background에서 실행하는 방법, 프로세스 확인, 종료하는 방법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Linux환경에서 Process background에서 실행하는 방법에 대해 정리하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/celery/celery_ml_model_build/" rel="permalink">Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 ML 모델 기반의 API서비스를 만든 후, 추가적으로 고도화에 대해 공부하고 개발한 부분을 남기고 공유하기 위해 작성했다. 
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 kelpin. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/elasticsearch/elasticesarch_recovery/";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/elasticsearch/elasticesarch_recovery"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kelpin.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

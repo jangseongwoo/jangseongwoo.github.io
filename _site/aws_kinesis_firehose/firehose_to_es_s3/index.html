@@ -1,0 +1,985 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Kinesis Data Firehose에서 Amazon Elasticsearch와 S3 데이터 전달하기 - kelpin’s blog</title>
+<meta name="description" content="Amazon Kinesis Data Firehose - Delivery Stream의 destination을 Amazon Elasticsearch Service domain으로 지정하고 S3 backup 설정을 하여 Firehose로 전달된 데이터가 Amazon Elasticsaerch와 S3로 저장되는지 확인한다.">
+
+
+  <meta name="author" content="kelpin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="kelpin's blog">
+<meta property="og:title" content="Kinesis Data Firehose에서 Amazon Elasticsearch와 S3 데이터 전달하기">
+<meta property="og:url" content="http://localhost:4000/aws_kinesis_firehose/firehose_to_es_s3/">
+
+
+  <meta property="og:description" content="Amazon Kinesis Data Firehose - Delivery Stream의 destination을 Amazon Elasticsearch Service domain으로 지정하고 S3 backup 설정을 하여 Firehose로 전달된 데이터가 Amazon Elasticsaerch와 S3로 저장되는지 확인한다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-01-23T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/aws_kinesis_firehose/firehose_to_es_s3/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "kelpin",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="kelpin's blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          kelpin's blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#aws_kinesis_firehose" itemprop="item"><span itemprop="name">Aws_kinesis_firehose</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Kinesis Data Firehose에서 Amazon Elasticsearch와 S3 데이터 전달하기</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="kelpin" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">kelpin</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Kinesis Data Firehose에서 Amazon Elasticsearch와 S3 데이터 전달하기">
+    <meta itemprop="description" content="Amazon Kinesis Data Firehose - Delivery Stream의 destination을 Amazon Elasticsearch Service domain으로 지정하고 S3 backup 설정을 하여 Firehose로 전달된 데이터가 Amazon Elasticsaerch와 S3로 저장되는지 확인한다.">
+    <meta itemprop="datePublished" content="January 23, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Kinesis Data Firehose에서 Amazon Elasticsearch와 S3 데이터 전달하기
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> Index</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#테스트-목적">테스트 목적</a></li>
+  <li><a href="#테스트-환경">테스트 환경</a></li>
+  <li><a href="#테스트-환경-구성">테스트 환경 구성</a>
+    <ul>
+      <li><a href="#amazon-es-도메인">Amazon ES 도메인</a></li>
+      <li><a href="#kinesis-data-firehose-delivery-stream-생성">Kinesis Data Firehose Delivery Stream 생성</a></li>
+    </ul>
+  </li>
+  <li><a href="#테스트--delivery-stream-데이터-전송-및-저장-확인">테스트 : Delivery Stream 데이터 전송 및 저장 확인</a>
+    <ul>
+      <li><a href="#delivery-stream-전송-테스트-및-확인">Delivery Stream 전송 테스트 및 확인</a></li>
+      <li><a href="#firehose-api-사용하여-delivery-stream에-테스트-데이터-전송-및-저장-확인">Firehose API 사용하여 Delivery Stream에 테스트 데이터 전송 및 저장 확인</a></li>
+    </ul>
+  </li>
+  <li><a href="#테스트-결과">테스트 결과</a></li>
+  <li><a href="#참고자료">참고자료</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h1 id="테스트-목적">테스트 목적</h1>
+
+<p>Amazon Kinesis Data Firehose - Delivery Stream의 destination을 Amazon Elasticsearch Service domain으로 지정하고 S3 backup 설정을 하여 Firehose로 전달된 데이터가 Amazon Elasticsaerch와 S3로 저장되는지 확인한다.</p>
+
+<h1 id="테스트-환경">테스트 환경</h1>
+
+<ul>
+  <li>
+    <p>테스트 리전: 서울 리전</p>
+  </li>
+  <li>
+    <p>테스트 관련 서비스:</p>
+
+    <ul>
+      <li>
+        <p>Amazon Kinesis Data Firsehose</p>
+      </li>
+      <li>
+        <p>Amazon Elasticsearch Service(이하 Amazon ES)</p>
+      </li>
+      <li>
+        <p>Amazon S3</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                             +----------------------+
+  +---------+                |  Event-1 - Stream-1  |                 +--------+
+  | Sources |---------------&gt;|         ...          |----------------&gt;| AWS S3 |
+  +---------+ data records   |  Event-N - Stream-N  |        backup   +--------+
+                             +----------------------+                   Bucket
+                                 Delivery Streams
+                                  (Event Stream)
+                                        |                             +---------------+
+                                        |                             | Elasticsearch |
+                                        +----------------------------&gt;| Cluster       |&lt;---&gt;[Kibana]
+                                                            indexing  +---------------+      dashboard
+
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="테스트-환경-구성">테스트 환경 구성</h1>
+
+<h2 id="amazon-es-도메인">Amazon ES 도메인</h2>
+
+<ul>
+  <li>
+    <p>도메인 명:</p>
+  </li>
+  <li>
+    <p>Elasticsearch 6.5.4</p>
+  </li>
+  <li>
+    <p>인스턴스 구성</p>
+
+    <ul>
+      <li>
+        <p>인스턴스 유형 : t2.small.elasticsearch (vCPU 1, Memory 2GiB)</p>
+      </li>
+      <li>
+        <p>인스턴스 개수 : 2</p>
+      </li>
+      <li>
+        <p>인스턴스별 일반 EBS(SSD) 10GB 각 1개</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>테스트 인덱스 : interest_service_click2</p>
+  </li>
+</ul>
+
+<h2 id="kinesis-data-firehose-delivery-stream-생성">Kinesis Data Firehose Delivery Stream 생성</h2>
+
+<p>테스트용 Delivery Stream을 아래와 같은 설정으로 생성하였다.</p>
+
+<ul>
+  <li>
+    <p>Delivery Stream name :</p>
+  </li>
+  <li>
+    <p>Index : interest_service_click2</p>
+  </li>
+  <li>
+    <p>Type : isc</p>
+  </li>
+  <li>
+    <p>No index rotation</p>
+  </li>
+  <li>
+    <p>Backup S3 bucket :</p>
+  </li>
+  <li>
+    <p>Delivery Stream buffer conditions for Elasticsearch</p>
+
+    <ul>
+      <li>
+        <p>buffer size : 5 MB</p>
+      </li>
+      <li>
+        <p>buffer interval : 60 seconds</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>IAM role(역할)</p>
+
+    <ul>
+      <li>
+        <p>Amazon ES 도메인 ARN -</p>
+      </li>
+      <li>
+        <p>시스템팀에 생성 요청.</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>Type 설정에서 _doc 를 입력하면 Elasticsearch index는 _ 로 시작할 수 없다 라는 에러 메시지가 발생한다.<br />
+_doc는 Elasticsearch에서 index 생성시 따로 type을 지정하지 않으면 만들어지는 것이다.</p>
+
+<p>위 에러발생을 회피하기 위해 기존에 만들었던 interest_service_click index를 사용하지 않고 신규 index를 생성하여 테스트 하는 것으로 테스트 방법을 변경하였다.<br />
+명시적으로 Type명도 isc라는 것으로 설정하였다.</p>
+
+<p>Delivery Stream의 buffer interval을 최소값인 60초로 한 것은 Amazon ES와 S3로 데이터가 저장되는 것을 가능한 빠르게 확인하기 위하여 설정한 것이다.</p>
+
+<h1 id="테스트--delivery-stream-데이터-전송-및-저장-확인">테스트 : Delivery Stream 데이터 전송 및 저장 확인</h1>
+
+<h2 id="delivery-stream-전송-테스트-및-확인">Delivery Stream 전송 테스트 및 확인</h2>
+
+<ul>
+  <li>
+    <p>Data Firehose의 ‘Test with demo data’ 기능으로 테스트 데이터를 delivery stream에 넣고 구성데로 전달되는지 확인하였다.</p>
+  </li>
+  <li>
+    <p>Amazon ES 테스트 도메인에 interest_service_click2 인덱스가 생성되고 search api로 데이터가 조회되는 것을 확인하였다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET '{es_domain}/interest_service_click2/_search'
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Amazon S3의 test 버킷에 2019/04/30/06/ 경로 아래로 테스트 데이터들이 저장된 것을 확인하였다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test-1-2019-04-30-06-26-00-9c948a08-f91a-4ba2-922d-408623ea0ddf
+test-1-2019-04-30-06-27-00-aca38977-b723-47df-b557-488e9d583f93
+test-1-2019-04-30-06-28-06-e0b3d645-e27d-451e-b812-33013a5aa57a
+    
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="firehose-api-사용하여-delivery-stream에-테스트-데이터-전송-및-저장-확인">Firehose API 사용하여 Delivery Stream에 테스트 데이터 전송 및 저장 확인</h2>
+
+<p>커스텀 데이터를 Firehose Delivery Stream에 전송하여 Amazon ES와 S3 저장되는지 테스트한다.<br />
+아래와 같은 데이터를 Firehose Delivery Stream에 전송한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    "user_id": "Aster-Kotlin-Sapphire-564",
+    "app_version": "v1.5.16(90)",
+    "device_id": "a03cd3d6-0b14-46e1-a2c8-18b1c86cf738",
+    "device_manufacturer": "LG",
+    "device_name": "LG G7 ThinQ",
+    "device_model": "LM-G710N",
+    "device_os": "Android",
+    "device_os_number": "8.0",
+    "event": "interest_service_click",
+    "interest_id": 1201,
+    "index": 1,
+    "interest_name": "1",
+    "interest_service_id": null,
+    "interest_service_type": "1",
+    "interest_service_name": "1",
+    "timestamp": "2019-04-30T07:30:00Z"
+}
+
+</code></pre></div></div>
+
+<p>aws config, credential 설정 관련된 부분은 <a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-chap-configure.html">AWS CLI 구성</a> 문서를 참고하도록 한다.</p>
+
+<p>파이썬 가상환경을 구성하고 boto3 라이브러리를 설치한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 -m venv ./boto3_venv
+$ source ./boto3_venv/bin/activate
+$ pip3 install boto3
+
+</code></pre></div></div>
+
+<p>아래와 같은 파이썬 코드로 Data Firehose의 Delivery Stream에 데이터를 전송하여 테스트 하였다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import boto3
+import json
+import sys
+
+
+
+def get_firehose_client():
+    # Any clients created from this session will use credentials
+    # from the [test_profile] section of ~/.aws/credentials
+    # with test_profile profile.
+    session = boto3.Session(profile_name="test_profile")
+    firehose = session.client("firehose")
+    return firehose
+
+
+# Test list up Delivery Streams
+def list_delivery_streams():
+    firehose = get_firehose_client()
+
+    print("List Delivery Streams")
+    response = firehose.list_delivery_streams(DeliveryStreamType="DirectPut")
+    print(response["DeliveryStreamNames"])
+
+
+# Test Record send to Delivery Stream
+def put_record_to_delivery_stream():
+    print("Put record to Delivery Stream")
+
+    test_data = {
+        "user_id": "Aster-Kotlin-Sapphire-564",
+        "app_version": "v1.5.16(90)",
+        "device_id": "a03cd3d6-0b14-46e1-a2c8-18b1c86cf738",
+        "device_manufacturer": "LG",
+        "device_name": "LG G7 ThinQ",
+        "device_model": "LM-G710N",
+        "device_os": "Android",
+        "device_os_number": "8.0",
+        "event": "interest_service_click",
+        "interest_id": 1201,
+        "index": 1,
+        "interest_name": "1",
+        "interest_service_id": None,
+        "interest_service_type": "1",
+        "interest_service_name": "1",
+        "timestamp": "2019-04-30T07:30:00Z"
+    }
+
+    firehose = get_firehose_client()
+
+    response = firehose.put_record(
+        DeliveryStreamName="test",
+        Record={"Data": json.dumps(test_data, ensure_ascii=False)}
+    )
+
+    print(response)
+
+
+def batch_record_to_delivery_stream():
+    print("Put batch records to Delivery Stream")
+
+    test_data_list = [
+        {
+            "user_id": "Aster-Kotlin-Sapphire-564",
+            "app_version": "v1.5.16(90)",
+            "device_id": "a03cd3d6-0b14-46e1-a2c8-18b1c86cf738",
+            "device_manufacturer": "LG", "device_name": "LG G7 ThinQ", "device_model": "LM-G710N", "device_os": "Android", "device_os_number": "8.0",
+            "event": "interest_service_click",
+            "interest_id": 1101,
+            "index": 1,
+            "interest_name": "2", "interest_service_id": None, "interest_service_type": "4","interest_service_name": "4",
+            "timestamp": "2019-05-03T00:20:00Z"
+        },
+        {
+            "user_id": "Aster-Kotlin-Sapphire-564",
+            "app_version": "v1.5.16(90)",
+            "device_id": "a03cd3d6-0b14-46e1-a2c8-18b1c86cf738",
+            "device_manufacturer": "LG", "device_name": "LG G7 ThinQ", "device_model": "LM-G710N", "device_os": "Android", "device_os_number": "8.0",
+            "event": "interest_service_click",
+            "interest_id": 1301,
+            "index": 1,
+            "interest_name": "55", "interest_service_id": None, "interest_service_type": "5","interest_service_name": "7",
+            "timestamp": "2019-05-03T00:50:00Z"
+        },
+        {
+            "user_id": "Aster-Kotlin-Sapphire-564",
+            "app_version": "v1.5.16(90)",
+            "device_id": "a03cd3d6-0b14-46e1-a2c8-18b1c86cf738",
+            "device_manufacturer": "LG", "device_name": "LG G7 ThinQ", "device_model": "LM-G710N", "device_os": "Android", "device_os_number": "8.0",
+            "event": "interest_service_click",
+            "interest_id": 1201,
+            "index": 1,
+            "interest_name": "1", "interest_service_id": None, "interest_service_type": "1","interest_service_name": "1",
+            "timestamp": "2019-05-03T01:15:00Z"
+        }
+    ]
+
+    # Delivery Stream에 batch로 넣을 데이터 구성
+    records_list = list()
+    for test_data in test_data_list:
+        records_list.append({"Data": json.dumps(test_data, ensure_ascii=False)})
+
+    firehose = get_firehose_client()
+
+    response = firehose.put_record_batch(
+        DeliveryStreamName="test",
+        Records=records_list
+    )
+
+    print(response)
+
+
+def main():
+    arg = sys.argv[1:]
+    if "list" in arg:
+        list_delivery_streams()
+    elif "put" in arg:
+        put_record_to_delivery_stream()
+    elif "batch" in arg:
+        batch_record_to_delivery_stream()
+    else:
+        print("Unsupported test operation")
+        print("Supported operations : ['list', 'put', 'batch']")
+
+
+
+if __name__ == "__main__":
+    main()
+
+</code></pre></div></div>
+
+<p>put_record() 메소드를 사용한 단일 데이터 전달과 put_record_batch() 메소드를 사용한 여러개의 데이터 전달에 대하여 동작을 테스트하였다.</p>
+
+<hr />
+
+<h1 id="테스트-결과">테스트 결과</h1>
+
+<ul>
+  <li>
+    <p>Kinesis Data Firehose의 Delivery Stream 구성에서 destination을 Amazon ES, backup all data를 S3로 설정한 구성이 예상대로 데이터를 전달받아 저장하는 것을 확인하였다.</p>
+  </li>
+  <li>
+    <p>테스트 데이터의 형상은 Delivery Stream 동작테스트를 위해 전송했던 demo data와 다른 것이다.</p>
+
+    <ul>
+      <li>특별히 mapping 정보를 변경하지 않고 테스트 데이터를 Delivery Stream 전송하면 demo data에 의해 생성되었던 ics type의 mapping정보에 없던 새로운 필드가 추가되어 데이터가 저장되는 것이 확인되었다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Delivery Stream의 buffer interval 설정에 따른 데이터 전달 방식을 확인하였다. record put이 성공적으로 되어도 바로 Amazon ES나 S3로 데이터가 전달되지 않고 지연시간이 발생할 수 있음을 확인하였다.</p>
+  </li>
+</ul>
+
+<hr />
+
+<h1 id="참고자료">참고자료</h1>
+
+<ul>
+  <li>
+    <p><a href="https://docs.aws.amazon.com/firehose/latest/dev/basic-create.html">https://docs.aws.amazon.com/firehose/latest/dev/basic-create.html</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.aws.amazon.com/firehose/latest/dev/basic-deliver.html#es-index-rotation">https://docs.aws.amazon.com/firehose/latest/dev/basic-deliver.html#es-index-rotation</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.aws.amazon.com/ko_kr/firehose/latest/dev/controlling-access.html">https://docs.aws.amazon.com/ko_kr/firehose/latest/dev/controlling-access.html</a></p>
+  </li>
+  <li>
+    <p><a href="https://docs.aws.amazon.com/ko_kr/firehose/latest/dev/test-drive-firehose.html#test-drive-destination-elasticsearch">https://docs.aws.amazon.com/ko_kr/firehose/latest/dev/test-drive-firehose.html#test-drive-destination-elasticsearch</a></p>
+  </li>
+  <li>
+    <p><a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/firehose.html">https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/firehose.html</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.bhargavnunna.com/index.php/2017/10/11/data-analysis-on-aws-part-1-1/">http://blog.bhargavnunna.com/index.php/2017/10/11/data-analysis-on-aws-part-1-1/</a></p>
+  </li>
+  <li>
+    <p><a href="https://aws.amazon.com/ko/elasticsearch-service/pricing/">https://aws.amazon.com/ko/elasticsearch-service/pricing/</a></p>
+  </li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#aws-kinesis-firehose" class="page__taxonomy-item" rel="tag">AWS_Kinesis_firehose</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#aws-s3" class="page__taxonomy-item" rel="tag">AWS_s3</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#elasticsearch" class="page__taxonomy-item" rel="tag">Elasticsearch</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#aws-kinesis-firehose" class="page__taxonomy-item" rel="tag">AWS_Kinesis_firehose</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2020-01-23T00:00:00+09:00">January 23, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Kinesis+Data+Firehose%EC%97%90%EC%84%9C+Amazon+Elasticsearch%EC%99%80+S3+%EB%8D%B0%EC%9D%B4%ED%84%B0+%EC%A0%84%EB%8B%AC%ED%95%98%EA%B8%B0%20http%3A%2F%2Flocalhost%3A4000%2Faws_kinesis_firehose%2Ffirehose_to_es_s3%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Faws_kinesis_firehose%2Ffirehose_to_es_s3%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Faws_kinesis_firehose%2Ffirehose_to_es_s3%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/fluentd/fluentd_to_aws_kinesis_data_stream/" class="pagination--pager" title="Fluentd로 데이터 수집해 AWS Kinesis Data stream으로 보내기
+">이전</a>
+    
+    
+      <a href="/aws_kinesis_data_stream/kinesis_resharding_test/" class="pagination--pager" title="Kinesis Data stream의 제약조건 및 리샤딩 테스트
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_official_documents/" rel="permalink">Kafka 공식문서
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_quick_start_guide/" rel="permalink">Kafka 설치 및 간단 사용법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/linux/how_to_running_process_in_background/" rel="permalink">Linux환경에서 Process background에서 실행하는 방법, 프로세스 확인, 종료하는 방법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Linux환경에서 Process background에서 실행하는 방법에 대해 정리하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/celery/celery_ml_model_build/" rel="permalink">Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 ML 모델 기반의 API서비스를 만든 후, 추가적으로 고도화에 대해 공부하고 개발한 부분을 남기고 공유하기 위해 작성했다. 
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 kelpin. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/aws_kinesis_firehose/firehose_to_es_s3/";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/aws_kinesis_firehose/firehose_to_es_s3"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kelpin.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

@@ -8,6 +8,11 @@ tags:
   - Python
   - Logging
   - Flask
+
+toc: true
+toc_label: "Index"
+toc_icon: "cog"
+toc_sticky: true
 ---
 
 

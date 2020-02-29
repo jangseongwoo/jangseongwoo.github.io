@@ -6,6 +6,11 @@ categories:
   - Fluentd
 tags:
   - Fluentd
+
+toc: true
+toc_label: "Index"
+toc_icon: "cog"
+toc_sticky: true
 ---
 
 Td-agent 설치 및 확인

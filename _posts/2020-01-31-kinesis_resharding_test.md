@@ -7,6 +7,11 @@ categories:
 tags:
   - AWS_Kinesis_data_stream
   - AWS
+
+toc: true
+toc_label: "Index"
+toc_icon: "cog"
+toc_sticky: true
 ---
 
 문서 목적

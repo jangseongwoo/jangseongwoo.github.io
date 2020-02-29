@@ -1,12 +1,16 @@
 ---
 title:  "Kafka 설치 및 간단 사용법"
-excerpt: "이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.
-"
+excerpt: "이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다."
 
 categories:
   - Kafka
 tags:
   - Kafka
+
+toc: true
+toc_label: "Index"
+toc_icon: "cog"
+toc_sticky: true
 ---
 
 목적
@@ -27,12 +31,12 @@ tags:
 
 설치를 하기 위해 [링크](https://www.apache.org/dyn/closer.cgi?path=/kafka/2.4.0/kafka_2.12-2.4.0.tgz)에서 2.4.0 버전의 kafka를 다운받는다. 다운받고 해당 폴더에서 다음 명령어를 입력한다. 
 
-```
+
+```ruby
 $ tar -xzf kafka_2.12-2.4.0.tgz
 $ cd kafka_2.12-2.4.0
 ```
 
-  
 
 서버 시작하기 
 ========

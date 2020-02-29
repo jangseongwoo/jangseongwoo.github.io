@@ -1,0 +1,673 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Kafka 설치 및 간단 사용법 - kelpin’s blog</title>
+<meta name="description" content="이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.">
+
+
+  <meta name="author" content="kelpin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="kelpin's blog">
+<meta property="og:title" content="Kafka 설치 및 간단 사용법">
+<meta property="og:url" content="http://localhost:4000/kafka/kafka_quick_start_guide/">
+
+
+  <meta property="og:description" content="이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-02-21T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/kafka/kafka_quick_start_guide/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "kelpin",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="kelpin's blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          kelpin's blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#kafka" itemprop="item"><span itemprop="name">Kafka</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Kafka 설치 및 간단 사용법</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="kelpin" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">kelpin</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Kafka 설치 및 간단 사용법">
+    <meta itemprop="description" content="이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.">
+    <meta itemprop="datePublished" content="February 21, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Kafka 설치 및 간단 사용법
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> Index</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#목적">목적</a></li>
+  <li><a href="#설치">설치</a></li>
+  <li><a href="#서버-시작하기">서버 시작하기 </a></li>
+  <li><a href="#topic-생성하기">Topic 생성하기</a></li>
+  <li><a href="#테스트-메시지-보내기">테스트 메시지 보내기</a></li>
+  <li><a href="#consumer-실행하기">Consumer 실행하기 </a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h1 id="목적">목적</h1>
+
+<hr />
+
+<p>이 글의 목적은 <a href="https://kafka.apache.org/">Apache Kafka</a> 공식 사이트의 <a href="https://kafka.apache.org/quickstart">Quick start</a> 를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.</p>
+
+<p>이 이문서에서는 Quick start에 포함된 가장 간단한 부분에 대하여 직접 실행한 내용만 포함되어 있으며, <a href="https://kafka.apache.org/">Apache Kafka</a>에 대한 자세한 내용은 공식 사이트 문서를 참고하도록 한다.</p>
+
+<h1 id="설치">설치</h1>
+
+<hr />
+
+<p>설치를 하기 위해 <a href="https://www.apache.org/dyn/closer.cgi?path=/kafka/2.4.0/kafka_2.12-2.4.0.tgz">링크</a>에서 2.4.0 버전의 kafka를 다운받는다. 다운받고 해당 폴더에서 다음 명령어를 입력한다. </p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">tar</span> <span class="o">-</span><span class="n">xzf</span> <span class="n">kafka_2</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mf">2.4</span><span class="o">.</span><span class="mi">0</span><span class="p">.</span><span class="nf">tgz</span>
+<span class="err">$</span> <span class="n">cd</span> <span class="n">kafka_2</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mf">2.4</span><span class="o">.</span><span class="mi">0</span>
+</code></pre></div></div>
+
+<h1 id="서버-시작하기">서버 시작하기 </h1>
+
+<hr />
+
+<p>Kafka는 ZooKeeper를 사용하고 있다. 그래서 먼저 ZooKeeper server를 실행한다. 편리한 실행을 위해 아래의 스크립트를 이용해 Kafka패키지에 포함되어 있는 ZooKeeper instance를 실행한다. 그 뒤에 Kakfa server를 실행한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ bin/zookeeper-server-start.sh config/zookeeper.properties
+
+$ bin/kafka-server-start.sh config/server.properties
+
+
+[2020-01-02 21:47:03,844] INFO Reading configuration from: config/zookeeper.properties (org.apache.zookeeper.server.quorum.QuorumPeerConfig)
+[2020-01-02 21:47:03,847] WARN config/zookeeper.properties is relative. Prepend ./ to indicate that you're sure! (org.apache.zookeeper.server.quorum.QuorumPeerConfig)
+[2020-01-02 21:47:03,851] INFO clientPortAddress is 0.0.0.0/0.0.0.0:2181 (org.apache.zookeeper.server.quorum.QuorumPeerConfig)
+...
+</code></pre></div></div>
+
+<h1 id="topic-생성하기">Topic 생성하기</h1>
+
+<hr />
+
+<p>Kafka는 Topic이라는 것을 기준으로 메시지를 publish, subscribe 하는 방식으로 사용한다.</p>
+
+<p>테스트를 위해 “test”라는 이름의 Topic을 직접 생성해보자. 생성 시 설정은 1개의 단일 Partition과 1개의 Replica이다. 다음 명령어를 입력한다. 명령어 입력 후 &gt; 모양이 터미널에 뜨며 메시지를 입력할 수 있다. </p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test
+</code></pre></div></div>
+
+<p>생성 후 다음과 같은 명령어를 입력해 정상적으로 Topic이 생성됬는지 확인할 수 있다. </p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+test
+</code></pre></div></div>
+
+<h1 id="테스트-메시지-보내기">테스트 메시지 보내기</h1>
+
+<hr />
+
+<p>Kafka는 터미널에서 파일에 입력하기, 표준 입력, 직접 전달의 방법으로 Kafka cluster에 메시지를 보낼 수 있다. </p>
+
+<p>다음과 같은 명령어를 입력 후 전달하고자 하는 메시지를 입력한다. 기본 적으로 각각의 라인이 하나의 독립된 메시지로 처리된다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
+test 1
+test 2
+</code></pre></div></div>
+
+<h1 id="consumer-실행하기">Consumer 실행하기 </h1>
+
+<hr />
+
+<p>Kafka는 터미널에서 command line Consumer를 실행할 수 있으며 직접 터미널에서 특정 Topic으로 전달된 메시지를 볼 수 있다. </p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+test 1
+test 2
+</code></pre></div></div>
+
+<p>“테스트 메시지 보내기”에서 입력했던 터미널과 Consumer를 입력했던 터미널을 두 개의 터미널에서 각 각 띄우면 근실시간에 가깝게 입력된 메시지가 Consumer를 실행한 터미널에서 출력됨을 확인할 수 있다.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#kafka" class="page__taxonomy-item" rel="tag">Kafka</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#kafka" class="page__taxonomy-item" rel="tag">Kafka</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2020-02-21T00:00:00+09:00">February 21, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Kafka+%EC%84%A4%EC%B9%98+%EB%B0%8F+%EA%B0%84%EB%8B%A8+%EC%82%AC%EC%9A%A9%EB%B2%95%20http%3A%2F%2Flocalhost%3A4000%2Fkafka%2Fkafka_quick_start_guide%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fkafka%2Fkafka_quick_start_guide%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fkafka%2Fkafka_quick_start_guide%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/linux/how_to_running_process_in_background/" class="pagination--pager" title="Linux환경에서 Process background에서 실행하는 방법, 프로세스 확인, 종료하는 방법
+">이전</a>
+    
+    
+      <a href="/kafka/kafka_official_documents/" class="pagination--pager" title="Kafka 공식문서
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_official_documents/" rel="permalink">Kafka 공식문서
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/linux/how_to_running_process_in_background/" rel="permalink">Linux환경에서 Process background에서 실행하는 방법, 프로세스 확인, 종료하는 방법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Linux환경에서 Process background에서 실행하는 방법에 대해 정리하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/celery/celery_ml_model_build/" rel="permalink">Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 ML 모델 기반의 API서비스를 만든 후, 추가적으로 고도화에 대해 공부하고 개발한 부분을 남기고 공유하기 위해 작성했다. 
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/shell_script/shell_script_basic/" rel="permalink">Shell script 기본 학습 정리
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Bash shell sciprt에 대해 학습한 부분들을 정리하고 공유하기 위해 작성하였다. 이 문서는 Bash schell script를 기준으로 작성하였다.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 kelpin. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/kafka/kafka_quick_start_guide/";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/kafka/kafka_quick_start_guide"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kelpin.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

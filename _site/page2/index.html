@@ -153,6 +153,8 @@
       
 
 
+  
+
 
 <div id="main" role="main">
   
@@ -299,21 +301,31 @@
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/docker/docker_volume_mount/" rel="permalink">Docker 컨테이너간 볼륨 공유에 대한 학습
+        <a href="/aws_kinesis_firehose/firehose_to_es_s3/" rel="permalink">Kinesis Data Firehose에서 Amazon Elasticsearch와 S3 데이터 전달하기
 </a>
       
     </h2>
     
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+    <p class="archive__item-excerpt" itemprop="description">Amazon Kinesis Data Firehose - Delivery Stream의 destination을 Amazon Elasticsearch Service domain으로 지정하고 S3 backup 설정을 하여 Firehose로 전달된 데이터가 Amazon Elasticsae...</p>
+  </article>
+</div>
+
+
+  
 
 
 
-
-  6 분 소요
-
-</p>
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
-    <p class="archive__item-excerpt" itemprop="description">다수의 Docker 컨테이너(이하 컨테이너)를 운영하다가 보면 컨테이너 간에 볼륨 공유가 필요할 상황이 있다.
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/fluentd/fluentd_to_aws_kinesis_data_stream/" rel="permalink">Fluentd로 데이터 수집해 AWS Kinesis Data stream으로 보내기
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 AWS Kinesis에 대한 학습 중 Fluentd와 AWS Kinesis Data stream을 연동 하여 데이터를 처리하는 방법에 대해 테스트하고 공유하기 위해 작성했다.
 </p>
   </article>
 </div>
@@ -328,21 +340,12 @@
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/docker/docker_basic/" rel="permalink">Docker 공식 사이트 Chapter 1~3 학습 내용 정리
+        <a href="/fluentd/fluentd_file_created_time/" rel="permalink">Fluentd의 Read from head option에 대해 알아보기
 </a>
       
     </h2>
     
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  6 분 소요
-
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description">이 문서는 2019. 9. 2 기준 Docker 시작하기를 따라하며 개인적인 학습과 추후 이 내용을 리마인드 할 때 참고하려는 목적을 가지고 있다.
+    <p class="archive__item-excerpt" itemprop="description">Fluentd의 Read from head option이 있다. 이해할 때 헷갈리는 부분이 있어 정확한 이해를 위해 로컬에서 직접 시나리오를 만들어 테스트를 진행해본다.
 </p>
   </article>
 </div>
@@ -357,21 +360,12 @@
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/boto3/boto3_basic/" rel="permalink">Boto3를 이용한 Amazon S3, Kinesis Data Firehose 사용하기
+        <a href="/elasticsearch/elasticesarch_recovery/" rel="permalink">Amazon Elasticsearch 인덱스 복구
 </a>
       
     </h2>
     
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  12 분 소요
-
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description">AWS를 Python 개발환경에서 사용하기 위한 방법중 하나는 Boto3 라이브러리를 이용하는 것이다. 이 테스트는 Boto3를 이용하여 아래의 서비스에 접근하여 사용하는 방법을 공유하기 위한 목적이 있다.
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 AWS Elasticsearch를 복구하는 과정을 정리한 문서이다.
 </p>
   </article>
 </div>
@@ -386,21 +380,12 @@
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/monitoring/newrelic_basic/" rel="permalink">New Relic 교육 - 오버뷰
+        <a href="/elasticsearch/elasticesarch_alias_index_test/" rel="permalink">Elasticsearch - 여러 개의 Index와 연결된 Alias를 대상으로 Indexing 요청을 하는 경우 동작 확인
 </a>
       
     </h2>
     
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  4 분 소요
-
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description">New Relic에서 제공하는 기능에 대한 간단한 오버뷰 교육과 관련되어 사전 학습 내용과 교육 내용 일부를 개인적으로 정리한 문서이다.
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Elasticsearch Alias에 대하여 아래와 같은 경우에 대한 동작을 확인하기 위한 테스트 과정과 결과를 정리하기 위하여 작성되었다.
 </p>
   </article>
 </div>
@@ -415,21 +400,52 @@
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/logging/flask_logging/" rel="permalink">Python logging을 활용해 Flask에서 logging하는 방법
+        <a href="/elasticsearch/elasticsearch_delete_api/" rel="permalink">Elasticsearch delete API 관련 테스트 및 정리
 </a>
       
     </h2>
     
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  1 분 소요
-
+    <p class="archive__item-excerpt" itemprop="description">Elasticsearch에 indexing된 document를 특정 필드의 값을 기준으로 삭제하는 기능에 대하여 테스트 한다.
 </p>
+  </article>
+</div>
+
+
+  
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
-    <p class="archive__item-excerpt" itemprop="description">Flask Logging 하는 방법
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kubernetes/kubernetes_basic/" rel="permalink">Kubernetes 입문자를 위한 기초 내용 정리
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Kuberetes에 대한 기초 내용을 개인적으로 내용을 정리하기 위하여 작성되었다.
+</p>
+  </article>
+</div>
+
+
+  
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/aws_cli/aws_cli_basic/" rel="permalink">AWS CLI 기초 학습 공유
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 AWS Command Line Interface 사용 설명서를 살펴보며 AWS CLI에 대한 학습했던 내용을 개인적으로 정리하기 위하여 작성되었다.
 </p>
   </article>
 </div>
@@ -471,12 +487,19 @@
         <li><a href="/page3/">3</a></li>
       
     
+      
+        
+        
+        
+        <li><a href="/page4/">4</a></li>
+      
+    
 
     
     
 
     
-      <li><a href="/page4/">4</a></li>
+      <li><a href="/page5/">5</a></li>
     
 
     

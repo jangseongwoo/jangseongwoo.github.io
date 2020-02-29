@@ -1,14 +1,17 @@
 ---
 title:  "Kafka 공식문서"
-excerpt: "이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다. 
-"
+excerpt: "이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다. "
 
 categories:
   - Kafka
 tags:
   - Kafka
+
+toc: true
+toc_label: "Index"
+toc_icon: "cog"
+toc_sticky: true
 ---
-  
 
 목적
 ==

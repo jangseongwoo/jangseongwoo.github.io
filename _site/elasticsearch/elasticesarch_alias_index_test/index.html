@@ -1,0 +1,1154 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Elasticsearch - 여러 개의 Index와 연결된 Alias를 대상으로 Indexing 요청을 하는 경우 동작 확인 - kelpin’s blog</title>
+<meta name="description" content="이 문서는 Elasticsearch Alias에 대하여 아래와 같은 경우에 대한 동작을 확인하기 위한 테스트 과정과 결과를 정리하기 위하여 작성되었다.">
+
+
+  <meta name="author" content="kelpin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="kelpin's blog">
+<meta property="og:title" content="Elasticsearch - 여러 개의 Index와 연결된 Alias를 대상으로 Indexing 요청을 하는 경우 동작 확인">
+<meta property="og:url" content="http://localhost:4000/elasticsearch/elasticesarch_alias_index_test/">
+
+
+  <meta property="og:description" content="이 문서는 Elasticsearch Alias에 대하여 아래와 같은 경우에 대한 동작을 확인하기 위한 테스트 과정과 결과를 정리하기 위하여 작성되었다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-01-09T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/elasticsearch/elasticesarch_alias_index_test/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "kelpin",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="kelpin's blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          kelpin's blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#elasticsearch" itemprop="item"><span itemprop="name">Elasticsearch</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Elasticsearch - 여러 개의 Index와 연결된 Alias를 대상으로 Indexing 요청을 하는 경우 동작 확인</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="kelpin" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">kelpin</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Elasticsearch - 여러 개의 Index와 연결된 Alias를 대상으로 Indexing 요청을 하는 경우 동작 확인">
+    <meta itemprop="description" content="이 문서는 Elasticsearch Alias에 대하여 아래와 같은 경우에 대한 동작을 확인하기 위한 테스트 과정과 결과를 정리하기 위하여 작성되었다.">
+    <meta itemprop="datePublished" content="January 09, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Elasticsearch - 여러 개의 Index와 연결된 Alias를 대상으로 Indexing 요청을 하는 경우 동작 확인
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> Index</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#목적">목적</a></li>
+  <li><a href="#테스트-환경">테스트 환경</a></li>
+  <li><a href="#테스트-진행">테스트 진행</a>
+    <ul>
+      <li><a href="#테스트-case-1-1개-index를-포함하는-alias를-대상으로-indexing-요청한-경우-동작-확인">테스트 Case 1: 1개 index를 포함하는 alias를 대상으로 indexing 요청한 경우 동작 확인</a>
+        <ul>
+          <li><a href="#step1---elasticsearch에-index를-1개-생성">Step1 - Elasticsearch에 Index를 1개 생성</a></li>
+          <li><a href="#step2---생성한-index에-대하여-alias를-설정">Step2 - 생성한 Index에 대하여 Alias를 설정</a></li>
+          <li><a href="#step3---alias를-대상으로-데이터-indexing을-요청">Step3 - Alias를 대상으로 데이터 indexing을 요청</a></li>
+          <li><a href="#step4---결과-확인">Step4 - 결과 확인</a></li>
+        </ul>
+      </li>
+      <li><a href="#테스트-case-2-2개-이상의-index를-포함하는-alias를-대상으로-indexing-요청한-경우-동작-확인">테스트 Case 2: 2개 이상의 index를 포함하는 alias를 대상으로 indexing 요청한 경우 동작 확인</a>
+        <ul>
+          <li><a href="#step1---elasticsearch에-index를-3개-생성">Step1 - Elasticsearch에 Index를 3개 생성</a></li>
+          <li><a href="#step2---생성한-3개-index에-대하여-동일한-alias를-설정">Step2 - 생성한 3개 Index에 대하여 동일한 Alias를 설정</a></li>
+          <li><a href="#step3---alias를-대상으로-데이터-indexing을-요청-1">Step3 - Alias를 대상으로 데이터 indexing을 요청</a></li>
+          <li><a href="#step4---결과-확인-1">Step4 - 결과 확인</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#테스트-결과">테스트 결과</a></li>
+  <li><a href="#추가테스트-alias---is_write_index-설정-후-동작-확인">추가테스트: Alias - is_write_index 설정 후 동작 확인</a>
+    <ul>
+      <li><a href="#is_write_index-설정-추가-후-테스트">is_write_index 설정 추가 후 테스트</a></li>
+      <li><a href="#is_write_index-설정-추가-후-테스트-결과">is_write_index 설정 추가 후 테스트 결과</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h1 id="목적">목적</h1>
+
+<p>이 문서는 Elasticsearch Alias에 대하여 아래와 같은 경우에 대한 동작을 확인하기 위한 테스트 과정과 결과를 정리하기 위하여 작성되었다.</p>
+
+<ul>
+  <li>
+    <p>2개 이상의 Index가 설정된 Alias에 indexing할 경우 정상적으로 indexing 되는지 여부 확인</p>
+  </li>
+  <li>
+    <p>만일 정상적으로 indexing된다면 데이터가 어떤 Index에 저장되는지 확인</p>
+  </li>
+</ul>
+
+<p>이 테스트는 Elasticsearch와 Kibana 사용에 대한 기본적인 내용을 알고 있다는 가정하에 진행되었다. 사전 지식이 필요한 경우 <a href="https://www.elastic.co/guide/index.html">Elasticsearch 공식 문서</a>를 참고하도록 한다.</p>
+
+<h1 id="테스트-환경">테스트 환경</h1>
+
+<p>테스트 환경은 다음과 같다.</p>
+
+<ul>
+  <li>
+    <p>Elasticsearch version 6.7.1</p>
+  </li>
+  <li>
+    <p>Kibana version 6.7.1</p>
+  </li>
+</ul>
+
+<h1 id="테스트-진행">테스트 진행</h1>
+
+<p>Elasticsearch alias에 연결된 index 개수에 따른 동작 차이가 있는지 비교하기 위하여 아래와 같이 2가지 경우로 나누어서 테스트를 진행한다.</p>
+
+<ul>
+  <li>
+    <p>테스트 Case 1: 1개 index를 포함하는 alias를 대상으로 indexing 요청한 경우 동작 확인</p>
+  </li>
+  <li>
+    <p>테스트 Case 2: 2개 이상의 index를 포함하는 alias를 대상으로 indexing 요청한 경우 동작 확인</p>
+  </li>
+</ul>
+
+<p>아래 테스트에서 사용되는 index생성, alias설정, 데이터 indexing과 같은 요청은 Kibana에서 제공하는 Dev tools을 사용는 것을 기준으로 진행된다.</p>
+
+<hr />
+
+<h2 id="테스트-case-1-1개-index를-포함하는-alias를-대상으로-indexing-요청한-경우-동작-확인">테스트 Case 1: 1개 index를 포함하는 alias를 대상으로 indexing 요청한 경우 동작 확인</h2>
+
+<p>다음과 같은 순서로 테스트를 진행한다.</p>
+
+<ol>
+  <li>
+    <p>Elasticsearch에 Index를 1개 생성한다.</p>
+  </li>
+  <li>
+    <p>생성한 Index에 대하여 Alias를 설정한다.</p>
+  </li>
+  <li>
+    <p>Alias를 대상으로 데이터 indexing을 요청한다.</p>
+  </li>
+  <li>
+    <p>결과를 확인한다.</p>
+  </li>
+</ol>
+
+<h3 id="step1---elasticsearch에-index를-1개-생성">Step1 - Elasticsearch에 Index를 1개 생성</h3>
+
+<p>아래와 같은 명령으로 Elasticsearch에 Index를 1개 생성한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT test_index_1
+
+</code></pre></div></div>
+
+<p>아래 명령으로 test_index_1 이라는 이름의 index가 생성되었는지 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET _cat/indices/test_index_1?format=json
+
+# 응답 예:
+[
+  {
+    "health" : "yellow",
+    "status" : "open",
+    "index" : "test_index_1",
+    "uuid" : "2j6DWAQGRsepaf8vBoK1FQ",
+    "pri" : "5",
+    "rep" : "1",
+    "docs.count" : "0",
+    "docs.deleted" : "0",
+    "store.size" : "1.1kb",
+    "pri.store.size" : "1.1kb"
+  }
+]
+
+</code></pre></div></div>
+
+<h3 id="step2---생성한-index에-대하여-alias를-설정">Step2 - 생성한 Index에 대하여 Alias를 설정</h3>
+
+<p>아래 명령으로 test_index_1 이라는 이름의 index에 alias_for_write_test1 이라는 이름으로 alias를 설정한다. <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/indices-aliases.html">Index Aliases</a> 문서 참고.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /_aliases
+{
+    "actions" : [
+        { "add" : { "index" : "test_index_1", "alias" : "alias_for_write_test1" } }
+    ]
+}
+
+# 응답 예:
+{
+  "acknowledged" : true
+}
+
+</code></pre></div></div>
+
+<p>아래 명령으로 alias 정보를 확인한다. <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/cat-alias.html">cat aliases</a> 문서 참고.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /_cat/aliases?format=json
+
+# 응답 예:
+[
+    {
+        "alias" : "alias_for_write_test1",
+        "index" : "test_index_1",
+        "filter" : "-",
+        "routing.index" : "-",
+        "routing.search" : "-"
+    }
+]
+
+</code></pre></div></div>
+
+<h3 id="step3---alias를-대상으로-데이터-indexing을-요청">Step3 - Alias를 대상으로 데이터 indexing을 요청</h3>
+
+<p>아래와 같이 테스트용 데이터를 alias_for_write_test1 alias를 대상으로 indexing 한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST alias_for_write_test1/doc
+{
+    "board_id" : 10,
+    "playtime" : 5,
+    "minimum_play" : "Y",
+    "timestamp" : "2019-11-19T11:21:01Z",
+    "user_id" : 1,
+    "interest" : 100,
+    "goal" : "alias write test"
+}
+
+# 응답 예:
+{
+  "_index" : "test_index_1",
+  "_type" : "doc",
+  "_id" : "7QV4g24BUKHIwWQy68LW",
+  "_version" : 1,
+  "result" : "created",
+  "_shards" : {
+    "total" : 2,
+    "successful" : 1,
+    "failed" : 0
+  },
+  "_seq_no" : 0,
+  "_primary_term" : 1
+}
+
+</code></pre></div></div>
+
+<p><strong>에러 메시지 없이 정상적으로 indexing 되었을 경우에 반환되는 응답을 확인할 수 있다.</strong></p>
+
+<h3 id="step4---결과-확인">Step4 - 결과 확인</h3>
+
+<p>아래와 같은 명령을 사용하여 alias를 대상으로 데이터를 조회해 본다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /alias_for_write_test1/_search
+{
+    "query" : {
+        "match_all" : {}
+    }
+}
+
+</code></pre></div></div>
+
+<p>정상적으로 indexing된 데이터를 쿼리 결과로 확인할 수 있다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "took" : 2,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 1,
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "test_index_1",
+        "_type" : "doc",
+        "_id" : "7QV4g24BUKHIwWQy68LW",
+        "_score" : 1.0,
+        "_source" : {
+          "board_id" : 10,
+          "playtime" : 5,
+          "minimum_play" : "Y",
+          "timestamp" : "2019-11-19T11:21:01Z",
+          "user_id" : 1,
+          "interest" : 100,
+          "goal" : "alias write test"
+        }
+      }
+    ]
+  }
+}
+
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="테스트-case-2-2개-이상의-index를-포함하는-alias를-대상으로-indexing-요청한-경우-동작-확인">테스트 Case 2: 2개 이상의 index를 포함하는 alias를 대상으로 indexing 요청한 경우 동작 확인</h2>
+
+<p>다음과 같은 순서로 테스트를 진행한다.</p>
+
+<ol>
+  <li>
+    <p>Elasticsearch에 Index를 3개 생성한다.</p>
+  </li>
+  <li>
+    <p>생성한 3개 Index에 대하여 동일한 Alias를 설정한다.</p>
+  </li>
+  <li>
+    <p>Alias를 대상으로 데이터 indexing을 요청한다.</p>
+  </li>
+  <li>
+    <p>결과를 확인한다.</p>
+  </li>
+</ol>
+
+<h3 id="step1---elasticsearch에-index를-3개-생성">Step1 - Elasticsearch에 Index를 3개 생성</h3>
+
+<p>아래와 같은 명령으로 Elasticsearch에 Index를 3개 생성한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT test_index_2
+PUT test_index_3
+PUT test_index_4
+
+</code></pre></div></div>
+
+<p>아래 명령으로 test_index_2, test_index_3, test_index_4 이라는 이름의 index가 생성되었는지 확인한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET _cat/indices/test_index_2?format=json
+GET _cat/indices/test_index_3?format=json
+GET _cat/indices/test_index_3?format=json
+
+</code></pre></div></div>
+
+<p>참고로 아래와 같이 와일드카드를 사용하여 조회하는 것도 가능하다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET _cat/indices/test_index_*?format=json
+
+</code></pre></div></div>
+
+<h3 id="step2---생성한-3개-index에-대하여-동일한-alias를-설정">Step2 - 생성한 3개 Index에 대하여 동일한 Alias를 설정</h3>
+
+<p>아래 명령으로 test_index_2, test_index_3, test_index_4 index에 alias_for_write_test2 라는 이름으로 alias를 설정한다. <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.1/indices-aliases.html">Index Aliases</a> 문서 참고.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /_aliases
+{
+    "actions" : [
+        { "add" : { "index" : "test_index_2", "alias" : "alias_for_write_test2" } },
+        { "add" : { "index" : "test_index_3", "alias" : "alias_for_write_test2" } },
+        { "add" : { "index" : "test_index_4", "alias" : "alias_for_write_test2" } }
+    ]
+}
+
+# 응답 예:
+{
+  "acknowledged" : true
+}
+
+</code></pre></div></div>
+
+<p>아래 명령으로 alias 정보를 확인한다. <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/cat-alias.html">cat aliases</a> 문서 참고.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /_alias/alias_for_write_test2
+
+# 응답 예:
+{
+  "test_index_2" : {
+    "aliases" : {
+      "alias_for_write_test2" : { }
+    }
+  },
+  "test_index_3" : {
+    "aliases" : {
+      "alias_for_write_test2" : { }
+    }
+  },
+  "test_index_4" : {
+    "aliases" : {
+      "alias_for_write_test2" : { }
+    }
+  }
+}
+
+</code></pre></div></div>
+
+<h3 id="step3---alias를-대상으로-데이터-indexing을-요청-1">Step3 - Alias를 대상으로 데이터 indexing을 요청</h3>
+
+<p>아래와 같이 테스트용 데이터를 alias_for_write_test2 alias를 대상으로 indexing 한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST alias_for_write_test2/doc
+{
+    "board_id" : 69,
+    "playtime" : 14,
+    "minimum_play" : "Y",
+    "timestamp" : "2019-11-19T12:01:01Z",
+    "user_id" : 2,
+    "interest" : 200,
+    "goal" : "alias write test 2"
+}
+
+</code></pre></div></div>
+
+<p><strong>indexing이 실패하고 다음과 같은 응답메시지가 반환되는 것을 확인할 수 있었다.</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "error": {
+    "root_cause": [
+      {
+        "type": "illegal_argument_exception",
+        "reason": "no write index is defined for alias [alias_for_write_test2]. The write index may be explicitly disabled using is_write_index=false or the alias points to multiple indices without one being designated as a write index"
+      }
+    ],
+    "type": "illegal_argument_exception",
+    "reason": "no write index is defined for alias [alias_for_write_test2]. The write index may be explicitly disabled using is_write_index=false or the alias points to multiple indices without one being designated as a write index"
+  },
+  "status": 400
+}
+
+</code></pre></div></div>
+
+<h3 id="step4---결과-확인-1">Step4 - 결과 확인</h3>
+
+<p>아래와 같은 명령을 사용하여 alias를 대상으로 데이터를 조회해 본다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /alias_for_write_test2/_search
+{
+    "query" : {
+        "match_all" : {}
+    }
+}
+
+</code></pre></div></div>
+
+<p>앞의 과정에서 indexing에 실패했고, 쿼리 결과로 데이터가 없는 것을 확인할 수 있다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "took" : 10,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 15,
+    "successful" : 15,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 0,
+    "max_score" : null,
+    "hits" : [ ]
+  }
+}
+
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="테스트-결과">테스트 결과</h1>
+
+<p>테스트를 통해 다음과 같은 사실을 확인할 수 있었다.</p>
+
+<ul>
+  <li>
+    <p>1개의 Index에 대하여 설정된 Alias를 대상으로 indexing 하는 경우에는 오류 없이 데이터가 처리된다.</p>
+  </li>
+  <li>
+    <p>2개 이상의 Index에 대하여 설정된 Alias를 대상으로 indexing 하는 경우에는 오류가 발생되며 indexing되지 않는다.</p>
+  </li>
+</ul>
+
+<p>여러개의 index와 연결된 alias에 대한 indexing 요청 실패와 관련되어 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/indices-aliases.html">공식 문서: Index Alias &gt; Write Index</a> 항목에 아래와 같이 설명되고 있다.</p>
+
+<p>It is possible to associate the index pointed to by an alias as the write index.<br />
+When specified, all index and update requests against an alias that point to multiple indices will attempt to resolve to the one index that is the write index.<br />
+Only one index per alias can be assigned to be the write index at a time.<br />
+If no write index is specified and there are multiple indices referenced by an alias, then writes will not be allowed.</p>
+
+<p>내용을 요약하면 다음과 같다.</p>
+
+<ul>
+  <li>
+    <p>1개의 Alias에 2개 이상의 Index가 설정되어 있을 경우 1개의 Alias 당 정확히 1개의 Index만 write 가능(index/update) Index로 설정할 수 있다.</p>
+  </li>
+  <li>
+    <p>2개 이상의 Index가 Alias와 연결되어 있는 경우, 어느 하나의 Index에 명시적으로 is_write_index가 설정되어 있어야 데이터 입력이 정상적으로 되며 그렇지 않을 경우 오류가 발생한다.</p>
+  </li>
+</ul>
+
+<hr />
+
+<h1 id="추가테스트-alias---is_write_index-설정-후-동작-확인">추가테스트: Alias - is_write_index 설정 후 동작 확인</h1>
+
+<p>앞서 테스트한 ‘테스트 Case 2: 2개 이상의 index를 포함하는 alias를 대상으로 indexing 요청한 경우 동작 확인’에서 여러 개의 index를 포함하는 alias에 대한 indexing 요청이 실패했었다.</p>
+
+<h2 id="is_write_index-설정-추가-후-테스트">is_write_index 설정 추가 후 테스트</h2>
+
+<p>테스트 결과에서 설명한 is_write_index를 alias와 연결된 특정 index 하나에 설정하고 다시 indexing을 하는 테스트를 해보자.</p>
+
+<ol>
+  <li>
+    <p>test_index_4 인덱스가 write index로 동작하도록 is_write_index 설정하여 alias 설정을 변경한다. 아래 명령은 기존에 test_index_4와 연결된 alias 설정을 삭제하고 다시 추가하는 명령이다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /_aliases
+{
+    "actions" : [
+        {
+            "remove" : {
+                "index" : "test_index_4",
+                "alias" : "alias_for_write_test2"
+            }
+        },
+        {
+            "add" : {
+                "index" : "test_index_4",
+                "alias" : "alias_for_write_test2",
+                "is_write_index" : true
+            }
+        }
+    ]
+}
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>아래 명령으로 alias_for_write_test2 alias의 정보를 확인해 보면 test_index_4에 is_write_index 옵션이 설정된 것을 확인할 수 있다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>아래와 같은 명령으로 GET /_alias/alias_for_write_test2
+    
+# 응답 예:
+{
+  "test_index_2" : {
+    "aliases" : {
+      "alias_for_write_test2" : { }
+    }
+  },
+  "test_index_3" : {
+    "aliases" : {
+      "alias_for_write_test2" : { }
+    }
+  },
+  "test_index_4" : {
+    "aliases" : {
+      "alias_for_write_test2" : {
+        "is_write_index" : true
+      }
+    }
+  }
+}
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>테스트용 데이터를 alias_for_write_test2를 대상으로 다시 indexing 한다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST alias_for_write_test2/doc
+{
+    "board_id" : 69,
+    "playtime" : 14,
+    "minimum_play" : "Y",
+    "timestamp" : "2019-11-19T12:35:01Z",
+    "user_id" : 2,
+    "interest" : 200,
+    "goal" : "alias write test 2"
+}
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>indexing 요청 응답을 확인하고, 아래와 같이 데이터를 조회해본다.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /alias_for_write_test2/_search
+{
+    "query" : {
+        "match_all" : {}
+    }
+}
+    
+# 응답 결과:
+{
+  "took" : 6,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 15,
+    "successful" : 15,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 1,
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "test_index_4",
+        "_type" : "doc",
+        "_id" : "7gWrg24BUKHIwWQyAMLH",
+        "_score" : 1.0,
+        "_source" : {
+          "board_id" : 69,
+          "playtime" : 14,
+          "minimum_play" : "Y",
+          "timestamp" : "2019-11-19T12:35:01Z",
+          "user_id" : 2,
+          "interest" : 200,
+          "goal" : "alias write test 2"
+        }
+      }
+    ]
+  }
+}
+    
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="is_write_index-설정-추가-후-테스트-결과">is_write_index 설정 추가 후 테스트 결과</h2>
+
+<p>Alias설정에 write index로 설정된 test_index_4로 데이터가 저장된 것을 확인할 수 있다.</p>
+
+<p>여러 개의 index를 포함하는 alias에 대하여 특정 index에 is_write_index 옵션을 지정하면 alias를 대상으로 indexing 요청이 처리 가능함을 확인하였다.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#elasticsearch" class="page__taxonomy-item" rel="tag">Elasticsearch</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#elasticsearch" class="page__taxonomy-item" rel="tag">Elasticsearch</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2020-01-09T00:00:00+09:00">January 09, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Elasticsearch+-+%EC%97%AC%EB%9F%AC+%EA%B0%9C%EC%9D%98+Index%EC%99%80+%EC%97%B0%EA%B2%B0%EB%90%9C+Alias%EB%A5%BC+%EB%8C%80%EC%83%81%EC%9C%BC%EB%A1%9C+Indexing+%EC%9A%94%EC%B2%AD%EC%9D%84+%ED%95%98%EB%8A%94+%EA%B2%BD%EC%9A%B0+%EB%8F%99%EC%9E%91+%ED%99%95%EC%9D%B8%20http%3A%2F%2Flocalhost%3A4000%2Felasticsearch%2Felasticesarch_alias_index_test%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Felasticsearch%2Felasticesarch_alias_index_test%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Felasticsearch%2Felasticesarch_alias_index_test%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/elasticsearch/elasticsearch_delete_api/" class="pagination--pager" title="Elasticsearch delete API 관련 테스트 및 정리
+">이전</a>
+    
+    
+      <a href="/elasticsearch/elasticesarch_recovery/" class="pagination--pager" title="Amazon Elasticsearch 인덱스 복구
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_official_documents/" rel="permalink">Kafka 공식문서
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_quick_start_guide/" rel="permalink">Kafka 설치 및 간단 사용법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/linux/how_to_running_process_in_background/" rel="permalink">Linux환경에서 Process background에서 실행하는 방법, 프로세스 확인, 종료하는 방법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Linux환경에서 Process background에서 실행하는 방법에 대해 정리하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/celery/celery_ml_model_build/" rel="permalink">Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 ML 모델 기반의 API서비스를 만든 후, 추가적으로 고도화에 대해 공부하고 개발한 부분을 남기고 공유하기 위해 작성했다. 
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 kelpin. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/elasticsearch/elasticesarch_alias_index_test/";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/elasticsearch/elasticesarch_alias_index_test"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kelpin.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

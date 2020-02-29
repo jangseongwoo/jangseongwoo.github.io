@@ -103,7 +103,7 @@
 
   </head>
 
-  <body class="layout--single wide">
+  <body class="layout--single">
     <nav class="skip-links">
   <h2 class="screen-reader-text">Skip links</h2>
   <ul>
@@ -150,6 +150,42 @@
     <div class="initial-content">
       
 
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#test" itemprop="item"><span itemprop="name">Test</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">PyTest 프레임워크 기초 사용법</li>
+      
+    
+  </ol>
+</nav>
+
+  
 
 
 <div id="main" role="main">
@@ -291,19 +327,43 @@
           <h1 id="page-title" class="page__title" itemprop="headline">PyTest 프레임워크 기초 사용법
 </h1>
           
-            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  11 분 소요
-
-</p>
-          
         </header>
       
 
       <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> Index</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#목적">목적</a></li>
+  <li><a href="#학습-환경">학습 환경</a></li>
+  <li><a href="#환경-구성">환경 구성</a></li>
+  <li><a href="#pytest-실행-및-실행-결과-설명">Pytest 실행 및 실행 결과 설명</a>
+    <ul>
+      <li><a href="#테스트-코드-실행하는-방법">테스트 코드 실행하는 방법</a></li>
+      <li><a href="#사용자가-지정한-규칙에-해당하는-테스트-코드-실행하는-방법">사용자가 지정한 규칙에 해당하는 테스트 코드 실행하는 방법</a></li>
+    </ul>
+  </li>
+  <li><a href="#assert-기능과-pytest-실행-결과-설명">Assert 기능과 Pytest 실행 결과 설명</a></li>
+  <li><a href="#asserterror-발생-시-출력되는-메시지">AssertError 발생 시 출력되는 메시지</a>
+    <ul>
+      <li><a href="#asserterror시-출력되는-메세지-추가하기">AssertError시 출력되는 메세지 추가하기</a></li>
+      <li><a href="#asserterror시-출력되는-메세지-변경하기">AssertError시 출력되는 메세지 변경하기</a></li>
+    </ul>
+  </li>
+  <li><a href="#exceptionerror-발생-테스트하기">ExceptionError 발생 테스트하기</a></li>
+  <li><a href="#pytest의-fixture-설명">Pytest의 Fixture 설명</a>
+    <ul>
+      <li><a href="#fixture를-이용해-함수를-변수처럼-사용하기">Fixture를 이용해 함수를 변수처럼 사용하기</a></li>
+      <li><a href="#pytest-fixture를-활용해-테스트코드-setup-teardown-만들기">Pytest fixture를 활용해 테스트코드 Setup, teardown 만들기</a></li>
+      <li><a href="#pytest-fixture의-파라미터-인자-설정으로-다수의-fixture-생성하기">Pytest fixture의 파라미터 인자 설정으로 다수의 fixture 생성하기</a></li>
+    </ul>
+  </li>
+  <li><a href="#파라미터-인자를-직접-테스트-코드에-전달하기">파라미터 인자를 직접 테스트 코드에 전달하기</a></li>
+</ul>
+            </nav>
+          </aside>
         
         <h1 id="목적">목적</h1>
 
@@ -384,7 +444,7 @@ $ pytest mymodule
 $ pytest ./
 </code></pre></div></div>
 
-<p>다음과 같이 2개의 테스트 코드 test_sample_1.py, test_sample_2.py를 입력한다.</p>
+<p>다음과 같이 2개의 테스트 코드 test_sample_1.py, test_sample_2.py를 작성한다.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def func(x):
     return x + 1
@@ -405,7 +465,7 @@ def test_answer2():
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_sample_*
 ==================================== test session starts ====================================
 platform darwin -- Python 3.7.4, pytest-5.1.1, py-1.8.0, pluggy-0.12.0
-rootdir: /Users/kevin/dev/pytest_tutorial
+rootdir: /Users/kelpin/dev/pytest_tutorial
 collected 2 items
 
 test_sample_1.py F                                                                    [ 50%]
@@ -435,7 +495,7 @@ test_sample_1.py:6: AssertionError
 
 <hr />
 
-<p>assert 기능을 테스트 하기 위해 다음과 같은 테스트 코드를 입력한다.</p>
+<p>assert 기능을 테스트 하기 위해 다음과 같은 테스트 코드를 작성한다.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def func(x):
     return x + 1
@@ -451,7 +511,7 @@ def test_answer():
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_sample.py
 ==================================== test session starts ====================================
 platform darwin -- Python 3.7.4, pytest-5.1.1, py-1.8.0, pluggy-0.12.0
-rootdir: /Users/kevin/dev/pytest_tutorial
+rootdir: /Users/kelpin/dev/pytest_tutorial
 collected 1 item
  
 test_sample.py F                                                                      [100%]
@@ -472,7 +532,7 @@ test_sample.py:6: AssertionError
 
 <ul>
   <li>
-    <p><em>collected 2 item</em> : 2개의 테스트 코드가 수집되었다는 것을 의미한다.</p>
+    <p><em>collected 2 item</em> : 2개의 테스트 코드가 테스트 대상으로 확인되었다는 것을 의미한다.</p>
   </li>
   <li>
     <p><em>test_sample_1.py F</em> : test_sample_1.py에 있는 테스트 함수가 테스트 실패(F) 했음을 의미한다.</p>
@@ -514,7 +574,7 @@ test_sample.py:6: AssertionError
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_sample.py
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.1.1, py-1.8.0, pluggy-0.12.0
-rootdir: /Users/kevin/dev/pytest_tutorial
+rootdir: /Users/kelpin/dev/pytest_tutorial
 collected 1 item                                                                                                                                                                                                                            
 
 test_sample.py F                                                                                                                                                                                                                      [100%]
@@ -537,7 +597,7 @@ test_sample.py:10: AssertionError
 <p>다음은 참고한 문서이다.</p>
 
 <ul>
-  <li><a href="https://docs.pytest.org/en/latest/goodpractices.html#good-integration-practices">https://docs.pytest.org/en/latest/goodpractices.html#good-integration-practices</a></li>
+  <li><a href="https://docs.pytest.org/en/latest/assert.html#asserting-with-the-assert-statement">https://docs.pytest.org/en/latest/assert.html#asserting-with-the-assert-statement</a></li>
 </ul>
 
 <h2 id="asserterror시-출력되는-메세지-변경하기">AssertError시 출력되는 메세지 변경하기</h2>
@@ -607,7 +667,7 @@ def test_compare():
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_foocompare.py      
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kevin/dev/pytest_tutorial/assert
+rootdir: /Users/kelpin/dev/pytest_tutorial/assert
 collected 1 item                                                                                                                                                                                                                            
 
 test_foocompare.py F                                                                                                                                                                                                                  [100%]
@@ -638,7 +698,9 @@ test_foocompare.py:12: AssertionError
 
 <hr />
 
-<p>테스트할 대상에 의도적으로 ExceptionError를 발생시키는 인자를 입력하여 ExceptionError가 발생하는지 테스트 해야 하는 경우가 있다.</p>
+<p>테스트할 대상중에는 ExceptionError를 발생시키는 케이스에서 정상적으로 ExceptionError가 발생하는지 테스트 해야 하는 경우가 있다.</p>
+
+<p>대표적으로 특정 함수가 특정한 경우에 Exception을 raise시키는 로직이 포함되어 있는 경우가 있다.</p>
 
 <p>만약 ExceptionError를 발생시키는 인자를 입력하여 ExceptionError가 발생하면 ExceptionError가 발생한 테스트 코드 아래의 코드들은 실행되지 않는다.</p>
 
@@ -668,7 +730,7 @@ def test_zero_division_2():
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_exception_zero_division.py
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kevin/dev/pytest_tutorial
+rootdir: /Users/kelpin/dev/pytest_tutorial
 collected 2 items                                                                                                                                                                                                                           
 
 test_sample.py .F                                                                                                                                                                                                                     [100%]
@@ -726,7 +788,7 @@ def test_square(square_10):
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_square_10.py
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kevin/dev/pytest_tutorial/fixture
+rootdir: /Users/kelpin/dev/pytest_tutorial/fixture
 collected 1 item                                                                                                                                                                                                                            
 
 test_square_10.py F                                                                                                                                                                                                               [100%]
@@ -782,7 +844,7 @@ def square_10():
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest *er.py
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kevin/dev/pytest_tutorial/fixture/over_under
+rootdir: /Users/kelpin/dev/pytest_tutorial/fixture/over_under
 collected 2 items                                                                                                                                                                                                                           
 
 test_fixture_over.py F                                                                                                                                                                                                                [ 50%]
@@ -840,7 +902,7 @@ test_fixture_under.py:3: AssertionError
     <p>테스트를 위한 임시 디렉토리와 파일을 생성한다.</p>
   </li>
   <li>
-    <p>임시 파일에 데이터를 입력한다.</p>
+    <p>임시 파일에 데이터를 수집되었다는 것을 의미한다</p>
   </li>
   <li>
     <p>데이터를 입력 완료 후 임시 디렉토리와 파일을 삭제한다.</p>
@@ -850,7 +912,7 @@ test_fixture_under.py:3: AssertionError
   </li>
 </ol>
 
-<p>위의 사례를 직접 경험하기 위해 다음과 같이 코드를 입력한다.</p>
+<p>위의 사례를 직접 경험하기 위해 다음과 같이 코드를 작성한다.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import pytest
 import os
@@ -985,7 +1047,7 @@ def test_double_value(make_double_value):
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_params.py
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kevin/dev/pytest_tutorial/fixture
+rootdir: /Users/kelpin/dev/pytest_tutorial/fixture
 collected 3 items                                                                                                                                                                                                                           
 
 test_params.py FFF                                                                                                                                                                                                           [100%]
@@ -1068,7 +1130,7 @@ def test_eval(test_input, expected):
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_expectation.py
 ============================================================================================================ test session starts ============================================================================================================
 platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kevin/dev/pytest_tutorial/fixture
+rootdir: /Users/kelpin/dev/pytest_tutorial/fixture
 collected 3 items                                                                                                                                                                                                                           
 
 test_expectation.py ..F                                                                                                                                                                                                           [100%]
@@ -1252,31 +1314,14 @@ def test_timedistance_v3(a, b, expected):
 <div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
-      <div class="archive__item-teaser">
-        <img src=
-          
-            "/assets/images/logo1.png"
-          
-          alt="">
-      </div>
-    
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/kubernetes/kubernetes_basic/" rel="permalink">Kubernetes 입문자를 위한 기초 내용 정리
+        <a href="/kafka/kafka_official_documents/" rel="permalink">Kafka 공식문서
 </a>
       
     </h2>
     
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  2 분 소요
-
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description">이 문서는 Kuberetes에 대한 기초 내용을 개인적으로 내용을 정리하기 위하여 작성되었다.
+    <p class="archive__item-excerpt" itemprop="description">이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다.
 </p>
   </article>
 </div>
@@ -1289,31 +1334,14 @@ def test_timedistance_v3(a, b, expected):
 <div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
-      <div class="archive__item-teaser">
-        <img src=
-          
-            "/assets/images/logo1.png"
-          
-          alt="">
-      </div>
-    
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/aws_cli/aws_cli_basic/" rel="permalink">AWS CLI 기초 학습 공유
+        <a href="/kafka/kafka_quick_start_guide/" rel="permalink">Kafka 설치 및 간단 사용법
 </a>
       
     </h2>
     
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  3 분 소요
-
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description">이 문서는 AWS Command Line Interface 사용 설명서를 살펴보며 AWS CLI에 대한 학습했던 내용을 개인적으로 정리하기 위하여 작성되었다.
+    <p class="archive__item-excerpt" itemprop="description">이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.
 </p>
   </article>
 </div>
@@ -1326,31 +1354,14 @@ def test_timedistance_v3(a, b, expected):
 <div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
-      <div class="archive__item-teaser">
-        <img src=
-          
-            "/assets/images/logo1.png"
-          
-          alt="">
-      </div>
-    
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/test/jmeter_basic/" rel="permalink">JMeter 기본 사용법
+        <a href="/linux/how_to_running_process_in_background/" rel="permalink">Linux환경에서 Process background에서 실행하는 방법, 프로세스 확인, 종료하는 방법
 </a>
       
     </h2>
     
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  2 분 소요
-
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description"> JMeter는 java로 만들어진 성능 테스트 툴이다. 구매한 솔루션의 Spec을 확인하거나 서버의 스케일링을 위해 사용한다.
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Linux환경에서 Process background에서 실행하는 방법에 대해 정리하기 위해 작성했다.
 </p>
   </article>
 </div>
@@ -1363,31 +1374,14 @@ def test_timedistance_v3(a, b, expected):
 <div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
-      <div class="archive__item-teaser">
-        <img src=
-          
-            "/assets/images/logo1.png"
-          
-          alt="">
-      </div>
-    
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/lambda/chalice_tutorial/" rel="permalink">AWS Chalice - Tutorial 기초 학습 정리
+        <a href="/celery/celery_ml_model_build/" rel="permalink">Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포
 </a>
       
     </h2>
     
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  7 분 소요
-
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description">이 문서는 AWS Chalice Github README 문서를 학습하며 개인적인 학습정리를 위하여 작성되었다.
+    <p class="archive__item-excerpt" itemprop="description">이 글은 ML 모델 기반의 API서비스를 만든 후, 추가적으로 고도화에 대해 공부하고 개발한 부분을 남기고 공유하기 위해 작성했다. 
 </p>
   </article>
 </div>

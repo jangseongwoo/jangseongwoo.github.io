@@ -8,6 +8,11 @@ tags:
   - Fluentd
   - AWS_Kinesis_data_stream
   - AWS
+
+toc: true
+toc_label: "Index"
+toc_icon: "cog"
+toc_sticky: true
 ---
 
 문서 작성의 목적

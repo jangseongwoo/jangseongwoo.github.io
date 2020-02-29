@@ -103,7 +103,7 @@
 
   </head>
 
-  <body class="layout--single wide">
+  <body class="layout--single">
     <nav class="skip-links">
   <h2 class="screen-reader-text">Skip links</h2>
   <ul>
@@ -150,6 +150,42 @@
     <div class="initial-content">
       
 
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#monitoring" itemprop="item"><span itemprop="name">Monitoring</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">New Relic 교육 - 오버뷰</li>
+      
+    
+  </ol>
+</nav>
+
+  
 
 
 <div id="main" role="main">
@@ -291,19 +327,37 @@
           <h1 id="page-title" class="page__title" itemprop="headline">New Relic 교육 - 오버뷰
 </h1>
           
-            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  4 분 소요
-
-</p>
-          
         </header>
       
 
       <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> Index</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#문서목적">문서목적</a></li>
+  <li><a href="#new-relic이-말하는-new-relic오버뷰">New Relic이 말하는 New Relic(오버뷰)</a>
+    <ul>
+      <li><a href="#new-relic-활용">New Relic 활용</a></li>
+      <li><a href="#agent-방식">Agent 방식</a></li>
+    </ul>
+  </li>
+  <li><a href="#new-relic-products">New Relic Products</a>
+    <ul>
+      <li><a href="#new-relic---apm">New Relic - APM</a></li>
+      <li><a href="#new-relic---browser">New Relic - Browser</a></li>
+      <li><a href="#new-relic---infrastructure">New Relic - Infrastructure</a></li>
+      <li><a href="#new-relic---insights">New Relic - Insights</a></li>
+      <li><a href="#new-relic---mobile">New Relic - Mobile</a></li>
+      <li><a href="#new-relic---synthetics">New Relic - Synthetics</a></li>
+      <li><a href="#기타-교육중-확인한-내용">기타 교육중 확인한 내용</a></li>
+    </ul>
+  </li>
+  <li><a href="#참고자료">참고자료</a></li>
+</ul>
+            </nav>
+          </aside>
         
         <h1 id="문서목적">문서목적</h1>
 
@@ -741,31 +795,14 @@ New Relic query language(NRQL)를 사용하여 New Relic으로 수집된 데이�
 <div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
-      <div class="archive__item-teaser">
-        <img src=
-          
-            "/assets/images/logo1.png"
-          
-          alt="">
-      </div>
-    
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/kubernetes/kubernetes_basic/" rel="permalink">Kubernetes 입문자를 위한 기초 내용 정리
+        <a href="/kafka/kafka_official_documents/" rel="permalink">Kafka 공식문서
 </a>
       
     </h2>
     
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  2 분 소요
-
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description">이 문서는 Kuberetes에 대한 기초 내용을 개인적으로 내용을 정리하기 위하여 작성되었다.
+    <p class="archive__item-excerpt" itemprop="description">이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다.
 </p>
   </article>
 </div>
@@ -778,31 +815,14 @@ New Relic query language(NRQL)를 사용하여 New Relic으로 수집된 데이�
 <div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
-      <div class="archive__item-teaser">
-        <img src=
-          
-            "/assets/images/logo1.png"
-          
-          alt="">
-      </div>
-    
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/aws_cli/aws_cli_basic/" rel="permalink">AWS CLI 기초 학습 공유
+        <a href="/kafka/kafka_quick_start_guide/" rel="permalink">Kafka 설치 및 간단 사용법
 </a>
       
     </h2>
     
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  3 분 소요
-
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description">이 문서는 AWS Command Line Interface 사용 설명서를 살펴보며 AWS CLI에 대한 학습했던 내용을 개인적으로 정리하기 위하여 작성되었다.
+    <p class="archive__item-excerpt" itemprop="description">이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.
 </p>
   </article>
 </div>
@@ -815,31 +835,14 @@ New Relic query language(NRQL)를 사용하여 New Relic으로 수집된 데이�
 <div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
-      <div class="archive__item-teaser">
-        <img src=
-          
-            "/assets/images/logo1.png"
-          
-          alt="">
-      </div>
-    
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/test/jmeter_basic/" rel="permalink">JMeter 기본 사용법
+        <a href="/linux/how_to_running_process_in_background/" rel="permalink">Linux환경에서 Process background에서 실행하는 방법, 프로세스 확인, 종료하는 방법
 </a>
       
     </h2>
     
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  2 분 소요
-
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description"> JMeter는 java로 만들어진 성능 테스트 툴이다. 구매한 솔루션의 Spec을 확인하거나 서버의 스케일링을 위해 사용한다.
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Linux환경에서 Process background에서 실행하는 방법에 대해 정리하기 위해 작성했다.
 </p>
   </article>
 </div>
@@ -852,31 +855,14 @@ New Relic query language(NRQL)를 사용하여 New Relic으로 수집된 데이�
 <div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
-      <div class="archive__item-teaser">
-        <img src=
-          
-            "/assets/images/logo1.png"
-          
-          alt="">
-      </div>
-    
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/lambda/chalice_tutorial/" rel="permalink">AWS Chalice - Tutorial 기초 학습 정리
+        <a href="/celery/celery_ml_model_build/" rel="permalink">Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포
 </a>
       
     </h2>
     
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  7 분 소요
-
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description">이 문서는 AWS Chalice Github README 문서를 학습하며 개인적인 학습정리를 위하여 작성되었다.
+    <p class="archive__item-excerpt" itemprop="description">이 글은 ML 모델 기반의 API서비스를 만든 후, 추가적으로 고도화에 대해 공부하고 개발한 부분을 남기고 공유하기 위해 작성했다. 
 </p>
   </article>
 </div>

@@ -1,0 +1,832 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Fluentd로 데이터 수집해 AWS Kinesis Data stream으로 보내기 - kelpin’s blog</title>
+<meta name="description" content="이 문서는 AWS Kinesis에 대한 학습 중 Fluentd와 AWS Kinesis Data stream을 연동 하여 데이터를 처리하는 방법에 대해 테스트하고 공유하기 위해 작성했다.">
+
+
+  <meta name="author" content="kelpin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="kelpin's blog">
+<meta property="og:title" content="Fluentd로 데이터 수집해 AWS Kinesis Data stream으로 보내기">
+<meta property="og:url" content="http://localhost:4000/fluentd/fluentd_to_aws_kinesis_data_stream/">
+
+
+  <meta property="og:description" content="이 문서는 AWS Kinesis에 대한 학습 중 Fluentd와 AWS Kinesis Data stream을 연동 하여 데이터를 처리하는 방법에 대해 테스트하고 공유하기 위해 작성했다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-01-22T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/fluentd/fluentd_to_aws_kinesis_data_stream/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "kelpin",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="kelpin's blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          kelpin's blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#fluentd" itemprop="item"><span itemprop="name">Fluentd</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Fluentd로 데이터 수집해 AWS Kinesis Data stream으로 보내기</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="kelpin" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">kelpin</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Fluentd로 데이터 수집해 AWS Kinesis Data stream으로 보내기">
+    <meta itemprop="description" content="이 문서는 AWS Kinesis에 대한 학습 중 Fluentd와 AWS Kinesis Data stream을 연동 하여 데이터를 처리하는 방법에 대해 테스트하고 공유하기 위해 작성했다.">
+    <meta itemprop="datePublished" content="January 22, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Fluentd로 데이터 수집해 AWS Kinesis Data stream으로 보내기
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> Index</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#문서-작성의-목적">문서 작성의 목적</a></li>
+  <li><a href="#테스트-환경">테스트 환경</a>
+    <ul>
+      <li><a href="#로컬-환경">로컬 환경</a></li>
+      <li><a href="#aws-테스트-리전-관련-서비스-흐름">AWS 테스트 리전, 관련 서비스, 흐름</a></li>
+      <li><a href="#aws-kinesis-data-stream-환경">AWS Kinesis Data stream 환경</a></li>
+    </ul>
+  </li>
+  <li><a href="#fluentd로-데이터-수집해-aws-kinesis-data-stream으로-보내기">Fluentd로 데이터 수집해 AWS Kinesis Data stream으로 보내기</a>
+    <ul>
+      <li><a href="#fluentd의-aws-kinesis-data-stream-플러그인-설치하기">Fluentd의 AWS Kinesis Data stream 플러그인 설치하기</a></li>
+      <li><a href="#fluentd의-config-파일-변경하기">Fluentd의 Config 파일 변경하기</a></li>
+      <li><a href="#fluentd-실행하기">Fluentd 실행하기</a></li>
+      <li><a href="#fluentd가watch하고-있는-디렉토리에-로그파일-기록하기">Fluentd가 Watch하고 있는 디렉토리에 로그파일 기록하기</a></li>
+      <li><a href="#aws-kinesis-data-stream에-정상적으로-로그가-입력되었는-지-확인하기">AWS Kinesis Data stream에 정상적으로 로그가 입력되었는 지 확인하기</a></li>
+    </ul>
+  </li>
+  <li><a href="#결론">결론</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h1 id="문서-작성의-목적">문서 작성의 목적</h1>
+
+<hr />
+
+<p>이 문서는 AWS Kinesis에 대한 학습 중 Fluentd와 AWS Kinesis Data stream을 연동 하여 데이터를 처리하는 방법에 대해 테스트하고 공유하기 위해 작성했다.</p>
+
+<p>Fluentd에 대한 기초적인 지식 및 설치에 대한 것은 알고 있다는 것으로 가정해 문서를 작성했다. 해당 부분을 모르는 경우 Fluentd 기초 문서를 참고한다.</p>
+
+<h1 id="테스트-환경">테스트 환경</h1>
+
+<hr />
+
+<p>테스트 환경은 다음과 같다.</p>
+
+<h2 id="로컬-환경">로컬 환경</h2>
+
+<ul>
+  <li>
+    <p>Python 3.7.4</p>
+  </li>
+  <li>
+    <p>Fluentd 1.7.1</p>
+  </li>
+  <li>
+    <p>Ruby 2.4.0</p>
+  </li>
+  <li>
+    <p>MacOS Catalina</p>
+  </li>
+</ul>
+
+<h2 id="aws-테스트-리전-관련-서비스-흐름">AWS 테스트 리전, 관련 서비스, 흐름</h2>
+
+<ul>
+  <li>
+    <p>테스트 리전: 서울 리전</p>
+  </li>
+  <li>
+    <p>테스트 관련 서비스:</p>
+
+    <ul>
+      <li>Amazon Kinesis Data Stream</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                                                  
+                           Kinesis Stream        
+  +---------+                +--------+          
+  | Sources |---------------&gt;| Shard  |
+  +---------+ data records   +--------+          
+                             Data Stream
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+</code></pre></div></div>
+
+<h2 id="aws-kinesis-data-stream-환경">AWS Kinesis Data stream 환경</h2>
+
+<p>테스트용 Data Stream을 아래와 같은 설정으로 생성하였다.</p>
+
+<ul>
+  <li>
+    <p>Kinesis Steram name : test-seongwoo-data-stream</p>
+  </li>
+  <li>
+    <p>Shard</p>
+
+    <ul>
+      <li>
+        <p>샤드 수 : 1</p>
+      </li>
+      <li>
+        <p>쓰기 : 1 MB/초, 1000 레코드/초</p>
+      </li>
+      <li>
+        <p>읽기 : 2 MB/초</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="fluentd로-데이터-수집해-aws-kinesis-data-stream으로-보내기">Fluentd로 데이터 수집해 AWS Kinesis Data stream으로 보내기</h1>
+
+<hr />
+
+<p>테스트는 다음과 같은 순서로 진행된다.  </p>
+
+<ol>
+  <li>
+    <p>Fluentd의 AWS Kinesis Data stream Output plugin을 설치한다.</p>
+  </li>
+  <li>
+    <p>Fluentd Config 파일 변경한다.</p>
+  </li>
+  <li>
+    <p>Fluentd를 실행하고 Watch하고 있는 디렉토리에 로그파일을 기록한다.</p>
+  </li>
+  <li>
+    <p>로그가 정상적으로 AWS Kinesis Data stream에 입력됬는 지 확인한다.</p>
+  </li>
+</ol>
+
+<p>테스트는 다음과 같은 디렉토리 구조를 기준으로 진행하였다. 해당 구조로 프로젝트 디렉토리를 구성한 이후 다음 내용을 진행한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Project/pos/
+Project/pos/pos_file.pos
+Project/source/{log_file.log}
+Project/kinesis_test.config
+</code></pre></div></div>
+
+<h2 id="fluentd의-aws-kinesis-data-stream-플러그인-설치하기">Fluentd의 AWS Kinesis Data stream 플러그인 설치하기</h2>
+
+<p>Fluentd의 많은 플러그인 중 AWS Kinesis Data stream을 위한 Output plugin이 있다. 자세한 내용은 <a href="https://github.com/awslabs/aws-fluent-plugin-kinesis">aws-fluent-plugin-kinesis 문서</a>를 참고한다.</p>
+
+<p>AWS Kinesis Data stream output plugin 설치 명령은 다음과 같다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ gem install fluent-plugin-kinesis
+</code></pre></div></div>
+
+<h2 id="fluentd의-config-파일-변경하기">Fluentd의 Config 파일 변경하기</h2>
+
+<p>소스 로그를 수집해 AWS Kinesis Data stream으로 로그파일을 보내기 위해서는 Fluentd의 config 파일을 변경해 Input과 Output에 대해 설정해야 한다.</p>
+
+<p>따라서, kinesis_test.config을 다음과 같이 수정한다. 내용 중 {project_folder_path}은 프로젝트 디렉토리의 절대 경로를 입력하면 된다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;source&gt;
+  @type tail
+  path {project_folder_path}/source/*.log
+  pos_file {project_folder_path}/pos/pos_file.pos
+  tag kinesis.test
+  &lt;parse&gt;
+    @type none
+  &lt;/parse&gt;
+&lt;/source&gt;
+&lt;match kinesis.*&gt;
+  @type kinesis_streams
+  region ap-northeast-2
+  stream_name test-seongwoo-data-stream
+&lt;/match&gt;
+</code></pre></div></div>
+
+<h2 id="fluentd-실행하기">Fluentd 실행하기</h2>
+
+<p>Fluentd를 실행하기 위해 Project 디렉토리에서 다음과 같은 명령을 실행한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ fluentd -c kinesis_test.config -o fleuntd.log
+</code></pre></div></div>
+
+<p>새로운 터미널을 열고 로그 파일을 보기 위해 다음과 같은 명령을 실행한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -f fleuntd.log
+</code></pre></div></div>
+
+<p>로그 파일을 통해 Fluentd가 정상적으로 실행되었다는 것을 확인한다.</p>
+
+<h2 id="fluentd가watch하고-있는-디렉토리에-로그파일-기록하기">Fluentd가 Watch하고 있는 디렉토리에 로그파일 기록하기</h2>
+
+<p>Fluentd가 watch하는 디렉토리에 로그파일 기록하기 위해 다음과 같은 명령어를 실행한다. 프로젝트 디렉토리 아래의 source 디렉토리에서 입력한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "test" &gt; test1.log
+</code></pre></div></div>
+
+<p>로그가 정상적으로 기록되고 Fluentd가 의도한대로 동작하고 있다면 Fluentd 로그파일에 다음과 같은 로그 메시지가 발생한다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2019-11-12 19:31:56 +0900 [info]: #0 following tail of /Users/st/test/fluentd_kinesis/source/test1.log
+</code></pre></div></div>
+
+<h2 id="aws-kinesis-data-stream에-정상적으로-로그가-입력되었는-지-확인하기">AWS Kinesis Data stream에 정상적으로 로그가 입력되었는 지 확인하기</h2>
+
+<p>아래 방법은 AWS Kinesis Data stream에 AWS Kinesis firehose가 연동되어 특정 S3 버킷으로 데이터가 저장된 설정하에 확인할 수 있는 방법이다. 
+만약에 AWS Kinesis firehose를 설정하지 않았다면 AWS Kinesis Data stream 모니터링 콘솔 화면에서 생성된 샤드에 데이터 입력이 되었는 지 확인하면 된다. 또는 Cloudwatch를 이용해 확인이 가능하며 해당 방법은 이 문서에서 기술하지 않는다.</p>
+
+<p>AWS Kinesis Firehose는 S3에 로그파일을 기록한다. AWS Kinesis Data stream에 정상적으로 로그가 입력되었는 지 확인하기 위해 AWS Kinesis Firehose에서 설정한 S3 버킷의 데이터를 확인한다. 로그파일의 경로는 해당 버킷 아래에 년, 월, 일, 시간으로 구분되어져 있다.
+테스트에선 다음과 같은 S3 경로에 로그파일이 기록되었다.</p>
+
+<ul>
+  <li><a href="https://{AWS_DOMAIN_URL}/2019/11/12/10/test-seongwoo-firehose-2-2019-11-12-10-33-02-739b1c9d-cf07-4086-a1dd-bab0e60cd4cd">https://{AWS_DOMAIN_URL}/2019/11/12/10/test-seongwoo-firehose-2-2019-11-12-10-33-02-739b1c9d-cf07-4086-a1dd-bab0e60cd4cd</a></li>
+</ul>
+
+<p>해당 파일을 다운받아 내용을 확인한다. </p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{"message":"sdasdsad"}
+{"message":"asdasdsad"}
+{"message":"ad"}
+{"message":"sdasdsasdasdasdsdaad"}
+{"message":"tesd"}
+{"message":""}
+{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
+{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
+{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
+{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
+{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
+{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
+{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
+{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
+{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
+{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
+{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
+{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
+{"message":"asdasddsaasdsaxzcvxcvcxv"}
+{"message":"xzcv"}
+</code></pre></div></div>
+
+<p>입력한 내용이 예시와 같은 형태로 입력되어 있다면 정상적으로 동작 했다고 볼 수 있다. </p>
+
+<h1 id="결론">결론</h1>
+
+<hr />
+
+<p>이 테스트의 목적은 기존 진행된 Kinesis 테스트의 수집단계를 Fluentd로 연동 테스트하는 것이다.</p>
+
+<p>테스트를 통해 Fluentd의 Output plugin으로 데이터를 수집해 AWS Kinesis Data stream으로 데이터가 정상적으로 입력됨을 확인했다.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#aws-kinesis-data-stream" class="page__taxonomy-item" rel="tag">AWS_Kinesis_data_stream</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#aws" class="page__taxonomy-item" rel="tag">AWS</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#fluentd" class="page__taxonomy-item" rel="tag">Fluentd</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#fluentd" class="page__taxonomy-item" rel="tag">Fluentd</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2020-01-22T00:00:00+09:00">January 22, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Fluentd%EB%A1%9C+%EB%8D%B0%EC%9D%B4%ED%84%B0+%EC%88%98%EC%A7%91%ED%95%B4+AWS+Kinesis+Data+stream%EC%9C%BC%EB%A1%9C+%EB%B3%B4%EB%82%B4%EA%B8%B0%20http%3A%2F%2Flocalhost%3A4000%2Ffluentd%2Ffluentd_to_aws_kinesis_data_stream%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Ffluentd%2Ffluentd_to_aws_kinesis_data_stream%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Ffluentd%2Ffluentd_to_aws_kinesis_data_stream%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/fluentd/fluentd_file_created_time/" class="pagination--pager" title="Fluentd의 Read from head option에 대해 알아보기
+">이전</a>
+    
+    
+      <a href="/aws_kinesis_firehose/firehose_to_es_s3/" class="pagination--pager" title="Kinesis Data Firehose에서 Amazon Elasticsearch와 S3 데이터 전달하기
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_official_documents/" rel="permalink">Kafka 공식문서
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_quick_start_guide/" rel="permalink">Kafka 설치 및 간단 사용법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/linux/how_to_running_process_in_background/" rel="permalink">Linux환경에서 Process background에서 실행하는 방법, 프로세스 확인, 종료하는 방법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Linux환경에서 Process background에서 실행하는 방법에 대해 정리하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/celery/celery_ml_model_build/" rel="permalink">Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 ML 모델 기반의 API서비스를 만든 후, 추가적으로 고도화에 대해 공부하고 개발한 부분을 남기고 공유하기 위해 작성했다. 
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 kelpin. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/fluentd/fluentd_to_aws_kinesis_data_stream/";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/fluentd/fluentd_to_aws_kinesis_data_stream"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kelpin.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

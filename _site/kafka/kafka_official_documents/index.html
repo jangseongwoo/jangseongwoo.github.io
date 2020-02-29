@@ -1,0 +1,725 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Kafka 공식문서 - kelpin’s blog</title>
+<meta name="description" content="이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다.">
+
+
+  <meta name="author" content="kelpin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="kelpin's blog">
+<meta property="og:title" content="Kafka 공식문서">
+<meta property="og:url" content="http://localhost:4000/kafka/kafka_official_documents/">
+
+
+  <meta property="og:description" content="이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-02-24T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/kafka/kafka_official_documents/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "kelpin",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="kelpin's blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          kelpin's blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#kafka" itemprop="item"><span itemprop="name">Kafka</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Kafka 공식문서</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="kelpin" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">kelpin</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Kafka 공식문서">
+    <meta itemprop="description" content="이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다.">
+    <meta itemprop="datePublished" content="February 24, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Kafka 공식문서
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> Index</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#목적">목적</a></li>
+  <li><a href="#introduction">Introduction </a></li>
+  <li><a href="#topics-and-logs">Topics and Logs</a></li>
+  <li><a href="#분산distribution">분산(Distribution)</a></li>
+  <li><a href="#지역-복제geo-replication">지역 복제(Geo-Replication)</a></li>
+  <li><a href="#생산자producers">생산자(Producers)</a></li>
+  <li><a href="#소비자consumers">소비자(Consumers)</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h1 id="목적">목적</h1>
+
+<hr />
+
+<p>이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다. 번역하기 어려운 기술용어에 대해서는 원문이 의미 전달에 더 용이할 것이라 판단해 그대로 작성한다. 이 문서는 <a href="https://kafka.apache.org/documentation/">Kafak 2.4.0의 공식문서</a>를 기준으로 작성했다. </p>
+
+<h1 id="introduction">Introduction </h1>
+
+<hr />
+
+<p>Apach Kafka는 분산 streaming platform이다. </p>
+
+<p>Streaming platform은 3가지 특징이 있다. </p>
+
+<ul>
+  <li>
+    <p>Message queue 또는 Enterprise messaging system과 유사하게 Records를 Publish하고 Subscribe한다.</p>
+  </li>
+  <li>
+    <p>Stream of records를 Fault-tolerant(장애에 강한) 방식으로 저장한다. </p>
+  </li>
+  <li>
+    <p>Records가 발생하면 해당 Stream을 처리한다. </p>
+  </li>
+</ul>
+
+<p><img src="/assets/images/kafka-apis.png" alt="" /></p>
+
+<p>Kafka 일반적으로 다음과 같은 두 가지 광범위한 종류의 Application에 사용된다.</p>
+
+<ul>
+  <li>
+    <p>Applications 혹은 System 간 안전하게 데이터를 얻을 수 있는 Real-time streaming data pipelines을 구축한다.</p>
+  </li>
+  <li>
+    <p>Streaming data를 Transform하거나 React하기 위한 Real-time streaming data pipelines을 구축한다.</p>
+  </li>
+</ul>
+
+<p>Kafka가 이런 일들을 어떻게 하는지 이해하기 위해서, Kafka의 능력을 밑바닥부터 파고들어 탐구해 보자.</p>
+
+<p><strong>첫번째 몇 가지 Concept:</strong></p>
+
+<ul>
+  <li>
+    <p>Kafka는 Cluster로 작동하며 하나 또는 하나 이상의 Server로 확장할 수 있으며, 이것은 여러 개의 데이터 센터로 확장할 수 있다. </p>
+  </li>
+  <li>
+    <p>Kafka cluster는 Topic으로 streaming records를 구분해 저장한다. </p>
+  </li>
+  <li>
+    <p>각 각의 Record는 Key, value, timestamp로 구성되어 있다. </p>
+  </li>
+</ul>
+
+<p><strong>Kafka 4개의 핵심 API:</strong></p>
+
+<ul>
+  <li>
+    <p><a href="https://kafka.apache.org/documentation.html#producerapi">Producer API</a>: Application이 하나 이상의 Topic에 Streaming record를 게시하도록 허용한다.</p>
+  </li>
+  <li>
+    <p><a href="https://kafka.apache.org/documentation.html#consumerapi">Consumer API</a>: Application이 하나 이상의 Topic에 구독하고 생산된 Streaming record를 처리하도록 허용한다.</p>
+  </li>
+  <li>
+    <p><a href="https://kafka.apache.org/documentation/streams">Streams API</a>: Application이 하나 이상의 Topic으로 부터 입력 Stream을 소비하고 하나 이상의 출력 Topic으로 출력 Stream을 생성하여 효과적으로 입력 Stream을 출력 Stream으로 변환한다.</p>
+  </li>
+  <li>
+    <p><a href="https://kafka.apache.org/documentation.html#connect">Connector API</a>: Topic을 기존 Application이나 데이터 시스템에 연결하는 재사용 가능한 producers, consumers을 만들어서 실행할 수 있다. 예로 관계형 DB의 커넥터는 테이블에 대한 모든 변경 사항을 캡처 할 수 있다.</p>
+  </li>
+</ul>
+
+<p>Kafka에서 Clients와 Servers간 통신은 간단하고, 고성능이며, 언어와 관계없는 TCP Protocol를 사용한다. </p>
+
+<h1 id="topics-and-logs">Topics and Logs</h1>
+
+<hr />
+
+<p>Topic은 Publish된 Records의 Category 혹은 Feed 이름이다. Kafka의 Topic은 항상 Multi-subscriber를 갖는다. 그것은, Topic은 쓰여진 데이터를 구독하는 0개부터 여러 개의 Consumer를 가질 수 있다는 것이다. </p>
+
+<p>각 각의 Topic은 다음과 같이 Kafka cluster에서 Partition된 로그를 관리한다. </p>
+
+<p><img src="/assets/images/log_anatomy.png" alt="" /></p>
+
+<p>각 각의 Partition은 정렬되어 있으며, Immutable한 record의 순서는 계속적으로 추가된다. (-구조화된 commit log로 추가된다.) Partition에 있는 Records는 각 각의 Partition에서 Unique한 식별자인 Offset을 가지고 할당된다. </p>
+
+<p>Kafka clster는 설정 가능한 Retention 기간을 이용해 Publish된 Records를 지속적으로 저장한다. 예를 들면, Retention 정책이 2일로 설정됬다면, Publish된 시점부터 2일 후까지는 Consuming이 가능하나 2일 이후에는 공간을 비우기 위해 삭제된다. Kafka의 성능은 데이터 크기가 일정하므로 오랫동안 데이터를 저장하는 것에 대해 문제가 되지 않는다.</p>
+
+<p><img src="/assets/images/log_consumer.png" alt="" /></p>
+
+<p>사실은, Consumer마다 생기는 Metadata는 Consumer의 Offset이나 위치이다. 이 Offset은 Consumer에 의해 컨트롤된다: Consumer는 Record를 읽으며 선형적으로 offset을 증가시킬 것이다. 그러나 사실, Consumer에 의해 Offset이 컨트롤되기 떄문에 예를 드는 것처럼 아무 순서나 소비할수 있다. 예를 들면, Consumer는 오래된 Offset에 대해 다시 데이터를 처리할 수 있으며 스킵하고 가장 최근의 Record와 당장 들어온 Record를 소비할 수 있다. </p>
+
+<p>이런 기능의 결합은 카프카 소비자가 매우 저렴(cheap)하다는 것을 의미한다. “저렴하다”라는 것은 Kafka cluster나 다른 소비자들에게 큰 영향을 미치지 않고 오락가락(come and go)할 수 있다는 것이다. 예를 들어, 기존 소비자가 소비하는 것을 변경하지 않고 어떤 토픽의 컨텐츠의 “tail” 명령어를 사용할 수 있다.</p>
+
+<p>Log가 있는 Paritition들은 여러 가지 용도로 사용된다. 첫 번째로, 로그를 단일 서버에 맞는 크기 이상으로 확장할 수 있다.각 개별 Partition은 호스트하는 서버에 맞아야되지만, Topic에는 많은 Partition이 있어 임의의 양의 데이터를 다룰 수 있다. 둘째 Partition들은 병렬 처리 단위로 작동한다. </p>
+
+<h1 id="분산distribution">분산(Distribution)</h1>
+
+<hr />
+
+<p>Log가 있는 Paritition들은 Kafka cluster에 있는 각 서버를 통해 분산되며 각 서버는 데이터를 처리하고 Partition 공유에 대한 요청을 처리한다. 각 파티션은 장애 허용을 위해 설정된 설정 가능한 수의 서버에 복제된다.</p>
+
+<p>각 파티션에는 리더(leader)역할을 하는 1개의 서버와 팔로워(follower) 역할을 하는 0개 이상의 서버가 있다. 리더는 팔로워(follower)가 리더를 수동적으로 복제하는 동안 파티션에 대한 모든 읽기/쓰기 요청을 처리한다. </p>
+
+<p>리더가 실패하면 팔로워 중 하나가 자동으로 새로운 리더가 된다. 각 서버는 일부 파티션의 리더와 다른 서버의 팔로어로 작동하므로 부하(load)가 클러스터 내에서 균형을 이뤄진다.</p>
+
+<h1 id="지역-복제geo-replication">지역 복제(Geo-Replication)</h1>
+
+<hr />
+
+<p>Kafka Mirror-Maker는 Kafka cluster에 지역복제를 지원한다. Mirror-Maker를 사용하면 메시지들을 여러 데이터센터 혹은 다른 지역의 Cloud로 복제를 할 수 있다. 당신은 Active/passivce 시나리오를 백업과 복구를 위해 사용할 수 있다; 또는 Active/active 시나리오들을 데이터 지역성 요구사항을 지원하기 위해, 데이터를 당신의 사용자들에게 가까이 하기 위해 사용할 수 있다. </p>
+
+<h1 id="생산자producers">생산자(Producers)</h1>
+
+<hr />
+
+<p>생산자는 선택한 토픽에 데이터를 발행한다. 생산자는 Topic 안에 있는 Partition에 Record를 선택해 할당하는 책임을 가진다. 이것은 부하의 균형을 맞추기 위해 간단하게 Round-robin으로 실행되며 혹은 어떤 기준을 가진 특정 Partition 함수에 의해 실행될 수 있다(Record안에 있는 어떤 키를 말한다).</p>
+
+<h1 id="소비자consumers">소비자(Consumers)</h1>
+
+<hr />
+
+<p>소비자들은 ‘소비자 그룹’이라는 이름으로 라벨링이 되며, Topic으로 발행된 각 Record들은 구독하고 있는 소비자 그룹에 있는 하나의 소비자 객체에 전달된다. 소비자 객체는 분리된 프로세스들 혹은 분리된 기계들에 있을 수 있다. </p>
+
+<p>만약 소비자 객체가 같은 소비자 그룹에 있을 경우, Record들은 효과적으로 소비자 객체들에게 부하 분산될 것이다. </p>
+
+<p>만약 소비자 객체가 다른 소비자 그룹에 있을 경우, </p>
+
+<p><img src="/assets/images/consumer-groups.png" alt="" /></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#kafka" class="page__taxonomy-item" rel="tag">Kafka</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#kafka" class="page__taxonomy-item" rel="tag">Kafka</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2020-02-24T00:00:00+09:00">February 24, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Kafka+%EA%B3%B5%EC%8B%9D%EB%AC%B8%EC%84%9C%20http%3A%2F%2Flocalhost%3A4000%2Fkafka%2Fkafka_official_documents%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fkafka%2Fkafka_official_documents%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fkafka%2Fkafka_official_documents%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/kafka/kafka_quick_start_guide/" class="pagination--pager" title="Kafka 설치 및 간단 사용법
+">이전</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_quick_start_guide/" rel="permalink">Kafka 설치 및 간단 사용법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/linux/how_to_running_process_in_background/" rel="permalink">Linux환경에서 Process background에서 실행하는 방법, 프로세스 확인, 종료하는 방법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Linux환경에서 Process background에서 실행하는 방법에 대해 정리하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/celery/celery_ml_model_build/" rel="permalink">Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 ML 모델 기반의 API서비스를 만든 후, 추가적으로 고도화에 대해 공부하고 개발한 부분을 남기고 공유하기 위해 작성했다. 
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/shell_script/shell_script_basic/" rel="permalink">Shell script 기본 학습 정리
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Bash shell sciprt에 대해 학습한 부분들을 정리하고 공유하기 위해 작성하였다. 이 문서는 Bash schell script를 기준으로 작성하였다.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 kelpin. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/kafka/kafka_official_documents/";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/kafka/kafka_official_documents"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kelpin.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

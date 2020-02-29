@@ -1,0 +1,883 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포 - kelpin’s blog</title>
+<meta name="description" content="이 글은 ML 모델 기반의 API서비스를 만든 후, 추가적으로 고도화에 대해 공부하고 개발한 부분을 남기고 공유하기 위해 작성했다. ">
+
+
+  <meta name="author" content="kelpin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko">
+<meta property="og:site_name" content="kelpin's blog">
+<meta property="og:title" content="Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포">
+<meta property="og:url" content="http://localhost:4000/celery/celery_ml_model_build/">
+
+
+  <meta property="og:description" content="이 글은 ML 모델 기반의 API서비스를 만든 후, 추가적으로 고도화에 대해 공부하고 개발한 부분을 남기고 공유하기 위해 작성했다. ">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-02-20T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/celery/celery_ml_model_build/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "kelpin",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="kelpin's blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          kelpin's blog
+          <span class="site-subtitle">To the best</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#celery" itemprop="item"><span itemprop="name">Celery</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/avata.png" alt="kelpin" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">kelpin</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>There are no masterpieces made by lazy artists.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul, South of korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/jangseongwoo" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:seongwoo.dev@gmail.com">
+            <meta itemprop="email" content="seongwoo.dev@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 이메일
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포">
+    <meta itemprop="description" content="이 글은 ML 모델 기반의 API서비스를 만든 후, 추가적으로 고도화에 대해 공부하고 개발한 부분을 남기고 공유하기 위해 작성했다. ">
+    <meta itemprop="datePublished" content="February 20, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Celery를 활용한 ML 모델 빌드, 모델 정확성 평가, 배포
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> Index</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#목적">목적</a></li>
+  <li><a href="#개발-환경">개발 환경</a></li>
+  <li><a href="#개발-진행-목적">개발 진행 목적</a></li>
+  <li><a href="#개발-셋팅-과정">개발 셋팅 과정</a></li>
+  <li><a href="#celery-실행-명령">Celery 실행 명령</a></li>
+  <li><a href="#결과">결과</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h1 id="목적">목적</h1>
+
+<hr />
+
+<p>이 글은 ML 모델 기반의 API서비스를 만든 후, 추가적으로 고도화에 대해 공부하고 개발한 부분을 남기고 공유하기 위해 작성했다. </p>
+
+<p>이 문서는 Celery에 대해 기본적인 지식이 있다는 가정하에 문서가 진행된다. <a href="https://docs.celeryproject.org/en/latest/index.html">Celery</a>를 모를 경우 링크를 참고한다. </p>
+
+<h1 id="개발-환경">개발 환경</h1>
+
+<hr />
+
+<p>테스트 환경은 다음과 같다.</p>
+
+<ul>
+  <li>
+    <p>Mac OS: Catalina 10.15.3</p>
+  </li>
+  <li>
+    <p>Python 3.7</p>
+  </li>
+  <li>
+    <p>Celery 4.4.0</p>
+  </li>
+</ul>
+
+<h1 id="개발-진행-목적">개발 진행 목적</h1>
+
+<hr />
+
+<p>개발 진행 목적은 다음과 같은 기능을 가장 간단한 모델로 개발해 추후 ML 모델 빌드 기능의 고도화를 할 경우 참고할 수 있도록 개발해보는 것이다. </p>
+
+<ul>
+  <li>
+    <p>Celery를 이용해 각기 다른 3가지 알고리즘이 적용된 ML 모델을 병렬로 3개 빌드한다.</p>
+  </li>
+  <li>
+    <p>3개 빌드된 모델에 대한 정확성을 평가 후 제일 높은 정확성을 가진 ML 모델을 서비스에 적용한다. </p>
+  </li>
+  <li>
+    <p>적용된 모델에 대해 슬랙으로 리포팅을 받는다. </p>
+  </li>
+</ul>
+
+<h1 id="개발-셋팅-과정">개발 셋팅 과정</h1>
+
+<hr />
+
+<p>모델 빌드의 트리거는 Celery 스케줄러를 이용해 진행한다. </p>
+
+<p>Celery 스케줄러를 만들기 위해 프로젝트 폴더에 celery_scheduler.py 파일을 만들고 다음과 같이 입력한다. </p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from celery import Celery
+from celery.schedules import crontab
+import os
+from dotenv import load_dotenv
+from os.path import join, dirname
+
+# env setting
+try:
+    if os.path.isfile('.env') == True:
+        dotenv_path = join(dirname(__file__), '.env')
+        load_dotenv(dotenv_path)
+except Exception as e:
+    print(e)
+
+CRON_JOB_TIME_HOUR = int(os.getenv("CRON_JOB_TIME_HOUR", "5"))
+CRON_JOB_TIME_MINUTE = int(os.getenv("CRON_JOB_TIME_MINUTE", "0"))
+ENV_NAME = str(os.getenv("ENV_NAME"))
+REDIS_URL = str(os.getenv("REDIS_URL"))
+
+print("----------------------")
+print("CRON_JOB_TIME_HOUR : {}, CRON_JOB_TIME_MINUTE: {}".format(CRON_JOB_TIME_HOUR, CRON_JOB_TIME_MINUTE))
+print("ENV_NAME : {}".format(ENV_NAME))
+print("REDIS_URL : {}".format(REDIS_URL))
+print("----------------------")
+
+if ENV_NAME == "test":
+    app = Celery('celery_test', backend='redis://localhost', broker='redis://localhost')
+else:    
+    app = Celery('celery_test', backend=REDIS_URL, broker=REDIS_URL)
+
+app.conf.timezone = 'Asia/Seoul'
+
+# Set the beat scheduler.
+app.conf.beat_schedule = {
+    'test_models': {
+        'task': 'task_ml_first.make_ml_model_build_job',
+        'schedule': crontab(hour=CRON_JOB_TIME_HOUR, minute=CRON_JOB_TIME_MINUTE),
+        'options' : { "queue": "test_model_build_q" },
+    }
+}
+
+if __name__ == "__main__":
+    print("start as main")
+    app.start()
+</code></pre></div></div>
+
+<p>Celery 스케줄러가 스케줄링 잡을 Broker에 등록하면 Worker가 직접 태스크를 받아 처리해준다. Worker를 만들기 위해 celery_worker.py 파일을 만들고 아래와 같이 파일의 내용을 입력한다. </p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from celery import Celery
+from dotenv import load_dotenv
+from os.path import join, dirname
+import os
+
+# env setting
+if os.path.isfile('.env') == True:
+    dotenv_path = join(dirname(__file__), '.env')
+    load_dotenv(dotenv_path)
+
+CRON_JOB_TIME_HOUR = int(os.getenv("CRON_JOB_TIME_HOUR", "5"))
+CRON_JOB_TIME_MINUTE = int(os.getenv("CRON_JOB_TIME_MINUTE", "0"))
+ENV_NAME = str(os.getenv("ENV_NAME"))
+REDIS_URL = str(os.getenv("REDIS_URL"))
+
+# set celery work
+if ENV_NAME == "test":
+    app = Celery("celery_worker",
+                        backend="redis://localhost",
+                        broker="redis://localhost",
+                        include=["task_ml_first"])
+else:
+    app = Celery("celery_worker",
+                        backend=REDIS_URL,
+                        broker=REDIS_URL,
+                        include=["task_ml_first"])
+
+# task routing config test
+app.conf.update = {
+    'generate_models': {
+        'task': 'task_ml_first.complete_message_print_model_build',
+        'options' : { "queue": "test_model_build_q" },
+    },
+}
+
+app.conf.timezone = "Asia/Seoul"
+
+if __name__ == "__main__":
+    app.start()
+</code></pre></div></div>
+
+<p>Worker가 실제 어떤 작업을 실행하는 지 정의하기 위한 task_ml_first.py 파일을 만들고 내용을 다음과 같이 입력한다. </p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import os
+import time
+from datetime import datetime
+from celery_worker import app
+from celery import group, chord
+from os.path import join, dirname
+from dotenv import load_dotenv
+import random
+from slack_fucntion import send_message_to_slack
+
+if os.path.isfile('./.env') == True:
+    dotenv_path = join(dirname(__file__), '.env')
+    load_dotenv(dotenv_path)
+
+ENV_NAME = str(os.getenv("ENV_NAME"))
+
+
+def deploy_model(model_name):
+    print("{} is deploy".format(model_name))
+    send_message_to_slack({"text":"{} is deployed".format(model_name)})
+
+
+
+@app.task(name='task_ml_first.build_ml_models')
+def build_ml_models(results):
+    print("{} test model build".format(results))
+    max_num = 0
+
+    for result in results:
+        if max_num &lt; result['value']:
+            max_num = result['value']
+    
+    print(max_num)
+
+    for result in results:
+        if max_num == result['value']:
+            model_name = result['model_name']
+        
+    deploy_model(model_name)
+
+    return True
+
+
+@app.task(name='task_ml_first.first_method_ml_model_build')
+def first_method_ml_model_build():
+    random_number = random.randrange(1,10)
+
+    print("first_method_ml_model_build() start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    time.sleep(random_number)
+    print("first_method_ml_model_build() end!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+    return {"model_name" : "first_method_ml_model_build", "value": random_number}
+
+
+@app.task(name='task_ml_first.second_method_ml_model_build')
+def second_method_ml_model_build():
+    random_number = random.randrange(1,10)
+
+    print("second_method_ml_model_build() start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    time.sleep(random_number)
+    print("second_method_ml_model_build() end!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+    return {"model_name" : "second_method_ml_model_build", "value": random_number}
+
+
+@app.task(name='task_ml_first.third_method_ml_model_build')
+def third_method_ml_model_build():
+    random_number = random.randrange(1,10)
+
+    print("third_method_ml_model_build() start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    time.sleep(random_number)
+    print("third_method_ml_model_build() end!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+    return {"model_name" : "third_method_ml_model_build", "value": random_number}
+
+
+@app.task(name='task_ml_first.make_ml_model_build_job')
+def make_ml_model_build_job():
+    task_signature_list = []
+    
+    try:
+        print("make_ml_model_build_job executed")
+        
+        task_signature_list.append(first_method_ml_model_build.signature())
+        task_signature_list.append(second_method_ml_model_build.signature())
+        task_signature_list.append(third_method_ml_model_build.signature())
+
+        model_build_work_chord = chord(task_signature_list, build_ml_models.s())
+        model_build_work_chord.apply_async(queue="test_model_build_q")  # queue 지정
+        print("make_ml_model_build_job.apply_async() called")
+    except Exception as e:
+        print(e)
+</code></pre></div></div>
+
+<p>슬랙 메시지를 보내기 위해 slack_fucntion.py 파일을 만들고 미리 작성한 코드를 아래와 같이 입력한다. webhook_url은 미리 각자 생성한 url를 입력하면 된다. </p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import json
+import requests
+import os
+
+
+def send_message_to_slack_channel_using_slack_api(message, webhook_url):
+    response = requests.post(
+            webhook_url, data=json.dumps(message),
+            headers={'Content-Type': 'application/json'}
+    )
+    
+    return response
+
+
+def send_message_to_slack(message):
+    webhook_url = ""
+    response = send_message_to_slack_channel_using_slack_api(message, webhook_url)
+
+    if response.text != 'ok':
+        print('error_function_name', 'send_message_to_slack')
+        print('error_message', response.text)
+        raise Exception
+</code></pre></div></div>
+
+<h1 id="celery-실행-명령">Celery 실행 명령</h1>
+
+<hr />
+
+<p>Celery 스케줄러 실행 명령은 다음과 같다. </p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ celery -A celery_scheduler beat --loglevel=debug
+</code></pre></div></div>
+
+<p>Celery worker 실행 명령은 다음과 같다. </p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ celery -A celery_worker worker --loglevel=debug --queues=test_model_build_q --concurrency=3
+</code></pre></div></div>
+
+<h1 id="결과">결과</h1>
+
+<hr />
+
+<p>결과는 미리 설정된 스케줄링 시간에 다음과 같은 형태의 메시지가 슬랙에 온다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{}_method_ml_model_build is deployed
+</code></pre></div></div>
+
+<p>이로써 Celery를 활용해 가장 정확도가 높은 모델을 서비스에 적용하고 슬랙으로 알림 받는 기능을 가장 간단한 형태로 개발을 완료했다. 추후 프로덕션 개발 시 참고해 진행하면 될 것 같다.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#celery" class="page__taxonomy-item" rel="tag">Celery</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#celery" class="page__taxonomy-item" rel="tag">Celery</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time datetime="2020-02-20T00:00:00+09:00">February 20, 2020</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Celery%EB%A5%BC+%ED%99%9C%EC%9A%A9%ED%95%9C+ML+%EB%AA%A8%EB%8D%B8+%EB%B9%8C%EB%93%9C%2C+%EB%AA%A8%EB%8D%B8+%EC%A0%95%ED%99%95%EC%84%B1+%ED%8F%89%EA%B0%80%2C+%EB%B0%B0%ED%8F%AC%20http%3A%2F%2Flocalhost%3A4000%2Fcelery%2Fcelery_ml_model_build%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcelery%2Fcelery_ml_model_build%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcelery%2Fcelery_ml_model_build%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/shell_script/shell_script_basic/" class="pagination--pager" title="Shell script 기본 학습 정리
+">이전</a>
+    
+    
+      <a href="/linux/how_to_running_process_in_background/" class="pagination--pager" title="Linux환경에서 Process background에서 실행하는 방법, 프로세스 확인, 종료하는 방법
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">참고</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_official_documents/" rel="permalink">Kafka 공식문서
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글은 Kafka 공식 문서를 번역하기 위해 작성한 글이다. 전체 문서 번역이 아닌 일부분 중요하다고 생각하는 부분에 대해서 작성을 진행한다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kafka/kafka_quick_start_guide/" rel="permalink">Kafka 설치 및 간단 사용법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 글의 목적은 Apache Kafka 공식 사이트의 Quick start를 따라하면서 학습했던 부분을 정리하고 공유하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/linux/how_to_running_process_in_background/" rel="permalink">Linux환경에서 Process background에서 실행하는 방법, 프로세스 확인, 종료하는 방법
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Linux환경에서 Process background에서 실행하는 방법에 대해 정리하기 위해 작성했다.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/shell_script/shell_script_basic/" rel="permalink">Shell script 기본 학습 정리
+</a>
+      
+    </h2>
+    
+    <p class="archive__item-excerpt" itemprop="description">이 문서는 Bash shell sciprt에 대해 학습한 부분들을 정리하고 공유하기 위해 작성하였다. 이 문서는 Bash schell script를 기준으로 작성하였다.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 kelpin. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/celery/celery_ml_model_build/";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/celery/celery_ml_model_build"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kelpin.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>
