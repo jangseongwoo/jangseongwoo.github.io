@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -431,26 +435,26 @@
 
 <p>test_script.sh를 만들고 다음과 같이 생성된 파일에 내용을 입력한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-
-<span class="nb">echo</span> <span class="s2">"i love Mac!"</span>
-<span class="nb">printf</span> <span class="s2">"i love Mac!"</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/bin/bash
+</span>
+<span class="n">echo</span> <span class="s">"i love Mac!"</span>
+<span class="n">printf</span> <span class="s">"i love Mac!"</span>
 </code></pre></div></div>
 
 <p>Shell script를 실행하는 방법은 다음과 같이 3가지 방법이 있으며 문서의 가독성을 위해 실행하는 방법은 더이상 기술하지 않는다. 3가지 방법 중 적절한 것을 선택해 실행하도록 한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ bash test_script.sh
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">bash</span> <span class="n">test_script</span><span class="o">.</span><span class="n">sh</span>
 
-$ sh test_script.sh
+<span class="err">$</span> <span class="n">sh</span> <span class="n">test_script</span><span class="o">.</span><span class="n">sh</span>
 
-$ chmod +x test_script.sh 
-$ ./test_script.sh
+<span class="err">$</span> <span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="n">test_script</span><span class="o">.</span><span class="n">sh</span> 
+<span class="err">$</span> <span class="o">./</span><span class="n">test_script</span><span class="o">.</span><span class="n">sh</span>
 </code></pre></div></div>
 
 <p>실행 시 결과는 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>i love Mac!
-i love Mac!
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">i</span> <span class="n">love</span> <span class="n">Mac</span><span class="err">!</span>
+<span class="n">i</span> <span class="n">love</span> <span class="n">Mac</span><span class="err">!</span>
 </code></pre></div></div>
 
 <p>예시의 Shell script의 내용 중 “#!/bin/bash”의 의미는 다음과 같다. </p>
@@ -478,28 +482,28 @@ i love Mac!
 
 <p>전역 변수와 지역변수를 사용하기 위해 variables.sh를 만들고 다음과 같이 생성된 파일에 내용을 입력하고 실행한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/bin/bash
+</span>
+<span class="c1"># 전역변수 선언
+</span><span class="n">string</span><span class="o">=</span><span class="s">"hello world"</span>
+<span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">string</span><span class="p">}</span>
 
-<span class="c"># 전역변수 선언</span>
-<span class="nv">string</span><span class="o">=</span><span class="s2">"hello world"</span>
-<span class="nb">echo</span> <span class="k">${</span><span class="nv">string</span><span class="k">}</span>
+<span class="n">string_test</span><span class="p">(){</span>
+	<span class="c1"># 지역변수 선언
+</span>    <span class="n">local</span> <span class="n">string</span><span class="o">=</span><span class="s">"local hello world"</span>
+    <span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">string</span><span class="p">}</span>
+<span class="p">}</span>
 
-string_test<span class="o">(){</span>
-	<span class="c"># 지역변수 선언</span>
-    <span class="nb">local </span><span class="nv">string</span><span class="o">=</span><span class="s2">"local hello world"</span>
-    <span class="nb">echo</span> <span class="k">${</span><span class="nv">string</span><span class="k">}</span>
-<span class="o">}</span>
+<span class="n">string_test</span>
 
-string_test
-
-<span class="nb">echo</span> <span class="k">${</span><span class="nv">string</span><span class="k">}</span>
+<span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">string</span><span class="p">}</span>
 </code></pre></div></div>
 
 <p>실행 결과는 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hello world
-local hello world
-hello world
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hello</span> <span class="n">world</span>
+<span class="n">local</span> <span class="n">hello</span> <span class="n">world</span>
+<span class="n">hello</span> <span class="n">world</span>
 </code></pre></div></div>
 
 <p>결과를 통해 지역 변수는 함수 내에서 선언을 할 경우 함수가 종료되는 것과 동시에 삭제된다는 것을 알 수 있다. </p>
@@ -510,40 +514,40 @@ hello world
 
 <p>테스트를 위해 기존 variables.sh의 내용을 다음과 같이 수정한다. 내용 중 ${PWD}는 예약변수이며 다음 카테고리에 있으니 환경 변수에 대한 것만 보고 넘어가도록 한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/bin/bash
+</span>
+<span class="n">string</span><span class="o">=</span><span class="s">"hello world"</span>
+<span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">string</span><span class="p">}</span>
 
-<span class="nv">string</span><span class="o">=</span><span class="s2">"hello world"</span>
-<span class="nb">echo</span> <span class="k">${</span><span class="nv">string</span><span class="k">}</span>
+<span class="n">string_test</span><span class="p">(){</span>
+    <span class="n">local</span> <span class="n">string</span><span class="o">=</span><span class="s">"local hello world"</span>
+    <span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">string</span><span class="p">}</span>
+<span class="p">}</span>
 
-string_test<span class="o">(){</span>
-    <span class="nb">local </span><span class="nv">string</span><span class="o">=</span><span class="s2">"local hello world"</span>
-    <span class="nb">echo</span> <span class="k">${</span><span class="nv">string</span><span class="k">}</span>
-<span class="o">}</span>
+<span class="n">string_test</span>
 
-string_test
+<span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">string</span><span class="p">}</span>
 
-<span class="nb">echo</span> <span class="k">${</span><span class="nv">string</span><span class="k">}</span>
+<span class="n">export</span> <span class="n">hello_world</span><span class="o">=</span><span class="s">"hello world_export"</span>
 
-<span class="nb">export </span><span class="nv">hello_world</span><span class="o">=</span><span class="s2">"hello world_export"</span>
+<span class="n">bash</span> <span class="err">$</span><span class="p">{</span><span class="n">PWD</span><span class="p">}</span><span class="o">/</span><span class="n">export_test</span><span class="o">.</span><span class="n">sh</span>
 
-bash <span class="k">${</span><span class="nv">PWD</span><span class="k">}</span>/export_test.sh
-
-<span class="nb">echo</span> <span class="k">${</span><span class="nv">hello_world</span><span class="k">}</span>
+<span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">hello_world</span><span class="p">}</span>
 </code></pre></div></div>
 
 <p>export_test.sh를 만들고 다음과 같이 내용을 입력한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-<span class="nb">echo</span> <span class="k">${</span><span class="nv">hello_world</span><span class="k">}</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/bin/bash
+</span><span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">hello_world</span><span class="p">}</span>
 </code></pre></div></div>
 
 <p>variables.sh를 실행한 결과는 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hello world
-local hello world
-hello world
-hello world_export
-hello world_export
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hello</span> <span class="n">world</span>
+<span class="n">local</span> <span class="n">hello</span> <span class="n">world</span>
+<span class="n">hello</span> <span class="n">world</span>
+<span class="n">hello</span> <span class="n">world_export</span>
+<span class="n">hello</span> <span class="n">world_export</span>
 </code></pre></div></div>
 
 <p>아래 2줄의 결과를 통해 variables.sh에서 export한 환경변수가 export_test.sh에서 출력된 것을 확인할 수 있다. </p>
@@ -563,76 +567,76 @@ hello world_export
   </thead>
   <tbody>
     <tr>
-      <td><code class="highlighter-rouge">HOME</code></td>
+      <td><code class="language-python highlighter-rouge"><span class="n">HOME</span></code></td>
       <td>사용자의 홈 디렉토리</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">PATH</code></td>
+      <td><code class="language-python highlighter-rouge"><span class="n">PATH</span></code></td>
       <td>실행 파일을 찾을 경로</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">PWD</code></td>
+      <td><code class="language-python highlighter-rouge"><span class="n">PWD</span></code></td>
       <td>사용자의 현재 작업중인 디렉토리</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">SECONDS</code></td>
+      <td><code class="language-python highlighter-rouge"><span class="n">SECONDS</span></code></td>
       <td>스크립트가 실행된 초 단위 시간</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">SHELL</code></td>
+      <td><code class="language-python highlighter-rouge"><span class="n">SHELL</span></code></td>
       <td>로그인해서 사용하는 쉘</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">PPID</code></td>
+      <td><code class="language-python highlighter-rouge"><span class="n">PPID</span></code></td>
       <td>부모 프로세스의 PID</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">BASH</code></td>
+      <td><code class="language-python highlighter-rouge"><span class="n">BASH</span></code></td>
       <td>BASH 실행 파일 경로</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">BASH_ENV</code></td>
+      <td><code class="language-python highlighter-rouge"><span class="n">BASH_ENV</span></code></td>
       <td>스크립트 실행시 BASH 시작 파일을 읽을 위치 변수</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">BASH_VERSION</code></td>
+      <td><code class="language-python highlighter-rouge"><span class="n">BASH_VERSION</span></code></td>
       <td>설치된 BASH 버전</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">BASH_VERSINFO</code></td>
-      <td><code class="highlighter-rouge">BASH_VERSINFO[0]</code>~<code class="highlighter-rouge">BASH_VERSINFO[5]</code>배열로 상세정보 제공</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">BASH_VERSINFO</span></code></td>
+      <td><code class="language-python highlighter-rouge"><span class="n">BASH_VERSINFO</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></code>~<code class="language-python highlighter-rouge"><span class="n">BASH_VERSINFO</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span></code>배열로 상세정보 제공</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">OSTYPE</code></td>
+      <td><code class="language-python highlighter-rouge"><span class="n">OSTYPE</span></code></td>
       <td>운영체제 종류</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">EUID</code></td>
-      <td><code class="highlighter-rouge">su</code> 명령에서 사용하는 사용자의 유효 아이디 값(<code class="highlighter-rouge">UID</code>와 <code class="highlighter-rouge">EUID</code> 값은 다를 수 있음)</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">EUID</span></code></td>
+      <td><code class="language-python highlighter-rouge"><span class="n">su</span></code> 명령에서 사용하는 사용자의 유효 아이디 값(<code class="language-python highlighter-rouge"><span class="n">UID</span></code>와 <code class="language-python highlighter-rouge"><span class="n">EUID</span></code> 값은 다를 수 있음)</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">GROUPS</code></td>
-      <td>사용자 그룹(<code class="highlighter-rouge">/etc/passwd</code> 값을 출력)</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">GROUPS</span></code></td>
+      <td>사용자 그룹(<code class="language-python highlighter-rouge"><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span></code> 값을 출력)</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">PS1</code></td>
-      <td>기본 프롬프트 변수(기본값: <code class="highlighter-rouge">bash\$</code>)</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">PS1</span></code></td>
+      <td>기본 프롬프트 변수(기본값: <code class="language-python highlighter-rouge"><span class="n">bash</span>\<span class="err">$</span></code>)</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">PS2</code></td>
-      <td>보조 프롬프트 변수(기본값: <code class="highlighter-rouge">&gt;</code>), 명령을 “\“를 사용하여 명령 행을 연장시 사용됨</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">PS2</span></code></td>
+      <td>보조 프롬프트 변수(기본값: <code class="language-python highlighter-rouge"><span class="o">&gt;</span></code>), 명령을 “\“를 사용하여 명령 행을 연장시 사용됨</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">PS3</code></td>
-      <td>쉘 스크립트에서 <code class="highlighter-rouge">select</code> 사용시 프롬프트 변수(기본값: <code class="highlighter-rouge">#?</code>)</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">PS3</span></code></td>
+      <td>쉘 스크립트에서 <code class="language-python highlighter-rouge"><span class="n">select</span></code> 사용시 프롬프트 변수(기본값: <code class="language-python highlighter-rouge"><span class="c1">#?</span></code>)</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">PS4</code></td>
-      <td>쉘 스크립트 디버깅 모드의 프롬프트 변수(기본값: <code class="highlighter-rouge">+</code>)</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">PS4</span></code></td>
+      <td>쉘 스크립트 디버깅 모드의 프롬프트 변수(기본값: <code class="language-python highlighter-rouge"><span class="o">+</span></code>)</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">TMOUT</code></td>
-      <td><code class="highlighter-rouge">0</code>이면 제한이 없으며 <code class="highlighter-rouge">time</code>시간 지정시 지정한 시간 이후 로그아웃</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">TMOUT</span></code></td>
+      <td><code class="language-python highlighter-rouge"><span class="mi">0</span></code>이면 제한이 없으며 <code class="language-python highlighter-rouge"><span class="n">time</span></code>시간 지정시 지정한 시간 이후 로그아웃</td>
     </tr>
   </tbody>
 </table>
@@ -643,26 +647,26 @@ hello world_export
 
 <p>반복 실행문 중 for 문은 다음과 같은 형태로 사용할 수 있다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for 변수 in list
-do
-	명령 
-done
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="err">변수</span> <span class="ow">in</span> <span class="nb">list</span>
+<span class="n">do</span>
+	<span class="err">명령</span> 
+<span class="n">done</span>
 </code></pre></div></div>
 
 <p>test_for.sh 파일을 생성하고 아래의 내용을 입력한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-<span class="k">for </span>string <span class="k">in</span> <span class="s2">"hello"</span> <span class="s2">"world"</span> <span class="s2">"..."</span> 
-<span class="k">do
-    </span><span class="nb">echo</span> <span class="k">${</span><span class="nv">string</span><span class="k">}</span>
-<span class="k">done</span> 
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/bin/bash
+</span><span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="s">"hello"</span> <span class="s">"world"</span> <span class="s">"..."</span> 
+<span class="n">do</span>
+    <span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">string</span><span class="p">}</span>
+<span class="n">done</span> 
 </code></pre></div></div>
 
 <p>실행하고 결과를 확인한다. 실행 결과는 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hello
-world
-...
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hello</span>
+<span class="n">world</span>
+<span class="o">...</span>
 </code></pre></div></div>
 
 <h1 id="제어문-사용하기">제어문 사용하기</h1>
@@ -675,38 +679,38 @@ world
 
 <p>if문은 다음과 같은 형태로 사용할 수 있다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if 조건명령 
-then
-	명령
-else
-	명령
-fi
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="err">조건명령</span> 
+<span class="n">then</span>
+	<span class="err">명령</span>
+<span class="k">else</span>
+	<span class="err">명령</span>
+<span class="n">fi</span>
 </code></pre></div></div>
 
 <p>if.sh 파일을 만들고 다음과 같이 내용을 입력하고 실행한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-<span class="nv">x</span><span class="o">=</span>3
-<span class="nv">y</span><span class="o">=</span>4
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/bin/bash
+</span><span class="n">x</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">y</span><span class="o">=</span><span class="mi">4</span>
 
-<span class="nb">echo</span> <span class="k">${</span><span class="nv">x</span><span class="k">}</span>
-<span class="nb">echo</span> <span class="k">${</span><span class="nv">y</span><span class="k">}</span>
+<span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">x</span><span class="p">}</span>
+<span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">y</span><span class="p">}</span>
 
-<span class="k">if</span> <span class="o">((</span> x &lt; y <span class="o">))</span>
-<span class="k">then
-    </span><span class="nb">echo</span> <span class="s2">"x is less than y"</span>
-<span class="k">else
-    </span><span class="nb">echo</span> <span class="s2">"y is less than x"</span>
-<span class="k">fi</span>
+<span class="k">if</span> <span class="p">((</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="p">))</span>
+<span class="n">then</span>
+    <span class="n">echo</span> <span class="s">"x is less than y"</span>
+<span class="k">else</span>
+    <span class="n">echo</span> <span class="s">"y is less than x"</span>
+<span class="n">fi</span>
 
 
 </code></pre></div></div>
 
 <p>실행 결과는 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3
-4
-x is less than y
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">3</span>
+<span class="mi">4</span>
+<span class="n">x</span> <span class="ow">is</span> <span class="n">less</span> <span class="n">than</span> <span class="n">y</span>
 
 </code></pre></div></div>
 
@@ -720,38 +724,38 @@ x is less than y
 
 <p>함수는 다음과 같은 형태로 사용할 수 있다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function 함수이름 
-{
-	명령들
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">function</span> <span class="err">함수이름</span> 
+<span class="p">{</span>
+	<span class="err">명령들</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <p>funtion.sh 파일을 만들고 다음과 같이 내용을 입력하고 실행한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-function_test<span class="o">(){</span>
-    <span class="nb">echo</span> <span class="s2">"Hi!"</span>
-<span class="o">}</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/bin/bash
+</span><span class="n">function_test</span><span class="p">(){</span>
+    <span class="n">echo</span> <span class="s">"Hi!"</span>
+<span class="p">}</span>
 
-<span class="k">function </span>abc<span class="o">(){</span>
-    <span class="nb">echo</span> <span class="s2">"abc"</span>
-    <span class="nb">echo</span> <span class="s2">"</span><span class="k">${</span><span class="p">@</span><span class="k">}</span><span class="s2">"</span>
-<span class="o">}</span>
+<span class="n">function</span> <span class="n">abc</span><span class="p">(){</span>
+    <span class="n">echo</span> <span class="s">"abc"</span>
+    <span class="n">echo</span> <span class="s">"${@}"</span>
+<span class="p">}</span>
 
-function_test
-abc
+<span class="n">function_test</span>
+<span class="n">abc</span>
 
-abc <span class="s2">"abb"</span> <span class="s2">"para"</span>
+<span class="n">abc</span> <span class="s">"abb"</span> <span class="s">"para"</span>
 
 </code></pre></div></div>
 
 <p>실행 결과는 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hi!
-abc
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Hi</span><span class="err">!</span>
+<span class="n">abc</span>
 
-abc
-abb para
+<span class="n">abc</span>
+<span class="n">abb</span> <span class="n">para</span>
 
 </code></pre></div></div>
 

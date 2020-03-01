@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -575,16 +579,16 @@
 
 <p>테스트 편의를 위하여 다음과 같이 환경 변수를 등록하여 사용한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ export DOCKER_SHARED_VOLUME_TEST_PATH=/Users/kevin/dev/docker/test/shared_volume
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">export</span> <span class="n">DOCKER_SHARED_VOLUME_TEST_PATH</span><span class="o">=/</span><span class="n">Users</span><span class="o">/</span><span class="n">kevin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">docker</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">shared_volume</span>
 
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ env
-... 중략 ...
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">env</span>
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 
-DOCKER_SHARED_VOLUME_TEST_PATH=/Users/kevin/dev/docker/test/shared_volume
+<span class="n">DOCKER_SHARED_VOLUME_TEST_PATH</span><span class="o">=/</span><span class="n">Users</span><span class="o">/</span><span class="n">kevin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">docker</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">shared_volume</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 </code></pre></div></div>
 
 <h2 id="로그생성-컨테이너-이미지-생성">“로그생성” 컨테이너 이미지 생성</h2>
@@ -595,58 +599,58 @@ DOCKER_SHARED_VOLUME_TEST_PATH=/Users/kevin/dev/docker/test/shared_volume
   <li>
     <p>다음과 같이 Dockerfile을 생성한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat image_of_make_logfile/Dockerfile
-FROM python:3.6
-RUN mkdir -p /app
-RUN mkdir -p /app/input
-WORKDIR /app
-COPY . /app
-ENV NAME Make_Log_File
-CMD ["python", "make_log.py", "5", "60", "/app/input/"]
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="n">image_of_make_logfile</span><span class="o">/</span><span class="n">Dockerfile</span>
+<span class="n">FROM</span> <span class="n">python</span><span class="p">:</span><span class="mf">3.6</span>
+<span class="n">RUN</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">app</span>
+<span class="n">RUN</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="nb">input</span>
+<span class="n">WORKDIR</span> <span class="o">/</span><span class="n">app</span>
+<span class="n">COPY</span> <span class="o">.</span> <span class="o">/</span><span class="n">app</span>
+<span class="n">ENV</span> <span class="n">NAME</span> <span class="n">Make_Log_File</span>
+<span class="n">CMD</span> <span class="p">[</span><span class="s">"python"</span><span class="p">,</span> <span class="s">"make_log.py"</span><span class="p">,</span> <span class="s">"5"</span><span class="p">,</span> <span class="s">"60"</span><span class="p">,</span> <span class="s">"/app/input/"</span><span class="p">]</span>
     
 </code></pre></div>    </div>
   </li>
   <li>
     <p>다음과 같은 Python 코드를 작성한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### image_of_make_logfile/make_log.py
-    
-import random
-import sys
-import datetime
-import time
-    
-    
-def main():
-    sys_argv = sys.argv
-    batch_count = 5
-    make_log_running_time = 60
-    log_file_dir_path = "./"
-    
-    if len(sys_argv) &gt; 3:
-        batch_count = int(sys_argv[1])
-        make_log_running_time = int(sys_argv[2])
-        log_file_dir_path = sys_argv[3]
-    
-    choice_list = ["c++", "python", "java",
-                   "javascript", "kotlin", "scala", "ruby"]
-    
-    now_date = datetime.datetime.today()
-    filename = "".join([log_file_dir_path, str(now_date.date()), ".log"])
-    
-    for batch_no in range(batch_count):
-        with open(filename, "a") as file_object:
-            for i in range(make_log_running_time):
-                time.sleep(0.999999)
-                created_at = time.strftime("%Y/%m/%dT%H:%M:%S")
-                log_message = "{}-{}    {}    {}\n".format(
-                    batch_no, i, created_at, random.choice(choice_list))
-                file_object.write(log_message)
-    print("make log end!")
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">### image_of_make_logfile/make_log.py
+</span>    
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">time</span>
     
     
-if __name__ == "__main__":
-    main()
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">sys_argv</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+    <span class="n">batch_count</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">make_log_running_time</span> <span class="o">=</span> <span class="mi">60</span>
+    <span class="n">log_file_dir_path</span> <span class="o">=</span> <span class="s">"./"</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys_argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">batch_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys_argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">make_log_running_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys_argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">log_file_dir_path</span> <span class="o">=</span> <span class="n">sys_argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    
+    <span class="n">choice_list</span> <span class="o">=</span> <span class="p">[</span><span class="s">"c++"</span><span class="p">,</span> <span class="s">"python"</span><span class="p">,</span> <span class="s">"java"</span><span class="p">,</span>
+                   <span class="s">"javascript"</span><span class="p">,</span> <span class="s">"kotlin"</span><span class="p">,</span> <span class="s">"scala"</span><span class="p">,</span> <span class="s">"ruby"</span><span class="p">]</span>
+    
+    <span class="n">now_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">log_file_dir_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">now_date</span><span class="o">.</span><span class="n">date</span><span class="p">()),</span> <span class="s">".log"</span><span class="p">])</span>
+    
+    <span class="k">for</span> <span class="n">batch_no</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_count</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">"a"</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_object</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">make_log_running_time</span><span class="p">):</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.999999</span><span class="p">)</span>
+                <span class="n">created_at</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">"</span><span class="si">%</span><span class="s">Y/</span><span class="si">%</span><span class="s">m/</span><span class="si">%</span><span class="s">dT</span><span class="si">%</span><span class="s">H:</span><span class="si">%</span><span class="s">M:</span><span class="si">%</span><span class="s">S"</span><span class="p">)</span>
+                <span class="n">log_message</span> <span class="o">=</span> <span class="s">"{}-{}    {}    {}</span><span class="se">\n</span><span class="s">"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span>
+                    <span class="n">batch_no</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">created_at</span><span class="p">,</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">choice_list</span><span class="p">))</span>
+                <span class="n">file_object</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">log_message</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"make log end!"</span><span class="p">)</span>
+    
+    
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
     
     
     
@@ -655,35 +659,35 @@ if __name__ == "__main__":
   <li>
     <p>다음과 같이 Docker 이미지를 생성한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd image_of_make_logfile
-$ docker build --tag=make_logfile_image .
-Sending build context to Docker daemon  11.26kB
-Step 1/7 : FROM python:3.6
- ---&gt; 1c515a624542
-Step 2/7 : RUN mkdir -p /app
- ---&gt; Running in a993e327f25c
-Removing intermediate container a993e327f25c
- ---&gt; b4b52d6451f8
-Step 3/7 : RUN mkdir -p /app/input
- ---&gt; Running in a944e3182d51
-Removing intermediate container a944e3182d51
- ---&gt; 20d3277a9ee7
-Step 4/7 : WORKDIR /app
- ---&gt; Running in 09577255b80a
-Removing intermediate container 09577255b80a
- ---&gt; 2d6f8cbc1cde
-Step 5/7 : COPY . /app
- ---&gt; dcbd7f937bad
-Step 6/7 : ENV NAME Make_Log_File
- ---&gt; Running in b41268eb0611
-Removing intermediate container b41268eb0611
- ---&gt; 1c2d3febff85
-Step 7/7 : CMD ["python", "make_log.py", "5", "60", "/app/input/"]
- ---&gt; Running in 630ce115c0e4
-Removing intermediate container 630ce115c0e4
- ---&gt; 5a345b58606c
-Successfully built 5a345b58606c
-Successfully tagged make_logfile_image:latest
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cd</span> <span class="n">image_of_make_logfile</span>
+<span class="err">$</span> <span class="n">docker</span> <span class="n">build</span> <span class="o">--</span><span class="n">tag</span><span class="o">=</span><span class="n">make_logfile_image</span> <span class="o">.</span>
+<span class="n">Sending</span> <span class="n">build</span> <span class="n">context</span> <span class="n">to</span> <span class="n">Docker</span> <span class="n">daemon</span>  <span class="mf">11.26</span><span class="n">kB</span>
+<span class="n">Step</span> <span class="mi">1</span><span class="o">/</span><span class="mi">7</span> <span class="p">:</span> <span class="n">FROM</span> <span class="n">python</span><span class="p">:</span><span class="mf">3.6</span>
+ <span class="o">---&gt;</span> <span class="mi">1</span><span class="n">c515a624542</span>
+<span class="n">Step</span> <span class="mi">2</span><span class="o">/</span><span class="mi">7</span> <span class="p">:</span> <span class="n">RUN</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">app</span>
+ <span class="o">---&gt;</span> <span class="n">Running</span> <span class="ow">in</span> <span class="n">a993e327f25c</span>
+<span class="n">Removing</span> <span class="n">intermediate</span> <span class="n">container</span> <span class="n">a993e327f25c</span>
+ <span class="o">---&gt;</span> <span class="n">b4b52d6451f8</span>
+<span class="n">Step</span> <span class="mi">3</span><span class="o">/</span><span class="mi">7</span> <span class="p">:</span> <span class="n">RUN</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="nb">input</span>
+ <span class="o">---&gt;</span> <span class="n">Running</span> <span class="ow">in</span> <span class="n">a944e3182d51</span>
+<span class="n">Removing</span> <span class="n">intermediate</span> <span class="n">container</span> <span class="n">a944e3182d51</span>
+ <span class="o">---&gt;</span> <span class="mi">20</span><span class="n">d3277a9ee7</span>
+<span class="n">Step</span> <span class="mi">4</span><span class="o">/</span><span class="mi">7</span> <span class="p">:</span> <span class="n">WORKDIR</span> <span class="o">/</span><span class="n">app</span>
+ <span class="o">---&gt;</span> <span class="n">Running</span> <span class="ow">in</span> <span class="mi">09577255</span><span class="n">b80a</span>
+<span class="n">Removing</span> <span class="n">intermediate</span> <span class="n">container</span> <span class="mi">09577255</span><span class="n">b80a</span>
+ <span class="o">---&gt;</span> <span class="mi">2</span><span class="n">d6f8cbc1cde</span>
+<span class="n">Step</span> <span class="mi">5</span><span class="o">/</span><span class="mi">7</span> <span class="p">:</span> <span class="n">COPY</span> <span class="o">.</span> <span class="o">/</span><span class="n">app</span>
+ <span class="o">---&gt;</span> <span class="n">dcbd7f937bad</span>
+<span class="n">Step</span> <span class="mi">6</span><span class="o">/</span><span class="mi">7</span> <span class="p">:</span> <span class="n">ENV</span> <span class="n">NAME</span> <span class="n">Make_Log_File</span>
+ <span class="o">---&gt;</span> <span class="n">Running</span> <span class="ow">in</span> <span class="n">b41268eb0611</span>
+<span class="n">Removing</span> <span class="n">intermediate</span> <span class="n">container</span> <span class="n">b41268eb0611</span>
+ <span class="o">---&gt;</span> <span class="mi">1</span><span class="n">c2d3febff85</span>
+<span class="n">Step</span> <span class="mi">7</span><span class="o">/</span><span class="mi">7</span> <span class="p">:</span> <span class="n">CMD</span> <span class="p">[</span><span class="s">"python"</span><span class="p">,</span> <span class="s">"make_log.py"</span><span class="p">,</span> <span class="s">"5"</span><span class="p">,</span> <span class="s">"60"</span><span class="p">,</span> <span class="s">"/app/input/"</span><span class="p">]</span>
+ <span class="o">---&gt;</span> <span class="n">Running</span> <span class="ow">in</span> <span class="mi">630</span><span class="n">ce115c0e4</span>
+<span class="n">Removing</span> <span class="n">intermediate</span> <span class="n">container</span> <span class="mi">630</span><span class="n">ce115c0e4</span>
+ <span class="o">---&gt;</span> <span class="mi">5</span><span class="n">a345b58606c</span>
+<span class="n">Successfully</span> <span class="n">built</span> <span class="mi">5</span><span class="n">a345b58606c</span>
+<span class="n">Successfully</span> <span class="n">tagged</span> <span class="n">make_logfile_image</span><span class="p">:</span><span class="n">latest</span>
 </code></pre></div>    </div>
   </li>
 </ol>
@@ -692,34 +696,34 @@ Successfully tagged make_logfile_image:latest
 
 <p>Fluentd 이미지를 사용할 예정이며 td-agent 설정 파일은 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat fluentd/td_agent.conf
-&lt;source&gt;
-  @type tail
-  tag docker_log_collect
-  path /input/*
-  &lt;parse&gt;
-    @type none
-  &lt;/parse&gt;
-  refresh_interval 5s
-  read_from_head true
-&lt;/source&gt;
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="n">fluentd</span><span class="o">/</span><span class="n">td_agent</span><span class="o">.</span><span class="n">conf</span>
+<span class="o">&lt;</span><span class="n">source</span><span class="o">&gt;</span>
+  <span class="o">@</span><span class="nb">type</span> <span class="n">tail</span>
+  <span class="n">tag</span> <span class="n">docker_log_collect</span>
+  <span class="n">path</span> <span class="o">/</span><span class="nb">input</span><span class="o">/*</span>
+  <span class="o">&lt;</span><span class="n">parse</span><span class="o">&gt;</span>
+    <span class="o">@</span><span class="nb">type</span> <span class="n">none</span>
+  <span class="o">&lt;/</span><span class="n">parse</span><span class="o">&gt;</span>
+  <span class="n">refresh_interval</span> <span class="mi">5</span><span class="n">s</span>
+  <span class="n">read_from_head</span> <span class="n">true</span>
+<span class="o">&lt;/</span><span class="n">source</span><span class="o">&gt;</span>
 
-&lt;match docker_log_collect*&gt;
-  @type file
-  path /output/${tag}_output
-  add_path_suffix true
-  path_suffix ".log"
-  append true
-  &lt;buffer tag&gt;
-    flush_mode interval
-    flush_interval 3s
-  &lt;/buffer&gt;
-  &lt;format&gt;
-    @type out_file
-    output_tag false
-    output_time true
-  &lt;/format&gt;
-&lt;/match&gt;
+<span class="o">&lt;</span><span class="n">match</span> <span class="n">docker_log_collect</span><span class="o">*&gt;</span>
+  <span class="o">@</span><span class="nb">type</span> <span class="nb">file</span>
+  <span class="n">path</span> <span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="err">$</span><span class="p">{</span><span class="n">tag</span><span class="p">}</span><span class="n">_output</span>
+  <span class="n">add_path_suffix</span> <span class="n">true</span>
+  <span class="n">path_suffix</span> <span class="s">".log"</span>
+  <span class="n">append</span> <span class="n">true</span>
+  <span class="o">&lt;</span><span class="nb">buffer</span> <span class="n">tag</span><span class="o">&gt;</span>
+    <span class="n">flush_mode</span> <span class="n">interval</span>
+    <span class="n">flush_interval</span> <span class="mi">3</span><span class="n">s</span>
+  <span class="o">&lt;/</span><span class="nb">buffer</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nb">format</span><span class="o">&gt;</span>
+    <span class="o">@</span><span class="nb">type</span> <span class="n">out_file</span>
+    <span class="n">output_tag</span> <span class="n">false</span>
+    <span class="n">output_time</span> <span class="n">true</span>
+  <span class="o">&lt;/</span><span class="nb">format</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">match</span><span class="o">&gt;</span>
 </code></pre></div></div>
 
 <hr />
@@ -758,47 +762,47 @@ Successfully tagged make_logfile_image:latest
 
 <p>테스트 사전 정보에서 생성한 Docker 이미지를 바탕으로 컨테이너를 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -d --name=make_logfile_container --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/host_storage/input,target=/app/input make_logfile_image:latest
-bd31f0fb4e4a03eb16375e5ff6fcd1e95998dec26802cb457f56f5ff31572b46
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">make_logfile_container</span> <span class="o">--</span><span class="n">mount</span> <span class="nb">type</span><span class="o">=</span><span class="n">bind</span><span class="p">,</span><span class="n">source</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">DOCKER_SHARED_VOLUME_TEST_PATH</span><span class="p">}</span><span class="o">/</span><span class="n">host_storage</span><span class="o">/</span><span class="nb">input</span><span class="p">,</span><span class="n">target</span><span class="o">=/</span><span class="n">app</span><span class="o">/</span><span class="nb">input</span> <span class="n">make_logfile_image</span><span class="p">:</span><span class="n">latest</span>
+<span class="n">bd31f0fb4e4a03eb16375e5ff6fcd1e95998dec26802cb457f56f5ff31572b46</span>
 </code></pre></div></div>
 
 <p>컨테이너의 상태를 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker container ps --all
-CONTAINER ID        IMAGE                       COMMAND                  CREATED              STATUS              PORTS               NAMES
-bd31f0fb4e4a        make_logfile_image:latest   "python make_log.py …"   About a minute ago   Up About a minute                       make_logfile_container
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">docker</span> <span class="n">container</span> <span class="n">ps</span> <span class="o">--</span><span class="nb">all</span>
+<span class="n">CONTAINER</span> <span class="n">ID</span>        <span class="n">IMAGE</span>                       <span class="n">COMMAND</span>                  <span class="n">CREATED</span>              <span class="n">STATUS</span>              <span class="n">PORTS</span>               <span class="n">NAMES</span>
+<span class="n">bd31f0fb4e4a</span>        <span class="n">make_logfile_image</span><span class="p">:</span><span class="n">latest</span>   <span class="s">"python make_log.py …"</span>   <span class="n">About</span> <span class="n">a</span> <span class="n">minute</span> <span class="n">ago</span>   <span class="n">Up</span> <span class="n">About</span> <span class="n">a</span> <span class="n">minute</span>                       <span class="n">make_logfile_container</span>
 
 </code></pre></div></div>
 
 <p>컨테이너의 Mount상태를 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker inspect make_logfile_container
-[
-    ... 중략 ...
-    "Mounts": [
-            {
-                "Type": "bind",
-                "Source": "/Users/kevin/dev/docker/test/shared_volume/host_storage/input",
-                "Destination": "/app/input",
-                "Mode": "",
-                "RW": true,
-                "Propagation": "rprivate"
-            }
-        ],
-]
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">docker</span> <span class="n">inspect</span> <span class="n">make_logfile_container</span>
+<span class="p">[</span>
+    <span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
+    <span class="s">"Mounts"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s">"Type"</span><span class="p">:</span> <span class="s">"bind"</span><span class="p">,</span>
+                <span class="s">"Source"</span><span class="p">:</span> <span class="s">"/Users/kevin/dev/docker/test/shared_volume/host_storage/input"</span><span class="p">,</span>
+                <span class="s">"Destination"</span><span class="p">:</span> <span class="s">"/app/input"</span><span class="p">,</span>
+                <span class="s">"Mode"</span><span class="p">:</span> <span class="s">""</span><span class="p">,</span>
+                <span class="s">"RW"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+                <span class="s">"Propagation"</span><span class="p">:</span> <span class="s">"rprivate"</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+<span class="p">]</span>
 
 </code></pre></div></div>
 
 <p>입력용 로그 파일에 로그가 저장되는지 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/input/2019-09-10.log
-0-0    2019/09/10T05:49:19    scala
-0-1    2019/09/10T05:49:20    ruby
-0-2    2019/09/10T05:49:21    c++
-0-3    2019/09/10T05:49:22    c++
-0-4    2019/09/10T05:49:23    c++
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="n">host_storage</span><span class="o">/</span><span class="nb">input</span><span class="o">/</span><span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mf">10.</span><span class="n">log</span>
+<span class="mi">0</span><span class="o">-</span><span class="mi">0</span>    <span class="mi">2019</span><span class="o">/</span><span class="mi">09</span><span class="o">/</span><span class="mi">10</span><span class="n">T05</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">19</span>    <span class="n">scala</span>
+<span class="mi">0</span><span class="o">-</span><span class="mi">1</span>    <span class="mi">2019</span><span class="o">/</span><span class="mi">09</span><span class="o">/</span><span class="mi">10</span><span class="n">T05</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">20</span>    <span class="n">ruby</span>
+<span class="mi">0</span><span class="o">-</span><span class="mi">2</span>    <span class="mi">2019</span><span class="o">/</span><span class="mi">09</span><span class="o">/</span><span class="mi">10</span><span class="n">T05</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">21</span>    <span class="n">c</span><span class="o">++</span>
+<span class="mi">0</span><span class="o">-</span><span class="mi">3</span>    <span class="mi">2019</span><span class="o">/</span><span class="mi">09</span><span class="o">/</span><span class="mi">10</span><span class="n">T05</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">22</span>    <span class="n">c</span><span class="o">++</span>
+<span class="mi">0</span><span class="o">-</span><span class="mi">4</span>    <span class="mi">2019</span><span class="o">/</span><span class="mi">09</span><span class="o">/</span><span class="mi">10</span><span class="n">T05</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">23</span>    <span class="n">c</span><span class="o">++</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 </code></pre></div></div>
 
 <p>초당 1개 로그를  5분간 파일에 저장한다.</p>
@@ -807,97 +811,97 @@ bd31f0fb4e4a        make_logfile_image:latest   "python make_log.py …"   About
 
 <p>테스트 사전 정보의 td-agent 설정 파일을 바탕으로 Fluentd 컨테이너를 다음과 같이 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -d --name=log_collector_container --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/host_storage/input,target=/input --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/host_storage/output,target=/output --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/fluentd,target=/fluentd/etc -e FLUENTD_CONF=td_agent.conf fluent/fluentd:v1.0.2
-47a6f572fdb2427a0872266ce373b9e99da1e2cae5ee4dc83f0d5aaaf6f56cd2
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">log_collector_container</span> <span class="o">--</span><span class="n">mount</span> <span class="nb">type</span><span class="o">=</span><span class="n">bind</span><span class="p">,</span><span class="n">source</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">DOCKER_SHARED_VOLUME_TEST_PATH</span><span class="p">}</span><span class="o">/</span><span class="n">host_storage</span><span class="o">/</span><span class="nb">input</span><span class="p">,</span><span class="n">target</span><span class="o">=/</span><span class="nb">input</span> <span class="o">--</span><span class="n">mount</span> <span class="nb">type</span><span class="o">=</span><span class="n">bind</span><span class="p">,</span><span class="n">source</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">DOCKER_SHARED_VOLUME_TEST_PATH</span><span class="p">}</span><span class="o">/</span><span class="n">host_storage</span><span class="o">/</span><span class="n">output</span><span class="p">,</span><span class="n">target</span><span class="o">=/</span><span class="n">output</span> <span class="o">--</span><span class="n">mount</span> <span class="nb">type</span><span class="o">=</span><span class="n">bind</span><span class="p">,</span><span class="n">source</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">DOCKER_SHARED_VOLUME_TEST_PATH</span><span class="p">}</span><span class="o">/</span><span class="n">fluentd</span><span class="p">,</span><span class="n">target</span><span class="o">=/</span><span class="n">fluentd</span><span class="o">/</span><span class="n">etc</span> <span class="o">-</span><span class="n">e</span> <span class="n">FLUENTD_CONF</span><span class="o">=</span><span class="n">td_agent</span><span class="o">.</span><span class="n">conf</span> <span class="n">fluent</span><span class="o">/</span><span class="n">fluentd</span><span class="p">:</span><span class="n">v1</span><span class="mf">.0.2</span>
+<span class="mi">47</span><span class="n">a6f572fdb2427a0872266ce373b9e99da1e2cae5ee4dc83f0d5aaaf6f56cd2</span>
 </code></pre></div></div>
 
 <p>컨테이너가 실행되었는지 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker container ps --all
-CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS                      PORTS                 NAMES
-47a6f572fdb2        fluent/fluentd:v1.0.2       "/bin/entrypoint.sh …"   5 minutes ago       Up 5 minutes                5140/tcp, 24224/tcp   log_collector_container
-bd31f0fb4e4a        make_logfile_image:latest   "python make_log.py …"   22 minutes ago      Exited (0) 17 minutes ago                         make_logfile_container
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">docker</span> <span class="n">container</span> <span class="n">ps</span> <span class="o">--</span><span class="nb">all</span>
+<span class="n">CONTAINER</span> <span class="n">ID</span>        <span class="n">IMAGE</span>                       <span class="n">COMMAND</span>                  <span class="n">CREATED</span>             <span class="n">STATUS</span>                      <span class="n">PORTS</span>                 <span class="n">NAMES</span>
+<span class="mi">47</span><span class="n">a6f572fdb2</span>        <span class="n">fluent</span><span class="o">/</span><span class="n">fluentd</span><span class="p">:</span><span class="n">v1</span><span class="mf">.0.2</span>       <span class="s">"/bin/entrypoint.sh …"</span>   <span class="mi">5</span> <span class="n">minutes</span> <span class="n">ago</span>       <span class="n">Up</span> <span class="mi">5</span> <span class="n">minutes</span>                <span class="mi">5140</span><span class="o">/</span><span class="n">tcp</span><span class="p">,</span> <span class="mi">24224</span><span class="o">/</span><span class="n">tcp</span>   <span class="n">log_collector_container</span>
+<span class="n">bd31f0fb4e4a</span>        <span class="n">make_logfile_image</span><span class="p">:</span><span class="n">latest</span>   <span class="s">"python make_log.py …"</span>   <span class="mi">22</span> <span class="n">minutes</span> <span class="n">ago</span>      <span class="n">Exited</span> <span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="mi">17</span> <span class="n">minutes</span> <span class="n">ago</span>                         <span class="n">make_logfile_container</span>
 </code></pre></div></div>
 
 <p>컨테이너의 Mount상태를 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker inspect log_collector_container
-[
-    ... 중략 ...
-    "Mounts": [
-            {
-                "Type": "bind",
-                "Source": "/Users/kevin/dev/docker/test/shared_volume/host_storage/input",
-                "Destination": "/input",
-                "Mode": "",
-                "RW": true,
-                "Propagation": "rprivate"
-            },
-{
-                "Type": "bind",
-                "Source": "/Users/kevin/dev/docker/test/shared_volume/host_storage/output",
-                "Destination": "/output",
-                "Mode": "",
-                "RW": true,
-                "Propagation": "rprivate"
-            },
-            {
-                "Type": "bind",
-                "Source": "/Users/kevin/dev/docker/test/shared_volume/fluentd",
-                "Destination": "/fluentd/etc",
-                "Mode": "",
-                "RW": true,
-                "Propagation": "rprivate"
-            }
-        ],
-]
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">docker</span> <span class="n">inspect</span> <span class="n">log_collector_container</span>
+<span class="p">[</span>
+    <span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
+    <span class="s">"Mounts"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s">"Type"</span><span class="p">:</span> <span class="s">"bind"</span><span class="p">,</span>
+                <span class="s">"Source"</span><span class="p">:</span> <span class="s">"/Users/kevin/dev/docker/test/shared_volume/host_storage/input"</span><span class="p">,</span>
+                <span class="s">"Destination"</span><span class="p">:</span> <span class="s">"/input"</span><span class="p">,</span>
+                <span class="s">"Mode"</span><span class="p">:</span> <span class="s">""</span><span class="p">,</span>
+                <span class="s">"RW"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+                <span class="s">"Propagation"</span><span class="p">:</span> <span class="s">"rprivate"</span>
+            <span class="p">},</span>
+<span class="p">{</span>
+                <span class="s">"Type"</span><span class="p">:</span> <span class="s">"bind"</span><span class="p">,</span>
+                <span class="s">"Source"</span><span class="p">:</span> <span class="s">"/Users/kevin/dev/docker/test/shared_volume/host_storage/output"</span><span class="p">,</span>
+                <span class="s">"Destination"</span><span class="p">:</span> <span class="s">"/output"</span><span class="p">,</span>
+                <span class="s">"Mode"</span><span class="p">:</span> <span class="s">""</span><span class="p">,</span>
+                <span class="s">"RW"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+                <span class="s">"Propagation"</span><span class="p">:</span> <span class="s">"rprivate"</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s">"Type"</span><span class="p">:</span> <span class="s">"bind"</span><span class="p">,</span>
+                <span class="s">"Source"</span><span class="p">:</span> <span class="s">"/Users/kevin/dev/docker/test/shared_volume/fluentd"</span><span class="p">,</span>
+                <span class="s">"Destination"</span><span class="p">:</span> <span class="s">"/fluentd/etc"</span><span class="p">,</span>
+                <span class="s">"Mode"</span><span class="p">:</span> <span class="s">""</span><span class="p">,</span>
+                <span class="s">"RW"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+                <span class="s">"Propagation"</span><span class="p">:</span> <span class="s">"rprivate"</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+<span class="p">]</span>
 
 </code></pre></div></div>
 
 <p>출력용 로그파일에 저장되는지 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/output/docker_log_collect_output.log
-019-09-10T06:06:39+00:00	{"message":"0-0    2019/09/10T05:49:19    scala"}
-2019-09-10T06:06:39+00:00	{"message":"0-1    2019/09/10T05:49:20    ruby"}
-2019-09-10T06:06:39+00:00	{"message":"0-2    2019/09/10T05:49:21    c++"}
-2019-09-10T06:06:39+00:00	{"message":"0-3    2019/09/10T05:49:22    c++"}
-2019-09-10T06:06:39+00:00	{"message":"0-4    2019/09/10T05:49:23    c++"}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="n">host_storage</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">docker_log_collect_output</span><span class="o">.</span><span class="n">log</span>
+<span class="mi">019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">10</span><span class="n">T06</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">39</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-0    2019/09/10T05:49:19    scala"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">10</span><span class="n">T06</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">39</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-1    2019/09/10T05:49:20    ruby"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">10</span><span class="n">T06</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">39</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-2    2019/09/10T05:49:21    c++"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">10</span><span class="n">T06</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">39</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-3    2019/09/10T05:49:22    c++"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">10</span><span class="n">T06</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">39</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-4    2019/09/10T05:49:23    c++"</span><span class="p">}</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 </code></pre></div></div>
 
 <h3 id="3-입출력용-로그-파일-확인">3. 입,출력용 로그 파일 확인</h3>
 
 <p>입력용 로그 파일을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/input/2019-09-10.log
-0-0    2019/09/10T05:49:19    scala
-0-1    2019/09/10T05:49:20    ruby
-0-2    2019/09/10T05:49:21    c++
-0-3    2019/09/10T05:49:22    c++
-0-4    2019/09/10T05:49:23    c++
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="n">host_storage</span><span class="o">/</span><span class="nb">input</span><span class="o">/</span><span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mf">10.</span><span class="n">log</span>
+<span class="mi">0</span><span class="o">-</span><span class="mi">0</span>    <span class="mi">2019</span><span class="o">/</span><span class="mi">09</span><span class="o">/</span><span class="mi">10</span><span class="n">T05</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">19</span>    <span class="n">scala</span>
+<span class="mi">0</span><span class="o">-</span><span class="mi">1</span>    <span class="mi">2019</span><span class="o">/</span><span class="mi">09</span><span class="o">/</span><span class="mi">10</span><span class="n">T05</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">20</span>    <span class="n">ruby</span>
+<span class="mi">0</span><span class="o">-</span><span class="mi">2</span>    <span class="mi">2019</span><span class="o">/</span><span class="mi">09</span><span class="o">/</span><span class="mi">10</span><span class="n">T05</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">21</span>    <span class="n">c</span><span class="o">++</span>
+<span class="mi">0</span><span class="o">-</span><span class="mi">3</span>    <span class="mi">2019</span><span class="o">/</span><span class="mi">09</span><span class="o">/</span><span class="mi">10</span><span class="n">T05</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">22</span>    <span class="n">c</span><span class="o">++</span>
+<span class="mi">0</span><span class="o">-</span><span class="mi">4</span>    <span class="mi">2019</span><span class="o">/</span><span class="mi">09</span><span class="o">/</span><span class="mi">10</span><span class="n">T05</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">23</span>    <span class="n">c</span><span class="o">++</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/input/2019-09-10.log| wc -l
-300
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="n">host_storage</span><span class="o">/</span><span class="nb">input</span><span class="o">/</span><span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mf">10.</span><span class="n">log</span><span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span>
+<span class="mi">300</span>
 </code></pre></div></div>
 
 <p>출력용 로그 파일을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/output/docker_log_collect_output.log
-019-09-10T06:06:39+00:00	{"message":"0-0    2019/09/10T05:49:19    scala"}
-2019-09-10T06:06:39+00:00	{"message":"0-1    2019/09/10T05:49:20    ruby"}
-2019-09-10T06:06:39+00:00	{"message":"0-2    2019/09/10T05:49:21    c++"}
-2019-09-10T06:06:39+00:00	{"message":"0-3    2019/09/10T05:49:22    c++"}
-2019-09-10T06:06:39+00:00	{"message":"0-4    2019/09/10T05:49:23    c++"}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="n">host_storage</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">docker_log_collect_output</span><span class="o">.</span><span class="n">log</span>
+<span class="mi">019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">10</span><span class="n">T06</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">39</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-0    2019/09/10T05:49:19    scala"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">10</span><span class="n">T06</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">39</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-1    2019/09/10T05:49:20    ruby"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">10</span><span class="n">T06</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">39</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-2    2019/09/10T05:49:21    c++"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">10</span><span class="n">T06</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">39</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-3    2019/09/10T05:49:22    c++"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">10</span><span class="n">T06</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">39</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-4    2019/09/10T05:49:23    c++"</span><span class="p">}</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/output/docker_log_collect_output.log| wc -l
-300
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="n">host_storage</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">docker_log_collect_output</span><span class="o">.</span><span class="n">log</span><span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span>
+<span class="mi">300</span>
 </code></pre></div></div>
 
 <p>입력용 로그 파일과 출력용 로그 파일을 비교한 결과는 다음과 같이 정리할 수 있다.</p>
@@ -941,60 +945,60 @@ bd31f0fb4e4a        make_logfile_image:latest   "python make_log.py …"   22 mi
 
 <p>다음과 같이 Volume을 생성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker volume create logfile_input
-logfile_input
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">docker</span> <span class="n">volume</span> <span class="n">create</span> <span class="n">logfile_input</span>
+<span class="n">logfile_input</span>
 </code></pre></div></div>
 
 <p>다음과 같은 명령으로 Volume의 상태를 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker volume inspect logfile_input
-[
-    {
-        "CreatedAt": "2019-09-10T08:41:41Z",
-        "Driver": "local",
-        "Labels": {},
-        "Mountpoint": "/var/lib/docker/volumes/logfile_input/_data",
-        "Name": "logfile_input",
-        "Options": {},
-        "Scope": "local"
-    }
-]
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">docker</span> <span class="n">volume</span> <span class="n">inspect</span> <span class="n">logfile_input</span>
+<span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s">"CreatedAt"</span><span class="p">:</span> <span class="s">"2019-09-10T08:41:41Z"</span><span class="p">,</span>
+        <span class="s">"Driver"</span><span class="p">:</span> <span class="s">"local"</span><span class="p">,</span>
+        <span class="s">"Labels"</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s">"Mountpoint"</span><span class="p">:</span> <span class="s">"/var/lib/docker/volumes/logfile_input/_data"</span><span class="p">,</span>
+        <span class="s">"Name"</span><span class="p">:</span> <span class="s">"logfile_input"</span><span class="p">,</span>
+        <span class="s">"Options"</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s">"Scope"</span><span class="p">:</span> <span class="s">"local"</span>
+    <span class="p">}</span>
+<span class="p">]</span>
 </code></pre></div></div>
 
 <h3 id="2-로그-생성-컨테이너-실행">2. 로그 생성 컨테이너 실행</h3>
 
 <p>테스트 사전 정보에서 생성한 Docker 이미지를 바탕으로 컨테이너를 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -d --name=make_logfile_container --mount type=volume,source=logfile_input,target=/app/input make_logfile_image:latest
-7a265902761be76af2957140e0966b99d297e0fda78f5dffe17df9daca4c7453
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">make_logfile_container</span> <span class="o">--</span><span class="n">mount</span> <span class="nb">type</span><span class="o">=</span><span class="n">volume</span><span class="p">,</span><span class="n">source</span><span class="o">=</span><span class="n">logfile_input</span><span class="p">,</span><span class="n">target</span><span class="o">=/</span><span class="n">app</span><span class="o">/</span><span class="nb">input</span> <span class="n">make_logfile_image</span><span class="p">:</span><span class="n">latest</span>
+<span class="mi">7</span><span class="n">a265902761be76af2957140e0966b99d297e0fda78f5dffe17df9daca4c7453</span>
 </code></pre></div></div>
 
 <p>컨테이너의 동작을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker container ps --all
-CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS               NAMES
-1dcc4e6c3181        make_logfile_image:latest   "python make_log.py …"   2 minutes ago       Up 2 minutes                            make_logfile_container
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">docker</span> <span class="n">container</span> <span class="n">ps</span> <span class="o">--</span><span class="nb">all</span>
+<span class="n">CONTAINER</span> <span class="n">ID</span>        <span class="n">IMAGE</span>                       <span class="n">COMMAND</span>                  <span class="n">CREATED</span>             <span class="n">STATUS</span>              <span class="n">PORTS</span>               <span class="n">NAMES</span>
+<span class="mi">1</span><span class="n">dcc4e6c3181</span>        <span class="n">make_logfile_image</span><span class="p">:</span><span class="n">latest</span>   <span class="s">"python make_log.py …"</span>   <span class="mi">2</span> <span class="n">minutes</span> <span class="n">ago</span>       <span class="n">Up</span> <span class="mi">2</span> <span class="n">minutes</span>                            <span class="n">make_logfile_container</span>
 
 </code></pre></div></div>
 
 <p>컨테이너의 Mount상태를 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker inspect make_logfile_container
-[
-    ... 중략 ...
-    "Mounts": [
-            {
-                "Type": "volume",
-                "Name": "logfile_input",
-                "Source": "/var/lib/docker/volumes/logfile_input/_data",
-                "Destination": "/app/input",
-                "Driver": "local",
-                "Mode": "z",
-                "RW": true,
-                "Propagation": ""
-            }
-        ],
-]
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">docker</span> <span class="n">inspect</span> <span class="n">make_logfile_container</span>
+<span class="p">[</span>
+    <span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
+    <span class="s">"Mounts"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s">"Type"</span><span class="p">:</span> <span class="s">"volume"</span><span class="p">,</span>
+                <span class="s">"Name"</span><span class="p">:</span> <span class="s">"logfile_input"</span><span class="p">,</span>
+                <span class="s">"Source"</span><span class="p">:</span> <span class="s">"/var/lib/docker/volumes/logfile_input/_data"</span><span class="p">,</span>
+                <span class="s">"Destination"</span><span class="p">:</span> <span class="s">"/app/input"</span><span class="p">,</span>
+                <span class="s">"Driver"</span><span class="p">:</span> <span class="s">"local"</span><span class="p">,</span>
+                <span class="s">"Mode"</span><span class="p">:</span> <span class="s">"z"</span><span class="p">,</span>
+                <span class="s">"RW"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+                <span class="s">"Propagation"</span><span class="p">:</span> <span class="s">""</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+<span class="p">]</span>
 
 </code></pre></div></div>
 
@@ -1002,34 +1006,34 @@ CONTAINER ID        IMAGE                       COMMAND                  CREATED
 
 <p>테스트 사전 정보의 td-agent 설정 파일을 바탕으로 Fluentd 컨테이너를 다음과 같이 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run -d --name=log_collector_container --mount type=volume,source=logfile_input,target=/input --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/host_storage/output,target=/output -v ${DOCKER_SHARED_VOLUME_TEST_PATH}/fluentd:/fluentd/etc -e FLUENTD_CONF=td_agent.conf fluent/fluentd:v1.0.2
-ba7be8af4dc7ddea4ba30ebccb80736f9700717289748b74e27ab45e9ab22195
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">log_collector_container</span> <span class="o">--</span><span class="n">mount</span> <span class="nb">type</span><span class="o">=</span><span class="n">volume</span><span class="p">,</span><span class="n">source</span><span class="o">=</span><span class="n">logfile_input</span><span class="p">,</span><span class="n">target</span><span class="o">=/</span><span class="nb">input</span> <span class="o">--</span><span class="n">mount</span> <span class="nb">type</span><span class="o">=</span><span class="n">bind</span><span class="p">,</span><span class="n">source</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">DOCKER_SHARED_VOLUME_TEST_PATH</span><span class="p">}</span><span class="o">/</span><span class="n">host_storage</span><span class="o">/</span><span class="n">output</span><span class="p">,</span><span class="n">target</span><span class="o">=/</span><span class="n">output</span> <span class="o">-</span><span class="n">v</span> <span class="err">$</span><span class="p">{</span><span class="n">DOCKER_SHARED_VOLUME_TEST_PATH</span><span class="p">}</span><span class="o">/</span><span class="n">fluentd</span><span class="p">:</span><span class="o">/</span><span class="n">fluentd</span><span class="o">/</span><span class="n">etc</span> <span class="o">-</span><span class="n">e</span> <span class="n">FLUENTD_CONF</span><span class="o">=</span><span class="n">td_agent</span><span class="o">.</span><span class="n">conf</span> <span class="n">fluent</span><span class="o">/</span><span class="n">fluentd</span><span class="p">:</span><span class="n">v1</span><span class="mf">.0.2</span>
+<span class="n">ba7be8af4dc7ddea4ba30ebccb80736f9700717289748b74e27ab45e9ab22195</span>
 </code></pre></div></div>
 
 <p>컨테이너가 실행되었는지 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker container ps --all
-CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS                 NAMES
-ba7be8af4dc7        fluent/fluentd:v1.0.2       "/bin/entrypoint.sh …"   5 seconds ago       Up 4 seconds        5140/tcp, 24224/tcp   log_collector_container
-1dcc4e6c3181        make_logfile_image:latest   "python make_log.py …"   4 minutes ago       Up 4 minutes
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">docker</span> <span class="n">container</span> <span class="n">ps</span> <span class="o">--</span><span class="nb">all</span>
+<span class="n">CONTAINER</span> <span class="n">ID</span>        <span class="n">IMAGE</span>                       <span class="n">COMMAND</span>                  <span class="n">CREATED</span>             <span class="n">STATUS</span>              <span class="n">PORTS</span>                 <span class="n">NAMES</span>
+<span class="n">ba7be8af4dc7</span>        <span class="n">fluent</span><span class="o">/</span><span class="n">fluentd</span><span class="p">:</span><span class="n">v1</span><span class="mf">.0.2</span>       <span class="s">"/bin/entrypoint.sh …"</span>   <span class="mi">5</span> <span class="n">seconds</span> <span class="n">ago</span>       <span class="n">Up</span> <span class="mi">4</span> <span class="n">seconds</span>        <span class="mi">5140</span><span class="o">/</span><span class="n">tcp</span><span class="p">,</span> <span class="mi">24224</span><span class="o">/</span><span class="n">tcp</span>   <span class="n">log_collector_container</span>
+<span class="mi">1</span><span class="n">dcc4e6c3181</span>        <span class="n">make_logfile_image</span><span class="p">:</span><span class="n">latest</span>   <span class="s">"python make_log.py …"</span>   <span class="mi">4</span> <span class="n">minutes</span> <span class="n">ago</span>       <span class="n">Up</span> <span class="mi">4</span> <span class="n">minutes</span>
 </code></pre></div></div>
 
 <h3 id="3-출력용-로그-파일-확인">3. 출력용 로그 파일 확인</h3>
 
 <p>출력용 로그 파일을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/output/docker_log_collect_output.log
-2019-09-16T00:41:33+00:00	{"message":"0-0    2019/09/10T09:39:39    kotlin"}
-2019-09-16T00:41:33+00:00	{"message":"0-1    2019/09/10T09:39:40    ruby"}
-2019-09-16T00:41:33+00:00	{"message":"0-2    2019/09/10T09:39:41    c++"}
-2019-09-16T00:41:33+00:00	{"message":"0-3    2019/09/10T09:39:42    kotlin"}
-2019-09-16T00:41:33+00:00	{"message":"0-4    2019/09/10T09:39:43    scala"}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="n">host_storage</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">docker_log_collect_output</span><span class="o">.</span><span class="n">log</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">16</span><span class="n">T00</span><span class="p">:</span><span class="mi">41</span><span class="p">:</span><span class="mi">33</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-0    2019/09/10T09:39:39    kotlin"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">16</span><span class="n">T00</span><span class="p">:</span><span class="mi">41</span><span class="p">:</span><span class="mi">33</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-1    2019/09/10T09:39:40    ruby"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">16</span><span class="n">T00</span><span class="p">:</span><span class="mi">41</span><span class="p">:</span><span class="mi">33</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-2    2019/09/10T09:39:41    c++"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">16</span><span class="n">T00</span><span class="p">:</span><span class="mi">41</span><span class="p">:</span><span class="mi">33</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-3    2019/09/10T09:39:42    kotlin"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">16</span><span class="n">T00</span><span class="p">:</span><span class="mi">41</span><span class="p">:</span><span class="mi">33</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"0-4    2019/09/10T09:39:43    scala"</span><span class="p">}</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat host_storage/output/docker_log_collect_output.log| wc -l
-300
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="n">host_storage</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">docker_log_collect_output</span><span class="o">.</span><span class="n">log</span><span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span>
+<span class="mi">300</span>
 </code></pre></div></div>
 
 <p>출력용 로그 파일을 확인한 결과 다음과 같이 정리할 수 있다.</p>

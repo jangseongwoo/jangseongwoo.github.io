@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -423,31 +427,31 @@
 <p>설치 완료되면 아래 경로에 td-agent가 설치된다.<br />
 /opt/td-agent/usr/sbin/</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -l /opt/td-agent/usr/sbin/
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> /opt/td-agent/usr/sbin/
 total 16
--rwxr-xr-x  1 root  wheel  348 Feb  1  2018 td-agent
--rwxr-xr-x  1 root  wheel  177 Feb  1  2018 td-agent-gem
+<span class="nt">-rwxr-xr-x</span>  1 root  wheel  348 Feb  1  2018 td-agent
+<span class="nt">-rwxr-xr-x</span>  1 root  wheel  177 Feb  1  2018 td-agent-gem
 
 </code></pre></div></div>
 
 <p>디폴트 설정 파일은 아래 경로에서 확인할 수 있다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -l /etc/td-agent/
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> /etc/td-agent/
 total 8
 drwxr-xr-x  2 root  wheel    64 Jun 12 22:27 plugin
--rw-r--r--  1 root  wheel  2381 Jun 12 22:27 td-agent.conf
+<span class="nt">-rw-r--r--</span>  1 root  wheel  2381 Jun 12 22:27 td-agent.conf
 
 </code></pre></div></div>
 
 <p>/etc/td-agent/td-agent.conf 파일의 내용 일부는 아래와 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>... 중략 ...
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>... 중략 ...
 
-# HTTP input
-# POST http://localhost:8888/&lt;tag&gt;?json=&lt;json&gt;
-# POST http://localhost:8888/td.myapp.login?json={"user"%3A"me"}
-# @see http://docs.fluentd.org/articles/in_http
-&lt;source&gt;
+<span class="c"># HTTP input</span>
+<span class="c"># POST http://localhost:8888/&lt;tag&gt;?json=&lt;json&gt;</span>
+<span class="c"># POST http://localhost:8888/td.myapp.login?json={"user"%3A"me"}</span>
+<span class="c"># @see http://docs.fluentd.org/articles/in_http</span>
+&lt;<span class="nb">source</span><span class="o">&gt;</span>
   @type http
   @id input_http
   port 8888
@@ -461,13 +465,13 @@ drwxr-xr-x  2 root  wheel    64 Jun 12 22:27 plugin
 
 <p>Daemon 방식 실행</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo launchctl load /Library/LaunchDaemons/td-agent.plist
-$ less /var/log/td-agent/td-agent.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>launchctl load /Library/LaunchDaemons/td-agent.plist
+<span class="nv">$ </span>less /var/log/td-agent/td-agent.log
 
-$ ps -ef | grep td-agent
-    0 47678     1   0 10:42PM ??         0:00.37 /opt/td-agent/embedded/bin/ruby /opt/td-agent/usr/sbin/td-agent --log /var/log/td-agent/td-agent.log --use-v1-config
-    0 47679 47678   0 10:42PM ??         0:00.46 /opt/td-agent/embedded/bin/ruby -Eascii-8bit:ascii-8bit /opt/td-agent/usr/sbin/td-agent --log /var/log/td-agent/td-agent.log --use-v1-config --under-supervisor
-  502 47713 47688   0 10:44PM ttys025    0:00.00 grep td-agent
+<span class="nv">$ </span>ps <span class="nt">-ef</span> | <span class="nb">grep </span>td-agent
+    0 47678     1   0 10:42PM ??         0:00.37 /opt/td-agent/embedded/bin/ruby /opt/td-agent/usr/sbin/td-agent <span class="nt">--log</span> /var/log/td-agent/td-agent.log <span class="nt">--use-v1-config</span>
+    0 47679 47678   0 10:42PM ??         0:00.46 /opt/td-agent/embedded/bin/ruby <span class="nt">-Eascii-8bit</span>:ascii-8bit /opt/td-agent/usr/sbin/td-agent <span class="nt">--log</span> /var/log/td-agent/td-agent.log <span class="nt">--use-v1-config</span> <span class="nt">--under-supervisor</span>
+  502 47713 47688   0 10:44PM ttys025    0:00.00 <span class="nb">grep </span>td-agent
 
 </code></pre></div></div>
 
@@ -475,7 +479,7 @@ $ ps -ef | grep td-agent
 
 <p>기본 foreground로 실행하기</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ /opt/td-agent/usr/sbin/td-agent -c /etc/td-agent/td-agent.conf
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>/opt/td-agent/usr/sbin/td-agent <span class="nt">-c</span> /etc/td-agent/td-agent.conf
 
 </code></pre></div></div>
 
@@ -483,13 +487,13 @@ $ ps -ef | grep td-agent
 
 <h2 id="test">Test</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -X POST -d 'json={"json":"message"}' http://localhost:8888/debug.test
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s1">'json={"json":"message"}'</span> http://localhost:8888/debug.test
 
 </code></pre></div></div>
 
 <h2 id="stop-td-agent-damon-on-mac">Stop td-agent damon on Mac</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo launchctl unload /Library/LaunchDaemons/td-agent.plist
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>launchctl unload /Library/LaunchDaemons/td-agent.plist
 
 </code></pre></div></div>
 

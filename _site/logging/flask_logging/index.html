@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -420,19 +424,19 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from flask import Flask
-import logging
- 
-logging.basicConfig(filename = "logs/project.log", level = logging.DEBUG)
-application=Flask(__name__)
- 
-@application.route("/")
-def hello():
-	return "hello"
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="err"> </span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="s">"logs/project.log"</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">application</span><span class="o">=</span><span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="err"> </span>
+<span class="o">@</span><span class="n">application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">"/"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+	<span class="k">return</span> <span class="s">"hello"</span>
   
 
-if __name__=="__main__":
-    application.run(host="0.0.0.0", debug=True) 
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">application</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">"0.0.0.0"</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> 
 
 
 </code></pre></div></div>
@@ -467,25 +471,25 @@ if __name__=="__main__":
   <li>위 로그는 내가 원하는 정보가 아닐 수 있습니다. 로그를 남길때 원하는 정보만 남기고 싶다면 커스텀하면 됩니다.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import logging
-import datetime
-from pytz import timezone
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">pytz</span> <span class="kn">import</span> <span class="n">timezone</span>
 
-logging.basicConfig(filename = "logs/test.log", level = logging.DEBUG)
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="s">"logs/test.log"</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 
-def log(request, message):
-    log_date = get_log_date()
-    log_message = "{0}/{1}/{2}".format(log_date, str(request), message)
-    logging.info(log_message)
-def error_log(request, error_code, error_message):
-    log_date = get_log_date()
-    log_message = "{0}/{1}/{2}/{3}".format(log_date, str(request), error_code, error_message)
-    logging.info(log_message)
+<span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="n">log_date</span> <span class="o">=</span> <span class="n">get_log_date</span><span class="p">()</span>
+    <span class="n">log_message</span> <span class="o">=</span> <span class="s">"{0}/{1}/{2}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">log_date</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> <span class="n">message</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">log_message</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">error_log</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">error_code</span><span class="p">,</span> <span class="n">error_message</span><span class="p">):</span>
+    <span class="n">log_date</span> <span class="o">=</span> <span class="n">get_log_date</span><span class="p">()</span>
+    <span class="n">log_message</span> <span class="o">=</span> <span class="s">"{0}/{1}/{2}/{3}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">log_date</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> <span class="n">error_code</span><span class="p">,</span> <span class="n">error_message</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">log_message</span><span class="p">)</span>
 
-def get_log_date():
-    dt = datetime.datetime.now(timezone("Asia/Seoul"))
-    log_date = dt.strftime("%Y%m%d_%H:%M:%S")
-    return log_date
+<span class="k">def</span> <span class="nf">get_log_date</span><span class="p">():</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="p">(</span><span class="s">"Asia/Seoul"</span><span class="p">))</span>
+    <span class="n">log_date</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">"</span><span class="si">%</span><span class="s">Y</span><span class="si">%</span><span class="s">m</span><span class="si">%</span><span class="s">d_</span><span class="si">%</span><span class="s">H:</span><span class="si">%</span><span class="s">M:</span><span class="si">%</span><span class="s">S"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">log_date</span>
 
 
 </code></pre></div></div>
@@ -494,22 +498,22 @@ def get_log_date():
   <li>위에서 커스텀한 로그를 사용하면 됩니다.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from flask import Flask
-import log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">import</span> <span class="nn">log</span>
 
 
-logging.basicConfig(filename = "logs/test.log", level = logging.DEBUG)
-application=Flask(__name__)
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="s">"logs/test.log"</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">application</span><span class="o">=</span><span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 
-@application.route("/")
-def hello():
-	log.log(request, "hello route")
-	return "hello"
+<span class="o">@</span><span class="n">application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">"/"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+	<span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">"hello route"</span><span class="p">)</span>
+	<span class="k">return</span> <span class="s">"hello"</span>
   
 
-if __name__=="__main__":
-    application.run(host="0.0.0.0", debug=True) 
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">application</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">"0.0.0.0"</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> 
 </code></pre></div></div>
 
 <ul>

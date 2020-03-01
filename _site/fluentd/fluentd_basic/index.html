@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -447,81 +451,81 @@
 
 <p>td-agent의 실행은 다음과 같은 명령으로 한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo launchctl load /Library/LaunchDaemons/td-agent.plist
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>launchctl load /Library/LaunchDaemons/td-agent.plist
 </code></pre></div></div>
 
 <p>td-agent의 종료는 다음과 같은 명령으로 한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo launchctl unload /Library/LaunchDaemons/td-agent.plist
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>launchctl unload /Library/LaunchDaemons/td-agent.plist
 </code></pre></div></div>
 
 <p>편의를 위하여 다음과 같이 디렉터리에 접근하여 실행, 종료 하기도 한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /Library/LaunchDaemons
-$ sudo launchctl load td-agent.plist
-$ sudo launchctl unload td-agent.plist
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd</span> /Library/LaunchDaemons
+<span class="nv">$ </span><span class="nb">sudo </span>launchctl load td-agent.plist
+<span class="nv">$ </span><span class="nb">sudo </span>launchctl unload td-agent.plist
 </code></pre></div></div>
 
 <h2 id="로그-파일">로그 파일</h2>
 
 <p>td-agent의 로그는 다음과 같은 경로의 파일에 저장된다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/log/td-agent/td-agent.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/log/td-agent/td-agent.log
 </code></pre></div></div>
 
 <p>다음과 같이 td-agent 로그 파일을 테일링하여 td-agent의 동작을 확인하기도 한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -50f td-agent.log
-2019-09-18 14:47:33 +0900 [info]: #0 shutting down input plugin type=:tail plugin_id="object:3fe4d84363e8"
-2019-09-18 14:47:33 +0900 [info]: #0 shutting down output plugin type=:file plugin_id="object:3fe4d859ffcc"
-2019-09-18 14:47:33 +0900 [info]: Worker 0 finished with status 0
-2019-09-18 15:18:32 +0900 [info]: parsing config file is succeeded path="/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf"
-2019-09-18 15:18:32 +0900 [info]: using configuration file: &lt;ROOT&gt;
-  &lt;source&gt;
-    @type tail
-    tag "file_path"
-    path "/Users/kevin/dev/fluentd/test/file_path/source/prefix*"
-    pos_file "/Users/kevin/dev/fluentd/test/file_path/pos/pos_file.pos"
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-50f</span> td-agent.log
+2019-09-18 14:47:33 +0900 <span class="o">[</span>info]: <span class="c">#0 shutting down input plugin type=:tail plugin_id="object:3fe4d84363e8"</span>
+2019-09-18 14:47:33 +0900 <span class="o">[</span>info]: <span class="c">#0 shutting down output plugin type=:file plugin_id="object:3fe4d859ffcc"</span>
+2019-09-18 14:47:33 +0900 <span class="o">[</span>info]: Worker 0 finished with status 0
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: parsing config file is succeeded <span class="nv">path</span><span class="o">=</span><span class="s2">"/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf"</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: using configuration file: &lt;ROOT&gt;
+  &lt;<span class="nb">source</span><span class="o">&gt;</span>
+    @type <span class="nb">tail
+    </span>tag <span class="s2">"file_path"</span>
+    path <span class="s2">"/Users/kevin/dev/fluentd/test/file_path/source/prefix*"</span>
+    pos_file <span class="s2">"/Users/kevin/dev/fluentd/test/file_path/pos/pos_file.pos"</span>
     refresh_interval 5s
-    read_from_head true
+    read_from_head <span class="nb">true</span>
     &lt;parse&gt;
-      @type "none"
+      @type <span class="s2">"none"</span>
     &lt;/parse&gt;
   &lt;/source&gt;
-  &lt;match file_path*&gt;
+  &lt;match file_path<span class="k">*</span><span class="o">&gt;</span>
     @type file
-    path "/Users/kevin/dev/fluentd/test/file_path/match/${tag}_output"
-    add_path_suffix true
-    path_suffix ".log"
-    append true
+    path <span class="s2">"/Users/kevin/dev/fluentd/test/file_path/match/</span><span class="k">${</span><span class="nv">tag</span><span class="k">}</span><span class="s2">_output"</span>
+    add_path_suffix <span class="nb">true
+    </span>path_suffix <span class="s2">".log"</span>
+    append <span class="nb">true</span>
     &lt;buffer tag&gt;
       flush_mode interval
       flush_interval 5s
-      path "/Users/kevin/dev/fluentd/test/file_path/match/${tag}_output"
+      path <span class="s2">"/Users/kevin/dev/fluentd/test/file_path/match/</span><span class="k">${</span><span class="nv">tag</span><span class="k">}</span><span class="s2">_output"</span>
     &lt;/buffer&gt;
     &lt;format&gt;
-      @type "out_file"
-      output_tag false
-      output_time true
+      @type <span class="s2">"out_file"</span>
+      output_tag <span class="nb">false
+      </span>output_time <span class="nb">true</span>
     &lt;/format&gt;
   &lt;/match&gt;
 &lt;/ROOT&gt;
-2019-09-18 15:18:32 +0900 [info]: starting fluentd-1.0.2 pid=2152 ruby="2.4.2"
-2019-09-18 15:18:32 +0900 [info]: spawn command to main:  cmdline=["/opt/td-agent/embedded/bin/ruby", "-Eascii-8bit:ascii-8bit", "/opt/td-agent/usr/sbin/td-agent", "--log", "/var/log/td-agent/td-agent.log", "--use-v1-config", "--under-supervisor"]
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-elasticsearch' version '2.4.0'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-kafka' version '0.6.5'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-rewrite-tag-filter' version '2.0.1'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-s3' version '1.1.0'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-td' version '1.0.0'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-td-monitoring' version '0.2.3'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluent-plugin-webhdfs' version '1.2.2'
-2019-09-18 15:18:32 +0900 [info]: gem 'fluentd' version '1.0.2'
-2019-09-18 15:18:32 +0900 [info]: adding match pattern="file_path*" type="file"
-2019-09-18 15:18:32 +0900 [info]: adding source type="tail"
-2019-09-18 15:18:32 +0900 [info]: #0 starting fluentd worker pid=2159 ppid=2152 worker=0
-2019-09-18 15:18:32 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.txt
-2019-09-18 15:18:32 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.log
-2019-09-18 15:18:32 +0900 [info]: #0 fluentd worker is now running worker=0
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: starting fluentd-1.0.2 <span class="nv">pid</span><span class="o">=</span>2152 <span class="nv">ruby</span><span class="o">=</span><span class="s2">"2.4.2"</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: spawn <span class="nb">command </span>to main:  <span class="nv">cmdline</span><span class="o">=[</span><span class="s2">"/opt/td-agent/embedded/bin/ruby"</span>, <span class="s2">"-Eascii-8bit:ascii-8bit"</span>, <span class="s2">"/opt/td-agent/usr/sbin/td-agent"</span>, <span class="s2">"--log"</span>, <span class="s2">"/var/log/td-agent/td-agent.log"</span>, <span class="s2">"--use-v1-config"</span>, <span class="s2">"--under-supervisor"</span><span class="o">]</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: gem <span class="s1">'fluent-plugin-elasticsearch'</span> version <span class="s1">'2.4.0'</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: gem <span class="s1">'fluent-plugin-kafka'</span> version <span class="s1">'0.6.5'</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: gem <span class="s1">'fluent-plugin-rewrite-tag-filter'</span> version <span class="s1">'2.0.1'</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: gem <span class="s1">'fluent-plugin-s3'</span> version <span class="s1">'1.1.0'</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: gem <span class="s1">'fluent-plugin-td'</span> version <span class="s1">'1.0.0'</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: gem <span class="s1">'fluent-plugin-td-monitoring'</span> version <span class="s1">'0.2.3'</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: gem <span class="s1">'fluent-plugin-webhdfs'</span> version <span class="s1">'1.2.2'</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: gem <span class="s1">'fluentd'</span> version <span class="s1">'1.0.2'</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: adding match <span class="nv">pattern</span><span class="o">=</span><span class="s2">"file_path*"</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"file"</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: adding <span class="nb">source type</span><span class="o">=</span><span class="s2">"tail"</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: <span class="c">#0 starting fluentd worker pid=2159 ppid=2152 worker=0</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: <span class="c">#0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.txt</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: <span class="c">#0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.log</span>
+2019-09-18 15:18:32 +0900 <span class="o">[</span>info]: <span class="c">#0 fluentd worker is now running worker=0</span>
 </code></pre></div></div>
 
 <h1 id="설정파일-경로를-변경하는-방법">설정파일 경로를 변경하는 방법</h1>
@@ -534,28 +538,28 @@ $ sudo launchctl unload td-agent.plist
 
 <p>/opt/td-agent/usr/sbin/td-agent</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /opt/td-agent/usr/sbin/td-agent
-#!/opt/td-agent/embedded/bin/ruby
-ENV["GEM_HOME"]="/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"
-ENV["GEM_PATH"]="/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"
-ENV["FLUENT_CONF"]="/etc/td-agent/td-agent.conf"
-ENV["FLUENT_PLUGIN"]="/etc/td-agent/plugin"
-ENV["FLUENT_SOCKET"]="/var/run/td-agent/td-agent.sock"
-load "/opt/td-agent/embedded/bin/fluentd"
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> /opt/td-agent/usr/sbin/td-agent
+<span class="c">#!/opt/td-agent/embedded/bin/ruby</span>
+ENV[<span class="s2">"GEM_HOME"</span><span class="o">]=</span><span class="s2">"/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"</span>
+ENV[<span class="s2">"GEM_PATH"</span><span class="o">]=</span><span class="s2">"/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"</span>
+ENV[<span class="s2">"FLUENT_CONF"</span><span class="o">]=</span><span class="s2">"/etc/td-agent/td-agent.conf"</span>
+ENV[<span class="s2">"FLUENT_PLUGIN"</span><span class="o">]=</span><span class="s2">"/etc/td-agent/plugin"</span>
+ENV[<span class="s2">"FLUENT_SOCKET"</span><span class="o">]=</span><span class="s2">"/var/run/td-agent/td-agent.sock"</span>
+load <span class="s2">"/opt/td-agent/embedded/bin/fluentd"</span>
 </code></pre></div></div>
 
 <p>위의 파일 내용중 ENV[“FLUENT_CONF”]=”/etc/td-agent/td-agent.conf”을 원하는 설정파일의 경로를 변경해주면 된다.</p>
 
 <p>다음은 변경한 예시이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim /opt/td-agent/usr/sbin/td-agent
-#!/opt/td-agent/embedded/bin/ruby
-ENV["GEM_HOME"]="/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"
-ENV["GEM_PATH"]="/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"
-ENV["FLUENT_CONF"]="/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf"
-ENV["FLUENT_PLUGIN"]="/etc/td-agent/plugin"
-ENV["FLUENT_SOCKET"]="/var/run/td-agent/td-agent.sock"
-load "/opt/td-agent/embedded/bin/fluentd"
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim /opt/td-agent/usr/sbin/td-agent
+<span class="c">#!/opt/td-agent/embedded/bin/ruby</span>
+ENV[<span class="s2">"GEM_HOME"</span><span class="o">]=</span><span class="s2">"/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"</span>
+ENV[<span class="s2">"GEM_PATH"</span><span class="o">]=</span><span class="s2">"/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"</span>
+ENV[<span class="s2">"FLUENT_CONF"</span><span class="o">]=</span><span class="s2">"/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf"</span>
+ENV[<span class="s2">"FLUENT_PLUGIN"</span><span class="o">]=</span><span class="s2">"/etc/td-agent/plugin"</span>
+ENV[<span class="s2">"FLUENT_SOCKET"</span><span class="o">]=</span><span class="s2">"/var/run/td-agent/td-agent.sock"</span>
+load <span class="s2">"/opt/td-agent/embedded/bin/fluentd"</span>
 </code></pre></div></div>
 
 <h1 id="참고자료">참고자료</h1>

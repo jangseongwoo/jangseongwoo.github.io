@@ -115,14 +115,14 @@ mount와 관련하여 다음과 같은 주의사항이 있다.
 
 테스트 편의를 위하여 다음과 같이 환경 변수를 등록하여 사용한다.
 
-```
+```python
 $ export DOCKER_SHARED_VOLUME_TEST_PATH=/Users/kevin/dev/docker/test/shared_volume
 
 ```
 
   
 
-```
+```python
 $ env
 ... 중략 ...
 
@@ -140,7 +140,7 @@ DOCKER_SHARED_VOLUME_TEST_PATH=/Users/kevin/dev/docker/test/shared_volume
 
 1.  다음과 같이 Dockerfile을 생성한다.
     
-    ```
+    ```python
     $ cat image_of_make_logfile/Dockerfile
     FROM python:3.6
     RUN mkdir -p /app
@@ -156,7 +156,7 @@ DOCKER_SHARED_VOLUME_TEST_PATH=/Users/kevin/dev/docker/test/shared_volume
     
 2.  다음과 같은 Python 코드를 작성한다.
     
-    ```
+    ```python
     ### image_of_make_logfile/make_log.py
     
     import random
@@ -204,7 +204,7 @@ DOCKER_SHARED_VOLUME_TEST_PATH=/Users/kevin/dev/docker/test/shared_volume
     
 3.  다음과 같이 Docker 이미지를 생성한다.
     
-    ```
+    ```python
     $ cd image_of_make_logfile
     $ docker build --tag=make_logfile_image .
     Sending build context to Docker daemon  11.26kB
@@ -244,7 +244,7 @@ DOCKER_SHARED_VOLUME_TEST_PATH=/Users/kevin/dev/docker/test/shared_volume
 
 Fluentd 이미지를 사용할 예정이며 td-agent 설정 파일은 다음과 같다.
 
-```
+```python
 $ cat fluentd/td_agent.conf
 <source>
   @type tail
@@ -315,7 +315,7 @@ Bind mount는 Host OS에 종속적이다.
 
 테스트 사전 정보에서 생성한 Docker 이미지를 바탕으로 컨테이너를 실행한다.
 
-```
+```python
 $ docker run -d --name=make_logfile_container --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/host_storage/input,target=/app/input make_logfile_image:latest
 bd31f0fb4e4a03eb16375e5ff6fcd1e95998dec26802cb457f56f5ff31572b46
 ```
@@ -324,7 +324,7 @@ bd31f0fb4e4a03eb16375e5ff6fcd1e95998dec26802cb457f56f5ff31572b46
 
 컨테이너의 상태를 확인한다.
 
-```
+```python
 $ docker container ps --all
 CONTAINER ID        IMAGE                       COMMAND                  CREATED              STATUS              PORTS               NAMES
 bd31f0fb4e4a        make_logfile_image:latest   "python make_log.py …"   About a minute ago   Up About a minute                       make_logfile_container
@@ -335,7 +335,7 @@ bd31f0fb4e4a        make_logfile_image:latest   "python make_log.py …"   About
 
 컨테이너의 Mount상태를 확인한다.
 
-```
+```python
 $ docker inspect make_logfile_container
 [
     ... 중략 ...
@@ -357,7 +357,7 @@ $ docker inspect make_logfile_container
 
 입력용 로그 파일에 로그가 저장되는지 확인한다.
 
-```
+```python
 $ cat host_storage/input/2019-09-10.log
 0-0    2019/09/10T05:49:19    scala
 0-1    2019/09/10T05:49:20    ruby
@@ -378,7 +378,7 @@ $ cat host_storage/input/2019-09-10.log
 
 테스트 사전 정보의 td-agent 설정 파일을 바탕으로 Fluentd 컨테이너를 다음과 같이 실행한다.
 
-```
+```python
 $ docker run -d --name=log_collector_container --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/host_storage/input,target=/input --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/host_storage/output,target=/output --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/fluentd,target=/fluentd/etc -e FLUENTD_CONF=td_agent.conf fluent/fluentd:v1.0.2
 47a6f572fdb2427a0872266ce373b9e99da1e2cae5ee4dc83f0d5aaaf6f56cd2
 ```
@@ -387,7 +387,7 @@ $ docker run -d --name=log_collector_container --mount type=bind,source=${DOCKER
 
 컨테이너가 실행되었는지 확인한다.
 
-```
+```python
 $ docker container ps --all
 CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS                      PORTS                 NAMES
 47a6f572fdb2        fluent/fluentd:v1.0.2       "/bin/entrypoint.sh …"   5 minutes ago       Up 5 minutes                5140/tcp, 24224/tcp   log_collector_container
@@ -398,7 +398,7 @@ bd31f0fb4e4a        make_logfile_image:latest   "python make_log.py …"   22 mi
 
 컨테이너의 Mount상태를 확인한다.
 
-```
+```python
 $ docker inspect log_collector_container
 [
     ... 중략 ...
@@ -436,7 +436,7 @@ $ docker inspect log_collector_container
 
 출력용 로그파일에 저장되는지 확인한다.
 
-```
+```python
 $ cat host_storage/output/docker_log_collect_output.log
 019-09-10T06:06:39+00:00	{"message":"0-0    2019/09/10T05:49:19    scala"}
 2019-09-10T06:06:39+00:00	{"message":"0-1    2019/09/10T05:49:20    ruby"}
@@ -453,7 +453,7 @@ $ cat host_storage/output/docker_log_collect_output.log
 
 입력용 로그 파일을 확인한다.
 
-```
+```python
 $ cat host_storage/input/2019-09-10.log
 0-0    2019/09/10T05:49:19    scala
 0-1    2019/09/10T05:49:20    ruby
@@ -466,7 +466,7 @@ $ cat host_storage/input/2019-09-10.log
 
   
 
-```
+```python
 $ cat host_storage/input/2019-09-10.log| wc -l
 300
 ```
@@ -475,7 +475,7 @@ $ cat host_storage/input/2019-09-10.log| wc -l
 
 출력용 로그 파일을 확인한다.
 
-```
+```python
 $ cat host_storage/output/docker_log_collect_output.log
 019-09-10T06:06:39+00:00	{"message":"0-0    2019/09/10T05:49:19    scala"}
 2019-09-10T06:06:39+00:00	{"message":"0-1    2019/09/10T05:49:20    ruby"}
@@ -488,7 +488,7 @@ $ cat host_storage/output/docker_log_collect_output.log
 
   
 
-```
+```python
 $ cat host_storage/output/docker_log_collect_output.log| wc -l
 300
 ```
@@ -537,7 +537,7 @@ volume 마운트를 사용하기 위해서는 Docker 명령으로 volume 생성�
 
 다음과 같이 Volume을 생성한다.
 
-```
+```python
 $ docker volume create logfile_input
 logfile_input
 ```
@@ -546,7 +546,7 @@ logfile_input
 
 다음과 같은 명령으로 Volume의 상태를 확인한다.
 
-```
+```python
 $ docker volume inspect logfile_input
 [
     {
@@ -567,7 +567,7 @@ $ docker volume inspect logfile_input
 
 테스트 사전 정보에서 생성한 Docker 이미지를 바탕으로 컨테이너를 실행한다.
 
-```
+```python
 $ docker run -d --name=make_logfile_container --mount type=volume,source=logfile_input,target=/app/input make_logfile_image:latest
 7a265902761be76af2957140e0966b99d297e0fda78f5dffe17df9daca4c7453
 ```
@@ -576,7 +576,7 @@ $ docker run -d --name=make_logfile_container --mount type=volume,source=logfile
 
 컨테이너의 동작을 확인한다.
 
-```
+```python
 $ docker container ps --all
 CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS               NAMES
 1dcc4e6c3181        make_logfile_image:latest   "python make_log.py …"   2 minutes ago       Up 2 minutes                            make_logfile_container
@@ -587,7 +587,7 @@ CONTAINER ID        IMAGE                       COMMAND                  CREATED
 
 컨테이너의 Mount상태를 확인한다.
 
-```
+```python
 $ docker inspect make_logfile_container
 [
     ... 중략 ...
@@ -613,7 +613,7 @@ $ docker inspect make_logfile_container
 
 테스트 사전 정보의 td-agent 설정 파일을 바탕으로 Fluentd 컨테이너를 다음과 같이 실행한다.
 
-```
+```python
 $ docker run -d --name=log_collector_container --mount type=volume,source=logfile_input,target=/input --mount type=bind,source=${DOCKER_SHARED_VOLUME_TEST_PATH}/host_storage/output,target=/output -v ${DOCKER_SHARED_VOLUME_TEST_PATH}/fluentd:/fluentd/etc -e FLUENTD_CONF=td_agent.conf fluent/fluentd:v1.0.2
 ba7be8af4dc7ddea4ba30ebccb80736f9700717289748b74e27ab45e9ab22195
 ```
@@ -622,7 +622,7 @@ ba7be8af4dc7ddea4ba30ebccb80736f9700717289748b74e27ab45e9ab22195
 
 컨테이너가 실행되었는지 확인한다.
 
-```
+```python
 $ docker container ps --all
 CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS                 NAMES
 ba7be8af4dc7        fluent/fluentd:v1.0.2       "/bin/entrypoint.sh …"   5 seconds ago       Up 4 seconds        5140/tcp, 24224/tcp   log_collector_container
@@ -635,7 +635,7 @@ ba7be8af4dc7        fluent/fluentd:v1.0.2       "/bin/entrypoint.sh …"   5 sec
 
 출력용 로그 파일을 확인한다.
 
-```
+```python
 $ cat host_storage/output/docker_log_collect_output.log
 2019-09-16T00:41:33+00:00	{"message":"0-0    2019/09/10T09:39:39    kotlin"}
 2019-09-16T00:41:33+00:00	{"message":"0-1    2019/09/10T09:39:40    ruby"}
@@ -648,7 +648,7 @@ $ cat host_storage/output/docker_log_collect_output.log
 
   
 
-```
+```python
 $ cat host_storage/output/docker_log_collect_output.log| wc -l
 300
 ```

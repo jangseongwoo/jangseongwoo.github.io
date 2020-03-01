@@ -115,7 +115,7 @@ DB Model
 
 *   urls 예시
     
-    ```
+    ```python
     from django.urls import path
     
     from . import views
@@ -134,7 +134,7 @@ DB Model
 
 Virturalenv 만들 때 예시
 
-```
+```python
 Create : virtualenv .venv 
 
 Activate : source .venv/bin/activate
@@ -163,7 +163,7 @@ EC2에는 git을 통해 소스코드를 올렸다.
 
 *   uwsgi 설치 후 되는지 명령어로 확인
     
-    ```
+    ```python
     uwsgi --http :8000 --home /home/ubuntu/<project name>/.env --chdir /home/ubuntu/<project name>/<app name> -w mysite.wsgi 
     ```
     
@@ -174,7 +174,7 @@ EC2에는 git을 통해 소스코드를 올렸다.
     
 *   mysite.conf ( nginx 설정파일)
     
-    ```
+    ```python
     server {
         listen 80;
         server_name *.amazonaws.com;
@@ -205,7 +205,7 @@ EC2에는 git을 통해 소스코드를 올렸다.
     
 *   uwsgi.service  
     
-    ```
+    ```python
     [uwsgi]
     
     chdir = /home/ubuntu/<project name>/<app name>
@@ -232,7 +232,7 @@ EC2에는 git을 통해 소스코드를 올렸다.
 
 *   오류중에 uwsgi\_prams 파일이 없어서 나는 오류가 있다. 해당 오류인지 확인하려면 etc/nginx/ 에서 확인 후 없다면 파일 생성 후 하단의 내용을 넣어주면 된다.  
     
-    ```
+    ```python
     uwsgi_param     QUERY_STRING            $query_string;
     uwsgi_param     REQUEST_METHOD          $request_method;
     uwsgi_param     CONTENT_TYPE            $content_type;
@@ -268,7 +268,7 @@ EC2에는 git을 통해 소스코드를 올렸다.
 
 *   selenium test
     
-    ```
+    ```python
     import unittest
     import time
     
@@ -303,7 +303,7 @@ EC2에는 git을 통해 소스코드를 올렸다.
 
 *   Django API test
     
-    ```
+    ```python
     from django.test import TestCase
     from django.urls import resolve, reverse
     from .views import index, post_new, post_remove

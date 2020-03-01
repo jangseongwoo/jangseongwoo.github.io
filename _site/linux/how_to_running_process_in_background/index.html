@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -421,12 +425,12 @@
 
 <p>터미널을 종료할 경우에도 Process가 계속 실행되게 하고 싶다면 Process를 Background 방식으로 실행해야 되며 실행하는 명령어는 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>your_command &amp;
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">your_command</span> <span class="o">&amp;</span>
 </code></pre></div></div>
 
 <p>명령어 입력할 시 응답 예시는 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 27255
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="mi">27255</span>
 </code></pre></div></div>
 
 <h1 id="linux환경에서background로-실행되고-있는특정-process를-확인하는-방법">Linux환경에서 background로 실행되고 있는 특정 Process를 확인하는 방법</h1>
@@ -435,17 +439,17 @@
 
 <p>다음과 같은 명령어로 Linux환경에서 background로 실행되고 있는 특정 Process를 확인할 수 있다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ps -ef | grep "your process name"
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="s">"your process name"</span>
 </code></pre></div></div>
 
 <p>명령어 입력할 시 응답 예시는 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>501 26652     1   0 12:00PM ttys001    0:00.27 /Users/st/test/celery_chord_test/.venv/bin/python3.7 /Users/st/test/celery_chord_test/.venv/bin/celery -A celery_scheduler beat --loglevel=debug -f logs/celery_beat.log
-501 27255 15184   0 12:01PM ttys001    0:00.45 /Users/st/test/celery_chord_test/.venv/bin/python3.7 /Users/st/test/celery_chord_test/.venv/bin/celery -A celery_worker worker --loglevel=debug --queues=test_model_build_q --concurrency=3 -f logs/celery_worker.log
-501 27270 27255   0 12:01PM ttys001    0:00.04 /Users/st/test/celery_chord_test/.venv/bin/python3.7 /Users/st/test/celery_chord_test/.venv/bin/celery -A celery_worker worker --loglevel=debug --queues=test_model_build_q --concurrency=3 -f logs/celery_worker.log
-501 27271 27255   0 12:01PM ttys001    0:00.01 /Users/st/test/celery_chord_test/.venv/bin/python3.7 /Users/st/test/celery_chord_test/.venv/bin/celery -A celery_worker worker --loglevel=debug --queues=test_model_build_q --concurrency=3 -f logs/celery_worker.log
-501 27272 27255   0 12:01PM ttys001    0:00.04 /Users/st/test/celery_chord_test/.venv/bin/python3.7 /Users/st/test/celery_chord_test/.venv/bin/celery -A celery_worker worker --loglevel=debug --queues=test_model_build_q --concurrency=3 -f logs/celery_worker.log
-501 27408 15184   0 12:01PM ttys001    0:00.00 grep --color=auto --exclude-dir=.bzr --exclude-dir=CVS --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn celery
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">501</span> <span class="mi">26652</span>     <span class="mi">1</span>   <span class="mi">0</span> <span class="mi">12</span><span class="p">:</span><span class="mi">00</span><span class="n">PM</span> <span class="n">ttys001</span>    <span class="mi">0</span><span class="p">:</span><span class="mf">00.27</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">celery_chord_test</span><span class="o">/.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span><span class="mf">.7</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">celery_chord_test</span><span class="o">/.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">celery</span> <span class="o">-</span><span class="n">A</span> <span class="n">celery_scheduler</span> <span class="n">beat</span> <span class="o">--</span><span class="n">loglevel</span><span class="o">=</span><span class="n">debug</span> <span class="o">-</span><span class="n">f</span> <span class="n">logs</span><span class="o">/</span><span class="n">celery_beat</span><span class="o">.</span><span class="n">log</span>
+<span class="mi">501</span> <span class="mi">27255</span> <span class="mi">15184</span>   <span class="mi">0</span> <span class="mi">12</span><span class="p">:</span><span class="mi">01</span><span class="n">PM</span> <span class="n">ttys001</span>    <span class="mi">0</span><span class="p">:</span><span class="mf">00.45</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">celery_chord_test</span><span class="o">/.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span><span class="mf">.7</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">celery_chord_test</span><span class="o">/.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">celery</span> <span class="o">-</span><span class="n">A</span> <span class="n">celery_worker</span> <span class="n">worker</span> <span class="o">--</span><span class="n">loglevel</span><span class="o">=</span><span class="n">debug</span> <span class="o">--</span><span class="n">queues</span><span class="o">=</span><span class="n">test_model_build_q</span> <span class="o">--</span><span class="n">concurrency</span><span class="o">=</span><span class="mi">3</span> <span class="o">-</span><span class="n">f</span> <span class="n">logs</span><span class="o">/</span><span class="n">celery_worker</span><span class="o">.</span><span class="n">log</span>
+<span class="mi">501</span> <span class="mi">27270</span> <span class="mi">27255</span>   <span class="mi">0</span> <span class="mi">12</span><span class="p">:</span><span class="mi">01</span><span class="n">PM</span> <span class="n">ttys001</span>    <span class="mi">0</span><span class="p">:</span><span class="mf">00.04</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">celery_chord_test</span><span class="o">/.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span><span class="mf">.7</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">celery_chord_test</span><span class="o">/.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">celery</span> <span class="o">-</span><span class="n">A</span> <span class="n">celery_worker</span> <span class="n">worker</span> <span class="o">--</span><span class="n">loglevel</span><span class="o">=</span><span class="n">debug</span> <span class="o">--</span><span class="n">queues</span><span class="o">=</span><span class="n">test_model_build_q</span> <span class="o">--</span><span class="n">concurrency</span><span class="o">=</span><span class="mi">3</span> <span class="o">-</span><span class="n">f</span> <span class="n">logs</span><span class="o">/</span><span class="n">celery_worker</span><span class="o">.</span><span class="n">log</span>
+<span class="mi">501</span> <span class="mi">27271</span> <span class="mi">27255</span>   <span class="mi">0</span> <span class="mi">12</span><span class="p">:</span><span class="mi">01</span><span class="n">PM</span> <span class="n">ttys001</span>    <span class="mi">0</span><span class="p">:</span><span class="mf">00.01</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">celery_chord_test</span><span class="o">/.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span><span class="mf">.7</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">celery_chord_test</span><span class="o">/.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">celery</span> <span class="o">-</span><span class="n">A</span> <span class="n">celery_worker</span> <span class="n">worker</span> <span class="o">--</span><span class="n">loglevel</span><span class="o">=</span><span class="n">debug</span> <span class="o">--</span><span class="n">queues</span><span class="o">=</span><span class="n">test_model_build_q</span> <span class="o">--</span><span class="n">concurrency</span><span class="o">=</span><span class="mi">3</span> <span class="o">-</span><span class="n">f</span> <span class="n">logs</span><span class="o">/</span><span class="n">celery_worker</span><span class="o">.</span><span class="n">log</span>
+<span class="mi">501</span> <span class="mi">27272</span> <span class="mi">27255</span>   <span class="mi">0</span> <span class="mi">12</span><span class="p">:</span><span class="mi">01</span><span class="n">PM</span> <span class="n">ttys001</span>    <span class="mi">0</span><span class="p">:</span><span class="mf">00.04</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">celery_chord_test</span><span class="o">/.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span><span class="mf">.7</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">celery_chord_test</span><span class="o">/.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">celery</span> <span class="o">-</span><span class="n">A</span> <span class="n">celery_worker</span> <span class="n">worker</span> <span class="o">--</span><span class="n">loglevel</span><span class="o">=</span><span class="n">debug</span> <span class="o">--</span><span class="n">queues</span><span class="o">=</span><span class="n">test_model_build_q</span> <span class="o">--</span><span class="n">concurrency</span><span class="o">=</span><span class="mi">3</span> <span class="o">-</span><span class="n">f</span> <span class="n">logs</span><span class="o">/</span><span class="n">celery_worker</span><span class="o">.</span><span class="n">log</span>
+<span class="mi">501</span> <span class="mi">27408</span> <span class="mi">15184</span>   <span class="mi">0</span> <span class="mi">12</span><span class="p">:</span><span class="mi">01</span><span class="n">PM</span> <span class="n">ttys001</span>    <span class="mi">0</span><span class="p">:</span><span class="mf">00.00</span> <span class="n">grep</span> <span class="o">--</span><span class="n">color</span><span class="o">=</span><span class="n">auto</span> <span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="nb">dir</span><span class="o">=.</span><span class="n">bzr</span> <span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="nb">dir</span><span class="o">=</span><span class="n">CVS</span> <span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="nb">dir</span><span class="o">=.</span><span class="n">git</span> <span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="nb">dir</span><span class="o">=.</span><span class="n">hg</span> <span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="nb">dir</span><span class="o">=.</span><span class="n">svn</span> <span class="n">celery</span>
 </code></pre></div></div>
 
 <h1 id="linux환경에서background로-실행되고-있는특정-process를-종료하는-방법">Linux환경에서 background로 실행되고 있는 특정 Process를 종료하는 방법</h1>
@@ -454,7 +458,7 @@
 
 <p>다음과 같은 명령어로 Linux환경에서 background로 실행되고 있는 특정 Process를 종료할 수 있다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pkill -9 -f "celery"
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pkill</span> <span class="o">-</span><span class="mi">9</span> <span class="o">-</span><span class="n">f</span> <span class="s">"celery"</span>
 </code></pre></div></div>
 
 <p>명령어 입력시 응답이 아무것도 안나오는 경우가 있다.  </p>

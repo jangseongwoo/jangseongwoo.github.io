@@ -27,7 +27,7 @@ python logging 모듈을 사용하여 로그를 남겨봅시다.
 *   가장 기본적인 방식은 아래와 같습니다.
     
 
-```
+```python
 from flask import Flask
 import logging
  
@@ -69,7 +69,7 @@ WARNING:werkzeug: \* Debugger is active!
 *   위 로그는 내가 원하는 정보가 아닐 수 있습니다. 로그를 남길때 원하는 정보만 남기고 싶다면 커스텀하면 됩니다.
     
 
-```
+```python
 import logging
 import datetime
 from pytz import timezone
@@ -96,7 +96,7 @@ def get_log_date():
 *   위에서 커스텀한 로그를 사용하면 됩니다.
     
 
-```
+```python
 from flask import Flask
 import log
 

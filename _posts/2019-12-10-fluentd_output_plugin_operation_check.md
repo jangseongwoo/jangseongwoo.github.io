@@ -66,21 +66,21 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
 
 1.  입력용 파일을 생성한다.
     
-    ```
+    ```bash
      $ touch file_to_stdout_test.log
     ```
     
       
     파일이 정상적으로 생성되었는지 확인한다.
     
-    ```
+    ```bash
     $ ls -l file_to_stdout_test.log
     drwxr-xr-x  4 kevin  staff  0  8  6 16:52 file_to_stdout_test.log 
     ```
     
 2.  td-agent.conf 파일을 다음과 같이 수정한다.
     
-    ```
+    ```bash
     $ vim /etc/td-agent/td-agent.conf
     <source>
       @type tail 
@@ -134,7 +134,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
     
 3.  파일에 다음과 같은 로그를 저장하고 이를 확인한다.
     
-    ```
+    ```bash
     $ vim file_to_stdout_test.log
     file_to_stdout_test 1
     file_to_stdout_test 2
@@ -146,7 +146,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
       
     td-agent의 표준 출력을 확인한다.
     
-    ```
+    ```bash
     $ tail -5f /var/log/td-agent/td-agent.log
     2019-08-06 20:30:20.191939654 +0900 file_to_stdout.test: {"message":"file_to_stdout_test 1"}
     2019-08-06 20:30:25.738923745 +0900 file_to_stdout.test: {"message":"file_to_stdout_test 2"}
@@ -163,7 +163,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
 
 파일에 저장된 로그는 라인 단위로 읽어와 "로그를 수집한 날짜", "이벤트 Tag명", "로그"를 표준출력하며 형식은 다음과 같음을 알 수 있다.
 
-```
+```bash
 (로그를 수집한 날짜) (이벤트 Tag명): {"message":"(로그)"}
 ```
 
@@ -187,14 +187,14 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
 
 1.  입력용 파일을 생성한다.  
     
-    ```
+    ```bash
     $ touch file_to_file_01.log file_to_file_02.log file_to_file_03.log 
     ```
     
       
     파일이 정상적으로 생성되었는지 확인한다.
     
-    ```
+    ```bash
     $ ls -l file_to_file_0*.log
     -rw-r--r--  1 kevin  staff  0  8 13 21:09 file_to_file_01.log
     -rw-r--r--  1 kevin  staff  0  8 13 21:09 file_to_file_02.log
@@ -203,7 +203,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
     
 2.  td-agent.conf 파일을 다음과 같이 수정한다.
     
-    ```
+    ```bash
     $ vim /etc/td-agent/td-agent.conf
     <source>
       @type tail
@@ -274,7 +274,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
     
 3.  입력용 로그 파일 1개에 다음과 같이 로그를 출력한다.  
     
-    ```
+    ```bash
     $ vim file_to_file_01.log
     file_to_file_01    line 1
     file_to_file_01    line 2
@@ -286,7 +286,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
       
     출력용 파일을 확인한다.
     
-    ```
+    ```bash
     $ cat file_to_file.test_0.log
     2019-08-13T21:58:56+09:00	file_to_file.test	{"message":"file_to_file_01    line 1"}
     2019-08-13T21:58:56+09:00	file_to_file.test	{"message":"file_to_file_01    line 2"}
@@ -301,7 +301,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
     
     만약 ${tag}.log형태로 출력하려면 다음과 같이 match의 append 옵션을 수정하면 된다.
     
-    ```
+    ```bash
     <match 이벤트 tag명>
       ...중략...
       
@@ -317,7 +317,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
     
     나머지 파일에도 로그를 출력한다.  
     
-    ```
+    ```bash
     $ vim file_to_file_02.log
     file_to_file_02    line 1
     file_to_file_02    line 2
@@ -328,7 +328,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
     
       
     
-    ```
+    ```bash
     $ vim file_to_file_03.log
     file_to_file_03    line 1
     file_to_file_03    line 2
@@ -339,7 +339,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
     
     출력용 파일을 확인한다.  
     
-    ```
+    ```bash
     $ cat file_to_file.test_1.log
     2019-08-13T22:07:06+09:00	file_to_file.test	{"message":"file_to_file_02    line 1"}
     2019-08-13T22:07:06+09:00	file_to_file.test	{"message":"file_to_file_02    line 2"}
@@ -363,7 +363,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
 
 *   입력용 파일에 저장된 로그는 라인 단위로 읽어와 "로그를 수집한 날짜", "이벤트 Tag명", "로그"를 파일로 출력하며 형식은 다음과 같다.
     
-    ```
+    ```bash
     (로그를 수집한 날짜) (이벤트 Tag명) {"message":"(로그)"}
     ```
     
@@ -409,14 +409,14 @@ Elasticsearch 6.7.1
 
 1.  입력용 파일을 생성한다.
     
-    ```
+    ```bash
     $ touch json_file_to_es_test.log
     ```
     
       
     파일이 정상적으로 생성되었는지 확인한다.
     
-    ```
+    ```bash
     $ ls -l
     total 0
     -rw-r--r--  1 kevin  staff  0  8 13 13:48 json_file_to_es.log
@@ -424,7 +424,7 @@ Elasticsearch 6.7.1
     
 2.  td-agent.conf 파일을 다음과 같이 수정한다.
     
-    ```
+    ```bash
     $ vim /etc/td-agent/td-agent.conf
     <source>
       @type tail
@@ -496,14 +496,14 @@ Elasticsearch 6.7.1
       
     elasticsearch를 실행한다.
     
-    ```
+    ```bash
     $ ./bin/elasticsearch
     ```
     
       
     elasticsearch가 구동되는지 확인한다.
     
-    ```
+    ```bash
     $ curl -X GET "localhost:9200"
     {
       "name" : "kevin_es_node_name",
@@ -528,7 +528,7 @@ Elasticsearch 6.7.1
     
     elasticsearch에 index가 생성되고 document가 추가되는지 확인하기 위하여 document를 추가한다.
     
-    ```
+    ```bash
     $ curl -H 'Content-Type: application/json' -XPOST localhost:9200/json_file_to_es/_doc/1/ -d '{"file_name" : "creat_index_add_document", "tag_name" : "test", "lines" : 1}'
     {"_index":"json_file_to_es","_type":"_doc","_id":"1","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1}%
     ```
@@ -536,7 +536,7 @@ Elasticsearch 6.7.1
       
     정상적으로 document가 추가 되었는지 확인한다.
     
-    ```
+    ```bash
     $ curl -XGET 'localhost:9200/json_file_to_es/_search?pretty'
     {
       "took" : 0,
@@ -570,7 +570,7 @@ Elasticsearch 6.7.1
       
     정상적으로 document가 추가된 것을 확인하였으면 테스트 진행을 위하여 index를 삭제한다.
     
-    ```
+    ```bash
     $ curl -XDELETE 'localhost:9200/json_file_to_es?pretty'
     {
       "acknowledged" : true
@@ -581,7 +581,7 @@ Elasticsearch 6.7.1
     
 4.  입력용 로그파일에 로그를 출력한다.
     
-    ```
+    ```bash
     $ vim json_file_to_es.log
     { "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 1 }
     { "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 2 }
@@ -598,7 +598,7 @@ Elasticsearch 6.7.1
       
     elasticsearch에 index에 정상적으로 insert 되었는지 확인한다.
     
-    ```
+    ```bash
     $ curl -X GET 'localhost:9200/json_file_to_es/_search?filter_path=hits&pretty'
     {
       "hits" : {
@@ -766,7 +766,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
       
     파일이 정상적으로 생성 되었는지 확인한다.
     
-    ```
+    ```bash
     $ ls -l
     total 0
     -rw-r--r--  1 kevin  staff  0  8  9 15:00 source.log
@@ -774,7 +774,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
     
 2.  td-agent 파일은 다음과 같이 수정한다.
     
-    ```
+    ```bash
     $ vim /etc/td-agent/td-agent.conf
     <source>
       @type tail
@@ -871,7 +871,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
     
 3.  입력 로그 파일에 로그를 출력한다.
     
-    ```
+    ```bash
     $ vim source.log
      
     ./source/source.log - Loop seq 1
@@ -887,7 +887,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
     
 4.  미리 설정한 임시 저장 경로에 파일이 생성되는지 확인한다.
     
-    ```
+    ```bash
     $ ls -al
     total 32
     drwxr-xr-x  4 kevin  staff   128  8 12 21:49 .
@@ -904,7 +904,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
     
     파일에 접근하여 내용을 확인한다.
     
-    ```
+    ```bash
     $ cat *.log
     2019-08-12T21:49:23+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 1"}
     2019-08-12T21:49:23+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 2"}
@@ -924,7 +924,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
       
     해당 파일을 다운로드하여 정상적으로 출력되었는 지 확인한다.
     
-    ```
+    ```bash
     $ cat file_to_s3.test_0.txt
     2019-08-09T19:15:22+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 1"}
     2019-08-09T19:15:22+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 2"}
@@ -947,7 +947,7 @@ td-agent가 다음과 같은 의도대로 동작 하는지 확인한다.
 
 *   입력용 파일에 저장된 로그는 라인 단위로 읽어와 "로그를 수집한 날짜", "이벤트Tag명", "로그"를 파일로 출력하며 형식은 다음과 같다.
     
-    ```
+    ```bash
     (로그를 수집한 날짜) (이벤트 Tag명) {"message":"(로그)"}
     ```
     

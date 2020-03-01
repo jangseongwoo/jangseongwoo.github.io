@@ -27,7 +27,7 @@ Td-agent 설치 및 확인
 설치 완료되면 아래 경로에 td-agent가 설치된다.  
 /opt/td-agent/usr/sbin/
 
-```
+```bash
 $ ls -l /opt/td-agent/usr/sbin/
 total 16
 -rwxr-xr-x  1 root  wheel  348 Feb  1  2018 td-agent
@@ -38,7 +38,7 @@ total 16
   
 디폴트 설정 파일은 아래 경로에서 확인할 수 있다.
 
-```
+```bash
 $ ls -l /etc/td-agent/
 total 8
 drwxr-xr-x  2 root  wheel    64 Jun 12 22:27 plugin
@@ -48,7 +48,7 @@ drwxr-xr-x  2 root  wheel    64 Jun 12 22:27 plugin
 
 /etc/td-agent/td-agent.conf 파일의 내용 일부는 아래와 같다.
 
-```
+```bash
 ... 중략 ...
 
 # HTTP input
@@ -70,7 +70,7 @@ Start td-agent on Mac
 
 Daemon 방식 실행
 
-```
+```bash
 $ sudo launchctl load /Library/LaunchDaemons/td-agent.plist
 $ less /var/log/td-agent/td-agent.log
 
@@ -86,7 +86,7 @@ $ ps -ef | grep td-agent
   
 기본 foreground로 실행하기
 
-```
+```bash
 $ /opt/td-agent/usr/sbin/td-agent -c /etc/td-agent/td-agent.conf
 
 ```
@@ -98,7 +98,7 @@ $ /opt/td-agent/usr/sbin/td-agent -c /etc/td-agent/td-agent.conf
 Test
 ----
 
-```
+```bash
 $ curl -X POST -d 'json={"json":"message"}' http://localhost:8888/debug.test
 
 ```
@@ -108,7 +108,7 @@ $ curl -X POST -d 'json={"json":"message"}' http://localhost:8888/debug.test
 Stop td-agent damon on Mac
 --------------------------
 
-```
+```bash
 $ sudo launchctl unload /Library/LaunchDaemons/td-agent.plist
 
 ```

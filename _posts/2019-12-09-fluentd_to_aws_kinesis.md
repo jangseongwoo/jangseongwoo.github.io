@@ -134,7 +134,7 @@ Elasticsearch에 Template 설정
 
 Elasticsearch에 tempalte을 설정하기 위해 Kibana Dev tools에 아래와 같은 명령어를 실행한다.
 
-```
+```python
 PUT _template/template-test
 {
     "index_patterns": [
@@ -173,7 +173,7 @@ PUT _template/template-test
 
 명령어 실행 후 아래와 같은 메시지가 나온다면 성공적으로 동작한 것이다. 
 
-```
+```python
 {
   "acknowledged" : true
 }
@@ -195,7 +195,7 @@ Fluentd의 설정 변경 및 실행
 
 다음과 같은 디렉토리 구조를 생성한다. 해당 구조로 프로젝트 디렉토리를 구성한 이후 다음 내용을 진행한다.
 
-```
+```python
 Project/pos/
 Project/pos/pos_file.pos
 Project/source/{log_file.log}
@@ -204,7 +204,7 @@ Project/kinesis_test.config
 
 kinesis\_test.config을 생성하고 다음과 같이 내용을 입력한다. 내용 중 Path, Pos\_file에 대한 설정은 각자 환경에 맞게 구성한다.
 
-```
+```python
 <source>
   @type tail
   path /Users/st/test/test_data_poc/source/*.log
@@ -230,13 +230,13 @@ kinesis\_test.config을 생성하고 다음과 같이 내용을 입력한다. �
 
 Fluentd를 실행하기 위해 Project 디렉토리에서 다음과 같은 명령을 실행한다.
 
-```
+```bash
 $ fluentd -c kinesis_test.config -o fleuntd.log
 ```
 
 새로운 터미널을 열고 로그 파일을 보기 위해 다음과 같은 명령을 실행한다.
 
-```
+```bash
 $ tail -f fleuntd.log
 ```
 
@@ -249,7 +249,7 @@ Data gererator를 만들고 실행하기
 
 다음과 같은 데이터 형식으로 Data generator를 만들면 된다. 
 
-```
+```python
 board_id : long
 playtime : long
 timestamp : date형
@@ -259,7 +259,7 @@ interest: long
 
 Data generator를 만들기 위해 data\_generator.py를 생성하고 다음과 같이 내용을 입력한다. 
 
-```
+```python
 from datetime import datetime
 import string
 import time
@@ -346,13 +346,13 @@ if __name__ == "__main__":
 
 다음과 같이 명령어를 입력해 data\_generator.py을 실행한다.  실행 시 data\_generator.py는 10000개의 데이터를 생성하고 파일로 기록한다.
 
-```
+```bash
 $ python data_generator.py > firehose.log
 ```
 
 미리 설정해둔 fleuntd.log에서 다음과 같은 메시지를 확인한다.
 
-```
+```bash
 2019-11-14 21:07:00 +0900 [info]: #0 following tail of /Users/st/test/test_data_poc/source/test_fluentd_firehose.log
 ```
 
@@ -374,7 +374,7 @@ $ python data_generator.py > firehose.log
 
 확인을 위해 Kibana Dev tools에서 아래와 같은 쿼리를 입력하고 결과를 확인한다.
 
-```
+```bash
 GET _search/
 {
   "query": {
@@ -386,7 +386,7 @@ GET _search/
 
   
 
-```
+```bash
 {
   "took" : 16,
   "timed_out" : false,

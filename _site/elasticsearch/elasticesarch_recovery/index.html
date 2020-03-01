@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -460,55 +464,55 @@
 
 <p>자동 스냅샷 ‘리포지토리’를 확인하기 위하여 다음과 같은 명령으로 ‘리포지토리’를 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET '{aws_elasticsearch_endpoint}/_snapshot'
-{"cs-automated":{"type":"s3"}}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="s">'{aws_elasticsearch_endpoint}/_snapshot'</span>
+<span class="p">{</span><span class="s">"cs-automated"</span><span class="p">:{</span><span class="s">"type"</span><span class="p">:</span><span class="s">"s3"</span><span class="p">}}</span>
 </code></pre></div></div>
 
 <p>“cs-automated” 리포지토리에 복구 희망 시점(2019. 10. 29 )의 스냅샷이 남아 있는지 확인한 결과 “2019-10-29t02-47-55.820cba71-42d5-4d4d-ac3e-6cb058db9b51” 스냅샵이 남아 있었다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### http://엔드포인트/_snapshot/리포지토리/_all?pretty
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">### http://엔드포인트/_snapshot/리포지토리/_all?pretty
+</span>
+<span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="s">'{aws_elasticsearch_endpoint}/_snapshot/cs-automated/_all?pretty'</span>
+<span class="p">{</span>
+  <span class="s">"snapshots"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">{</span>
+    <span class="s">"snapshot"</span> <span class="p">:</span> <span class="s">"2019-10-22t01-47-54.328ccc95-18b0-455e-bf24-abeeeaf18eeb"</span><span class="p">,</span>
+    <span class="s">"uuid"</span> <span class="p">:</span> <span class="s">"LsMY9UfnTn-gR1V751JEQQ"</span><span class="p">,</span>
+    <span class="s">"version_id"</span> <span class="p">:</span> <span class="mi">6070099</span><span class="p">,</span>
+    <span class="s">"version"</span> <span class="p">:</span> <span class="s">"6.7.0"</span><span class="p">,</span>
+    <span class="s">"indices"</span> <span class="p">:</span> <span class="p">[</span> <span class="s">".opendistro-alerting-alert-history-2019.06.20-000052"</span><span class="p">,</span>
 
-$ curl -XGET '{aws_elasticsearch_endpoint}/_snapshot/cs-automated/_all?pretty'
-{
-  "snapshots" : [ {
-    "snapshot" : "2019-10-22t01-47-54.328ccc95-18b0-455e-bf24-abeeeaf18eeb",
-    "uuid" : "LsMY9UfnTn-gR1V751JEQQ",
-    "version_id" : 6070099,
-    "version" : "6.7.0",
-    "indices" : [ ".opendistro-alerting-alert-history-2019.06.20-000052",
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 
-... 중략 ...
+  <span class="p">},</span> <span class="p">{</span>
+    <span class="s">"snapshot"</span> <span class="p">:</span> <span class="s">"2019-10-29t02-47-55.820cba71-42d5-4d4d-ac3e-6cb058db9b51"</span><span class="p">,</span>
+    <span class="s">"uuid"</span> <span class="p">:</span> <span class="s">"HyKrNLXCRdW3DPTMkcPdFg"</span><span class="p">,</span>
+    <span class="s">"version_id"</span> <span class="p">:</span> <span class="mi">6070099</span><span class="p">,</span>
+    <span class="s">"version"</span> <span class="p">:</span> <span class="s">"6.7.0"</span><span class="p">,</span>
+    <span class="s">"indices"</span> <span class="p">:</span> <span class="p">[</span> 
 
-  }, {
-    "snapshot" : "2019-10-29t02-47-55.820cba71-42d5-4d4d-ac3e-6cb058db9b51",
-    "uuid" : "HyKrNLXCRdW3DPTMkcPdFg",
-    "version_id" : 6070099,
-    "version" : "6.7.0",
-    "indices" : [ 
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span> 
 
-... 중략 ... 
+<span class="s">"test_index"</span><span class="p">,</span>  
 
-"test_index",  
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 
-... 중략 ...
+ <span class="p">],</span>
+    <span class="s">"include_global_state"</span> <span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s">"state"</span> <span class="p">:</span> <span class="s">"SUCCESS"</span><span class="p">,</span>
+    <span class="s">"start_time"</span> <span class="p">:</span> <span class="s">"2019-10-29T02:47:55.177Z"</span><span class="p">,</span>
+    <span class="s">"start_time_in_millis"</span> <span class="p">:</span> <span class="mi">1572317275177</span><span class="p">,</span>
+    <span class="s">"end_time"</span> <span class="p">:</span> <span class="s">"2019-10-29T02:51:19.273Z"</span><span class="p">,</span>
+    <span class="s">"end_time_in_millis"</span> <span class="p">:</span> <span class="mi">1572317479273</span><span class="p">,</span>
+    <span class="s">"duration_in_millis"</span> <span class="p">:</span> <span class="mi">204096</span><span class="p">,</span>
+    <span class="s">"failures"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">],</span>
+    <span class="s">"shards"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"total"</span> <span class="p">:</span> <span class="mi">968</span><span class="p">,</span>
+      <span class="s">"failed"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="s">"successful"</span> <span class="p">:</span> <span class="mi">968</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">{</span>
 
- ],
-    "include_global_state" : true,
-    "state" : "SUCCESS",
-    "start_time" : "2019-10-29T02:47:55.177Z",
-    "start_time_in_millis" : 1572317275177,
-    "end_time" : "2019-10-29T02:51:19.273Z",
-    "end_time_in_millis" : 1572317479273,
-    "duration_in_millis" : 204096,
-    "failures" : [ ],
-    "shards" : {
-      "total" : 968,
-      "failed" : 0,
-      "successful" : 968
-    }
-  }, {
-
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 </code></pre></div></div>
 
 <h2 id="스냅샷으로-인덱스-복구">스냅샷으로 인덱스 복구</h2>
@@ -517,8 +521,8 @@ $ curl -XGET '{aws_elasticsearch_endpoint}/_snapshot/cs-automated/_all?pretty'
 
 <p>현재 존재하는 “test_index” 인덱스를 삭제한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XDELETE '{aws_elasticsearch_endpoint}/test_index'
-{"acknowledged" : true}%
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XDELETE</span> <span class="s">'{aws_elasticsearch_endpoint}/test_index'</span>
+<span class="p">{</span><span class="s">"acknowledged"</span> <span class="p">:</span> <span class="n">true</span><span class="p">}</span><span class="o">%</span>
 
 </code></pre></div></div>
 
@@ -528,25 +532,25 @@ $ curl -XGET '{aws_elasticsearch_endpoint}/_snapshot/cs-automated/_all?pretty'
 
 <p>다음과 같은 명령으로 복구 희망 시점(2019. 10. 29) “test_index” 인덱스를 복구한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### https://엔드포인트/_snapshot/리포지토리/스냅샷 ID/_restore
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">### https://엔드포인트/_snapshot/리포지토리/스냅샷 ID/_restore
 ### json : {"indics": 인덱스명 } 
-
-$ curl -XPOST '{aws_elasticsearch_endpoint}/_snapshot/cs-automated/2019-10-29t02-47-55.820cba71-42d5-4d4d-ac3e-6cb058db9b51/_restore' -d '{"indices": "test_index"}' -H 'Content-Type: application/json'
-{"accepted":true}%
+</span>
+<span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XPOST</span> <span class="s">'{aws_elasticsearch_endpoint}/_snapshot/cs-automated/2019-10-29t02-47-55.820cba71-42d5-4d4d-ac3e-6cb058db9b51/_restore'</span> <span class="o">-</span><span class="n">d</span> <span class="s">'{"indices": "test_index"}'</span> <span class="o">-</span><span class="n">H</span> <span class="s">'Content-Type: application/json'</span>
+<span class="p">{</span><span class="s">"accepted"</span><span class="p">:</span><span class="n">true</span><span class="p">}</span><span class="o">%</span>
 </code></pre></div></div>
 
 <p>“test_index” 인덱스가 복구 되었는지 확인한 결과 248265개의 다큐먼트가 존재한다는 것을 알 수 있다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET '{aws_elasticsearch_endpoint}/test_index/_count?pretty'
-{
-  "count" : 248265,
-  "_shards" : {
-    "total" : 5,
-    "successful" : 5,
-    "skipped" : 0,
-    "failed" : 0
-  }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="s">'{aws_elasticsearch_endpoint}/test_index/_count?pretty'</span>
+<span class="p">{</span>
+  <span class="s">"count"</span> <span class="p">:</span> <span class="mi">248265</span><span class="p">,</span>
+  <span class="s">"_shards"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"successful"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"skipped"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"failed"</span> <span class="p">:</span> <span class="mi">0</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 

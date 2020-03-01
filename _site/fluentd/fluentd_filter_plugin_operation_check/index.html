@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -408,7 +412,6 @@
       <li><a href="#테스트-plugin-정보">테스트 Plugin 정보</a>
         <ul>
           <li><a href="#source-plugin---tail">Source Plugin - tail</a></li>
-          <li><a href="#filter-plugin---record_transformer">Filter Plugin - record_transformer</a></li>
           <li><a href="#match-plugin---file">Match Plugin - file</a></li>
         </ul>
       </li>
@@ -542,7 +545,7 @@
 
 <p>다음은 테스트에서 사용할 tail 설정 예시이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;source&gt;  
+<pre><code class="language-bashbash">&lt;source&gt;  
   @type tail
   path /Users/kevin/dev/fluentd/test/filter_record_transformer/source/*
   pos_file /Users/kevin/dev/fluentd/test/filter_record_transformer/pos/filter_record_transformer.pos
@@ -552,51 +555,44 @@
   tag filter_record_transformer.test
   refresh_interval 5s
 &lt;/source&gt;
-</code></pre></div></div>
+```bash
 
-<p>위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.</p>
+  
 
-<ul>
-  <li>
-    <p>@type : tail type을 사용한다. 자세한 내용은 아래의 링크를 통하여 확인한다.</p>
-  </li>
-  <li>
-    <p>path : 읽어오고자 하는 파일의 경로를 의미한다.</p>
-  </li>
-  <li>
-    <p>pos_file : td-agent는 파일마다 읽었던 위치를 파일로 저장해두는데 그 파일의 경로를 지정한다.</p>
-  </li>
-  <li>
-    <p>parse</p>
+위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.
 
-    <ul>
-      <li>@type : json를 사용한다. 자세한 내용은 아래의 링크를 통하여 확인한다.</li>
-    </ul>
-  </li>
-  <li>
-    <p>tag : 이벤트를 구분짓기 위한 tag name을 의미한다.</p>
-  </li>
-  <li>
-    <p>refresh_interval : td-agent가 수집하려는 파일리스트의 갱신주기를 의미한다.</p>
-  </li>
-</ul>
+*   @type : tail type을 사용한다. 자세한 내용은 아래의 링크를 통하여 확인한다.
+    
+*   path : 읽어오고자 하는 파일의 경로를 의미한다.
+    
+*   pos\_file : td-agent는 파일마다 읽었던 위치를 파일로 저장해두는데 그 파일의 경로를 지정한다.
+    
+*   parse
+    
+    *   @type : json를 사용한다. 자세한 내용은 아래의 링크를 통하여 확인한다.
+        
+*   tag : 이벤트를 구분짓기 위한 tag name을 의미한다.
+    
+*   refresh\_interval : td-agent가 수집하려는 파일리스트의 갱신주기를 의미한다.
+    
 
-<p>자세한 내용은 아래의 링크를 통하여 확인한다.</p>
+  
 
-<ul>
-  <li>
-    <p><a href="https://docs.fluentd.org/input/tail">Fluentd - Input Plugin : tail</a></p>
-  </li>
-  <li>
-    <p><a href="https://docs.fluentd.org/parser/json">Fluentd - Parser Plugin : json</a></p>
-  </li>
-</ul>
+자세한 내용은 아래의 링크를 통하여 확인한다.
 
-<h3 id="filter-plugin---record_transformer">Filter Plugin - record_transformer</h3>
+*   [Fluentd - Input Plugin : tail](https://docs.fluentd.org/input/tail)
+    
+*   [Fluentd - Parser Plugin : json](https://docs.fluentd.org/parser/json)
+    
 
-<p>다음은 테스트에서 사용할 grep 설정 예시이다.</p>
+  
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;filter filter_record_transformer.*&gt;  
+### Filter Plugin - record\_transformer
+
+다음은 테스트에서 사용할 grep 설정 예시이다.
+
+```bash
+&lt;filter filter_record_transformer.*&gt;  
   @type record_transformer
   enable_ruby true
   &lt;record&gt;
@@ -606,7 +602,7 @@
   remove_keys [ "os", "created_at" ]
 &lt;/filter&gt;
 
-</code></pre></div></div>
+</code></pre>
 
 <p>위의 설정 예시에 관하여 간단하게 설명하면 다음과 같다. required 설정은 녹색으로 표기하였다.</p>
 
@@ -638,12 +634,12 @@
 
 <p>다음은 테스트에서 사용하게 될 file 설정 예시이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;match filter_record_transformer.*&gt;  
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;match filter_record_transformer.<span class="k">*</span><span class="o">&gt;</span>  
   @type file
-  path /Users/kevin/dev/fluentd/test/filter_record_transformer/match/${tag}
-  path_suffix ".json"
-  add_path_suffix true
-  append true
+  path /Users/kevin/dev/fluentd/test/filter_record_transformer/match/<span class="k">${</span><span class="nv">tag</span><span class="k">}</span>
+  path_suffix <span class="s2">".json"</span>
+  add_path_suffix <span class="nb">true
+  </span>append <span class="nb">true</span>
   &lt;format&gt;
     @type json
   &lt;/format&gt;
@@ -705,8 +701,8 @@
   <li>
     <p>파일을 생성하고 정상적으로 생성 되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch filter_record_transformer.json | stat filter_record_transformer.json
-16777223 8192640 -rw-r--r-- 1 kevin staff 0 0 "Aug 14 14:01:39 2019" "Aug 14 14:01:39 2019" "Aug 14 14:01:39 2019" "Aug 14 14:01:39 2019" 4096 0 0 filter_record_transformer.json
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">touch </span>filter_record_transformer.json | <span class="nb">stat </span>filter_record_transformer.json
+16777223 8192640 <span class="nt">-rw-r--r--</span> 1 kevin staff 0 0 <span class="s2">"Aug 14 14:01:39 2019"</span> <span class="s2">"Aug 14 14:01:39 2019"</span> <span class="s2">"Aug 14 14:01:39 2019"</span> <span class="s2">"Aug 14 14:01:39 2019"</span> 4096 0 0 filter_record_transformer.json
 </code></pre></div>    </div>
   </li>
   <li>
@@ -717,38 +713,38 @@
 
     <p>수정한 경로에 td-agent 설정 파일을 생성한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch td-agent_filter_record_transformer.conf | stat td-agent_filter_record_transformer.conf
-16777223 8192245 -rw-r--r-- 1 kevin staff 0 0 "Aug 14 13:50:42 2019" "Aug 14 13:50:42 2019" "Aug 14 13:50:42 2019" "Aug 14 13:50:42 2019" 4096 0 0 td-agent_filter_record_transformer.conf
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">touch </span>td-agent_filter_record_transformer.conf | <span class="nb">stat </span>td-agent_filter_record_transformer.conf
+16777223 8192245 <span class="nt">-rw-r--r--</span> 1 kevin staff 0 0 <span class="s2">"Aug 14 13:50:42 2019"</span> <span class="s2">"Aug 14 13:50:42 2019"</span> <span class="s2">"Aug 14 13:50:42 2019"</span> <span class="s2">"Aug 14 13:50:42 2019"</span> 4096 0 0 td-agent_filter_record_transformer.conf
 </code></pre></div>    </div>
 
     <p>td-agent 설정 파일을 다음과 같이 수정한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim td-agent_filter_record_transformer.conf
-&lt;source&gt;
-  @type tail
-  tag filter_record_transformer.test
-  path /Users/kevin/dev/fluentd/test/filter_record_transformer/source/*
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim td-agent_filter_record_transformer.conf
+&lt;<span class="nb">source</span><span class="o">&gt;</span>
+  @type <span class="nb">tail
+  </span>tag filter_record_transformer.test
+  path /Users/kevin/dev/fluentd/test/filter_record_transformer/source/<span class="k">*</span>
   pos_file /Users/kevin/dev/fluentd/test/filter_record_transformer/pos/filter_record_transformer.pos
   &lt;parse&gt;
     @type json
   &lt;/parse&gt;
   refresh_interval 5s
 &lt;/source&gt;
-&lt;filter filter_record_transformer.*&gt;
+&lt;filter filter_record_transformer.<span class="k">*</span><span class="o">&gt;</span>
   @type record_transformer
-  enable_ruby true
+  enable_ruby <span class="nb">true</span>
   &lt;record&gt;
-    collected_at ${time.strftime('%Y-%m-%dT%H:%M:%S%z')}
-    device_os ${record["os"]}
+    collected_at <span class="k">${</span><span class="nv">time</span><span class="p">.strftime(</span><span class="s1">'%Y-%m-%dT%H:%M:%S%z'</span><span class="p">)</span><span class="k">}</span>
+    device_os <span class="k">${</span><span class="nv">record</span><span class="p">[</span><span class="s2">"os"</span><span class="p">]</span><span class="k">}</span>
   &lt;/record&gt;
-  remove_keys [ "os", "created_at" ]
+  remove_keys <span class="o">[</span> <span class="s2">"os"</span>, <span class="s2">"created_at"</span> <span class="o">]</span>
 &lt;/filter&gt;
-&lt;match filter_record_transformer.*&gt;
+&lt;match filter_record_transformer.<span class="k">*</span><span class="o">&gt;</span>
   @type file
-  path /Users/kevin/dev/fluentd/test/filter_record_transformer/match/${tag}
-  add_path_suffix true
-  path_suffix ".json"
-  append true
+  path /Users/kevin/dev/fluentd/test/filter_record_transformer/match/<span class="k">${</span><span class="nv">tag</span><span class="k">}</span>
+  add_path_suffix <span class="nb">true
+  </span>path_suffix <span class="s2">".json"</span>
+  append <span class="nb">true</span>
   &lt;format&gt;
     @type json
   &lt;/format&gt;
@@ -765,22 +761,22 @@
   <li>
     <p>입력용 파일에 로그를 출력하고 정상적으로 출력되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat filter_record_transformer.json
-{ "user_id" : "javascript0247", "created_at" : "2019-08-16T01:23:45+0900", "os" : "Android" }
-{ "user_id" : "kotlin_0247", "created_at" : "2019-08-16T14:28:10+0900", "os" : "Android" }
-{ "user_id" : "java_8615", "created_at" : "2019-08-16T14:30:00+0900", "os" : "iOS" }
-{ "user_id" : "python_1574", "created_at" : "2019-08-16T14:30:00+0900", "os" : "iOS" }
-{ "user_id" : "cpp_2464", "created_at" : "2019-08-16T14:30:00+0900", "os" : "iOS" }
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat </span>filter_record_transformer.json
+<span class="o">{</span> <span class="s2">"user_id"</span> : <span class="s2">"javascript0247"</span>, <span class="s2">"created_at"</span> : <span class="s2">"2019-08-16T01:23:45+0900"</span>, <span class="s2">"os"</span> : <span class="s2">"Android"</span> <span class="o">}</span>
+<span class="o">{</span> <span class="s2">"user_id"</span> : <span class="s2">"kotlin_0247"</span>, <span class="s2">"created_at"</span> : <span class="s2">"2019-08-16T14:28:10+0900"</span>, <span class="s2">"os"</span> : <span class="s2">"Android"</span> <span class="o">}</span>
+<span class="o">{</span> <span class="s2">"user_id"</span> : <span class="s2">"java_8615"</span>, <span class="s2">"created_at"</span> : <span class="s2">"2019-08-16T14:30:00+0900"</span>, <span class="s2">"os"</span> : <span class="s2">"iOS"</span> <span class="o">}</span>
+<span class="o">{</span> <span class="s2">"user_id"</span> : <span class="s2">"python_1574"</span>, <span class="s2">"created_at"</span> : <span class="s2">"2019-08-16T14:30:00+0900"</span>, <span class="s2">"os"</span> : <span class="s2">"iOS"</span> <span class="o">}</span>
+<span class="o">{</span> <span class="s2">"user_id"</span> : <span class="s2">"cpp_2464"</span>, <span class="s2">"created_at"</span> : <span class="s2">"2019-08-16T14:30:00+0900"</span>, <span class="s2">"os"</span> : <span class="s2">"iOS"</span> <span class="o">}</span>
 </code></pre></div>    </div>
 
     <p>출력용 파일에 출력된 로그를 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat filter_record_transformer.test.json
-{"user_id":"javascript0247","collected_at":"2019-08-16T15:14:29+0900","device_os":"Android"}
-{"user_id":"kotlin_0247","collected_at":"2019-08-16T15:14:29+0900","device_os":"Android"}
-{"user_id":"java_8615","collected_at":"2019-08-16T15:14:29+0900","device_os":"iOS"}
-{"user_id":"python_1574","collected_at":"2019-08-16T15:14:29+0900","device_os":"iOS"}
-{"user_id":"cpp_2464","collected_at":"2019-08-16T15:14:29+0900","device_os":"iOS"} 
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat </span>filter_record_transformer.test.json
+<span class="o">{</span><span class="s2">"user_id"</span>:<span class="s2">"javascript0247"</span>,<span class="s2">"collected_at"</span>:<span class="s2">"2019-08-16T15:14:29+0900"</span>,<span class="s2">"device_os"</span>:<span class="s2">"Android"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"user_id"</span>:<span class="s2">"kotlin_0247"</span>,<span class="s2">"collected_at"</span>:<span class="s2">"2019-08-16T15:14:29+0900"</span>,<span class="s2">"device_os"</span>:<span class="s2">"Android"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"user_id"</span>:<span class="s2">"java_8615"</span>,<span class="s2">"collected_at"</span>:<span class="s2">"2019-08-16T15:14:29+0900"</span>,<span class="s2">"device_os"</span>:<span class="s2">"iOS"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"user_id"</span>:<span class="s2">"python_1574"</span>,<span class="s2">"collected_at"</span>:<span class="s2">"2019-08-16T15:14:29+0900"</span>,<span class="s2">"device_os"</span>:<span class="s2">"iOS"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"user_id"</span>:<span class="s2">"cpp_2464"</span>,<span class="s2">"collected_at"</span>:<span class="s2">"2019-08-16T15:14:29+0900"</span>,<span class="s2">"device_os"</span>:<span class="s2">"iOS"</span><span class="o">}</span> 
 </code></pre></div>    </div>
   </li>
 </ol>
@@ -883,9 +879,9 @@
 
 <p>다음은 테스트에서 사용할 tail 설정 예시이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;source&gt;
-  @type tail
-  path /Users/kevin/dev/fluentd/test/filter_grep/source/*
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="nb">source</span><span class="o">&gt;</span>
+  @type <span class="nb">tail
+  </span>path /Users/kevin/dev/fluentd/test/filter_grep/source/<span class="k">*</span>
   pos_file /Users/kevin/dev/fluentd/test/pos/filter_grep.pos
   tag filter_grep.test
   &lt;parse&gt;
@@ -937,15 +933,15 @@
 
 <p>다음은 테스트에서 사용할 grep 설정 예시이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;filter filter_grep*&gt;
-  @type grep
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;filter filter_grep<span class="k">*</span><span class="o">&gt;</span>
+  @type <span class="nb">grep</span>
   &lt;regexp&gt;
     key method
-    pattern ^POST$
+    pattern ^POST<span class="err">$</span>
   &lt;/regexp&gt;
   &lt;regexp&gt;
     key code
-    pattern ^[1-1|3-5]\d\d$
+    pattern ^[1-1|3-5]<span class="se">\d\d</span><span class="err">$</span>
   &lt;/regexp&gt;
 &lt;/filter&gt;
 
@@ -996,16 +992,16 @@
 
 <p>다음은 테스트에서 사용하게 될 file 설정 예시이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;match filter_grep.*&gt;
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;match filter_grep.<span class="k">*</span><span class="o">&gt;</span>
   @type file
-  path /Users/kevin/dev/fluentd/test/filter_grep/match/${tag}_output
-  path_suffix ".log"
-  add_path_suffix true
-  append true
+  path /Users/kevin/dev/fluentd/test/filter_grep/match/<span class="k">${</span><span class="nv">tag</span><span class="k">}</span>_output
+  path_suffix <span class="s2">".log"</span>
+  add_path_suffix <span class="nb">true
+  </span>append <span class="nb">true</span>
   &lt;format&gt;
     @type out_file
-    output_tag false
-    output_time true
+    output_tag <span class="nb">false
+    </span>output_time <span class="nb">true</span>
   &lt;/format&gt;
   &lt;buffer tag&gt;    
     flush_mode interval
@@ -1059,10 +1055,10 @@
 
 <p>다음은 테스트에서 사용하게 될 out_file 설정 예시이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;format&gt;
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;format&gt;
     @type out_file
-    output_tag false
-    output_time true
+    output_tag <span class="nb">false
+    </span>output_time <span class="nb">true</span>
   &lt;/format&gt;
 
 </code></pre></div></div>
@@ -1093,8 +1089,8 @@
   <li>
     <p>입력용 파일을 생성하고 정상적으로 생성 되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch filter_grep_input.log | stat filter_grep_input.log
-16777223 8232044 -rw-r--r-- 1 kevin staff 0 0 "Aug 19 20:20:14 2019" "Aug 19 20:20:14 2019" "Aug 19 20:20:14 2019" "Aug 19 20:20:14 2019" 4096 0 0 filter_grep_input.log
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">touch </span>filter_grep_input.log | <span class="nb">stat </span>filter_grep_input.log
+16777223 8232044 <span class="nt">-rw-r--r--</span> 1 kevin staff 0 0 <span class="s2">"Aug 19 20:20:14 2019"</span> <span class="s2">"Aug 19 20:20:14 2019"</span> <span class="s2">"Aug 19 20:20:14 2019"</span> <span class="s2">"Aug 19 20:20:14 2019"</span> 4096 0 0 filter_grep_input.log
 </code></pre></div>    </div>
   </li>
   <li>
@@ -1106,18 +1102,18 @@
 
     <p>위에서 수정한 경로에 td-agent 설정파일을 생성한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch td-agent.conf | stat td-agent.conf
-16777223 8226646 -rw-r--r-- 1 kevin staff 0 0 "Aug 19 15:54:04 2019" "Aug 19 15:54:04 2019" "Aug 19 15:54:04 2019" "Aug 19 15:54:04 2019" 4096 0 0 td-agent.conf
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">touch </span>td-agent.conf | <span class="nb">stat </span>td-agent.conf
+16777223 8226646 <span class="nt">-rw-r--r--</span> 1 kevin staff 0 0 <span class="s2">"Aug 19 15:54:04 2019"</span> <span class="s2">"Aug 19 15:54:04 2019"</span> <span class="s2">"Aug 19 15:54:04 2019"</span> <span class="s2">"Aug 19 15:54:04 2019"</span> 4096 0 0 td-agent.conf
 </code></pre></div>    </div>
 
     <p>td-agent 설정 파일을 다음과 같이 수정한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat td-agent.conf
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat </span>td-agent.conf
     
-&lt;source&gt;
-  @type tail
-  tag filter_grep
-  path /Users/kevin/dev/fluentd/test/filter_grep/source/*
+&lt;<span class="nb">source</span><span class="o">&gt;</span>
+  @type <span class="nb">tail
+  </span>tag filter_grep
+  path /Users/kevin/dev/fluentd/test/filter_grep/source/<span class="k">*</span>
   pos_file /Users/kevin/dev/fluentd/test/filter_grep/pos/filter_grep.pos
   &lt;parse&gt;
     @type apache2
@@ -1125,32 +1121,32 @@
   refresh_interval 5s
 &lt;/source&gt;
     
-&lt;filter filter_grep*&gt;
-  @type grep
+&lt;filter filter_grep<span class="k">*</span><span class="o">&gt;</span>
+  @type <span class="nb">grep</span>
   &lt;regexp&gt;
     key method
-    pattern ^POST$
+    pattern ^POST<span class="err">$</span>
   &lt;/regexp&gt;
   &lt;regexp&gt;
     key code
-    pattern ^[1-1|3-5]\d\d$
+    pattern ^[1-1|3-5]<span class="se">\d\d</span><span class="err">$</span>
   &lt;/regexp&gt;
 &lt;/filter&gt;
  
-&lt;match filter_grep*&gt;
+&lt;match filter_grep<span class="k">*</span><span class="o">&gt;</span>
   @type file
-  path /Users/kevin/dev/fluentd/test/filter_grep/match/${tag}_output
-  add_path_suffix true
-  path_suffix ".log"
-  append true
+  path /Users/kevin/dev/fluentd/test/filter_grep/match/<span class="k">${</span><span class="nv">tag</span><span class="k">}</span>_output
+  add_path_suffix <span class="nb">true
+  </span>path_suffix <span class="s2">".log"</span>
+  append <span class="nb">true</span>
   &lt;buffer tag&gt;
     flush_mode interval
     flush_interval 10s
   &lt;/buffer&gt;
   &lt;format&gt;
     @type out_file
-    output_tag false
-    output_time true
+    output_tag <span class="nb">false
+    </span>output_time <span class="nb">true</span>
   &lt;/format&gt;
 &lt;/match&gt;
 </code></pre></div>    </div>
@@ -1160,27 +1156,27 @@
   <li>
     <p>입력용 파일에 로그를 출력하고 정상적으로 출력 되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ cat source/filter_grep_input.log
-127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] "GET /apache_pb.gif HTTP/1.0" 100 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] "POST /regist.html HTTP/1.0" 200 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] "POST /regist.html HTTP/1.0" 300 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:03 +0900] "GET /apache_pb.gif HTTP/1.0" 400 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:04 +0900] "POST /regist.html HTTP/1.0" 500 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:05 +0900] "POST /regist.html HTTP/1.0" 100 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:06 +0900] "GET /apache_pb.gif HTTP/1.0" 200 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:07 +0900] "POST /regist.html HTTP/1.0" 300 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:08 +0900] "POST /regist.html HTTP/1.0" 400 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:09 +0900] "GET /apache_pb.gif HTTP/1.0" 500 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span><span class="nb">cat source</span>/filter_grep_input.log
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:00 +0900] <span class="s2">"GET /apache_pb.gif HTTP/1.0"</span> 100 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:01 +0900] <span class="s2">"POST /regist.html HTTP/1.0"</span> 200 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:02 +0900] <span class="s2">"POST /regist.html HTTP/1.0"</span> 300 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:03 +0900] <span class="s2">"GET /apache_pb.gif HTTP/1.0"</span> 400 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:04 +0900] <span class="s2">"POST /regist.html HTTP/1.0"</span> 500 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:05 +0900] <span class="s2">"POST /regist.html HTTP/1.0"</span> 100 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:06 +0900] <span class="s2">"GET /apache_pb.gif HTTP/1.0"</span> 200 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:07 +0900] <span class="s2">"POST /regist.html HTTP/1.0"</span> 300 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:08 +0900] <span class="s2">"POST /regist.html HTTP/1.0"</span> 400 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:09 +0900] <span class="s2">"GET /apache_pb.gif HTTP/1.0"</span> 500 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
 </code></pre></div>    </div>
 
     <p>출력용 파일이 정상적으로 출력 되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ cat match/filter_grep_output.log
-2019-08-20T00:40:02+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":300,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
-2019-08-20T00:40:04+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":500,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
-2019-08-20T00:40:05+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":100,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
-2019-08-20T00:40:07+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":300,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
-2019-08-20T00:40:08+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":400,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span><span class="nb">cat </span>match/filter_grep_output.log
+2019-08-20T00:40:02+09:00   <span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"user"</span>:null,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/regist.html"</span>,<span class="s2">"code"</span>:300,<span class="s2">"size"</span>:2326,<span class="s2">"referer"</span>:<span class="s2">"http://www.example.com/start.html"</span>,<span class="s2">"agent"</span>:<span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span><span class="o">}</span>
+2019-08-20T00:40:04+09:00   <span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"user"</span>:null,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/regist.html"</span>,<span class="s2">"code"</span>:500,<span class="s2">"size"</span>:2326,<span class="s2">"referer"</span>:<span class="s2">"http://www.example.com/start.html"</span>,<span class="s2">"agent"</span>:<span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span><span class="o">}</span>
+2019-08-20T00:40:05+09:00   <span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"user"</span>:null,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/regist.html"</span>,<span class="s2">"code"</span>:100,<span class="s2">"size"</span>:2326,<span class="s2">"referer"</span>:<span class="s2">"http://www.example.com/start.html"</span>,<span class="s2">"agent"</span>:<span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span><span class="o">}</span>
+2019-08-20T00:40:07+09:00   <span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"user"</span>:null,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/regist.html"</span>,<span class="s2">"code"</span>:300,<span class="s2">"size"</span>:2326,<span class="s2">"referer"</span>:<span class="s2">"http://www.example.com/start.html"</span>,<span class="s2">"agent"</span>:<span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span><span class="o">}</span>
+2019-08-20T00:40:08+09:00   <span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"user"</span>:null,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/regist.html"</span>,<span class="s2">"code"</span>:400,<span class="s2">"size"</span>:2326,<span class="s2">"referer"</span>:<span class="s2">"http://www.example.com/start.html"</span>,<span class="s2">"agent"</span>:<span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span><span class="o">}</span>
 </code></pre></div>    </div>
   </li>
 </ol>
@@ -1195,23 +1191,23 @@
 
 <p>다음은 위의 요구사항대로 필터링된 예시이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] "GET /apache_pb.gif HTTP/1.0" 100 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] "POST /regist.html HTTP/1.0" 200 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] "POST /regist.html HTTP/1.0" 300 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:03 +0900] "GET /apache_pb.gif HTTP/1.0" 400 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:04 +0900] "POST /regist.html HTTP/1.0" 500 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:05 +0900] "POST /regist.html HTTP/1.0" 100 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:06 +0900] "GET /apache_pb.gif HTTP/1.0" 200 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:07 +0900] "POST /regist.html HTTP/1.0" 300 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:08 +0900] "POST /regist.html HTTP/1.0" 400 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
-127.0.0.1 - - [20/Aug/2019:00:40:09 +0900] "GET /apache_pb.gif HTTP/1.0" 500 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:00 +0900] <span class="s2">"GET /apache_pb.gif HTTP/1.0"</span> 100 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:01 +0900] <span class="s2">"POST /regist.html HTTP/1.0"</span> 200 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:02 +0900] <span class="s2">"POST /regist.html HTTP/1.0"</span> 300 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:03 +0900] <span class="s2">"GET /apache_pb.gif HTTP/1.0"</span> 400 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:04 +0900] <span class="s2">"POST /regist.html HTTP/1.0"</span> 500 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:05 +0900] <span class="s2">"POST /regist.html HTTP/1.0"</span> 100 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:06 +0900] <span class="s2">"GET /apache_pb.gif HTTP/1.0"</span> 200 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:07 +0900] <span class="s2">"POST /regist.html HTTP/1.0"</span> 300 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:08 +0900] <span class="s2">"POST /regist.html HTTP/1.0"</span> 400 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:09 +0900] <span class="s2">"GET /apache_pb.gif HTTP/1.0"</span> 500 2326 <span class="s2">"http://www.example.com/start.html"</span> <span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2019-08-20T00:40:02+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":300,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
-2019-08-20T00:40:04+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":500,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
-2019-08-20T00:40:05+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":100,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
-2019-08-20T00:40:07+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":300,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
-2019-08-20T00:40:08+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":400,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2019-08-20T00:40:02+09:00   <span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"user"</span>:null,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/regist.html"</span>,<span class="s2">"code"</span>:300,<span class="s2">"size"</span>:2326,<span class="s2">"referer"</span>:<span class="s2">"http://www.example.com/start.html"</span>,<span class="s2">"agent"</span>:<span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span><span class="o">}</span>
+2019-08-20T00:40:04+09:00   <span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"user"</span>:null,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/regist.html"</span>,<span class="s2">"code"</span>:500,<span class="s2">"size"</span>:2326,<span class="s2">"referer"</span>:<span class="s2">"http://www.example.com/start.html"</span>,<span class="s2">"agent"</span>:<span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span><span class="o">}</span>
+2019-08-20T00:40:05+09:00   <span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"user"</span>:null,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/regist.html"</span>,<span class="s2">"code"</span>:100,<span class="s2">"size"</span>:2326,<span class="s2">"referer"</span>:<span class="s2">"http://www.example.com/start.html"</span>,<span class="s2">"agent"</span>:<span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span><span class="o">}</span>
+2019-08-20T00:40:07+09:00   <span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"user"</span>:null,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/regist.html"</span>,<span class="s2">"code"</span>:300,<span class="s2">"size"</span>:2326,<span class="s2">"referer"</span>:<span class="s2">"http://www.example.com/start.html"</span>,<span class="s2">"agent"</span>:<span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span><span class="o">}</span>
+2019-08-20T00:40:08+09:00   <span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"user"</span>:null,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/regist.html"</span>,<span class="s2">"code"</span>:400,<span class="s2">"size"</span>:2326,<span class="s2">"referer"</span>:<span class="s2">"http://www.example.com/start.html"</span>,<span class="s2">"agent"</span>:<span class="s2">"Mozilla/4.08 [en] (Win98; I ;Nav)"</span><span class="o">}</span>
 </code></pre></div></div>
 
 <p>필터링 후에는 다음과 같은 형식으로 저장됨을 알 수 있다.</p>
@@ -1294,9 +1290,9 @@
 
 <p>다음은 테스트에서 사용할 tail 설정 예시이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;source&gt;
-  @type tail
-  path /Users/kevin/dev/fluentd/test/filter_parser/source/*
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="nb">source</span><span class="o">&gt;</span>
+  @type <span class="nb">tail
+  </span>path /Users/kevin/dev/fluentd/test/filter_parser/source/<span class="k">*</span>
   pos_file /Users/kevin/dev/fluentd/test/filter_parser/pos/pos_file.pos
   tag filter_parser
   &lt;parse&gt;
@@ -1348,12 +1344,12 @@
 
 <p>다음은 테스트에서 사용하게 될 parser 설정 예시이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;filter filter_parser*&gt;
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;filter filter_parser<span class="k">*</span><span class="o">&gt;</span>
   @type parser
   key_name message
   &lt;parse&gt;
     @type regexp
-    expression ^(?&lt;host&gt;[^ ]*) (?&lt;identd&gt;[^ ]*) (?&lt;user&gt;[^ ]*) \[(?&lt;time&gt;[^\]]*)\] "(?&lt;method&gt;\S+)(?: +(?&lt;path&gt;[^ ]*) +\S*)?" (?&lt;code&gt;[^ ]*) (?&lt;size&gt;[^ ]*)$
+    expression ^<span class="o">(</span>?&lt;host&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span> <span class="o">(</span>?&lt;identd&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span> <span class="o">(</span>?&lt;user&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span> <span class="se">\[</span><span class="o">(</span>?&lt;<span class="nb">time</span><span class="o">&gt;[</span>^<span class="se">\]</span><span class="o">]</span><span class="k">*</span><span class="o">)</span><span class="se">\]</span> <span class="s2">"(?&lt;method&gt;</span><span class="se">\S</span><span class="s2">+)(?: +(?&lt;path&gt;[^ ]*) +</span><span class="se">\S</span><span class="s2">*)?"</span> <span class="o">(</span>?&lt;code&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span> <span class="o">(</span>?&lt;size&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span><span class="err">$</span>
     time_format %d/%b/%Y:%H:%M:%S %z
   &lt;/parse&gt;
 &lt;/filter&gt;
@@ -1386,9 +1382,9 @@
 
 <p>다음은 테스트에서 사용하게 될 regexp 설정 예시이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;parse&gt;
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;parse&gt;
     @type regexp
-    expression ^(?&lt;host&gt;[^ ]*) [^ ]* (?&lt;user&gt;[^ ]*) \[(?&lt;time&gt;[^\]]*)\] "(?&lt;method&gt;\S+)(?: +(?&lt;path&gt;[^ ]*) +\S*)?" (?&lt;code&gt;[^ ]*) (?&lt;size&gt;[^ ]*)$
+    expression ^<span class="o">(</span>?&lt;host&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span> <span class="o">[</span>^ <span class="o">]</span><span class="k">*</span> <span class="o">(</span>?&lt;user&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span> <span class="se">\[</span><span class="o">(</span>?&lt;<span class="nb">time</span><span class="o">&gt;[</span>^<span class="se">\]</span><span class="o">]</span><span class="k">*</span><span class="o">)</span><span class="se">\]</span> <span class="s2">"(?&lt;method&gt;</span><span class="se">\S</span><span class="s2">+)(?: +(?&lt;path&gt;[^ ]*) +</span><span class="se">\S</span><span class="s2">*)?"</span> <span class="o">(</span>?&lt;code&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span> <span class="o">(</span>?&lt;size&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span><span class="err">$</span>
     time_format %d/%b/%Y:%H:%M:%S %z
   &lt;/parse&gt;
 </code></pre></div></div>
@@ -1422,12 +1418,12 @@
 
 <p>다음은 테스트에서 사용하게 될 file 설정 예시이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;match filter_parser*&gt;
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;match filter_parser<span class="k">*</span><span class="o">&gt;</span>
   @type file
-  path /Users/kevin/dev/fluentd/test/filter_parser/match/${tag}_output
-  path_suffix ".json"
-  add_path_suffix true  
-  append true
+  path /Users/kevin/dev/fluentd/test/filter_parser/match/<span class="k">${</span><span class="nv">tag</span><span class="k">}</span>_output
+  path_suffix <span class="s2">".json"</span>
+  add_path_suffix <span class="nb">true  
+  </span>append <span class="nb">true</span>
   &lt;format&gt;
     @type json
   &lt;/format&gt;
@@ -1491,8 +1487,8 @@
   <li>
     <p>파일을 생성하고 정상적으로 생성 되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch filter_parser_input.log | stat filter_parser_input.log
-16777223 8251706 -rw-r--r-- 1 kevin staff 0 0 "Aug 20 18:26:05 2019" "Aug 20 18:26:05 2019" "Aug 20 18:26:05 2019" "Aug 20 18:26:05 2019" 4096 0 0 filter_parser_input.log
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">touch </span>filter_parser_input.log | <span class="nb">stat </span>filter_parser_input.log
+16777223 8251706 <span class="nt">-rw-r--r--</span> 1 kevin staff 0 0 <span class="s2">"Aug 20 18:26:05 2019"</span> <span class="s2">"Aug 20 18:26:05 2019"</span> <span class="s2">"Aug 20 18:26:05 2019"</span> <span class="s2">"Aug 20 18:26:05 2019"</span> 4096 0 0 filter_parser_input.log
 </code></pre></div>    </div>
   </li>
   <li>
@@ -1503,16 +1499,16 @@
 
     <p>위에서 수정한 경로에 td-agent 설정파일을 생성한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch td-agent.conf | stat td-agent.conf
-16777223 8251793 -rw-r--r-- 1 kevin staff 0 0 "Aug 20 18:29:43 2019" "Aug 20 18:29:43 2019" "Aug 20 18:29:43 2019" "Aug 20 18:29:43 2019" 4096 0 0 td-agent.conf
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">touch </span>td-agent.conf | <span class="nb">stat </span>td-agent.conf
+16777223 8251793 <span class="nt">-rw-r--r--</span> 1 kevin staff 0 0 <span class="s2">"Aug 20 18:29:43 2019"</span> <span class="s2">"Aug 20 18:29:43 2019"</span> <span class="s2">"Aug 20 18:29:43 2019"</span> <span class="s2">"Aug 20 18:29:43 2019"</span> 4096 0 0 td-agent.conf
 </code></pre></div>    </div>
 
     <p>td-agent 설정 파일을 다음과 같이 수정한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat td-agent.conf
-&lt;source&gt;
-  @type tail
-  path /Users/kevin/dev/fluentd/test/filter_parser/source/*
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat </span>td-agent.conf
+&lt;<span class="nb">source</span><span class="o">&gt;</span>
+  @type <span class="nb">tail
+  </span>path /Users/kevin/dev/fluentd/test/filter_parser/source/<span class="k">*</span>
   pos_file /Users/kevin/dev/fluentd/test/filter_parser/pos/pos_file.pos
   tag filter_parser
   &lt;parse&gt;
@@ -1520,21 +1516,21 @@
   &lt;/parse&gt;
   refresh_interval 1s
 &lt;/source&gt;
-&lt;filter filter_parser*&gt;
+&lt;filter filter_parser<span class="k">*</span><span class="o">&gt;</span>
   @type parser
   key_name message
   &lt;parse&gt;
     @type regexp
-    expression ^(?&lt;host&gt;[^ ]*) (?&lt;identd&gt;[^ ]*) (?&lt;user&gt;[^ ]*) \[(?&lt;time&gt;[^\]]*)\] "(?&lt;method&gt;\S+)(?: +(?&lt;path&gt;[^ ]*) +\S*)?" (?&lt;code&gt;[^ ]*) (?&lt;size&gt;[^ ]*)$
+    expression ^<span class="o">(</span>?&lt;host&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span> <span class="o">(</span>?&lt;identd&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span> <span class="o">(</span>?&lt;user&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span> <span class="se">\[</span><span class="o">(</span>?&lt;<span class="nb">time</span><span class="o">&gt;[</span>^<span class="se">\]</span><span class="o">]</span><span class="k">*</span><span class="o">)</span><span class="se">\]</span> <span class="s2">"(?&lt;method&gt;</span><span class="se">\S</span><span class="s2">+)(?: +(?&lt;path&gt;[^ ]*) +</span><span class="se">\S</span><span class="s2">*)?"</span> <span class="o">(</span>?&lt;code&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span> <span class="o">(</span>?&lt;size&gt;[^ <span class="o">]</span><span class="k">*</span><span class="o">)</span><span class="err">$</span>
     time_format %d/%b/%Y:%H:%M:%S %z
   &lt;/parse&gt;
 &lt;/filter&gt;
-&lt;match filter_parser*&gt;
+&lt;match filter_parser<span class="k">*</span><span class="o">&gt;</span>
   @type file
-  path /Users/kevin/dev/fluentd/test/filter_parser/match/${tag}_output
-  add_path_suffix true
-  path_suffix ".json"
-  append true
+  path /Users/kevin/dev/fluentd/test/filter_parser/match/<span class="k">${</span><span class="nv">tag</span><span class="k">}</span>_output
+  add_path_suffix <span class="nb">true
+  </span>path_suffix <span class="s2">".json"</span>
+  append <span class="nb">true</span>
   &lt;format&gt;
     @type json
   &lt;/format&gt;
@@ -1550,30 +1546,30 @@
   <li>
     <p>입력용 파일에 로그를 출력하고 정상적으로 출력 되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat source/filter_parser_input.log
-127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] "GET /apache_pb.gif HTTP/1.0" 100 2326
-127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] "POST /registration.html HTTP/1.0" 200 2326
-127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] "POST /registration.html HTTP/1.0" 300 2326
-127.0.0.1 - - [20/Aug/2019:00:40:03 +0900] "GET /apache_pb.gif HTTP/1.0" 400 2326
-127.0.0.1 - - [20/Aug/2019:00:40:04 +0900] "POST /registration.html HTTP/1.0" 500 2326
-127.0.0.1 - - [20/Aug/2019:00:40:05 +0900] "POST /registration.html HTTP/1.0" 100 2326
-127.0.0.1 - - [20/Aug/2019:00:40:06 +0900] "GET /apache_pb.gif HTTP/1.0" 200 2326
-127.0.0.1 - - [20/Aug/2019:00:40:07 +0900] "POST /registration.html HTTP/1.0" 300 2326
-127.0.0.1 - - [20/Aug/2019:00:40:08 +0900] "POST /registration.html HTTP/1.0" 400 2326
-127.0.0.1 - - [20/Aug/2019:00:40:09 +0900] "GET /apache_pb.gif HTTP/1.0" 500 2326
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat source</span>/filter_parser_input.log
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:00 +0900] <span class="s2">"GET /apache_pb.gif HTTP/1.0"</span> 100 2326
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:01 +0900] <span class="s2">"POST /registration.html HTTP/1.0"</span> 200 2326
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:02 +0900] <span class="s2">"POST /registration.html HTTP/1.0"</span> 300 2326
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:03 +0900] <span class="s2">"GET /apache_pb.gif HTTP/1.0"</span> 400 2326
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:04 +0900] <span class="s2">"POST /registration.html HTTP/1.0"</span> 500 2326
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:05 +0900] <span class="s2">"POST /registration.html HTTP/1.0"</span> 100 2326
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:06 +0900] <span class="s2">"GET /apache_pb.gif HTTP/1.0"</span> 200 2326
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:07 +0900] <span class="s2">"POST /registration.html HTTP/1.0"</span> 300 2326
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:08 +0900] <span class="s2">"POST /registration.html HTTP/1.0"</span> 400 2326
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:09 +0900] <span class="s2">"GET /apache_pb.gif HTTP/1.0"</span> 500 2326
 </code></pre></div>    </div>
 
     <p>출력용 파일이 정상적으로 출력 되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat match/filter_parser_output.json
-{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"300","size":"2326"}
-{"host":"127.0.0.1","identd":"-","user":"-","method":"GET","path":"/apache_pb.gif","code":"400","size":"2326"}
-{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"500","size":"2326"}
-{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"100","size":"2326"}
-{"host":"127.0.0.1","identd":"-","user":"-","method":"GET","path":"/apache_pb.gif","code":"200","size":"2326"}
-{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"300","size":"2326"}
-{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"400","size":"2326"}
-{"host":"127.0.0.1","identd":"-","user":"-","method":"GET","path":"/apache_pb.gif","code":"500","size":"2326"}
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat </span>match/filter_parser_output.json
+<span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"identd"</span>:<span class="s2">"-"</span>,<span class="s2">"user"</span>:<span class="s2">"-"</span>,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/registration.html"</span>,<span class="s2">"code"</span>:<span class="s2">"300"</span>,<span class="s2">"size"</span>:<span class="s2">"2326"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"identd"</span>:<span class="s2">"-"</span>,<span class="s2">"user"</span>:<span class="s2">"-"</span>,<span class="s2">"method"</span>:<span class="s2">"GET"</span>,<span class="s2">"path"</span>:<span class="s2">"/apache_pb.gif"</span>,<span class="s2">"code"</span>:<span class="s2">"400"</span>,<span class="s2">"size"</span>:<span class="s2">"2326"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"identd"</span>:<span class="s2">"-"</span>,<span class="s2">"user"</span>:<span class="s2">"-"</span>,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/registration.html"</span>,<span class="s2">"code"</span>:<span class="s2">"500"</span>,<span class="s2">"size"</span>:<span class="s2">"2326"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"identd"</span>:<span class="s2">"-"</span>,<span class="s2">"user"</span>:<span class="s2">"-"</span>,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/registration.html"</span>,<span class="s2">"code"</span>:<span class="s2">"100"</span>,<span class="s2">"size"</span>:<span class="s2">"2326"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"identd"</span>:<span class="s2">"-"</span>,<span class="s2">"user"</span>:<span class="s2">"-"</span>,<span class="s2">"method"</span>:<span class="s2">"GET"</span>,<span class="s2">"path"</span>:<span class="s2">"/apache_pb.gif"</span>,<span class="s2">"code"</span>:<span class="s2">"200"</span>,<span class="s2">"size"</span>:<span class="s2">"2326"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"identd"</span>:<span class="s2">"-"</span>,<span class="s2">"user"</span>:<span class="s2">"-"</span>,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/registration.html"</span>,<span class="s2">"code"</span>:<span class="s2">"300"</span>,<span class="s2">"size"</span>:<span class="s2">"2326"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"identd"</span>:<span class="s2">"-"</span>,<span class="s2">"user"</span>:<span class="s2">"-"</span>,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/registration.html"</span>,<span class="s2">"code"</span>:<span class="s2">"400"</span>,<span class="s2">"size"</span>:<span class="s2">"2326"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"identd"</span>:<span class="s2">"-"</span>,<span class="s2">"user"</span>:<span class="s2">"-"</span>,<span class="s2">"method"</span>:<span class="s2">"GET"</span>,<span class="s2">"path"</span>:<span class="s2">"/apache_pb.gif"</span>,<span class="s2">"code"</span>:<span class="s2">"500"</span>,<span class="s2">"size"</span>:<span class="s2">"2326"</span><span class="o">}</span>
 </code></pre></div>    </div>
   </li>
 </ol>
@@ -1586,14 +1582,14 @@
 
 <p>다음은 파싱전후의 예시이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] "GET /apache_pb.gif HTTP/1.0" 100 2326
-127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] "POST /registration.html HTTP/1.0" 200 2326
-127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] "POST /registration.html HTTP/1.0" 300 2326
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:00 +0900] <span class="s2">"GET /apache_pb.gif HTTP/1.0"</span> 100 2326
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:01 +0900] <span class="s2">"POST /registration.html HTTP/1.0"</span> 200 2326
+127.0.0.1 - - <span class="o">[</span>20/Aug/2019:00:40:02 +0900] <span class="s2">"POST /registration.html HTTP/1.0"</span> 300 2326
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"300","size":"2326"}
-{"host":"127.0.0.1","identd":"-","user":"-","method":"GET","path":"/apache_pb.gif","code":"400","size":"2326"}
-{"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"500","size":"2326"}
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"identd"</span>:<span class="s2">"-"</span>,<span class="s2">"user"</span>:<span class="s2">"-"</span>,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/registration.html"</span>,<span class="s2">"code"</span>:<span class="s2">"300"</span>,<span class="s2">"size"</span>:<span class="s2">"2326"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"identd"</span>:<span class="s2">"-"</span>,<span class="s2">"user"</span>:<span class="s2">"-"</span>,<span class="s2">"method"</span>:<span class="s2">"GET"</span>,<span class="s2">"path"</span>:<span class="s2">"/apache_pb.gif"</span>,<span class="s2">"code"</span>:<span class="s2">"400"</span>,<span class="s2">"size"</span>:<span class="s2">"2326"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"host"</span>:<span class="s2">"127.0.0.1"</span>,<span class="s2">"identd"</span>:<span class="s2">"-"</span>,<span class="s2">"user"</span>:<span class="s2">"-"</span>,<span class="s2">"method"</span>:<span class="s2">"POST"</span>,<span class="s2">"path"</span>:<span class="s2">"/registration.html"</span>,<span class="s2">"code"</span>:<span class="s2">"500"</span>,<span class="s2">"size"</span>:<span class="s2">"2326"</span><span class="o">}</span>
 
 </code></pre></div></div>
 

@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -471,14 +475,14 @@
 
 <p>원할한 테스트를 위하여 다음과 같이 http 라이브러리를 설치한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pip install http
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">http</span>
 </code></pre></div></div>
 
 <h2 id="curl">CURL</h2>
 
 <p>원할한 테스트를 위하여 다음과 같이 curl 라이브러리를 설치한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ brew install curl
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">brew</span> <span class="n">install</span> <span class="n">curl</span>
 </code></pre></div></div>
 
 <h1 id="학습-진행">학습 진행</h1>
@@ -487,56 +491,56 @@
 
 <p>다음과 같이 Quick start를 위한 디렉터리를 구성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir chalice-demo
-$ cd chlice-demo
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">mkdir</span> <span class="n">chalice</span><span class="o">-</span><span class="n">demo</span>
+<span class="err">$</span> <span class="n">cd</span> <span class="n">chlice</span><span class="o">-</span><span class="n">demo</span>
 </code></pre></div></div>
 
 <p>다음과 같이 Virtual env를 구성하고 활성화 한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ virtualenv --python=3.6 .venv
-$ source .venv/bin/activate
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">virtualenv</span> <span class="o">--</span><span class="n">python</span><span class="o">=</span><span class="mf">3.6</span> <span class="o">.</span><span class="n">venv</span>
+<span class="err">$</span> <span class="n">source</span> <span class="o">.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
 </code></pre></div></div>
 
 <p>Chalice를 설치하고, chalice 프로젝트를 생성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pip install chalice
-$ chalice new-project andro-test-chalice
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">chalice</span>
+<span class="err">$</span> <span class="n">chalice</span> <span class="n">new</span><span class="o">-</span><span class="n">project</span> <span class="n">andro</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">chalice</span>
 </code></pre></div></div>
 
 <h2 id="tutorial-local-mode">Tutorial: Local Mode</h2>
 
 <p>로컬 빌드를 위하여 다음과 같이 app.py를 수정한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">Chalice</span>
 
-app = Chalice(app_name='helloworld')
+<span class="n">app</span> <span class="o">=</span> <span class="n">Chalice</span><span class="p">(</span><span class="n">app_name</span><span class="o">=</span><span class="s">'helloworld'</span><span class="p">)</span>
 
 
-@app.route('/')
-def index():
-    return {'hello': 'world'}
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">'hello'</span><span class="p">:</span> <span class="s">'world'</span><span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>다음과 같은 명령어로 로컬 빌드를 한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ chalice local --port=8080
-Restarting local dev server.
-Serving on http://127.0.0.1:8080
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">chalice</span> <span class="n">local</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="mi">8080</span>
+<span class="n">Restarting</span> <span class="n">local</span> <span class="n">dev</span> <span class="n">server</span><span class="o">.</span>
+<span class="n">Serving</span> <span class="n">on</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8080</span>
 </code></pre></div></div>
 
 <p>다음과 같은 명령어로 로컬 빌드의 동작을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ http localhost:8080
-HTTP/1.1 200 OK
-Content-Length: 17
-Content-Type: application/json
-Date: Tue, 17 Sep 2019 06:12:51 GMT
-Server: BaseHTTP/0.6 Python/3.6.5
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">http</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">17</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Tue</span><span class="p">,</span> <span class="mi">17</span> <span class="n">Sep</span> <span class="mi">2019</span> <span class="mi">06</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mi">51</span> <span class="n">GMT</span>
+<span class="n">Server</span><span class="p">:</span> <span class="n">BaseHTTP</span><span class="o">/</span><span class="mf">0.6</span> <span class="n">Python</span><span class="o">/</span><span class="mf">3.6.5</span>
 
-{
-    "hello": "world"
-}
+<span class="p">{</span>
+    <span class="s">"hello"</span><span class="p">:</span> <span class="s">"world"</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <h2 id="deploying">Deploying</h2>
@@ -544,85 +548,85 @@ Server: BaseHTTP/0.6 Python/3.6.5
 <p>배포를 위하여 다음과 같이 config.json 파일을 수정한다.
 {iam_role_arn}은 각자 람다 사용을 위해 생성한 iam의 arn를 입력한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim .chalice/config.json
-{
-  "version": "2.0",
-  "app_name": "andro-test-chalice",
-  "api_gateway_stage": "api",
-  "lambda_timeout": 120,
-  "lambda_memory_size": 1024,
-  "stages": {
-    "qa": {
-      "api_gateway_stage": "qa",
-      "autogen_policy": false,
-      "iam_role_arn": "{iam_role_arn}"
-    },
-    "prod": {
-      "api_gateway_stage": "prod",
-      "autogen_policy": false,
-      "iam_role_arn": "{iam_role_arn}"
-    }
-  },
-  "manage_iam_role":false,
-  "iam_role_arn":"{iam_role_arn}"
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">vim</span> <span class="o">.</span><span class="n">chalice</span><span class="o">/</span><span class="n">config</span><span class="o">.</span><span class="n">json</span>
+<span class="p">{</span>
+  <span class="s">"version"</span><span class="p">:</span> <span class="s">"2.0"</span><span class="p">,</span>
+  <span class="s">"app_name"</span><span class="p">:</span> <span class="s">"andro-test-chalice"</span><span class="p">,</span>
+  <span class="s">"api_gateway_stage"</span><span class="p">:</span> <span class="s">"api"</span><span class="p">,</span>
+  <span class="s">"lambda_timeout"</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span>
+  <span class="s">"lambda_memory_size"</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+  <span class="s">"stages"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">"qa"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s">"api_gateway_stage"</span><span class="p">:</span> <span class="s">"qa"</span><span class="p">,</span>
+      <span class="s">"autogen_policy"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+      <span class="s">"iam_role_arn"</span><span class="p">:</span> <span class="s">"{iam_role_arn}"</span>
+    <span class="p">},</span>
+    <span class="s">"prod"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s">"api_gateway_stage"</span><span class="p">:</span> <span class="s">"prod"</span><span class="p">,</span>
+      <span class="s">"autogen_policy"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+      <span class="s">"iam_role_arn"</span><span class="p">:</span> <span class="s">"{iam_role_arn}"</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s">"manage_iam_role"</span><span class="p">:</span><span class="n">false</span><span class="p">,</span>
+  <span class="s">"iam_role_arn"</span><span class="p">:</span><span class="s">"{iam_role_arn}"</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <p>다음과 같이 배포한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ chalice deploy
-Creating deployment package.
-Updating lambda function: andro-test-chalice-dev
-Updating rest API
-Resources deployed:
-  - Lambda ARN: 
-  - Rest API URL: {lambda_url}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">chalice</span> <span class="n">deploy</span>
+<span class="n">Creating</span> <span class="n">deployment</span> <span class="n">package</span><span class="o">.</span>
+<span class="n">Updating</span> <span class="k">lambda</span> <span class="n">function</span><span class="p">:</span> <span class="n">andro</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">chalice</span><span class="o">-</span><span class="n">dev</span>
+<span class="n">Updating</span> <span class="n">rest</span> <span class="n">API</span>
+<span class="n">Resources</span> <span class="n">deployed</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">Lambda</span> <span class="n">ARN</span><span class="p">:</span> 
+  <span class="o">-</span> <span class="n">Rest</span> <span class="n">API</span> <span class="n">URL</span><span class="p">:</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span>
 </code></pre></div></div>
 
 <p>배포된 lambda가 동작하는지 다음과 같이 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET {lambda_url}
-{"hello":"world"}%
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"hello"</span><span class="p">:</span><span class="s">"world"</span><span class="p">}</span><span class="o">%</span>
 </code></pre></div></div>
 
 <h2 id="tutorial-url-parameters">Tutorial: URL Parameters</h2>
 
 <p>경로에 따라 다르게 보이기 위하여 다음과 같이 app.py를 수정한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">Chalice</span>
 
-app = Chalice(app_name='helloworld')
+<span class="n">app</span> <span class="o">=</span> <span class="n">Chalice</span><span class="p">(</span><span class="n">app_name</span><span class="o">=</span><span class="s">'helloworld'</span><span class="p">)</span>
 
-CITIES_TO_STATE = {
-    'seattle': 'WA',
-    'portland': 'OR',
-}
+<span class="n">CITIES_TO_STATE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'seattle'</span><span class="p">:</span> <span class="s">'WA'</span><span class="p">,</span>
+    <span class="s">'portland'</span><span class="p">:</span> <span class="s">'OR'</span><span class="p">,</span>
+<span class="p">}</span>
 
 
-@app.route('/')
-def index():
-    return {'hello': 'world'}
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">'hello'</span><span class="p">:</span> <span class="s">'world'</span><span class="p">}</span>
 
-@app.route('/cities/{city}')
-def state_of_city(city):
-    return {'state': CITIES_TO_STATE[city]}
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/cities/{city}'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">state_of_city</span><span class="p">(</span><span class="n">city</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">'state'</span><span class="p">:</span> <span class="n">CITIES_TO_STATE</span><span class="p">[</span><span class="n">city</span><span class="p">]}</span>
 </code></pre></div></div>
 
 <p>배포한다.</p>
 
 <p>배포된 lambda가 동작하는지 다음과 같이 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET {lambda_url}
-{"hello":"world"}%
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"hello"</span><span class="p">:</span><span class="s">"world"</span><span class="p">}</span><span class="o">%</span>
 
-$ curl -XGET {lambda_url}cities/seattle
-{"state":"WA"}%
+<span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="n">cities</span><span class="o">/</span><span class="n">seattle</span>
+<span class="p">{</span><span class="s">"state"</span><span class="p">:</span><span class="s">"WA"</span><span class="p">}</span><span class="o">%</span>
 
-$ curl -XGET {lambda_url}cities/portland
-{"state":"OR"}%
+<span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="n">cities</span><span class="o">/</span><span class="n">portland</span>
+<span class="p">{</span><span class="s">"state"</span><span class="p">:</span><span class="s">"OR"</span><span class="p">}</span><span class="o">%</span>
 
-$ curl -XGET {lambda_url}cities/vancouver
-{"Code":"InternalServerError","Message":"An internal server error occurred."}%
+<span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="n">cities</span><span class="o">/</span><span class="n">vancouver</span>
+<span class="p">{</span><span class="s">"Code"</span><span class="p">:</span><span class="s">"InternalServerError"</span><span class="p">,</span><span class="s">"Message"</span><span class="p">:</span><span class="s">"An internal server error occurred."</span><span class="p">}</span><span class="o">%</span>
 </code></pre></div></div>
 
 <h2 id="tutorial-error-messages">Tutorial: Error Messages</h2>
@@ -633,30 +637,30 @@ $ curl -XGET {lambda_url}cities/vancouver
 
 <p>위의 app.py를 다음과 같이 수정한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice
-from chalice import BadRequestError
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">Chalice</span>
+<span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">BadRequestError</span>
 
-app = Chalice(app_name='helloworld')
-app.debug = True
+<span class="n">app</span> <span class="o">=</span> <span class="n">Chalice</span><span class="p">(</span><span class="n">app_name</span><span class="o">=</span><span class="s">'helloworld'</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="bp">True</span>
 
-CITIES_TO_STATE = {
-    'seattle': 'WA',
-    'portland': 'OR',
-}
-
-
-@app.route('/')
-def index():
-    return {'hello': 'world'}
+<span class="n">CITIES_TO_STATE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'seattle'</span><span class="p">:</span> <span class="s">'WA'</span><span class="p">,</span>
+    <span class="s">'portland'</span><span class="p">:</span> <span class="s">'OR'</span><span class="p">,</span>
+<span class="p">}</span>
 
 
-@app.route('/cities/{city}')
-def state_of_city(city):
-    try:
-        return {'state': CITIES_TO_STATE[city]}
-    except KeyError:
-        raise BadRequestError("Unknown city '%s', valid choices are: %s" % (
-            city, ', '.join(CITIES_TO_STATE.keys())))
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">'hello'</span><span class="p">:</span> <span class="s">'world'</span><span class="p">}</span>
+
+
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/cities/{city}'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">state_of_city</span><span class="p">(</span><span class="n">city</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">'state'</span><span class="p">:</span> <span class="n">CITIES_TO_STATE</span><span class="p">[</span><span class="n">city</span><span class="p">]}</span>
+    <span class="k">except</span> <span class="nb">KeyError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">BadRequestError</span><span class="p">(</span><span class="s">"Unknown city '</span><span class="si">%</span><span class="s">s', valid choices are: </span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">city</span><span class="p">,</span> <span class="s">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CITIES_TO_STATE</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
 
 
 </code></pre></div></div>
@@ -665,17 +669,17 @@ def state_of_city(city):
 
 <p>배포된 lambda가 동작하는지 다음과 같이 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET {lambda_url}
-{"hello":"world"}%
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"hello"</span><span class="p">:</span><span class="s">"world"</span><span class="p">}</span><span class="o">%</span>
 
-$ curl -XGET {lambda_url}cities/seattle
-{"state":"WA"}%
+<span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="n">cities</span><span class="o">/</span><span class="n">seattle</span>
+<span class="p">{</span><span class="s">"state"</span><span class="p">:</span><span class="s">"WA"</span><span class="p">}</span><span class="o">%</span>
 
-$ curl -XGET {lambda_url}cities/portland
-{"state":"OR"}%
+<span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="n">cities</span><span class="o">/</span><span class="n">portland</span>
+<span class="p">{</span><span class="s">"state"</span><span class="p">:</span><span class="s">"OR"</span><span class="p">}</span><span class="o">%</span>
 
-$ curl -XGET {lambda_url}cities/vancouver
-{"Code":"BadRequestError","Message":"BadRequestError: Unknown city 'vancouver', valid choices are: seattle, portland"}%
+<span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="n">cities</span><span class="o">/</span><span class="n">vancouver</span>
+<span class="p">{</span><span class="s">"Code"</span><span class="p">:</span><span class="s">"BadRequestError"</span><span class="p">,</span><span class="s">"Message"</span><span class="p">:</span><span class="s">"BadRequestError: Unknown city 'vancouver', valid choices are: seattle, portland"</span><span class="p">}</span><span class="o">%</span>
 </code></pre></div></div>
 
 <h2 id="tutorial-additional-routing">Tutorial: Additional Routing</h2>
@@ -686,43 +690,43 @@ $ curl -XGET {lambda_url}cities/vancouver
 
 <p>다음과 같이 app.py를 수정한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">Chalice</span>
 
-app = Chalice(app_name='helloworld')
-
-
-@app.route('/')
-def index():
-    return {'hello': 'world'}
+<span class="n">app</span> <span class="o">=</span> <span class="n">Chalice</span><span class="p">(</span><span class="n">app_name</span><span class="o">=</span><span class="s">'helloworld'</span><span class="p">)</span>
 
 
-@app.route('/resource/{value}', methods=['PUT'])
-def put_test(value):
-    return {"value": value}
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">'hello'</span><span class="p">:</span> <span class="s">'world'</span><span class="p">}</span>
 
 
-@app.route('/myview/{value}', methods=['POST'])
-def myview_post(value):
-    return {"value": value, "method", "post"}
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/resource/{value}'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'PUT'</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">put_test</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">"value"</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
 
 
-@app.route('/myview/{value}', methods=['PUT'])
-def myview_put(value):
-    return {"value": value, "method", "put"}
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/myview/{value}'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'POST'</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">myview_post</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">"value"</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="s">"method"</span><span class="p">,</span> <span class="s">"post"</span><span class="p">}</span>
+
+
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/myview/{value}'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'PUT'</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">myview_put</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">"value"</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="s">"method"</span><span class="p">,</span> <span class="s">"put"</span><span class="p">}</span>
 </code></pre></div></div>
 
 <p>배포한다.</p>
 
 <p>배포된 lambda가 동작하는지 다음과 같이 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XPUT {lambda_url}/resource/foo
-{"value":"foo"}%
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XPUT</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="o">/</span><span class="n">resource</span><span class="o">/</span><span class="n">foo</span>
+<span class="p">{</span><span class="s">"value"</span><span class="p">:</span><span class="s">"foo"</span><span class="p">}</span><span class="o">%</span>
 
-$ curl -XPUT {lambda_url}/myview/foo
-{"value":"foo","mothod":"put"}%
+<span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XPUT</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="o">/</span><span class="n">myview</span><span class="o">/</span><span class="n">foo</span>
+<span class="p">{</span><span class="s">"value"</span><span class="p">:</span><span class="s">"foo"</span><span class="p">,</span><span class="s">"mothod"</span><span class="p">:</span><span class="s">"put"</span><span class="p">}</span><span class="o">%</span>
 
-$ curl -XPOST {lambda_url}/myview/foo
-{"value":"foo","mothod":"post"}%
+<span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XPOST</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="o">/</span><span class="n">myview</span><span class="o">/</span><span class="n">foo</span>
+<span class="p">{</span><span class="s">"value"</span><span class="p">:</span><span class="s">"foo"</span><span class="p">,</span><span class="s">"mothod"</span><span class="p">:</span><span class="s">"post"</span><span class="p">}</span><span class="o">%</span>
 </code></pre></div></div>
 
 <h2 id="tutorial-request-metadata">Tutorial: Request Metadata</h2>
@@ -731,31 +735,31 @@ $ curl -XPOST {lambda_url}/myview/foo
 
 <p>우선 메소드 종류에 따라 다른 응답을 위하여 다음과 같이 app.py를 수정한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice
-from chalice import NotFoundError
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">Chalice</span>
+<span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">NotFoundError</span>
 
-app = Chalice(app_name='helloworld')
-
-
-@app.route('/')
-def index():
-    return {'hello': 'world'}
+<span class="n">app</span> <span class="o">=</span> <span class="n">Chalice</span><span class="p">(</span><span class="n">app_name</span><span class="o">=</span><span class="s">'helloworld'</span><span class="p">)</span>
 
 
-OBJECTS = {
-}
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">'hello'</span><span class="p">:</span> <span class="s">'world'</span><span class="p">}</span>
 
 
-@app.route('/objects/{key}', methods=['GET', 'PUT'])
-def myobject(key):
-    request = app.current_request
-    if request.method == 'PUT':
-        OBJECTS[key] = request.json_body
-    elif request.method == 'GET':
-        try:
-            return {key: OBJECTS[key]}
-        except KeyError:
-            raise NotFoundError(key)
+<span class="n">OBJECTS</span> <span class="o">=</span> <span class="p">{</span>
+<span class="p">}</span>
+
+
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/objects/{key}'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'GET'</span><span class="p">,</span> <span class="s">'PUT'</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">myobject</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">current_request</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'PUT'</span><span class="p">:</span>
+        <span class="n">OBJECTS</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json_body</span>
+    <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'GET'</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">OBJECTS</span><span class="p">[</span><span class="n">key</span><span class="p">]}</span>
+        <span class="k">except</span> <span class="nb">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotFoundError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
 </code></pre></div></div>
 
@@ -763,60 +767,60 @@ def myobject(key):
 
 <p>배포된 lambda의 동작을 확인하기 위하여 다음과 같이 커널 명령으로 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET {lambda_url}/objects/banana
-{"Code":"NotFoundError","Message":"NotFoundError: banana"}%
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="o">/</span><span class="n">objects</span><span class="o">/</span><span class="n">banana</span>
+<span class="p">{</span><span class="s">"Code"</span><span class="p">:</span><span class="s">"NotFoundError"</span><span class="p">,</span><span class="s">"Message"</span><span class="p">:</span><span class="s">"NotFoundError: banana"</span><span class="p">}</span><span class="o">%</span>
 
-$ curl -X PUT -H "Content-Type: application/json; charset=utf-8" -d '"yellow"' {lambda_url}/objects/banana
-null%
+<span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">PUT</span> <span class="o">-</span><span class="n">H</span> <span class="s">"Content-Type: application/json; charset=utf-8"</span> <span class="o">-</span><span class="n">d</span> <span class="s">'"yellow"'</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="o">/</span><span class="n">objects</span><span class="o">/</span><span class="n">banana</span>
+<span class="n">null</span><span class="o">%</span>
 
-$ curl -XGET {lambda_url}/objects/banana
-{"banana":"yellow"}%
+<span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="o">/</span><span class="n">objects</span><span class="o">/</span><span class="n">banana</span>
+<span class="p">{</span><span class="s">"banana"</span><span class="p">:</span><span class="s">"yellow"</span><span class="p">}</span><span class="o">%</span>
 </code></pre></div></div>
 
 <p>위의 코드에서 app.current_request 인스턴스에 관하여 다음과 같은 속성들이 존재하고 속성들에 대한 설명은 <a href="https://github.com/aws/chalice/tree/1791175cb30eaa3fd89a177e21dbba654d352b0c">Github AWS-Chalice README 페이지</a>를 참고한다.</p>
 
 <ul>
   <li>
-    <p><code class="highlighter-rouge">current_request.query_params</code></p>
+    <p><code class="language-python highlighter-rouge"><span class="n">current_request</span><span class="o">.</span><span class="n">query_params</span></code></p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">current_request.headers</code></p>
+    <p><code class="language-python highlighter-rouge"><span class="n">current_request</span><span class="o">.</span><span class="n">headers</span></code></p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">current_request.uri_params</code></p>
+    <p><code class="language-python highlighter-rouge"><span class="n">current_request</span><span class="o">.</span><span class="n">uri_params</span></code></p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">current_request.method</code></p>
+    <p><code class="language-python highlighter-rouge"><span class="n">current_request</span><span class="o">.</span><span class="n">method</span></code></p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">current_request.json_body</code></p>
+    <p><code class="language-python highlighter-rouge"><span class="n">current_request</span><span class="o">.</span><span class="n">json_body</span></code></p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">current_request.raw_body</code></p>
+    <p><code class="language-python highlighter-rouge"><span class="n">current_request</span><span class="o">.</span><span class="n">raw_body</span></code></p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">current_request.context</code></p>
+    <p><code class="language-python highlighter-rouge"><span class="n">current_request</span><span class="o">.</span><span class="n">context</span></code></p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">current_request.stage_vars</code></p>
+    <p><code class="language-python highlighter-rouge"><span class="n">current_request</span><span class="o">.</span><span class="n">stage_vars</span></code></p>
   </li>
 </ul>
 
 <p>current_request.to_dict()를 이용하여 메타데이터를 확인하기 위하여 다음과 같이 app.py를 수정한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">Chalice</span>
 
-app = Chalice(app_name='helloworld')
-
-
-@app.route('/')
-def index():
-    return {'hello': 'world'}
+<span class="n">app</span> <span class="o">=</span> <span class="n">Chalice</span><span class="p">(</span><span class="n">app_name</span><span class="o">=</span><span class="s">'helloworld'</span><span class="p">)</span>
 
 
-@app.route('/introspect')
-def introspect():
-    return app.current_request.to_dict()
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">'hello'</span><span class="p">:</span> <span class="s">'world'</span><span class="p">}</span>
+
+
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/introspect'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">introspect</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">current_request</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
 
 </code></pre></div></div>
 
@@ -824,7 +828,7 @@ def introspect():
 
 <p>배포된 lambda의 동작을 확인하기 위하여 다음과 같이 커널 명령으로 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ http '{lambda_url}/introspect?query1=value1&amp;query2=value2' 'X-TestHeader: Foo'
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">http</span> <span class="s">'{lambda_url}/introspect?query1=value1&amp;query2=value2'</span> <span class="s">'X-TestHeader: Foo'</span>
 </code></pre></div></div>
 
 <h2 id="tutorial-request-content-types">Tutorial: Request Content Types</h2>
@@ -833,27 +837,27 @@ def introspect():
 
 <p>app.py를 다음과 같이 수정한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import sys
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
 
-from chalice import Chalice
-if sys.version_info[0] == 3:
-    # Python 3 imports.
-    from urllib.parse import urlparse, parse_qs
-else:
-    # Python 2 imports.
-    from urlparse import urlparse, parse_qs
-
-
-app = Chalice(app_name='helloworld')
+<span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">Chalice</span>
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="c1"># Python 3 imports.
+</span>    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span><span class="p">,</span> <span class="n">parse_qs</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># Python 2 imports.
+</span>    <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urlparse</span><span class="p">,</span> <span class="n">parse_qs</span>
 
 
-@app.route('/', methods=['POST'],
-           content_types=['application/x-www-form-urlencoded'])
-def index():
-    parsed = parse_qs(app.current_request.raw_body.decode())
-    return {
-        'states': parsed.get('states', [])
-    }
+<span class="n">app</span> <span class="o">=</span> <span class="n">Chalice</span><span class="p">(</span><span class="n">app_name</span><span class="o">=</span><span class="s">'helloworld'</span><span class="p">)</span>
+
+
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'POST'</span><span class="p">],</span>
+           <span class="n">content_types</span><span class="o">=</span><span class="p">[</span><span class="s">'application/x-www-form-urlencoded'</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">current_request</span><span class="o">.</span><span class="n">raw_body</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s">'states'</span><span class="p">:</span> <span class="n">parsed</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'states'</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -861,12 +865,12 @@ def index():
 
 <p>배포된 lambda는 다음과 같이 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### Content-Type application/json
-$ http POST {lambda_url} states=WA states=CA --debug
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">### Content-Type application/json
+</span><span class="err">$</span> <span class="n">http</span> <span class="n">POST</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span> <span class="n">states</span><span class="o">=</span><span class="n">WA</span> <span class="n">states</span><span class="o">=</span><span class="n">CA</span> <span class="o">--</span><span class="n">debug</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### ContentType application/x-www-form-urlencoded
-$ http --form POST {lambda_url} states=WA states=CA --debug
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">### ContentType application/x-www-form-urlencoded
+</span><span class="err">$</span> <span class="n">http</span> <span class="o">--</span><span class="n">form</span> <span class="n">POST</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span> <span class="n">states</span><span class="o">=</span><span class="n">WA</span> <span class="n">states</span><span class="o">=</span><span class="n">CA</span> <span class="o">--</span><span class="n">debug</span>
 </code></pre></div></div>
 
 <ul>
@@ -881,17 +885,17 @@ $ http --form POST {lambda_url} states=WA states=CA --debug
 
 <p>app.py를 다음과 같이 수정한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice, Response
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">Chalice</span><span class="p">,</span> <span class="n">Response</span>
 
-app = Chalice(app_name='custom-response')
+<span class="n">app</span> <span class="o">=</span> <span class="n">Chalice</span><span class="p">(</span><span class="n">app_name</span><span class="o">=</span><span class="s">'custom-response'</span><span class="p">)</span>
 
 
-@app.route('/')
-def index():
-    return Response(body='hello world!',
-                    status_code=200,
-                    headers={'Content-Type': 'text/plain'})
-    }
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="s">'hello world!'</span><span class="p">,</span>
+                    <span class="n">status_code</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+                    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'text/plain'</span><span class="p">})</span>
+    <span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -899,7 +903,7 @@ def index():
 
 <p>배포된 lambda는 다음과 같이 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ http {lambda_url}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">http</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span>
 </code></pre></div></div>
 
 <h2 id="tutorial-gzip-compression-for-json">Tutorial: GZIP compression for json</h2>
@@ -914,19 +918,19 @@ def index():
 
 <p>다음과 같이 app.py를 수정한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import CORSConfig
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">CORSConfig</span>
 
-cors_config = CORSConfig(
-    allow_origin='https://foo.example.com',
-    allow_headers=['X-Special-Header'],
-    max_age=600,
-    expose_headers=['X-Special-Header'],
-    allow_credentials=True
-)
+<span class="n">cors_config</span> <span class="o">=</span> <span class="n">CORSConfig</span><span class="p">(</span>
+    <span class="n">allow_origin</span><span class="o">=</span><span class="s">'https://foo.example.com'</span><span class="p">,</span>
+    <span class="n">allow_headers</span><span class="o">=</span><span class="p">[</span><span class="s">'X-Special-Header'</span><span class="p">],</span>
+    <span class="n">max_age</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">expose_headers</span><span class="o">=</span><span class="p">[</span><span class="s">'X-Special-Header'</span><span class="p">],</span>
+    <span class="n">allow_credentials</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
 
-@app.route('/custom_cors', methods=['GET'], cors=cors_config)
-def supports_custom_cors():
-    return {'cors': True}
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/custom_cors'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'GET'</span><span class="p">],</span> <span class="n">cors</span><span class="o">=</span><span class="n">cors_config</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">supports_custom_cors</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">'cors'</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -934,52 +938,52 @@ def supports_custom_cors():
 
 <p>배포한 lambda를 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ http {lambda_url}custom_cors
-HTTP/1.1 200 OK
-Access-Control-Allow-Credentials: true
-Access-Control-Allow-Headers: Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header
-Access-Control-Allow-Origin: https://foo.example.com
-Access-Control-Expose-Headers: X-Special-Header
-Access-Control-Max-Age: 600
-...
-중략
-...
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">http</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="n">custom_cors</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="p">:</span> <span class="n">true</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Headers</span><span class="p">:</span> <span class="n">Authorization</span><span class="p">,</span><span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">,</span><span class="n">X</span><span class="o">-</span><span class="n">Amz</span><span class="o">-</span><span class="n">Date</span><span class="p">,</span><span class="n">X</span><span class="o">-</span><span class="n">Amz</span><span class="o">-</span><span class="n">Security</span><span class="o">-</span><span class="n">Token</span><span class="p">,</span><span class="n">X</span><span class="o">-</span><span class="n">Api</span><span class="o">-</span><span class="n">Key</span><span class="p">,</span><span class="n">X</span><span class="o">-</span><span class="n">Special</span><span class="o">-</span><span class="n">Header</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Origin</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Expose</span><span class="o">-</span><span class="n">Headers</span><span class="p">:</span> <span class="n">X</span><span class="o">-</span><span class="n">Special</span><span class="o">-</span><span class="n">Header</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Max</span><span class="o">-</span><span class="n">Age</span><span class="p">:</span> <span class="mi">600</span>
+<span class="o">...</span>
+<span class="err">중략</span>
+<span class="o">...</span>
 
-{
-    "cors": true
-}
+<span class="p">{</span>
+    <span class="s">"cors"</span><span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <p>다음과 같이 app.py를 수정한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice, Response
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">Chalice</span><span class="p">,</span> <span class="n">Response</span>
 
-app = Chalice(app_name='multipleorigincors')
+<span class="n">app</span> <span class="o">=</span> <span class="n">Chalice</span><span class="p">(</span><span class="n">app_name</span><span class="o">=</span><span class="s">'multipleorigincors'</span><span class="p">)</span>
 
-_ALLOWED_ORIGINS = set([
-    'http://allowed1.example.com',
-    'http://allowed2.example.com',
-])
+<span class="n">_ALLOWED_ORIGINS</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span>
+    <span class="s">'http://allowed1.example.com'</span><span class="p">,</span>
+    <span class="s">'http://allowed2.example.com'</span><span class="p">,</span>
+<span class="p">])</span>
 
 
-@app.route('/cors_multiple_origins', methods=['GET', 'OPTIONS'])
-def supports_cors_multiple_origins():
-    method = app.current_request.method
-    if method == 'OPTIONS':
-        headers = {
-            'Access-Control-Allow-Method': 'GET,OPTIONS',
-            'Access-Control-Allow-Origin': ','.join(_ALLOWED_ORIGINS),
-            'Access-Control-Allow-Headers': 'X-Some-Header',
-        }
-        origin = app.current_request.headers.get('origin', '')
-        if origin in _ALLOWED_ORIGINS:
-            headers.update({'Access-Control-Allow-Origin': origin})
-        return Response(
-            body=None,
-            headers=headers,
-        )
-    elif method == 'GET':
-        return 'Foo'
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/cors_multiple_origins'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'GET'</span><span class="p">,</span> <span class="s">'OPTIONS'</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">supports_cors_multiple_origins</span><span class="p">():</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">current_request</span><span class="o">.</span><span class="n">method</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">'OPTIONS'</span><span class="p">:</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">'Access-Control-Allow-Method'</span><span class="p">:</span> <span class="s">'GET,OPTIONS'</span><span class="p">,</span>
+            <span class="s">'Access-Control-Allow-Origin'</span><span class="p">:</span> <span class="s">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_ALLOWED_ORIGINS</span><span class="p">),</span>
+            <span class="s">'Access-Control-Allow-Headers'</span><span class="p">:</span> <span class="s">'X-Some-Header'</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">current_request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'origin'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">_ALLOWED_ORIGINS</span><span class="p">:</span>
+            <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">'Access-Control-Allow-Origin'</span><span class="p">:</span> <span class="n">origin</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+            <span class="n">body</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s">'GET'</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">'Foo'</span>
 
 </code></pre></div></div>
 
@@ -987,48 +991,48 @@ def supports_cors_multiple_origins():
 
 <p>배포한 lambda를 확인하면 다음과 같다. Access-Control-Allow-*를 살펴보면 된다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ http OPTIONS {lambda_url}cors_multiple_origins
-HTTP/1.1 200 OK
-Access-Control-Allow-Headers: X-Some-Header
-Access-Control-Allow-Method: GET,OPTIONS
-Access-Control-Allow-Origin: http://allowed2.example.com,http://allowed1.example.com
-...
-중략
-...
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">http</span> <span class="n">OPTIONS</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="n">cors_multiple_origins</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Headers</span><span class="p">:</span> <span class="n">X</span><span class="o">-</span><span class="n">Some</span><span class="o">-</span><span class="n">Header</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Method</span><span class="p">:</span> <span class="n">GET</span><span class="p">,</span><span class="n">OPTIONS</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Origin</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">allowed2</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">,</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">allowed1</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+<span class="o">...</span>
+<span class="err">중략</span>
+<span class="o">...</span>
 
-null
+<span class="n">null</span>
 </code></pre></div></div>
 
 <h2 id="tutorial-policy-generation">Tutorial: Policy Generation</h2>
 
 <p>다음과 같이 app.py를 수정한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import json
-import boto3
-from botocore.exceptions import ClientError
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
+<span class="kn">from</span> <span class="nn">botocore.exceptions</span> <span class="kn">import</span> <span class="n">ClientError</span>
 
-from chalice import NotFoundError, Chalice
+<span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">NotFoundError</span><span class="p">,</span> <span class="n">Chalice</span>
 
-app = Chalice(app_name="boto3_test")
+<span class="n">app</span> <span class="o">=</span> <span class="n">Chalice</span><span class="p">(</span><span class="n">app_name</span><span class="o">=</span><span class="s">"boto3_test"</span><span class="p">)</span>
 
-S3 = boto3.client('s3', region_name='us-east-1')
-BUCKET = {bucket}
-PATH = 'andro-chalice-test'
+<span class="n">S3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s">'s3'</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s">'us-east-1'</span><span class="p">)</span>
+<span class="n">BUCKET</span> <span class="o">=</span> <span class="p">{</span><span class="n">bucket</span><span class="p">}</span>
+<span class="n">PATH</span> <span class="o">=</span> <span class="s">'andro-chalice-test'</span>
 
 
-@app.route('/objects/{key}', methods=['GET', 'PUT'])
-def s3objects(key):
-    fullpath_key = "/".join([PATH, key])
-    request = app.current_request
-    if request.method == 'PUT':
-        S3.put_object(Bucket=BUCKET, Key=fullpath_key,
-                      Body=json.dumps(request.json_body))
-    elif request.method == 'GET':
-        try:
-            response = S3.get_object(Bucket=BUCKET, Key=fullpath_key)
-            return json.loads(response['Body'].read())
-        except ClientError as e:
-            raise NotFoundError(key)
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/objects/{key}'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'GET'</span><span class="p">,</span> <span class="s">'PUT'</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">s3objects</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="n">fullpath_key</span> <span class="o">=</span> <span class="s">"/"</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">PATH</span><span class="p">,</span> <span class="n">key</span><span class="p">])</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">current_request</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'PUT'</span><span class="p">:</span>
+        <span class="n">S3</span><span class="o">.</span><span class="n">put_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">BUCKET</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">fullpath_key</span><span class="p">,</span>
+                      <span class="n">Body</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">json_body</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'GET'</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">S3</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">BUCKET</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">fullpath_key</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s">'Body'</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="k">except</span> <span class="n">ClientError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotFoundError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
 
 
@@ -1038,60 +1042,60 @@ def s3objects(key):
 
 <p>다음과 같이 로컬 chalice의 동작을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo '{"foo":"bar"}' | http PUT localhost:8080/objects/banana
-HTTP/1.1 200 OK
-Content-Length: 4
-Content-Type: application/json
-Date: Tue, 17 Sep 2019 06:38:28 GMT
-Server: BaseHTTP/0.6 Python/3.6.5
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">echo</span> <span class="s">'{"foo":"bar"}'</span> <span class="o">|</span> <span class="n">http</span> <span class="n">PUT</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">objects</span><span class="o">/</span><span class="n">banana</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">4</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Tue</span><span class="p">,</span> <span class="mi">17</span> <span class="n">Sep</span> <span class="mi">2019</span> <span class="mi">06</span><span class="p">:</span><span class="mi">38</span><span class="p">:</span><span class="mi">28</span> <span class="n">GMT</span>
+<span class="n">Server</span><span class="p">:</span> <span class="n">BaseHTTP</span><span class="o">/</span><span class="mf">0.6</span> <span class="n">Python</span><span class="o">/</span><span class="mf">3.6.5</span>
 
-null
+<span class="n">null</span>
 
-$ http localhost:8080/objects/banana
-HTTP/1.1 200 OK
-Content-Length: 13
-Content-Type: application/json
-Date: Tue, 17 Sep 2019 06:38:33 GMT
-Server: BaseHTTP/0.6 Python/3.6.5
+<span class="err">$</span> <span class="n">http</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">objects</span><span class="o">/</span><span class="n">banana</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">13</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Tue</span><span class="p">,</span> <span class="mi">17</span> <span class="n">Sep</span> <span class="mi">2019</span> <span class="mi">06</span><span class="p">:</span><span class="mi">38</span><span class="p">:</span><span class="mi">33</span> <span class="n">GMT</span>
+<span class="n">Server</span><span class="p">:</span> <span class="n">BaseHTTP</span><span class="o">/</span><span class="mf">0.6</span> <span class="n">Python</span><span class="o">/</span><span class="mf">3.6.5</span>
 
-{
-    "foo": "bar"
-}
+<span class="p">{</span>
+    <span class="s">"foo"</span><span class="p">:</span> <span class="s">"bar"</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <p>aws cli로 실제 버킷에 저장되었는지 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ s3 ls s3://{s3_address}/andro-chalice-test --recursive
-2019-09-17 15:38:28         14 andro-chalice-test/banana
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">s3</span> <span class="n">ls</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="p">{</span><span class="n">s3_address</span><span class="p">}</span><span class="o">/</span><span class="n">andro</span><span class="o">-</span><span class="n">chalice</span><span class="o">-</span><span class="n">test</span> <span class="o">--</span><span class="n">recursive</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">17</span> <span class="mi">15</span><span class="p">:</span><span class="mi">38</span><span class="p">:</span><span class="mi">28</span>         <span class="mi">14</span> <span class="n">andro</span><span class="o">-</span><span class="n">chalice</span><span class="o">-</span><span class="n">test</span><span class="o">/</span><span class="n">banana</span>
 </code></pre></div></div>
 
 <p>배포한다.</p>
 
 <p>배포한 lambda의 동작을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo '"red"' | http PUT {lambda_url}objects/apple
-HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 4
-Content-Type: application/json
-...
-하략
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">echo</span> <span class="s">'"red"'</span> <span class="o">|</span> <span class="n">http</span> <span class="n">PUT</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="n">objects</span><span class="o">/</span><span class="n">apple</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">keep</span><span class="o">-</span><span class="n">alive</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">4</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="o">...</span>
+<span class="err">하략</span>
 
-null
+<span class="n">null</span>
 
-$ http {lambda_url}objects/apple
-HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 3
-Content-Type: application/json
-Date: Tue, 17 Sep 2019 07:13:51 GMT
-...
-하략
+<span class="err">$</span> <span class="n">http</span> <span class="p">{</span><span class="n">lambda_url</span><span class="p">}</span><span class="n">objects</span><span class="o">/</span><span class="n">apple</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">keep</span><span class="o">-</span><span class="n">alive</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">3</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Tue</span><span class="p">,</span> <span class="mi">17</span> <span class="n">Sep</span> <span class="mi">2019</span> <span class="mi">07</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="mi">51</span> <span class="n">GMT</span>
+<span class="o">...</span>
+<span class="err">하략</span>
 </code></pre></div></div>
 
 <p>수동으로 정책을 제공할 수 있다. 다음과 같은 경로에 정책에 관하여 정의해주면 된다. 이 부분은 추후 학습하여 수정할 예정이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;projectdir&gt;/.chalice/policy.json
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">projectdir</span><span class="o">&gt;/.</span><span class="n">chalice</span><span class="o">/</span><span class="n">policy</span><span class="o">.</span><span class="n">json</span>
 </code></pre></div></div>
 
 <p>예) andro-chalice-test/policy-dev.json</p>
@@ -1117,69 +1121,69 @@ Date: Tue, 17 Sep 2019 07:13:51 GMT
 
 <p>app.py를 다음과 같이 수정한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from chalice import Chalice, IAMAuthorizer, CustomAuthorizer
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">chalice</span> <span class="kn">import</span> <span class="n">Chalice</span><span class="p">,</span> <span class="n">IAMAuthorizer</span><span class="p">,</span> <span class="n">CustomAuthorizer</span>
 
-app = Chalice(app_name="boto3_test")
+<span class="n">app</span> <span class="o">=</span> <span class="n">Chalice</span><span class="p">(</span><span class="n">app_name</span><span class="o">=</span><span class="s">"boto3_test"</span><span class="p">)</span>
 
-iam_authorizer = IAMAuthorizer()
-custom_authorizer = CustomAuthorizer(
-    'MyCustomAuth', header='Authorization',
-    authorizer_uri=('arn:aws:apigateway:region:lambda:path/2015-03-31'
-                    '/functions/arn:aws:lambda:region:account-id:'
-                    'function:FunctionName/invocations'))
-
-
-@app.route('/authenticated', methods=['GET'], api_key_required=True)
-def authenticated():
-    return {"secure": True}
+<span class="n">iam_authorizer</span> <span class="o">=</span> <span class="n">IAMAuthorizer</span><span class="p">()</span>
+<span class="n">custom_authorizer</span> <span class="o">=</span> <span class="n">CustomAuthorizer</span><span class="p">(</span>
+    <span class="s">'MyCustomAuth'</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s">'Authorization'</span><span class="p">,</span>
+    <span class="n">authorizer_uri</span><span class="o">=</span><span class="p">(</span><span class="s">'arn:aws:apigateway:region:lambda:path/2015-03-31'</span>
+                    <span class="s">'/functions/arn:aws:lambda:region:account-id:'</span>
+                    <span class="s">'function:FunctionName/invocations'</span><span class="p">))</span>
 
 
-@app.route('/iam-role', methods=['GET'], authorizer=iam_authorizer)
-def authenticated():
-    return {"secure": True}
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/authenticated'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'GET'</span><span class="p">],</span> <span class="n">api_key_required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">authenticated</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">"secure"</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
 
 
-@app.route('/custom-auth', methods=['GET'], authorizer=custom_authorizer)
-def authenticated():
-    return {"secure": True}
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/iam-role'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'GET'</span><span class="p">],</span> <span class="n">authorizer</span><span class="o">=</span><span class="n">iam_authorizer</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">authenticated</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">"secure"</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+
+
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/custom-auth'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'GET'</span><span class="p">],</span> <span class="n">authorizer</span><span class="o">=</span><span class="n">custom_authorizer</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">authenticated</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">"secure"</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
 
 
 </code></pre></div></div>
 
 <p>다음과 같이 로컬 chalice의 동작을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ http localhost:8080/authenticated
-HTTP/1.1 200 OK
-Content-Length: 15
-Content-Type: application/json
-Date: Tue, 17 Sep 2019 08:57:24 GMT
-Server: BaseHTTP/0.6 Python/3.6.5
-{
-    "secure": true
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">http</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">authenticated</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">15</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Tue</span><span class="p">,</span> <span class="mi">17</span> <span class="n">Sep</span> <span class="mi">2019</span> <span class="mi">08</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">24</span> <span class="n">GMT</span>
+<span class="n">Server</span><span class="p">:</span> <span class="n">BaseHTTP</span><span class="o">/</span><span class="mf">0.6</span> <span class="n">Python</span><span class="o">/</span><span class="mf">3.6.5</span>
+<span class="p">{</span>
+    <span class="s">"secure"</span><span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
 
 
-$ http localhost:8080/iam-role
-HTTP/1.1 200 OK
-Content-Length: 15
-Content-Type: application/json
-Date: Tue, 17 Sep 2019 08:57:35 GMT
-Server: BaseHTTP/0.6 Python/3.6.5
-{
-    "secure": true
-}
+<span class="err">$</span> <span class="n">http</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">iam</span><span class="o">-</span><span class="n">role</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">15</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Tue</span><span class="p">,</span> <span class="mi">17</span> <span class="n">Sep</span> <span class="mi">2019</span> <span class="mi">08</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">35</span> <span class="n">GMT</span>
+<span class="n">Server</span><span class="p">:</span> <span class="n">BaseHTTP</span><span class="o">/</span><span class="mf">0.6</span> <span class="n">Python</span><span class="o">/</span><span class="mf">3.6.5</span>
+<span class="p">{</span>
+    <span class="s">"secure"</span><span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
 
 
-$ http localhost:8080/custom-auth
-HTTP/1.1 200 OK
-Content-Length: 15
-Content-Type: application/json
-Date: Tue, 17 Sep 2019 08:57:40 GMT
-Server: BaseHTTP/0.6 Python/3.6.5
+<span class="err">$</span> <span class="n">http</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">custom</span><span class="o">-</span><span class="n">auth</span>
+<span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">15</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Tue</span><span class="p">,</span> <span class="mi">17</span> <span class="n">Sep</span> <span class="mi">2019</span> <span class="mi">08</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">40</span> <span class="n">GMT</span>
+<span class="n">Server</span><span class="p">:</span> <span class="n">BaseHTTP</span><span class="o">/</span><span class="mf">0.6</span> <span class="n">Python</span><span class="o">/</span><span class="mf">3.6.5</span>
 
-{
-    "secure": true
-}
+<span class="p">{</span>
+    <span class="s">"secure"</span><span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <h1 id="참고-자료">참고 자료</h1>

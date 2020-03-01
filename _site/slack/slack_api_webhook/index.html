@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -472,7 +476,7 @@
 
 <p>위의 링크 문서 내용 중 슬랙으로 Webhook API를 이용해 메시지 보내는 샘플 명령어와 결과는 아래와 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/{token}
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-H</span> <span class="s1">'Content-type: application/json'</span> <span class="nt">--data</span> <span class="s1">'{"text":"Hello, World!"}'</span> https://hooks.slack.com/services/<span class="o">{</span>token<span class="o">}</span>
 
 </code></pre></div></div>
 
@@ -504,7 +508,7 @@
 
 <p>위의 링크 문서 내용 중 슬랙으로 Web API를 이용해 메시지 보내는 샘플 명령어와 결과는 아래와 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -X POST -d "token={token}3&amp;channel=#test-slackbot&amp;text=“asdasd”&amp;username=seongwoo" https://slack.com/api/chat.postMessage
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s2">"token={token}3&amp;channel=#test-slackbot&amp;text=“asdasd”&amp;username=seongwoo"</span> https://slack.com/api/chat.postMessage
 
 </code></pre></div></div>
 
@@ -522,9 +526,9 @@
 
 <p>위의 링크 문서 내용 중 슬랙으로 예약된 메시지를 보내는 샘플 명령어와 결과는 아래와 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -X POST -H 'Authorization: Bearer {token}' \
--H 'Content-type: application/json' \
---data '{"channel":"#test-slackbot","text":"I hope the tour went well, Mr. Wonka.", "post_at":"1571730289"}' \
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-H</span> <span class="s1">'Authorization: Bearer {token}'</span> <span class="se">\</span>
+<span class="nt">-H</span> <span class="s1">'Content-type: application/json'</span> <span class="se">\</span>
+<span class="nt">--data</span> <span class="s1">'{"channel":"#test-slackbot","text":"I hope the tour went well, Mr. Wonka.", "post_at":"1571730289"}'</span> <span class="se">\</span>
 https://slack.com/api/chat.scheduleMessage
 </code></pre></div></div>
 

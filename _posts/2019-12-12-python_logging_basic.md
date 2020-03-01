@@ -115,7 +115,7 @@ Logging 기초 자습서
 
 아래는 [Logging cook book - 문맥 정보 전달에 필터 사용하기](https://docs.python.org/ko/3/howto/logging-cookbook.html#using-filters-to-impart-contextual-information)를 따라하며 실습한 내용이다.
 
-```
+```python
 import logging
 from random import choice
 
@@ -155,7 +155,7 @@ if __name__ == '__main__':
 
   
 
-```
+```bash
 $ python3 main.py
 2019-10-18 11:54:03,246 a.b.c DEBUG    IP: 192.168.0.1     User: wind     A debug message
 2019-10-18 11:54:03,249 a.b.c INFO     IP: 123.231.231.123 User: harry    An info message with some parameters
@@ -180,7 +180,7 @@ $ python3 main.py
 
 다음은 실습한 내용의 Python 코드이다.
 
-```
+```python
 import logging
 
 seong_logger = logging.getLogger("seongwoo")
@@ -195,7 +195,7 @@ seong_logger.info("test")
 
 표준 출력과 파일 출력(seong.log)이 되는 지 확인하였다.
 
-```
+```bash
 $ python3 main.py
 test
 
@@ -222,7 +222,7 @@ test
 RotatingFileHandler
 -------------------
 
-```
+```bash
 class logging.handlers.RotatingFileHandler(filename, mode='a', maxBytes=0, backupCount=0, encoding=None, delay=False)
 ```
 
@@ -236,7 +236,7 @@ RotatingFileHandler의 자세한 설명은 [logging.handler - rotatingfilehandl
 
 다음은 [Logging cook book - 파일 회전하기](https://docs.python.org/ko/3/howto/logging-cookbook.html#using-file-rotation)에 코드를  일부 수정하여 실습한 코드이다.
 
-```
+```python
 import glob
 import logging
 import logging.handlers
@@ -261,7 +261,7 @@ for filename in logfiles:
 
 아래의 코드를 여러번 실행할 경우에는 mode 인자의 디폴트 값이 'a'이므로 기존에 생성 되었던 로그 파일들을 삭제하고 실행 해야 한다.
 
-```
+```bash
 $ python3 file_rotating_test.py
 logging_rotatingfile_example.out.2
 logging_rotatingfile_example.out.1
@@ -271,7 +271,7 @@ logging_rotatingfile_example.out
 TimedRotatingFileHandler
 ------------------------
 
-```
+```bash
 class logging.handlers.TimedRotatingFileHandler(filename, when='h', interval=1, backupCount=0, encoding=None, delay=False, utc=False, atTime=None)
 ```
 
@@ -291,7 +291,7 @@ TimeRotatingHandler의 자세한 설명은 [logging.handler - timerotatinghandl
 
 위의 시나리오를 바탕으로 다음과 같은 파이썬 코드를 작성하였다.
 
-```
+```python
 import glob
 import logging
 import logging.handlers
@@ -330,7 +330,7 @@ if __name__ == "__main__":
 
   
 
-```
+```bash
 $ python3 time_rotating_test.py
 timerotating_logtest.out.2019-10-17_20-05-52
 timerotating_logtest.out

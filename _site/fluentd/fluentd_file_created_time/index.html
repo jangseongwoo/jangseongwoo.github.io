@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -445,8 +449,8 @@
   </li>
   <li>
     <p>커널 명령으로 표현하면 다음과 같다.</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch log_file.log
-$ echo "log_test_1" &gt;&gt; log_file.log
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">touch</span> <span class="n">log_file</span><span class="o">.</span><span class="n">log</span>
+<span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_1"</span> <span class="o">&gt;&gt;</span> <span class="n">log_file</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -460,7 +464,7 @@ $ echo "log_test_1" &gt;&gt; log_file.log
   <li>
     <p>커널 명령으로 표현하면 다음과 같다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "log_test_1" &gt; log_file.log
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_1"</span> <span class="o">&gt;</span> <span class="n">log_file</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -580,90 +584,90 @@ $ echo "log_test_1" &gt;&gt; log_file.log
 
 <p>/Users/kevin/dev/fluentd/test/file_creation_time/config/td-agent.conf</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /opt/td-agent/usr/sbin/td-agent
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">td</span><span class="o">-</span><span class="n">agent</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">td</span><span class="o">-</span><span class="n">agent</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 
-ENV["FLUENT_CONF"]="/Users/kevin/dev/fluentd/test/file_creation_time/config/td-agent.conf"
+<span class="n">ENV</span><span class="p">[</span><span class="s">"FLUENT_CONF"</span><span class="p">]</span><span class="o">=</span><span class="s">"/Users/kevin/dev/fluentd/test/file_creation_time/config/td-agent.conf"</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 </code></pre></div></div>
 
 <p>td-agent 설정 파일을 다음과 같이 수정하고 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat config/td-agent.log 
-&lt;source&gt;
-  @type tail
-  tag file_creation_time
-  path /Users/kevin/dev/fluentd/test/file_creation_time/source/*
-  pos_file /Users/kevin/dev/fluentd/test/file_creation_time/pos/pos_file.pos
-  &lt;parse&gt;
-    @type none
-  &lt;/parse&gt;
-  refresh_interval 5s
-&lt;/source&gt;
-&lt;match file_creation_time*&gt;
-  @type file
-  path /Users/kevin/dev/fluentd/test/file_creation_time/match/${tag}_output
-  add_path_suffix true
-  path_suffix ".log"
-  append true
-  &lt;buffer tag&gt;
-    flush_mode interval
-    flush_interval 10s
-  &lt;/buffer&gt;
-  &lt;format&gt;
-    @type out_file
-    output_tag false
-    output_time true
-  &lt;/format&gt;
-&lt;/match&gt;
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="n">config</span><span class="o">/</span><span class="n">td</span><span class="o">-</span><span class="n">agent</span><span class="o">.</span><span class="n">log</span><span class="err"> </span>
+<span class="o">&lt;</span><span class="n">source</span><span class="o">&gt;</span>
+  <span class="o">@</span><span class="nb">type</span> <span class="n">tail</span>
+  <span class="n">tag</span> <span class="n">file_creation_time</span>
+  <span class="n">path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kevin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">fluentd</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">file_creation_time</span><span class="o">/</span><span class="n">source</span><span class="o">/*</span>
+  <span class="n">pos_file</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kevin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">fluentd</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">file_creation_time</span><span class="o">/</span><span class="n">pos</span><span class="o">/</span><span class="n">pos_file</span><span class="o">.</span><span class="n">pos</span>
+  <span class="o">&lt;</span><span class="n">parse</span><span class="o">&gt;</span>
+    <span class="o">@</span><span class="nb">type</span> <span class="n">none</span>
+  <span class="o">&lt;/</span><span class="n">parse</span><span class="o">&gt;</span>
+  <span class="n">refresh_interval</span> <span class="mi">5</span><span class="n">s</span>
+<span class="o">&lt;/</span><span class="n">source</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">match</span> <span class="n">file_creation_time</span><span class="o">*&gt;</span>
+  <span class="o">@</span><span class="nb">type</span> <span class="nb">file</span>
+  <span class="n">path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kevin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">fluentd</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">file_creation_time</span><span class="o">/</span><span class="n">match</span><span class="o">/</span><span class="err">$</span><span class="p">{</span><span class="n">tag</span><span class="p">}</span><span class="n">_output</span>
+  <span class="n">add_path_suffix</span> <span class="n">true</span>
+  <span class="n">path_suffix</span> <span class="s">".log"</span>
+  <span class="n">append</span> <span class="n">true</span>
+  <span class="o">&lt;</span><span class="nb">buffer</span> <span class="n">tag</span><span class="o">&gt;</span>
+    <span class="n">flush_mode</span> <span class="n">interval</span>
+    <span class="n">flush_interval</span> <span class="mi">10</span><span class="n">s</span>
+  <span class="o">&lt;/</span><span class="nb">buffer</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nb">format</span><span class="o">&gt;</span>
+    <span class="o">@</span><span class="nb">type</span> <span class="n">out_file</span>
+    <span class="n">output_tag</span> <span class="n">false</span>
+    <span class="n">output_time</span> <span class="n">true</span>
+  <span class="o">&lt;/</span><span class="nb">format</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">match</span><span class="o">&gt;</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo launchctl load td-agent.plist
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">sudo</span> <span class="n">launchctl</span> <span class="n">load</span> <span class="n">td</span><span class="o">-</span><span class="n">agent</span><span class="o">.</span><span class="n">plist</span>
 </code></pre></div></div>
 
 <h2 id="케이스--파일-생성-시점과-로그-저장-시점이-다른-경우">케이스 : 파일 생성 시점과 로그 저장 시점이 다른 경우</h2>
 
 <p>다음과 같이 입력용 빈 파일을 생성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch source/different_time_input.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">touch</span> <span class="n">source</span><span class="o">/</span><span class="n">different_time_input</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div></div>
 
 <p>다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /var/log/td-agent/td-agent.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">td</span><span class="o">-</span><span class="n">agent</span><span class="o">/</span><span class="n">td</span><span class="o">-</span><span class="n">agent</span><span class="o">.</span><span class="n">log</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 
-2019-08-29 17:40:32 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_creation_time/source/different_time_input.log
-</code></pre></div></div>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span> <span class="mi">17</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">32</span> <span class="o">+</span><span class="mi">0900</span> <span class="p">[</span><span class="n">info</span><span class="p">]:</span> <span class="c1">#0 following tail of /Users/kevin/dev/fluentd/test/file_creation_time/source/different_time_input.log
+</span></code></pre></div></div>
 
 <p>다음과 같이 입력용 파일에 로그를 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "log_test_line1" &gt;&gt; source/differnt_time_input.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_line1"</span> <span class="o">&gt;&gt;</span> <span class="n">source</span><span class="o">/</span><span class="n">differnt_time_input</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div></div>
 
 <p>출력용 파일을 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_creation_time_output.log
-2019-08-29T17:41:03+09:00	{"message":"log_test_line1"}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">tail</span> <span class="o">-</span><span class="mi">10</span><span class="n">f</span> <span class="n">match</span><span class="o">/</span><span class="n">file_creation_time_output</span><span class="o">.</span><span class="n">log</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T17</span><span class="p">:</span><span class="mi">41</span><span class="p">:</span><span class="mi">03</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line1"</span><span class="p">}</span>
 </code></pre></div></div>
 
 <p>다시 한번 다음과 같이 파일에 로그를 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "log_test_line2" &gt;&gt; source/differnt_time_input.log
-$ echo "log_test_line3" &gt;&gt; source/differnt_time_input.log
-$ echo "log_test_line4" &gt;&gt; source/differnt_time_input.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_line2"</span> <span class="o">&gt;&gt;</span> <span class="n">source</span><span class="o">/</span><span class="n">differnt_time_input</span><span class="o">.</span><span class="n">log</span>
+<span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_line3"</span> <span class="o">&gt;&gt;</span> <span class="n">source</span><span class="o">/</span><span class="n">differnt_time_input</span><span class="o">.</span><span class="n">log</span>
+<span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_line4"</span> <span class="o">&gt;&gt;</span> <span class="n">source</span><span class="o">/</span><span class="n">differnt_time_input</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div></div>
 
 <p>출력용 파일을 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_creation_time_output.log
-2019-08-29T17:41:03+09:00	{"message":"log_test_line1"}
-2019-08-29T17:49:58+09:00	{"message":"log_test_line2"}
-2019-08-29T17:50:04+09:00	{"message":"log_test_line3"}
-2019-08-29T17:50:10+09:00	{"message":"log_test_line4"}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">tail</span> <span class="o">-</span><span class="mi">10</span><span class="n">f</span> <span class="n">match</span><span class="o">/</span><span class="n">file_creation_time_output</span><span class="o">.</span><span class="n">log</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T17</span><span class="p">:</span><span class="mi">41</span><span class="p">:</span><span class="mi">03</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line1"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T17</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">58</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line2"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T17</span><span class="p">:</span><span class="mi">50</span><span class="p">:</span><span class="mi">04</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line3"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T17</span><span class="p">:</span><span class="mi">50</span><span class="p">:</span><span class="mi">10</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line4"</span><span class="p">}</span>
 </code></pre></div></div>
 
 <p>테스트 결과를 정리하면 다음과 같다.</p>
@@ -681,60 +685,60 @@ $ echo "log_test_line4" &gt;&gt; source/differnt_time_input.log
 
 <p>다음과 같이 로그를 파일에 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "log_test_line1" &gt; source/same_time_input.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_line1"</span> <span class="o">&gt;</span> <span class="n">source</span><span class="o">/</span><span class="n">same_time_input</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div></div>
 
 <p>별도의 파일 생성없이 로그를 저장하여도 파일이 생성되고 로그가 저장된다.</p>
 
 <p>다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /var/log/td-agent/td-agent.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">td</span><span class="o">-</span><span class="n">agent</span><span class="o">/</span><span class="n">td</span><span class="o">-</span><span class="n">agent</span><span class="o">.</span><span class="n">log</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 
-2019-08-29 18:10:42 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_creation_time/source/same_time_input.log
-</code></pre></div></div>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span> <span class="mi">18</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">42</span> <span class="o">+</span><span class="mi">0900</span> <span class="p">[</span><span class="n">info</span><span class="p">]:</span> <span class="c1">#0 following tail of /Users/kevin/dev/fluentd/test/file_creation_time/source/same_time_input.log
+</span></code></pre></div></div>
 
 <p>출력용 파일에 로그가 저장 되었는지 확인 하였지만 로그가 저장된 것을 확인할 수 없다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_creation_time_output.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">tail</span> <span class="o">-</span><span class="mi">10</span><span class="n">f</span> <span class="n">match</span><span class="o">/</span><span class="n">file_creation_time_output</span><span class="o">.</span><span class="n">log</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 
-same_time_input.log의 로그 내용이 출력되지 않음.
+<span class="n">same_time_input</span><span class="o">.</span><span class="n">log</span><span class="err">의</span> <span class="err">로그</span> <span class="err">내용이</span> <span class="err">출력되지</span> <span class="err">않음</span><span class="o">.</span>
 </code></pre></div></div>
 
 <p>다음과 같이 입력용 파일에 로그를 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "log_test_line2" &gt;&gt; source/same_time_input.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_line2"</span> <span class="o">&gt;&gt;</span> <span class="n">source</span><span class="o">/</span><span class="n">same_time_input</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div></div>
 
 <p>출력용 파일을 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_creation_time_output.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">tail</span> <span class="o">-</span><span class="mi">10</span><span class="n">f</span> <span class="n">match</span><span class="o">/</span><span class="n">file_creation_time_output</span><span class="o">.</span><span class="n">log</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 
-2019-08-29T18:16:57+09:00	{"message":"log_test_line2"}
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T18</span><span class="p">:</span><span class="mi">16</span><span class="p">:</span><span class="mi">57</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line2"</span><span class="p">}</span>
 </code></pre></div></div>
 
 <p>다시 한번 다음과 같이 파일에 로그를 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "log_test_line3" &gt;&gt; source/same_time_input.log
-$ echo "log_test_line4" &gt;&gt; source/same_time_input.log
-$ echo "log_test_line5" &gt;&gt; source/same_time_input.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_line3"</span> <span class="o">&gt;&gt;</span> <span class="n">source</span><span class="o">/</span><span class="n">same_time_input</span><span class="o">.</span><span class="n">log</span>
+<span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_line4"</span> <span class="o">&gt;&gt;</span> <span class="n">source</span><span class="o">/</span><span class="n">same_time_input</span><span class="o">.</span><span class="n">log</span>
+<span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_line5"</span> <span class="o">&gt;&gt;</span> <span class="n">source</span><span class="o">/</span><span class="n">same_time_input</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div></div>
 
 <p>출력용 파일을 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_creation_time_output.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">tail</span> <span class="o">-</span><span class="mi">10</span><span class="n">f</span> <span class="n">match</span><span class="o">/</span><span class="n">file_creation_time_output</span><span class="o">.</span><span class="n">log</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 
-2019-08-29T18:16:57+09:00	{"message":"log_test_line2"}
-2019-08-29T18:18:40+09:00	{"message":"log_test_line3"}
-2019-08-29T18:18:43+09:00	{"message":"log_test_line4"}
-2019-08-29T18:18:46+09:00	{"message":"log_test_line5"}
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T18</span><span class="p">:</span><span class="mi">16</span><span class="p">:</span><span class="mi">57</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line2"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T18</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">40</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line3"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T18</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">43</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line4"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T18</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">46</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line5"</span><span class="p">}</span>
 </code></pre></div></div>
 
 <p>테스트 결과를 정리하면 다음과 같다.</p>
@@ -754,84 +758,84 @@ $ echo "log_test_line5" &gt;&gt; source/same_time_input.log
 
 <p>td-agent 설정 파일에 다음과 같은 옵션을 source plugin에 추가한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>read_from_head = true
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">read_from_head</span> <span class="o">=</span> <span class="n">true</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat config/td-agent.log 
-&lt;source&gt;
-  @type tail
-  tag file_creation_time
-  read_from_head = true 
-  path /Users/kevin/dev/fluentd/test/file_creation_time/source/*
-  pos_file /Users/kevin/dev/fluentd/test/file_creation_time/pos/pos_file.pos
-  &lt;parse&gt;
-    @type none
-  &lt;/parse&gt;
-  refresh_interval 5s
-&lt;/source&gt;
-&lt;match file_creation_time*&gt;
-  @type file
-  path /Users/kevin/dev/fluentd/test/file_creation_time/match/${tag}_output
-  add_path_suffix true
-  path_suffix ".log"
-  append true
-  &lt;buffer tag&gt;
-    flush_mode interval
-    flush_interval 10s
-  &lt;/buffer&gt;
-  &lt;format&gt;
-    @type out_file
-    output_tag false
-    output_time true
-  &lt;/format&gt;
-&lt;/match&gt;
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="n">config</span><span class="o">/</span><span class="n">td</span><span class="o">-</span><span class="n">agent</span><span class="o">.</span><span class="n">log</span><span class="err"> </span>
+<span class="o">&lt;</span><span class="n">source</span><span class="o">&gt;</span>
+  <span class="o">@</span><span class="nb">type</span> <span class="n">tail</span>
+  <span class="n">tag</span> <span class="n">file_creation_time</span>
+  <span class="n">read_from_head</span> <span class="o">=</span> <span class="n">true</span> 
+  <span class="n">path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kevin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">fluentd</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">file_creation_time</span><span class="o">/</span><span class="n">source</span><span class="o">/*</span>
+  <span class="n">pos_file</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kevin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">fluentd</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">file_creation_time</span><span class="o">/</span><span class="n">pos</span><span class="o">/</span><span class="n">pos_file</span><span class="o">.</span><span class="n">pos</span>
+  <span class="o">&lt;</span><span class="n">parse</span><span class="o">&gt;</span>
+    <span class="o">@</span><span class="nb">type</span> <span class="n">none</span>
+  <span class="o">&lt;/</span><span class="n">parse</span><span class="o">&gt;</span>
+  <span class="n">refresh_interval</span> <span class="mi">5</span><span class="n">s</span>
+<span class="o">&lt;/</span><span class="n">source</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">match</span> <span class="n">file_creation_time</span><span class="o">*&gt;</span>
+  <span class="o">@</span><span class="nb">type</span> <span class="nb">file</span>
+  <span class="n">path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kevin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">fluentd</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">file_creation_time</span><span class="o">/</span><span class="n">match</span><span class="o">/</span><span class="err">$</span><span class="p">{</span><span class="n">tag</span><span class="p">}</span><span class="n">_output</span>
+  <span class="n">add_path_suffix</span> <span class="n">true</span>
+  <span class="n">path_suffix</span> <span class="s">".log"</span>
+  <span class="n">append</span> <span class="n">true</span>
+  <span class="o">&lt;</span><span class="nb">buffer</span> <span class="n">tag</span><span class="o">&gt;</span>
+    <span class="n">flush_mode</span> <span class="n">interval</span>
+    <span class="n">flush_interval</span> <span class="mi">10</span><span class="n">s</span>
+  <span class="o">&lt;/</span><span class="nb">buffer</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nb">format</span><span class="o">&gt;</span>
+    <span class="o">@</span><span class="nb">type</span> <span class="n">out_file</span>
+    <span class="n">output_tag</span> <span class="n">false</span>
+    <span class="n">output_time</span> <span class="n">true</span>
+  <span class="o">&lt;/</span><span class="nb">format</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">match</span><span class="o">&gt;</span>
 </code></pre></div></div>
 
 <p>td-agent를 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo launchctl load td-agent.plist
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">sudo</span> <span class="n">launchctl</span> <span class="n">load</span> <span class="n">td</span><span class="o">-</span><span class="n">agent</span><span class="o">.</span><span class="n">plist</span>
 </code></pre></div></div>
 
 <p>다음과 같이 로그를 파일에 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "log_test_line1" &gt; source/same_time_head_input.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_line1"</span> <span class="o">&gt;</span> <span class="n">source</span><span class="o">/</span><span class="n">same_time_head_input</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div></div>
 
 <p>다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /var/log/td-agent/td-agent.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">td</span><span class="o">-</span><span class="n">agent</span><span class="o">/</span><span class="n">td</span><span class="o">-</span><span class="n">agent</span><span class="o">.</span><span class="n">log</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 
-019-08-29 18:39:16 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_creation_time/source/same_time_head_input.log
-</code></pre></div></div>
+<span class="mi">019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span> <span class="mi">18</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">16</span> <span class="o">+</span><span class="mi">0900</span> <span class="p">[</span><span class="n">info</span><span class="p">]:</span> <span class="c1">#0 following tail of /Users/kevin/dev/fluentd/test/file_creation_time/source/same_time_head_input.log
+</span></code></pre></div></div>
 
 <p>출력용 파일을 확인하면 로그가 저장된 것을 알 수 있다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_creation_time_output.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">tail</span> <span class="o">-</span><span class="mi">10</span><span class="n">f</span> <span class="n">match</span><span class="o">/</span><span class="n">file_creation_time_output</span><span class="o">.</span><span class="n">log</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 
-2019-08-29T18:39:16+09:00	{"message":"log_test_line1"}
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T18</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">16</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line1"</span><span class="p">}</span>
 </code></pre></div></div>
 
 <p>다시 한번 다음과 같이 파일에 로그를 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "log_test_line2" &gt;&gt; source/same_time_head_input.log
-$ echo "log_test_line3" &gt;&gt; source/same_time_head_input.log
-$ echo "log_test_line4" &gt;&gt; source/same_time_head_input.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_line2"</span> <span class="o">&gt;&gt;</span> <span class="n">source</span><span class="o">/</span><span class="n">same_time_head_input</span><span class="o">.</span><span class="n">log</span>
+<span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_line3"</span> <span class="o">&gt;&gt;</span> <span class="n">source</span><span class="o">/</span><span class="n">same_time_head_input</span><span class="o">.</span><span class="n">log</span>
+<span class="err">$</span> <span class="n">echo</span> <span class="s">"log_test_line4"</span> <span class="o">&gt;&gt;</span> <span class="n">source</span><span class="o">/</span><span class="n">same_time_head_input</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div></div>
 
 <p>출력용 파일을 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_creation_time_output.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">tail</span> <span class="o">-</span><span class="mi">10</span><span class="n">f</span> <span class="n">match</span><span class="o">/</span><span class="n">file_creation_time_output</span><span class="o">.</span><span class="n">log</span>
 
-... 중략 ...
+<span class="o">...</span> <span class="err">중략</span> <span class="o">...</span>
 
-2019-08-29T18:39:16+09:00	{"message":"log_test_line1"}
-2019-08-29T18:44:52+09:00	{"message":"log_test_line2"}
-2019-08-29T18:44:58+09:00	{"message":"log_test_line3"}
-2019-08-29T18:45:02+09:00	{"message":"log_test_line4"}
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T18</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mi">16</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line1"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T18</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">52</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line2"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T18</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">58</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line3"</span><span class="p">}</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">29</span><span class="n">T18</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">02</span><span class="o">+</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>	<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"log_test_line4"</span><span class="p">}</span>
 </code></pre></div></div>
 
 <p>테스트 결과를 정리하면 다음과 같다.</p>

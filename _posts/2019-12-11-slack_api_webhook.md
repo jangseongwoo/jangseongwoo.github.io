@@ -69,7 +69,7 @@ Slackbot webhook API로 특정 채널에 메시지를 보내기 위해서는 아
 
 위의 링크 문서 내용 중 슬랙으로 Webhook API를 이용해 메시지 보내는 샘플 명령어와 결과는 아래와 같다. 
 
-```
+```bash
 $ curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/{token}
 
 ```
@@ -100,7 +100,7 @@ Web API, Webhook API 차이점은 web API가 더 많은 부분들을 커스터�
 
 위의 링크 문서 내용 중 슬랙으로 Web API를 이용해 메시지 보내는 샘플 명령어와 결과는 아래와 같다. 
 
-```
+```bash
 $ curl -X POST -d "token={token}3&channel=#test-slackbot&text=“asdasd”&username=seongwoo" https://slack.com/api/chat.postMessage
 
 ```
@@ -120,7 +120,7 @@ $ curl -X POST -d "token={token}3&channel=#test-slackbot&text=“asdasd”&usern
 
 위의 링크 문서 내용 중 슬랙으로 예약된 메시지를 보내는 샘플 명령어와 결과는 아래와 같다. 
 
-```
+```bash
 $ curl -X POST -H 'Authorization: Bearer {token}' \
 -H 'Content-type: application/json' \
 --data '{"channel":"#test-slackbot","text":"I hope the tour went well, Mr. Wonka.", "post_at":"1571730289"}' \

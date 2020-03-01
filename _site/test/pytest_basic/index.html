@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -468,15 +472,15 @@
 
 <p>다음과 같이 가상환경을 구성하고 활성화한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir pytest_tutorial
-$ cd pytest_tutorial
-$ virtualenv --python=python3.7 .venv
-$ source .venv/bin/activate
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">mkdir</span> <span class="n">pytest_tutorial</span>
+<span class="err">$</span> <span class="n">cd</span> <span class="n">pytest_tutorial</span>
+<span class="err">$</span> <span class="n">virtualenv</span> <span class="o">--</span><span class="n">python</span><span class="o">=</span><span class="n">python3</span><span class="mf">.7</span> <span class="o">.</span><span class="n">venv</span>
+<span class="err">$</span> <span class="n">source</span> <span class="o">.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
 </code></pre></div></div>
 
 <p>다음 명령어를 입력해 Pytest 모듈을 설치한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pip install pytest
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pytest</span>
 </code></pre></div></div>
 
 <h1 id="pytest-실행-및-실행-결과-설명">Pytest 실행 및 실행 결과 설명</h1>
@@ -487,7 +491,7 @@ $ source .venv/bin/activate
 
 <p>다음과 같은 명령어를 입력 할 경우 실행된 디렉토리 안에서 Pytest가 정해진 규칙에 따라 Test 함수를 찾아 실행하게 된다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pytest</span>
 </code></pre></div></div>
 
 <p>Pytest가 어떤 규칙을 통해 Testcode를 찾아 실행하는 지에 대한 자세한 내용은 <a href="https://docs.pytest.org/en/latest/goodpractices.html#test-discovery">문서</a>를 클릭하면 알 수 있다.</p>
@@ -496,53 +500,53 @@ $ source .venv/bin/activate
 
 <p>여러 개의 파일로 이루어진 테스트 코드를 테스트 하고자 한다면 와일드 카드(*)나 디렉터리 지정, 모듈 지정 등을 활용하면 된다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 와일드 카드 활용
-$ pytest test_*.py
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 와일드 카드 활용
+</span><span class="err">$</span> <span class="n">pytest</span> <span class="n">test_</span><span class="o">*.</span><span class="n">py</span>
 
-# 모듈 지정
-$ pytest mymodule
+<span class="c1"># 모듈 지정
+</span><span class="err">$</span> <span class="n">pytest</span> <span class="n">mymodule</span>
 
-# 현재 디렉터리 지정
-$ pytest ./
+<span class="c1"># 현재 디렉터리 지정
+</span><span class="err">$</span> <span class="n">pytest</span> <span class="o">./</span>
 </code></pre></div></div>
 
 <p>다음과 같이 2개의 테스트 코드 test_sample_1.py, test_sample_2.py를 작성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def func(x):
-    return x + 1
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
 
-def test_answer1():
-    assert func(3) == 5 
+<span class="k">def</span> <span class="nf">test_answer1</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">func</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span> 
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def func(x):
-    return x * 2
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
 
-def test_answer2():
-    assert func(3) == 6 
+<span class="k">def</span> <span class="nf">test_answer2</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">func</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span> 
 </code></pre></div></div>
 
 <p>2개의 테스트 코드(test_sample_1.py, test_sample_2.py)를 실행하기 위하여 test_sample_*로 지정하여 테스트를 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_sample_*
-==================================== test session starts ====================================
-platform darwin -- Python 3.7.4, pytest-5.1.1, py-1.8.0, pluggy-0.12.0
-rootdir: /Users/kelpin/dev/pytest_tutorial
-collected 2 items
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pytest</span> <span class="n">test_sample_</span><span class="o">*</span>
+<span class="o">====================================</span> <span class="n">test</span> <span class="n">session</span> <span class="n">starts</span> <span class="o">====================================</span>
+<span class="n">platform</span> <span class="n">darwin</span> <span class="o">--</span> <span class="n">Python</span> <span class="mf">3.7.4</span><span class="p">,</span> <span class="n">pytest</span><span class="o">-</span><span class="mf">5.1.1</span><span class="p">,</span> <span class="n">py</span><span class="o">-</span><span class="mf">1.8.0</span><span class="p">,</span> <span class="n">pluggy</span><span class="o">-</span><span class="mf">0.12.0</span>
+<span class="n">rootdir</span><span class="p">:</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kelpin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pytest_tutorial</span>
+<span class="n">collected</span> <span class="mi">2</span> <span class="n">items</span>
 
-test_sample_1.py F                                                                    [ 50%]
-test_sample_2.py .                                                                    [100%]
+<span class="n">test_sample_1</span><span class="o">.</span><span class="n">py</span> <span class="n">F</span>                                                                    <span class="p">[</span> <span class="mi">50</span><span class="o">%</span><span class="p">]</span>
+<span class="n">test_sample_2</span><span class="o">.</span><span class="n">py</span> <span class="o">.</span>                                                                    <span class="p">[</span><span class="mi">100</span><span class="o">%</span><span class="p">]</span>
 
-========================================= FAILURES ==========================================
-_______________________________________ test_answer1 ________________________________________
+<span class="o">=========================================</span> <span class="n">FAILURES</span> <span class="o">==========================================</span>
+<span class="n">_______________________________________</span> <span class="n">test_answer1</span> <span class="n">________________________________________</span>
 
-    def test_answer1():
-&gt;       assert func(3) == 5
-E       assert 4 == 5
-E        +  where 4 = func(3)
+    <span class="k">def</span> <span class="nf">test_answer1</span><span class="p">():</span>
+<span class="o">&gt;</span>       <span class="k">assert</span> <span class="n">func</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span>
+<span class="n">E</span>       <span class="k">assert</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">5</span>
+<span class="n">E</span>        <span class="o">+</span>  <span class="n">where</span> <span class="mi">4</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 
-test_sample_1.py:6: AssertionError
-================================ 1 failed, 1 passed in 0.07s ================================
+<span class="n">test_sample_1</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">6</span><span class="p">:</span> <span class="nb">AssertionError</span>
+<span class="o">================================</span> <span class="mi">1</span> <span class="n">failed</span><span class="p">,</span> <span class="mi">1</span> <span class="n">passed</span> <span class="ow">in</span> <span class="mf">0.07</span><span class="n">s</span> <span class="o">================================</span>
 </code></pre></div></div>
 
 <p>위의 결과를 통해 지정한 테스트 코드가 정상적으로 실행되었음을 알 수 있다.</p>
@@ -559,35 +563,35 @@ test_sample_1.py:6: AssertionError
 
 <p>assert 기능을 테스트 하기 위해 다음과 같은 테스트 코드를 작성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def func(x):
-    return x + 1
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
 
-def test_answer():
-    assert func(3) == 5 
+<span class="k">def</span> <span class="nf">test_answer</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">func</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span> 
 </code></pre></div></div>
 
 <p>Pytest framework는 이름의 prefix가 “test”인 함수만 인식하여 테스트 한다. 더 자세한 내용은 <a href="https://docs.pytest.org/en/latest/goodpractices.html#test-discovery">Conventions for Python test discovery</a>에서 확인한다.</p>
 
 <p>test_answer를 실행하여 func(3)의 값과 5를 같은지 비교하고 같지 않다면 AssertionError를 발생시킨다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_sample.py
-==================================== test session starts ====================================
-platform darwin -- Python 3.7.4, pytest-5.1.1, py-1.8.0, pluggy-0.12.0
-rootdir: /Users/kelpin/dev/pytest_tutorial
-collected 1 item
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pytest</span> <span class="n">test_sample</span><span class="o">.</span><span class="n">py</span>
+<span class="o">====================================</span> <span class="n">test</span> <span class="n">session</span> <span class="n">starts</span> <span class="o">====================================</span>
+<span class="n">platform</span> <span class="n">darwin</span> <span class="o">--</span> <span class="n">Python</span> <span class="mf">3.7.4</span><span class="p">,</span> <span class="n">pytest</span><span class="o">-</span><span class="mf">5.1.1</span><span class="p">,</span> <span class="n">py</span><span class="o">-</span><span class="mf">1.8.0</span><span class="p">,</span> <span class="n">pluggy</span><span class="o">-</span><span class="mf">0.12.0</span>
+<span class="n">rootdir</span><span class="p">:</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kelpin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pytest_tutorial</span>
+<span class="n">collected</span> <span class="mi">1</span> <span class="n">item</span>
  
-test_sample.py F                                                                      [100%]
+<span class="n">test_sample</span><span class="o">.</span><span class="n">py</span> <span class="n">F</span>                                                                      <span class="p">[</span><span class="mi">100</span><span class="o">%</span><span class="p">]</span>
  
-========================================= FAILURES ==========================================
-________________________________________ test_answer ________________________________________
+<span class="o">=========================================</span> <span class="n">FAILURES</span> <span class="o">==========================================</span>
+<span class="n">________________________________________</span> <span class="n">test_answer</span> <span class="n">________________________________________</span>
  
-    def test_answer():
-&gt;       assert func(3) == 5
-E       assert 4 == 5
-E        +  where 4 = func(3)
+    <span class="k">def</span> <span class="nf">test_answer</span><span class="p">():</span>
+<span class="o">&gt;</span>       <span class="k">assert</span> <span class="n">func</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span>
+<span class="n">E</span>       <span class="k">assert</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">5</span>
+<span class="n">E</span>        <span class="o">+</span>  <span class="n">where</span> <span class="mi">4</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
  
-test_sample.py:6: AssertionError
-===================================== 1 failed in 0.04s =====================================
+<span class="n">test_sample</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">6</span><span class="p">:</span> <span class="nb">AssertionError</span>
+<span class="o">=====================================</span> <span class="mi">1</span> <span class="n">failed</span> <span class="ow">in</span> <span class="mf">0.04</span><span class="n">s</span> <span class="o">=====================================</span>
 </code></pre></div></div>
 
 <p>테스트 결과를 설명하면 다음과 같다.</p>
@@ -626,32 +630,32 @@ test_sample.py:6: AssertionError
 
 <p>다음과 같이 짝수이면 테스트 통과하는 테스트 코드를 작성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def test_even():
-    a = 11
-    assert a % 2 == 0, "value was odd, should be even"
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_even</span><span class="p">():</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">11</span>
+    <span class="k">assert</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s">"value was odd, should be even"</span>
 </code></pre></div></div>
 
 <p>실행 결과는 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_sample.py
-============================================================================================================ test session starts ============================================================================================================
-platform darwin -- Python 3.7.4, pytest-5.1.1, py-1.8.0, pluggy-0.12.0
-rootdir: /Users/kelpin/dev/pytest_tutorial
-collected 1 item                                                                                                                                                                                                                            
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pytest</span> <span class="n">test_sample</span><span class="o">.</span><span class="n">py</span>
+<span class="o">============================================================================================================</span> <span class="n">test</span> <span class="n">session</span> <span class="n">starts</span> <span class="o">============================================================================================================</span>
+<span class="n">platform</span> <span class="n">darwin</span> <span class="o">--</span> <span class="n">Python</span> <span class="mf">3.7.4</span><span class="p">,</span> <span class="n">pytest</span><span class="o">-</span><span class="mf">5.1.1</span><span class="p">,</span> <span class="n">py</span><span class="o">-</span><span class="mf">1.8.0</span><span class="p">,</span> <span class="n">pluggy</span><span class="o">-</span><span class="mf">0.12.0</span>
+<span class="n">rootdir</span><span class="p">:</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kelpin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pytest_tutorial</span>
+<span class="n">collected</span> <span class="mi">1</span> <span class="n">item</span>                                                                                                                                                                                                                            
 
-test_sample.py F                                                                                                                                                                                                                      [100%]
+<span class="n">test_sample</span><span class="o">.</span><span class="n">py</span> <span class="n">F</span>                                                                                                                                                                                                                      <span class="p">[</span><span class="mi">100</span><span class="o">%</span><span class="p">]</span>
 
-================================================================================================================= FAILURES ==================================================================================================================
-_________________________________________________________________________________________________________________ test_even _________________________________________________________________________________________________________________
+<span class="o">=================================================================================================================</span> <span class="n">FAILURES</span> <span class="o">==================================================================================================================</span>
+<span class="n">_________________________________________________________________________________________________________________</span> <span class="n">test_even</span> <span class="n">_________________________________________________________________________________________________________________</span>
 
-    def test_even():
-        a = 11
-&gt;       assert a % 2 == 0, "value was odd, should be even"
-E       AssertionError: value was odd, should be even
-E       assert (11 % 2) == 0
+    <span class="k">def</span> <span class="nf">test_even</span><span class="p">():</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="o">&gt;</span>       <span class="k">assert</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s">"value was odd, should be even"</span>
+<span class="n">E</span>       <span class="nb">AssertionError</span><span class="p">:</span> <span class="n">value</span> <span class="n">was</span> <span class="n">odd</span><span class="p">,</span> <span class="n">should</span> <span class="n">be</span> <span class="n">even</span>
+<span class="n">E</span>       <span class="k">assert</span> <span class="p">(</span><span class="mi">11</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
 
-test_sample.py:10: AssertionError
-============================================================================================================= 1 failed in 0.05s =============================================================================================================
+<span class="n">test_sample</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span> <span class="nb">AssertionError</span>
+<span class="o">=============================================================================================================</span> <span class="mi">1</span> <span class="n">failed</span> <span class="ow">in</span> <span class="mf">0.05</span><span class="n">s</span> <span class="o">=============================================================================================================</span>
 </code></pre></div></div>
 
 <p>테스트 결과에서 에러 메시지 중 ”value was odd, should be even”가 출력된 것을 통해 추가한 오류 메시지가 정상 출력된 것을 확인할 수 있다.</p>
@@ -666,16 +670,16 @@ test_sample.py:10: AssertionError
 
 <p>PyTest는 테스트 통과 실패시 아래 예시와 같은 형태로 테스트 통과 실패 이유를 알려준다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>========================================= FAILURES ==========================================
-________________________________________ test_answer ________________________________________
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">=========================================</span> <span class="n">FAILURES</span> <span class="o">==========================================</span>
+<span class="n">________________________________________</span> <span class="n">test_answer</span> <span class="n">________________________________________</span>
  
-    def test_answer():
-&gt;       assert func(3) == 5
-E       assert 4 == 5
-E        +  where 4 = func(3)
+    <span class="k">def</span> <span class="nf">test_answer</span><span class="p">():</span>
+<span class="o">&gt;</span>       <span class="k">assert</span> <span class="n">func</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span>
+<span class="n">E</span>       <span class="k">assert</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">5</span>
+<span class="n">E</span>        <span class="o">+</span>  <span class="n">where</span> <span class="mi">4</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
  
-test_sample.py:6: AssertionError
-===================================== 1 failed in 0.04s =====================================
+<span class="n">test_sample</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">6</span><span class="p">:</span> <span class="nb">AssertionError</span>
+<span class="o">=====================================</span> <span class="mi">1</span> <span class="n">failed</span> <span class="ow">in</span> <span class="mf">0.04</span><span class="n">s</span> <span class="o">=====================================</span>
 </code></pre></div></div>
 
 <p>간단한 테스트는 테스트 통과 실패 이유를 쉽게 찾을 수 있지만, 테스트 코드가 복잡해지거나 테스트 수가 많아진다면 테스트 통과 실패 이유를 확인하는 데에 많은 시간이 소모된다.</p>
@@ -690,14 +694,14 @@ test_sample.py:6: AssertionError
 
 <p>우선 테스트 코드와 동일한 디렉터리 레벨에 conftest.py를 생성하고 다음과 같이 작성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from test_foocompare import Foo
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">test_foocompare</span> <span class="kn">import</span> <span class="n">Foo</span>
 
-def pytest_assertrepr_compare(op, left, right):
-    if isinstance(left, Foo) and isinstance(right, Foo) and op == "==":
-        return [
-            "Comparing Foo instances:",
-            "   vals: {} != {}".format(left.val, right.val),
-        ]
+<span class="k">def</span> <span class="nf">pytest_assertrepr_compare</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">Foo</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">Foo</span><span class="p">)</span> <span class="ow">and</span> <span class="n">op</span> <span class="o">==</span> <span class="s">"=="</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="s">"Comparing Foo instances:"</span><span class="p">,</span>
+            <span class="s">"   vals: {} != {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">val</span><span class="p">),</span>
+        <span class="p">]</span>
 </code></pre></div></div>
 
 <p>pytest_assertrepr_compare 함수에 대하여 설명하면 다음과 같다.</p>
@@ -710,42 +714,42 @@ def pytest_assertrepr_compare(op, left, right):
 
 <p>테스트를 위하여 test_foocompare.py를 생성하고 다음과 같이 작성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Foo:
-    def __init__(self, val):
-        self.val = val
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Foo</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
 
-    def __eq__(self, other):
-        return self.val == other.val
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">val</span>
 
 
-def test_compare():
-    f1 = Foo(1)
-    f2 = Foo(2)
-    assert f1 == f2
+<span class="k">def</span> <span class="nf">test_compare</span><span class="p">():</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">f2</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">f1</span> <span class="o">==</span> <span class="n">f2</span>
 </code></pre></div></div>
 
 <p>PyTest framework로 test_foocompare.py를 실행하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_foocompare.py      
-============================================================================================================ test session starts ============================================================================================================
-platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kelpin/dev/pytest_tutorial/assert
-collected 1 item                                                                                                                                                                                                                            
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pytest</span> <span class="n">test_foocompare</span><span class="o">.</span><span class="n">py</span>      
+<span class="o">============================================================================================================</span> <span class="n">test</span> <span class="n">session</span> <span class="n">starts</span> <span class="o">============================================================================================================</span>
+<span class="n">platform</span> <span class="n">darwin</span> <span class="o">--</span> <span class="n">Python</span> <span class="mf">3.7.4</span><span class="p">,</span> <span class="n">pytest</span><span class="o">-</span><span class="mf">5.2.1</span><span class="p">,</span> <span class="n">py</span><span class="o">-</span><span class="mf">1.8.0</span><span class="p">,</span> <span class="n">pluggy</span><span class="o">-</span><span class="mf">0.13.0</span>
+<span class="n">rootdir</span><span class="p">:</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kelpin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pytest_tutorial</span><span class="o">/</span><span class="k">assert</span>
+<span class="n">collected</span> <span class="mi">1</span> <span class="n">item</span>                                                                                                                                                                                                                            
 
-test_foocompare.py F                                                                                                                                                                                                                  [100%]
+<span class="n">test_foocompare</span><span class="o">.</span><span class="n">py</span> <span class="n">F</span>                                                                                                                                                                                                                  <span class="p">[</span><span class="mi">100</span><span class="o">%</span><span class="p">]</span>
 
-================================================================================================================= FAILURES ==================================================================================================================
-_______________________________________________________________________________________________________________ test_compare ________________________________________________________________________________________________________________
+<span class="o">=================================================================================================================</span> <span class="n">FAILURES</span> <span class="o">==================================================================================================================</span>
+<span class="n">_______________________________________________________________________________________________________________</span> <span class="n">test_compare</span> <span class="n">________________________________________________________________________________________________________________</span>
 
-    def test_compare():
-        f1 = Foo(1)
-        f2 = Foo(2)
-&gt;       assert f1 == f2
-E       assert Comparing Foo instances:
-E            vals: 1 != 2
+    <span class="k">def</span> <span class="nf">test_compare</span><span class="p">():</span>
+        <span class="n">f1</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">f2</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">&gt;</span>       <span class="k">assert</span> <span class="n">f1</span> <span class="o">==</span> <span class="n">f2</span>
+<span class="n">E</span>       <span class="k">assert</span> <span class="n">Comparing</span> <span class="n">Foo</span> <span class="n">instances</span><span class="p">:</span>
+<span class="n">E</span>            <span class="n">vals</span><span class="p">:</span> <span class="mi">1</span> <span class="o">!=</span> <span class="mi">2</span>
 
-test_foocompare.py:12: AssertionError
-============================================================================================================= 1 failed in 0.04s =============================================================================================================
+<span class="n">test_foocompare</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span> <span class="nb">AssertionError</span>
+<span class="o">=============================================================================================================</span> <span class="mi">1</span> <span class="n">failed</span> <span class="ow">in</span> <span class="mf">0.04</span><span class="n">s</span> <span class="o">=============================================================================================================</span>
 </code></pre></div></div>
 
 <p>AssertionError가 발생한 코드 아래에 테스트 실패 이유가 conftest.py에 작성한 메세지 형태(<em>“Comparing Foo instances:”, “ vals: {} != {}”.format(left.val, right.val)</em>)로 출력된다는 것을 알 수 있다.</p>
@@ -774,40 +778,40 @@ test_foocompare.py:12: AssertionError
 
 <p>테스트를 위하여 test_exception_zero_division.py를 생성하고 다음과 같은 코드를 작성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import pytest
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest</span>
 
 
-def test_zero_division_1():
-    with pytest.raises(ZeroDivisionError):
-        1 / 0
+<span class="k">def</span> <span class="nf">test_zero_division_1</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="nb">ZeroDivisionError</span><span class="p">):</span>
+        <span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span>
 
 
-def test_zero_division_2():
-    with pytest.raises(ZeroDivisionError):
-        1 / 2
+<span class="k">def</span> <span class="nf">test_zero_division_2</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="nb">ZeroDivisionError</span><span class="p">):</span>
+        <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span>
 </code></pre></div></div>
 
 <p>PyTest framework로 테스트 코드를 실행하고 결과를 확인한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_exception_zero_division.py
-============================================================================================================ test session starts ============================================================================================================
-platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kelpin/dev/pytest_tutorial
-collected 2 items                                                                                                                                                                                                                           
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pytest</span> <span class="n">test_exception_zero_division</span><span class="o">.</span><span class="n">py</span>
+<span class="o">============================================================================================================</span> <span class="n">test</span> <span class="n">session</span> <span class="n">starts</span> <span class="o">============================================================================================================</span>
+<span class="n">platform</span> <span class="n">darwin</span> <span class="o">--</span> <span class="n">Python</span> <span class="mf">3.7.4</span><span class="p">,</span> <span class="n">pytest</span><span class="o">-</span><span class="mf">5.2.1</span><span class="p">,</span> <span class="n">py</span><span class="o">-</span><span class="mf">1.8.0</span><span class="p">,</span> <span class="n">pluggy</span><span class="o">-</span><span class="mf">0.13.0</span>
+<span class="n">rootdir</span><span class="p">:</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kelpin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pytest_tutorial</span>
+<span class="n">collected</span> <span class="mi">2</span> <span class="n">items</span>                                                                                                                                                                                                                           
 
-test_sample.py .F                                                                                                                                                                                                                     [100%]
+<span class="n">test_sample</span><span class="o">.</span><span class="n">py</span> <span class="o">.</span><span class="n">F</span>                                                                                                                                                                                                                     <span class="p">[</span><span class="mi">100</span><span class="o">%</span><span class="p">]</span>
 
-================================================================================================================= FAILURES ==================================================================================================================
-___________________________________________________________________________________________________________ test_zero_division_2 ____________________________________________________________________________________________________________
+<span class="o">=================================================================================================================</span> <span class="n">FAILURES</span> <span class="o">==================================================================================================================</span>
+<span class="n">___________________________________________________________________________________________________________</span> <span class="n">test_zero_division_2</span> <span class="n">____________________________________________________________________________________________________________</span>
 
-    def test_zero_division_2():
-        with pytest.raises(ZeroDivisionError):
-&gt;           1 / 2
-E           Failed: DID NOT RAISE &lt;class 'ZeroDivisionError'&gt;
+    <span class="k">def</span> <span class="nf">test_zero_division_2</span><span class="p">():</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="nb">ZeroDivisionError</span><span class="p">):</span>
+<span class="o">&gt;</span>           <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">E</span>           <span class="n">Failed</span><span class="p">:</span> <span class="n">DID</span> <span class="n">NOT</span> <span class="n">RAISE</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">ZeroDivisionError</span><span class="s">'&gt;</span><span class="err">
 
-test_sample.py:23: Failed
-======================================================================================================== 1 failed, 1 passed in 0.06s ========================================================================================================
-</code></pre></div></div>
+</span><span class="s">test_sample.py:23: Failed</span><span class="err">
+</span><span class="s">======================================================================================================== 1 failed, 1 passed in 0.06s ========================================================================================================</span><span class="err">
+</span></code></pre></div></div>
 
 <p>test_zero_division_1 함수는 Divide Zero ExceptionError 발생하여 테스트 통과(.) 하였고, test_zero_division_2 함수는 Divide Zero ExceptionError 발생하지 않았고 테스트 통과 실패(F) 하였다.</p>
 
@@ -831,39 +835,39 @@ test_sample.py:23: Failed
 
 <p>test_square_10.py를 생성하고 다음과 같이 작성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import pytest
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest</span>
 
-@pytest.fixture
-def square_10():
-    return 10 * 10
+<span class="o">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">square_10</span><span class="p">():</span>
+    <span class="k">return</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">10</span>
 
 
-def test_square(square_10):
-    assert square_10 == 100
-    assert square_10 == 121
+<span class="k">def</span> <span class="nf">test_square</span><span class="p">(</span><span class="n">square_10</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">square_10</span> <span class="o">==</span> <span class="mi">100</span>
+    <span class="k">assert</span> <span class="n">square_10</span> <span class="o">==</span> <span class="mi">121</span>
 </code></pre></div></div>
 
 <p>fixture로 명명한 square_10은 변수처럼 사용할 수 있다.</p>
 
 <p>PyTest framework로 test_square_10.py를 실행하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_square_10.py
-============================================================================================================ test session starts ============================================================================================================
-platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kelpin/dev/pytest_tutorial/fixture
-collected 1 item                                                                                                                                                                                                                            
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pytest</span> <span class="n">test_square_10</span><span class="o">.</span><span class="n">py</span>
+<span class="o">============================================================================================================</span> <span class="n">test</span> <span class="n">session</span> <span class="n">starts</span> <span class="o">============================================================================================================</span>
+<span class="n">platform</span> <span class="n">darwin</span> <span class="o">--</span> <span class="n">Python</span> <span class="mf">3.7.4</span><span class="p">,</span> <span class="n">pytest</span><span class="o">-</span><span class="mf">5.2.1</span><span class="p">,</span> <span class="n">py</span><span class="o">-</span><span class="mf">1.8.0</span><span class="p">,</span> <span class="n">pluggy</span><span class="o">-</span><span class="mf">0.13.0</span>
+<span class="n">rootdir</span><span class="p">:</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kelpin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pytest_tutorial</span><span class="o">/</span><span class="n">fixture</span>
+<span class="n">collected</span> <span class="mi">1</span> <span class="n">item</span>                                                                                                                                                                                                                            
 
-test_square_10.py F                                                                                                                                                                                                               [100%]
+<span class="n">test_square_10</span><span class="o">.</span><span class="n">py</span> <span class="n">F</span>                                                                                                                                                                                                               <span class="p">[</span><span class="mi">100</span><span class="o">%</span><span class="p">]</span>
 
-================================================================================================================= FAILURES ==================================================================================================================
-________________________________________________________________________________________________________________ test_square ________________________________________________________________________________________________________________
+<span class="o">=================================================================================================================</span> <span class="n">FAILURES</span> <span class="o">==================================================================================================================</span>
+<span class="n">________________________________________________________________________________________________________________</span> <span class="n">test_square</span> <span class="n">________________________________________________________________________________________________________________</span>
 
-square_10 = 100
+<span class="n">square_10</span> <span class="o">=</span> <span class="mi">100</span>
 
-    def test_square(square_10):
-        assert square_10 == 100
-&gt;       assert square_10 == 121
-E       assert 100 == 121
+    <span class="k">def</span> <span class="nf">test_square</span><span class="p">(</span><span class="n">square_10</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">square_10</span> <span class="o">==</span> <span class="mi">100</span>
+<span class="o">&gt;</span>       <span class="k">assert</span> <span class="n">square_10</span> <span class="o">==</span> <span class="mi">121</span>
+<span class="n">E</span>       <span class="k">assert</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">121</span>
 </code></pre></div></div>
 
 <p>테스트 결과를 확인하면 <em>assert square_10 == 121</em> 에서 테스트 통과 실패했다.</p>
@@ -876,26 +880,26 @@ E       assert 100 == 121
 
 <p>conftest.py를 생성하고 다음과 같이 작성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import pytest
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest</span>
 
-@pytest.fixture
-def square_10():
-    return 10 * 10
+<span class="o">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">square_10</span><span class="p">():</span>
+    <span class="k">return</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">10</span>
 
 </code></pre></div></div>
 
 <p>test_fixture_over.py, test_fixture_under.py를 생성하고 아래와 같이 작성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def test_square_10_over(square_10):
-    assert square_10 == 100
-    assert square_10 == 121
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_square_10_over</span><span class="p">(</span><span class="n">square_10</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">square_10</span> <span class="o">==</span> <span class="mi">100</span>
+    <span class="k">assert</span> <span class="n">square_10</span> <span class="o">==</span> <span class="mi">121</span>
 
 
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def test_square_10_under(square_10):
-    assert square_10 == 100
-    assert square_10 == 81
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_square_10_under</span><span class="p">(</span><span class="n">square_10</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">square_10</span> <span class="o">==</span> <span class="mi">100</span>
+    <span class="k">assert</span> <span class="n">square_10</span> <span class="o">==</span> <span class="mi">81</span>
 
 </code></pre></div></div>
 
@@ -903,37 +907,37 @@ def square_10():
 
 <p>PyTest framework를 실행하고 결과를 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest *er.py
-============================================================================================================ test session starts ============================================================================================================
-platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kelpin/dev/pytest_tutorial/fixture/over_under
-collected 2 items                                                                                                                                                                                                                           
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pytest</span> <span class="o">*</span><span class="n">er</span><span class="o">.</span><span class="n">py</span>
+<span class="o">============================================================================================================</span> <span class="n">test</span> <span class="n">session</span> <span class="n">starts</span> <span class="o">============================================================================================================</span>
+<span class="n">platform</span> <span class="n">darwin</span> <span class="o">--</span> <span class="n">Python</span> <span class="mf">3.7.4</span><span class="p">,</span> <span class="n">pytest</span><span class="o">-</span><span class="mf">5.2.1</span><span class="p">,</span> <span class="n">py</span><span class="o">-</span><span class="mf">1.8.0</span><span class="p">,</span> <span class="n">pluggy</span><span class="o">-</span><span class="mf">0.13.0</span>
+<span class="n">rootdir</span><span class="p">:</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kelpin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pytest_tutorial</span><span class="o">/</span><span class="n">fixture</span><span class="o">/</span><span class="n">over_under</span>
+<span class="n">collected</span> <span class="mi">2</span> <span class="n">items</span>                                                                                                                                                                                                                           
 
-test_fixture_over.py F                                                                                                                                                                                                                [ 50%]
-test_fixture_under.py F                                                                                                                                                                                                               [100%]
+<span class="n">test_fixture_over</span><span class="o">.</span><span class="n">py</span> <span class="n">F</span>                                                                                                                                                                                                                <span class="p">[</span> <span class="mi">50</span><span class="o">%</span><span class="p">]</span>
+<span class="n">test_fixture_under</span><span class="o">.</span><span class="n">py</span> <span class="n">F</span>                                                                                                                                                                                                               <span class="p">[</span><span class="mi">100</span><span class="o">%</span><span class="p">]</span>
 
-================================================================================================================= FAILURES ==================================================================================================================
-____________________________________________________________________________________________________________ test_square_10_over ____________________________________________________________________________________________________________
+<span class="o">=================================================================================================================</span> <span class="n">FAILURES</span> <span class="o">==================================================================================================================</span>
+<span class="n">____________________________________________________________________________________________________________</span> <span class="n">test_square_10_over</span> <span class="n">____________________________________________________________________________________________________________</span>
 
-square_10 = 100
+<span class="n">square_10</span> <span class="o">=</span> <span class="mi">100</span>
 
-    def test_square_10_over(square_10):
-        assert square_10 == 100
-&gt;       assert square_10 == 121
-E       assert 100 == 121
+    <span class="k">def</span> <span class="nf">test_square_10_over</span><span class="p">(</span><span class="n">square_10</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">square_10</span> <span class="o">==</span> <span class="mi">100</span>
+<span class="o">&gt;</span>       <span class="k">assert</span> <span class="n">square_10</span> <span class="o">==</span> <span class="mi">121</span>
+<span class="n">E</span>       <span class="k">assert</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">121</span>
 
-test_fixture_over.py:3: AssertionError
-___________________________________________________________________________________________________________ test_square_10_under ____________________________________________________________________________________________________________
+<span class="n">test_fixture_over</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">3</span><span class="p">:</span> <span class="nb">AssertionError</span>
+<span class="n">___________________________________________________________________________________________________________</span> <span class="n">test_square_10_under</span> <span class="n">____________________________________________________________________________________________________________</span>
 
-square_10 = 100
+<span class="n">square_10</span> <span class="o">=</span> <span class="mi">100</span>
 
-    def test_square_10_under(square_10):
-        assert square_10 == 100
-&gt;       assert square_10 == 81
-E       assert 100 == 81
+    <span class="k">def</span> <span class="nf">test_square_10_under</span><span class="p">(</span><span class="n">square_10</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">square_10</span> <span class="o">==</span> <span class="mi">100</span>
+<span class="o">&gt;</span>       <span class="k">assert</span> <span class="n">square_10</span> <span class="o">==</span> <span class="mi">81</span>
+<span class="n">E</span>       <span class="k">assert</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">81</span>
 
-test_fixture_under.py:3: AssertionError
-============================================================================================================= 2 failed in 0.04s =============================================================================================================
+<span class="n">test_fixture_under</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">3</span><span class="p">:</span> <span class="nb">AssertionError</span>
+<span class="o">=============================================================================================================</span> <span class="mi">2</span> <span class="n">failed</span> <span class="ow">in</span> <span class="mf">0.04</span><span class="n">s</span> <span class="o">=============================================================================================================</span>
 </code></pre></div></div>
 
 <p>conftest.py에서 정의한 fixture square_10는 test_square_10_over 함수와 test_square_10_under 함수의 인자로 전달되었다.</p>
@@ -976,110 +980,110 @@ test_fixture_under.py:3: AssertionError
 
 <p>위의 사례를 직접 경험하기 위해 다음과 같이 코드를 작성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import pytest
-import os
-import smtplib
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">smtplib</span>
 
 
-# yield을 활용한 Teardown
-@pytest.fixture
-def make_directory_and_txt_file_yield():
-    directory_name = "/data/"
-    directory_path = os.getcwd()+directory_name
-    try:
-        if not(os.path.isdir(directory_path)):
-            os.makedirs(os.path.join(directory_path))
-            print("\nmake directory", directory_path)
-    except Exception as e:
-        print("make_directory() has error \n error message: {}".format(e))    
+<span class="c1"># yield을 활용한 Teardown
+</span><span class="o">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">make_directory_and_txt_file_yield</span><span class="p">():</span>
+    <span class="n">directory_name</span> <span class="o">=</span> <span class="s">"/data/"</span>
+    <span class="n">directory_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">+</span><span class="n">directory_name</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory_path</span><span class="p">))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">make directory"</span><span class="p">,</span> <span class="n">directory_path</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"make_directory() has error </span><span class="se">\n</span><span class="s"> error message: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>    
     
-    file_name = "temp_data.txt"
-    print("make file", file_name)
-    f = open(directory_path+file_name, 'w')
-    yield f
+    <span class="n">file_name</span> <span class="o">=</span> <span class="s">"temp_data.txt"</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"make file"</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">directory_path</span><span class="o">+</span><span class="n">file_name</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">f</span>
 
-    f.close()
-    os.remove(directory_path+file_name)
-    print("\ndelete temp file ", directory_path+file_name)
-    os.rmdir(directory_path)
-    print("delete directory ", directory_path)
-    print("teardown complete")
-
-
-def test_file_write_yield(make_directory_and_txt_file_yield):
-    file_pointer = make_directory_and_txt_file_yield
-    file_pointer.write("data write")
-    print("data write to file")
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">directory_path</span><span class="o">+</span><span class="n">file_name</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">delete temp file "</span><span class="p">,</span> <span class="n">directory_path</span><span class="o">+</span><span class="n">file_name</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"delete directory "</span><span class="p">,</span> <span class="n">directory_path</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"teardown complete"</span><span class="p">)</span>
 
 
-# request.addfinalizer을 활용한 Teardown
-@pytest.fixture
-def make_directory_and_txt_file_addfinalizer(request):
-    directory_name = "/data/"
-    directory_path = os.getcwd()+directory_name
-    try:
-        if not(os.path.isdir(directory_path)):
-            os.makedirs(os.path.join(directory_path))
-            print("\nmake directory", directory_path)
-    except Exception as e:
-        print("make_directory() has error \n error message: {}".format(e))    
+<span class="k">def</span> <span class="nf">test_file_write_yield</span><span class="p">(</span><span class="n">make_directory_and_txt_file_yield</span><span class="p">):</span>
+    <span class="n">file_pointer</span> <span class="o">=</span> <span class="n">make_directory_and_txt_file_yield</span>
+    <span class="n">file_pointer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"data write"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"data write to file"</span><span class="p">)</span>
+
+
+<span class="c1"># request.addfinalizer을 활용한 Teardown
+</span><span class="o">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">make_directory_and_txt_file_addfinalizer</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">directory_name</span> <span class="o">=</span> <span class="s">"/data/"</span>
+    <span class="n">directory_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">+</span><span class="n">directory_name</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory_path</span><span class="p">))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">make directory"</span><span class="p">,</span> <span class="n">directory_path</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"make_directory() has error </span><span class="se">\n</span><span class="s"> error message: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>    
     
-    file_name = "temp_data.txt"
-    print("make file", file_name)
-    f = open(directory_path+file_name, 'w')
+    <span class="n">file_name</span> <span class="o">=</span> <span class="s">"temp_data.txt"</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"make file"</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">directory_path</span><span class="o">+</span><span class="n">file_name</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span>
 
-    def teardown():
-        f.close()
-        os.remove(directory_path+file_name)
-        print("\ndelete temp file ", directory_path+file_name)
-        os.rmdir(directory_path)
-        print("delete directory ", directory_path)
-        print("teardown complete")
+    <span class="k">def</span> <span class="nf">teardown</span><span class="p">():</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">directory_path</span><span class="o">+</span><span class="n">file_name</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">delete temp file "</span><span class="p">,</span> <span class="n">directory_path</span><span class="o">+</span><span class="n">file_name</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"delete directory "</span><span class="p">,</span> <span class="n">directory_path</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"teardown complete"</span><span class="p">)</span>
 
-    request.addfinalizer(teardown)
+    <span class="n">request</span><span class="o">.</span><span class="n">addfinalizer</span><span class="p">(</span><span class="n">teardown</span><span class="p">)</span>
 
-    return f
+    <span class="k">return</span> <span class="n">f</span>
 
     
-def test_file_write_addfinalizer(make_directory_and_txt_file_addfinalizer):
-    file_pointer = make_directory_and_txt_file_addfinalizer
-    file_pointer.write("data write")
-    print("data write to file")
+<span class="k">def</span> <span class="nf">test_file_write_addfinalizer</span><span class="p">(</span><span class="n">make_directory_and_txt_file_addfinalizer</span><span class="p">):</span>
+    <span class="n">file_pointer</span> <span class="o">=</span> <span class="n">make_directory_and_txt_file_addfinalizer</span>
+    <span class="n">file_pointer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"data write"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"data write to file"</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>다음 명령어를 입력한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest pytest -v -s test_fixture.py
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pytest</span> <span class="n">pytest</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">s</span> <span class="n">test_fixture</span><span class="o">.</span><span class="n">py</span>
 </code></pre></div></div>
 
 <p>실행 결과는 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>================================================================================================================================================ test session starts ==============================================================================================================================
-platform darwin -- Python 3.7.3, pytest-5.2.2, py-1.8.0, pluggy-0.13.0 -- /Users/st/test/pytest/.venv/bin/python3.7
-cachedir: .pytest_cache
-rootdir: /Users/st/test/pytest
-collected 2 items                                                                                                                                                                                                                                                                                                    
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">================================================================================================================================================</span> <span class="n">test</span> <span class="n">session</span> <span class="n">starts</span> <span class="o">==============================================================================================================================</span>
+<span class="n">platform</span> <span class="n">darwin</span> <span class="o">--</span> <span class="n">Python</span> <span class="mf">3.7.3</span><span class="p">,</span> <span class="n">pytest</span><span class="o">-</span><span class="mf">5.2.2</span><span class="p">,</span> <span class="n">py</span><span class="o">-</span><span class="mf">1.8.0</span><span class="p">,</span> <span class="n">pluggy</span><span class="o">-</span><span class="mf">0.13.0</span> <span class="o">--</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">pytest</span><span class="o">/.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span><span class="mf">.7</span>
+<span class="n">cachedir</span><span class="p">:</span> <span class="o">.</span><span class="n">pytest_cache</span>
+<span class="n">rootdir</span><span class="p">:</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">pytest</span>
+<span class="n">collected</span> <span class="mi">2</span> <span class="n">items</span>                                                                                                                                                                                                                                                                                                    
 
-tests/test_module.py::test_file_write_yield 
-make directory /Users/st/test/pytest/data/
-make file temp_data.txt
-data write to file
-PASSED
-delete temp file  /Users/st/test/pytest/data/temp_data.txt
-delete directory  /Users/st/test/pytest/data/
-teardown complete
+<span class="n">tests</span><span class="o">/</span><span class="n">test_module</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">test_file_write_yield</span> 
+<span class="n">make</span> <span class="n">directory</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">pytest</span><span class="o">/</span><span class="n">data</span><span class="o">/</span>
+<span class="n">make</span> <span class="nb">file</span> <span class="n">temp_data</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">data</span> <span class="n">write</span> <span class="n">to</span> <span class="nb">file</span>
+<span class="n">PASSED</span>
+<span class="n">delete</span> <span class="n">temp</span> <span class="nb">file</span>  <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">pytest</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">temp_data</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">delete</span> <span class="n">directory</span>  <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">pytest</span><span class="o">/</span><span class="n">data</span><span class="o">/</span>
+<span class="n">teardown</span> <span class="n">complete</span>
 
-tests/test_module.py::test_file_write_addfinalizer 
-make directory /Users/st/test/pytest/data/
-make file temp_data.txt
-data write to file
-PASSED
-delete temp file  /Users/st/test/pytest/data/temp_data.txt
-delete directory  /Users/st/test/pytest/data/
-teardown complete
+<span class="n">tests</span><span class="o">/</span><span class="n">test_module</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">test_file_write_addfinalizer</span> 
+<span class="n">make</span> <span class="n">directory</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">pytest</span><span class="o">/</span><span class="n">data</span><span class="o">/</span>
+<span class="n">make</span> <span class="nb">file</span> <span class="n">temp_data</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">data</span> <span class="n">write</span> <span class="n">to</span> <span class="nb">file</span>
+<span class="n">PASSED</span>
+<span class="n">delete</span> <span class="n">temp</span> <span class="nb">file</span>  <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">pytest</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">temp_data</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">delete</span> <span class="n">directory</span>  <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">pytest</span><span class="o">/</span><span class="n">data</span><span class="o">/</span>
+<span class="n">teardown</span> <span class="n">complete</span>
 
 
-================================================================================================================================================= 2 passed in 0.20s ===============================================================================================================================
+<span class="o">=================================================================================================================================================</span> <span class="mi">2</span> <span class="n">passed</span> <span class="ow">in</span> <span class="mf">0.20</span><span class="n">s</span> <span class="o">===============================================================================================================================</span>
 </code></pre></div></div>
 
 <p>위의 결과를 통해 정상적으로 테스트를 위한 디렉토리, 파일 생성과 테스트 완료 후 해당 디렉토리와 파일을 정상적으로 삭제가 되었다는 것을 알 수 있다.</p>
@@ -1090,59 +1094,59 @@ teardown complete
 
 <p>다음은 다수의 fixture 값을 생성하는 테스트 코드이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import pytest
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest</span>
 
 
-@pytest.fixture(params=[1, 2, 3])
-def make_double_value(request):
-    return (request.param, request.param * 2)
+<span class="o">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">make_double_value</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">param</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">param</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
 
 
-def test_double_value(make_double_value):
-    assert make_double_value[1] == (make_double_value[0] * 2 + 1)ㅗ1
+<span class="k">def</span> <span class="nf">test_double_value</span><span class="p">(</span><span class="n">make_double_value</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">make_double_value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="p">(</span><span class="n">make_double_value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="err">ㅗ</span><span class="mi">1</span>
 </code></pre></div></div>
 
 <p>make_double_value 함수로 생성되는 fixture에 대하여 설명하면 requst.param = 1, request.param = 2, request.param = 3인 케이스 별로 fixture를 생성한다.</p>
 
 <p>pytest framework로 test_params.py를 실행하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_params.py
-============================================================================================================ test session starts ============================================================================================================
-platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kelpin/dev/pytest_tutorial/fixture
-collected 3 items                                                                                                                                                                                                                           
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pytest</span> <span class="n">test_params</span><span class="o">.</span><span class="n">py</span>
+<span class="o">============================================================================================================</span> <span class="n">test</span> <span class="n">session</span> <span class="n">starts</span> <span class="o">============================================================================================================</span>
+<span class="n">platform</span> <span class="n">darwin</span> <span class="o">--</span> <span class="n">Python</span> <span class="mf">3.7.4</span><span class="p">,</span> <span class="n">pytest</span><span class="o">-</span><span class="mf">5.2.1</span><span class="p">,</span> <span class="n">py</span><span class="o">-</span><span class="mf">1.8.0</span><span class="p">,</span> <span class="n">pluggy</span><span class="o">-</span><span class="mf">0.13.0</span>
+<span class="n">rootdir</span><span class="p">:</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kelpin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pytest_tutorial</span><span class="o">/</span><span class="n">fixture</span>
+<span class="n">collected</span> <span class="mi">3</span> <span class="n">items</span>                                                                                                                                                                                                                           
 
-test_params.py FFF                                                                                                                                                                                                           [100%]
+<span class="n">test_params</span><span class="o">.</span><span class="n">py</span> <span class="n">FFF</span>                                                                                                                                                                                                           <span class="p">[</span><span class="mi">100</span><span class="o">%</span><span class="p">]</span>
 
-================================================================================================================= FAILURES ==================================================================================================================
-___________________________________________________________________________________________________________ test_double_value[1] ____________________________________________________________________________________________________________
+<span class="o">=================================================================================================================</span> <span class="n">FAILURES</span> <span class="o">==================================================================================================================</span>
+<span class="n">___________________________________________________________________________________________________________</span> <span class="n">test_double_value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">____________________________________________________________________________________________________________</span>
 
-make_double_value = (1, 2)
+<span class="n">make_double_value</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
-    def test_double_value(make_double_value):
-&gt;       assert make_double_value[1] == (make_double_value[0] * 2 + 1)
-E       assert 2 == ((1 * 2) + 1)
+    <span class="k">def</span> <span class="nf">test_double_value</span><span class="p">(</span><span class="n">make_double_value</span><span class="p">):</span>
+<span class="o">&gt;</span>       <span class="k">assert</span> <span class="n">make_double_value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="p">(</span><span class="n">make_double_value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">E</span>       <span class="k">assert</span> <span class="mi">2</span> <span class="o">==</span> <span class="p">((</span><span class="mi">1</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
-test_params.py:10: AssertionError
-___________________________________________________________________________________________________________ test_double_value[2] ____________________________________________________________________________________________________________
+<span class="n">test_params</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span> <span class="nb">AssertionError</span>
+<span class="n">___________________________________________________________________________________________________________</span> <span class="n">test_double_value</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">____________________________________________________________________________________________________________</span>
 
-make_double_value = (2, 4)
+<span class="n">make_double_value</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 
-    def test_double_value(make_double_value):
-&gt;       assert make_double_value[1] == (make_double_value[0] * 2 + 1)
-E       assert 4 == ((2 * 2) + 1)
+    <span class="k">def</span> <span class="nf">test_double_value</span><span class="p">(</span><span class="n">make_double_value</span><span class="p">):</span>
+<span class="o">&gt;</span>       <span class="k">assert</span> <span class="n">make_double_value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="p">(</span><span class="n">make_double_value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">E</span>       <span class="k">assert</span> <span class="mi">4</span> <span class="o">==</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
-test_params.py:10: AssertionError
-___________________________________________________________________________________________________________ test_double_value[3] ____________________________________________________________________________________________________________
+<span class="n">test_params</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span> <span class="nb">AssertionError</span>
+<span class="n">___________________________________________________________________________________________________________</span> <span class="n">test_double_value</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="n">____________________________________________________________________________________________________________</span>
 
-make_double_value = (3, 6)
+<span class="n">make_double_value</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 
-    def test_double_value(make_double_value):
-&gt;       assert make_double_value[1] == (make_double_value[0] * 2 + 1)
-E       assert 6 == ((3 * 2) + 1)
+    <span class="k">def</span> <span class="nf">test_double_value</span><span class="p">(</span><span class="n">make_double_value</span><span class="p">):</span>
+<span class="o">&gt;</span>       <span class="k">assert</span> <span class="n">make_double_value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="p">(</span><span class="n">make_double_value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">E</span>       <span class="k">assert</span> <span class="mi">6</span> <span class="o">==</span> <span class="p">((</span><span class="mi">3</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
-test_params.py:10: AssertionError
-============================================================================================================= 3 failed in 0.04s =============================================================================================================
+<span class="n">test_params</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span> <span class="nb">AssertionError</span>
+<span class="o">=============================================================================================================</span> <span class="mi">3</span> <span class="n">failed</span> <span class="ow">in</span> <span class="mf">0.04</span><span class="n">s</span> <span class="o">=============================================================================================================</span>
 </code></pre></div></div>
 
 <p>인자 [ 1, 2, 3]에 맞추어 make_double_value fixture가 [(1, 2), (2, 4), (3, 6)] 생성된 것을 알 수 있다.</p>
@@ -1165,12 +1169,12 @@ test_params.py:10: AssertionError
 
 <p>아래의 test_expectation.py는 연산을 입력받아 연산하고 기대값과 비교하는 테스트 코드이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import pytest
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest</span>
 
 
-@pytest.mark.parametrize("test_input,expected", [("3+5", 8), ("2+4", 6), ("6*9", 42)])
-def test_eval(test_input, expected):
-    assert eval(test_input) == expected
+<span class="o">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s">"test_input,expected"</span><span class="p">,</span> <span class="p">[(</span><span class="s">"3+5"</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s">"2+4"</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="s">"6*9"</span><span class="p">,</span> <span class="mi">42</span><span class="p">)])</span>
+<span class="k">def</span> <span class="nf">test_eval</span><span class="p">(</span><span class="n">test_input</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">eval</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span> <span class="o">==</span> <span class="n">expected</span>
 </code></pre></div></div>
 
 <p>아래와 같이 총 3가지 케이스가 발생하여 테스트 코드가 실행될 것이다.</p>
@@ -1189,83 +1193,83 @@ def test_eval(test_input, expected):
 
 <p>Pytest framework를 실행하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pytest test_expectation.py
-============================================================================================================ test session starts ============================================================================================================
-platform darwin -- Python 3.7.4, pytest-5.2.1, py-1.8.0, pluggy-0.13.0
-rootdir: /Users/kelpin/dev/pytest_tutorial/fixture
-collected 3 items                                                                                                                                                                                                                           
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pytest</span> <span class="n">test_expectation</span><span class="o">.</span><span class="n">py</span>
+<span class="o">============================================================================================================</span> <span class="n">test</span> <span class="n">session</span> <span class="n">starts</span> <span class="o">============================================================================================================</span>
+<span class="n">platform</span> <span class="n">darwin</span> <span class="o">--</span> <span class="n">Python</span> <span class="mf">3.7.4</span><span class="p">,</span> <span class="n">pytest</span><span class="o">-</span><span class="mf">5.2.1</span><span class="p">,</span> <span class="n">py</span><span class="o">-</span><span class="mf">1.8.0</span><span class="p">,</span> <span class="n">pluggy</span><span class="o">-</span><span class="mf">0.13.0</span>
+<span class="n">rootdir</span><span class="p">:</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kelpin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pytest_tutorial</span><span class="o">/</span><span class="n">fixture</span>
+<span class="n">collected</span> <span class="mi">3</span> <span class="n">items</span>                                                                                                                                                                                                                           
 
-test_expectation.py ..F                                                                                                                                                                                                           [100%]
+<span class="n">test_expectation</span><span class="o">.</span><span class="n">py</span> <span class="o">..</span><span class="n">F</span>                                                                                                                                                                                                           <span class="p">[</span><span class="mi">100</span><span class="o">%</span><span class="p">]</span>
 
-================================================================================================================= FAILURES ==================================================================================================================
-_____________________________________________________________________________________________________________ test_eval[6*9-42] _____________________________________________________________________________________________________________
+<span class="o">=================================================================================================================</span> <span class="n">FAILURES</span> <span class="o">==================================================================================================================</span>
+<span class="n">_____________________________________________________________________________________________________________</span> <span class="n">test_eval</span><span class="p">[</span><span class="mi">6</span><span class="o">*</span><span class="mi">9</span><span class="o">-</span><span class="mi">42</span><span class="p">]</span> <span class="n">_____________________________________________________________________________________________________________</span>
 
-test_input = '6*9', expected = 42
+<span class="n">test_input</span> <span class="o">=</span> <span class="s">'6*9'</span><span class="p">,</span> <span class="n">expected</span> <span class="o">=</span> <span class="mi">42</span>
 
-    @pytest.mark.parametrize("test_input,expected", [("3+5", 8), ("2+4", 6), ("6*9", 42)])
-    def test_eval(test_input, expected):
-&gt;       assert eval(test_input) == expected
-E       AssertionError: assert 54 == 42
-E        +  where 54 = eval('6*9')
+    <span class="o">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s">"test_input,expected"</span><span class="p">,</span> <span class="p">[(</span><span class="s">"3+5"</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s">"2+4"</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="s">"6*9"</span><span class="p">,</span> <span class="mi">42</span><span class="p">)])</span>
+    <span class="k">def</span> <span class="nf">test_eval</span><span class="p">(</span><span class="n">test_input</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+<span class="o">&gt;</span>       <span class="k">assert</span> <span class="nb">eval</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span> <span class="o">==</span> <span class="n">expected</span>
+<span class="n">E</span>       <span class="nb">AssertionError</span><span class="p">:</span> <span class="k">assert</span> <span class="mi">54</span> <span class="o">==</span> <span class="mi">42</span>
+<span class="n">E</span>        <span class="o">+</span>  <span class="n">where</span> <span class="mi">54</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="s">'6*9'</span><span class="p">)</span>
 
-test_expectation.py:7: AssertionError
-======================================================================================================== 1 failed, 2 passed in 0.08s ========================================================================================================
+<span class="n">test_expectation</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">7</span><span class="p">:</span> <span class="nb">AssertionError</span>
+<span class="o">========================================================================================================</span> <span class="mi">1</span> <span class="n">failed</span><span class="p">,</span> <span class="mi">2</span> <span class="n">passed</span> <span class="ow">in</span> <span class="mf">0.08</span><span class="n">s</span> <span class="o">========================================================================================================</span>
 </code></pre></div></div>
 
 <p>3가지 케이스가 실행되었다는 것을 알 수 있다.</p>
 
 <p>해당 기능에 대해 이해를 돕기 위해 실제 사용 레퍼런스를 발췌해 남긴다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># content of test_time.py
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># content of test_time.py
+</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
 
-import pytest
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
-from datetime import datetime, timedelta
-
-testdata = [
-    (datetime(2001, 12, 12), datetime(2001, 12, 11), timedelta(1)),
-    (datetime(2001, 12, 11), datetime(2001, 12, 12), timedelta(-1)),
-]
-
-
-@pytest.mark.parametrize("a,b,expected", testdata)
-def test_timedistance_v0(a, b, expected):
-    diff = a - b
-    assert diff == expected
+<span class="n">testdata</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">timedelta</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+    <span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">timedelta</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span>
+<span class="p">]</span>
 
 
-@pytest.mark.parametrize("a,b,expected", testdata, ids=["forward", "backward"])
-def test_timedistance_v1(a, b, expected):
-    diff = a - b
-    assert diff == expected
+<span class="o">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s">"a,b,expected"</span><span class="p">,</span> <span class="n">testdata</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_timedistance_v0</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+    <span class="k">assert</span> <span class="n">diff</span> <span class="o">==</span> <span class="n">expected</span>
 
 
-def idfn(val):
-    if isinstance(val, (datetime,)):
-        # note this wouldn't show any hours/minutes/seconds
-        return val.strftime("%Y%m%d")
+<span class="o">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s">"a,b,expected"</span><span class="p">,</span> <span class="n">testdata</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="p">[</span><span class="s">"forward"</span><span class="p">,</span> <span class="s">"backward"</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_timedistance_v1</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+    <span class="k">assert</span> <span class="n">diff</span> <span class="o">==</span> <span class="n">expected</span>
 
 
-@pytest.mark.parametrize("a,b,expected", testdata, ids=idfn)
-def test_timedistance_v2(a, b, expected):
-    diff = a - b
-    assert diff == expected
+<span class="k">def</span> <span class="nf">idfn</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="n">datetime</span><span class="p">,)):</span>
+        <span class="c1"># note this wouldn't show any hours/minutes/seconds
+</span>        <span class="k">return</span> <span class="n">val</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">"</span><span class="si">%</span><span class="s">Y</span><span class="si">%</span><span class="s">m</span><span class="si">%</span><span class="s">d"</span><span class="p">)</span>
 
 
-@pytest.mark.parametrize(
-    "a,b,expected",
-    [
-        pytest.param(
-            datetime(2001, 12, 12), datetime(2001, 12, 11), timedelta(1), id="forward"
-        ),
-        pytest.param(
-            datetime(2001, 12, 11), datetime(2001, 12, 12), timedelta(-1), id="backward"
-        ),
-    ],
-)
-def test_timedistance_v3(a, b, expected):
-    diff = a - b
-    assert diff == expected
+<span class="o">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s">"a,b,expected"</span><span class="p">,</span> <span class="n">testdata</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">idfn</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_timedistance_v2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+    <span class="k">assert</span> <span class="n">diff</span> <span class="o">==</span> <span class="n">expected</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+    <span class="s">"a,b,expected"</span><span class="p">,</span>
+    <span class="p">[</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+            <span class="n">datetime</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">timedelta</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s">"forward"</span>
+        <span class="p">),</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span>
+            <span class="n">datetime</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">timedelta</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s">"backward"</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_timedistance_v3</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+    <span class="k">assert</span> <span class="n">diff</span> <span class="o">==</span> <span class="n">expected</span>
 </code></pre></div></div>
 
 <p>다음은 참고한 문서이다.</p>

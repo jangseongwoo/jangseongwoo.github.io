@@ -43,19 +43,19 @@ toc_sticky: true
 
 td-agent의 실행은 다음과 같은 명령으로 한다.
 
-```
+```bash
 $ sudo launchctl load /Library/LaunchDaemons/td-agent.plist
 ```
 
 td-agent의 종료는 다음과 같은 명령으로 한다.
 
-```
+```bash
 $ sudo launchctl unload /Library/LaunchDaemons/td-agent.plist
 ```
 
 편의를 위하여 다음과 같이 디렉터리에 접근하여 실행, 종료 하기도 한다.
 
-```
+```bash
 $ cd /Library/LaunchDaemons
 $ sudo launchctl load td-agent.plist
 $ sudo launchctl unload td-agent.plist
@@ -66,13 +66,13 @@ $ sudo launchctl unload td-agent.plist
 
 td-agent의 로그는 다음과 같은 경로의 파일에 저장된다.
 
-```
+```bash
 /var/log/td-agent/td-agent.log
 ```
 
 다음과 같이 td-agent 로그 파일을 테일링하여 td-agent의 동작을 확인하기도 한다.
 
-```
+```bash
 $ tail -50f td-agent.log
 2019-09-18 14:47:33 +0900 [info]: #0 shutting down input plugin type=:tail plugin_id="object:3fe4d84363e8"
 2019-09-18 14:47:33 +0900 [info]: #0 shutting down output plugin type=:file plugin_id="object:3fe4d859ffcc"
@@ -137,7 +137,7 @@ td-agent 설정파일의 기본 경로는 다음과 같다.
 
 /opt/td-agent/usr/sbin/td-agent
 
-```
+```bash
 $ cat /opt/td-agent/usr/sbin/td-agent
 #!/opt/td-agent/embedded/bin/ruby
 ENV["GEM_HOME"]="/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"
@@ -152,7 +152,7 @@ load "/opt/td-agent/embedded/bin/fluentd"
 
 다음은 변경한 예시이다.
 
-```
+```bash
 $ vim /opt/td-agent/usr/sbin/td-agent
 #!/opt/td-agent/embedded/bin/ruby
 ENV["GEM_HOME"]="/opt/td-agent/embedded/lib/ruby/gems/2.4.0/"

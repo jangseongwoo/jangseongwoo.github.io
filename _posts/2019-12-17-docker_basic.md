@@ -55,7 +55,7 @@ toc_sticky: true
 
 Docker의 버전 확인
 
-```
+```python
 $ docker --version
 ```
 
@@ -63,7 +63,7 @@ $ docker --version
 
 Docker 설치에 대한 자세한 정보 확인
 
-```
+```python
 $ docker version
 
 ### 혹은
@@ -74,13 +74,13 @@ $ docker info
   
 hello world 실행
 
-```
+```python
 $ docker run hello-world
 ```
 
   
 
-```
+```python
 $ docker container ls --all
 ```
 
@@ -95,7 +95,7 @@ $ docker container ls --all
 
 우선 Dockerfile을 만든다.
 
-```
+```python
 $ touch Dockerfile
 
 $ cat Dockerfile
@@ -125,7 +125,7 @@ CMD ["python", "app.py"]
 
 Python 패키지 목록을 만든다.
 
-```
+```python
 $ cat requirements.txt
 Flask
 Redis
@@ -135,7 +135,7 @@ Redis
 
 소스코드 작성 app.py
 
-```
+```python
 $ cat app.py
 from flask import Flask
 from redis import Redis, RedisError
@@ -169,7 +169,7 @@ if __name__ == "__main__":
 
 Dockerfile로 이미지를 생성하기 위하여 Dockerfile, 패키지 목록, 소스코드를 확인
 
-```
+```python
 $ ls
 Dockerfile       app.py           requirements.txt
 ```
@@ -178,7 +178,7 @@ Dockerfile       app.py           requirements.txt
 
 Dockerfile로 friendlyhello라는 이름의 이미지 만들기
 
-```
+```python
 $ docker build --tag=friendlyhello .
 ```
 
@@ -186,7 +186,7 @@ $ docker build --tag=friendlyhello .
 
 생성된 이미지 확인
 
-```
+```python
 $ docker image ls
 REPOSITORY            TAG                 IMAGE ID
 friendlyhello         latest              326387cea398
@@ -196,7 +196,7 @@ friendlyhello         latest              326387cea398
 
 생성된 이미지를 실행한다.
 
-```
+```python
 $ docker run -p 4000:80 friendlyhello
 ```
 
@@ -210,7 +210,7 @@ $ docker run -p 4000:80 friendlyhello
 
 해당 url로 접속하여 컨테이너의 동작 확인 한다.
 
-```
+```python
 $ curl http://localhost:4000
 <h3>Hello World!</h3><b>Hostname:</b> 86e9b8deb983<br/><b>Visits:</b> <i>cannot connect to Redis, counter disabled</i>%
 ```
@@ -219,7 +219,7 @@ $ curl http://localhost:4000
 
 백그라운드에서 실행하려면 다음과 같다.
 
-```
+```python
 $ docker run -d -p 4000:80 friendlyhello
 ```
 
@@ -229,7 +229,7 @@ $ docker run -d -p 4000:80 friendlyhello
 
 [Docker 허브](https://hub.docker.com/)에 로그인한다.
 
-```
+```python
 $ docker login
 ```
 
@@ -237,7 +237,7 @@ $ docker login
 
 이미지를 공유하기 위해서는 다음과 같이 이미지 태그를 설정해야한다.
 
-```
+```python
 ### docker tag 이미지명 유저이름/레포명:태그명
 $ docker tag friendlyhello username/tutorial:part1
 ```
@@ -246,7 +246,7 @@ $ docker tag friendlyhello username/tutorial:part1
 
 설정한 이미지를 업로드한다.
 
-```
+```python
 $ docker push username/tutorial:part1
 ```
 
@@ -260,7 +260,7 @@ $ docker push username/tutorial:part1
 
 이미지를 업로드하면 다음과 같이 사용할 수 있다. 해당 이미지가 로컬에 존재하지 않는다면 자동으로 다운로드하고 로컬에 이미지를 생성해준다.
 
-```
+```python
 $ docker run -d -p 4000:80 username/tutorial:part1
 ```
 
@@ -277,7 +277,7 @@ $ docker run -d -p 4000:80 username/tutorial:part1
 
 다음과 같이 docker-compose.yml을 작성한다.
 
-```
+```python
 $ cat docker-compose.yml
 version: "3"
 services:
@@ -309,7 +309,7 @@ networks:
 
 배포 전에 Swarm을 초기화 한다.
 
-```
+```python
 $ docker swarm init
 ```
 
@@ -317,7 +317,7 @@ $ docker swarm init
 
 이제 실행하는데 getstartedlab라는 이름의 스택으로 실행한다.
 
-```
+```python
 $ docker stack deploy -c docker-compose.yml getstartedlab
 
 ```
@@ -326,7 +326,7 @@ $ docker stack deploy -c docker-compose.yml getstartedlab
 
 Docker의 서비스 목록을 확인하면 getstartedlab 뒤에 web이 붙어 getstartedlab\_web이라는 형태로 서비스가 존재하는 것을 확인할 수 있다.
 
-```
+```python
 $ docker service ls
 ID                  NAME                MODE                REPLICAS            IMAGE                       PORTS
 r8ikpt4dypup        getstartedlab_web   replicated          5/5                 username/tutorial:part1   *:4000->80/tcp
@@ -339,7 +339,7 @@ r8ikpt4dypup        getstartedlab_web   replicated          5/5                 
 
 getstartedlab 스택의 서비스를 확인하면 다음과 같다.
 
-```
+```python
 $ docker stack services getstartedlab
 ID                  NAME                MODE                REPLICAS            IMAGE                       PORTS
 r8ikpt4dypup        getstartedlab_web   replicated          5/5                 username/tutorial:part1   *:4000->80/tcp
@@ -350,7 +350,7 @@ r8ikpt4dypup        getstartedlab_web   replicated          5/5                 
 
 다음과 같은 명령으로 특정 서비스내 task 목록을 확인할 수 있다.(아마도 컨테이너 단위를 의미하는 듯 싶다.)
 
-```
+```python
 $ docker service ps getstartedlab_web
 ID                  NAME                  IMAGE                       NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
 dk5k5bt68eoa        getstartedlab_web.1   username/tutorial:part1   docker-desktop      Running             Running 25 minutes ago
@@ -364,7 +364,7 @@ s8u54k1ax8f6        getstartedlab_web.5   username/tutorial:part1   docker-deskt
 
 다음과 같은 명령으로 특정 스택내 task 목록을 확인할 수 있다.
 
-```
+```python
 $ docker stack ps getstartedlab
 ID                  NAME                  IMAGE                       NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
 dk5k5bt68eoa        getstartedlab_web.1   username/tutorial:part1   docker-desktop      Running             Running 58 minutes ago
@@ -381,7 +381,7 @@ s8u54k1ax8f6        getstartedlab_web.5   username/tutorial:part1   docker-deskt
 
 docker-compose.yml 파일을 다음과 같이 수정한다.
 
-```
+```python
 $ cat docker-compose.yml
 version: "3"
 services:
@@ -409,7 +409,7 @@ networks:
 
 이제 실행하는데 기존과 같은 getstartedlab라는 이름의 스택으로 실행한다.
 
-```
+```python
 $ docker stack deploy -c docker-compose.yml getstartedlab
 
 ```
@@ -420,7 +420,7 @@ $ docker stack deploy -c docker-compose.yml getstartedlab
 
 서비스를 확인하면 다음과 같이 업데이트 된 것을 확인할 수 있다. 새로운 레플리카가 생성된 것을 확인할 수 있다.
 
-```
+```python
 $ docker service ls
 ID                  NAME                MODE                REPLICAS            IMAGE                       PORTS
 r8ikpt4dypup        getstartedlab_web   replicated          10/10               username/tutorial:part1   *:4000->80/tcp
@@ -428,7 +428,7 @@ r8ikpt4dypup        getstartedlab_web   replicated          10/10               
 
   
 
-```
+```python
 $ docker stack ps getstartedlab
 ID                  NAME                   IMAGE                       NODE                DESIRED STATE       CURRENT STATE           ERROR               PORTS
 dk5k5bt68eoa        getstartedlab_web.1    username/tutorial:part1   docker-desktop      Running             Running 2 hours ago
@@ -447,7 +447,7 @@ rn22s1618j0g        getstartedlab_web.10   username/tutorial:part1   docker-desk
 
 스택의 종료는 다음과 같이 한다. 
 
-```
+```python
 $ docker stack rm getstartedlab
 ```
 
@@ -455,7 +455,7 @@ $ docker stack rm getstartedlab
 
 swarm의 종료는 다음과 같이 한다.
 
-```
+```python
 $ docker swarm leave --force
 ```
 
@@ -472,7 +472,7 @@ $ docker swarm leave --force
 
 **part1 오리엔테이션**
 
-```
+```python
 ## List Docker CLI commands
 $ docker
 $ docker container --help
@@ -498,7 +498,7 @@ $ docker container ls -aq
 
 **part2 컨테이너**
 
-```
+```python
 $ docker build -t friendlyhello .  # Create image using this directory's Dockerfile
 $ docker run -p 4000:80 friendlyhello  # Run "friendlyhello" mapping port 4000 to 80
 $ docker run -d -p 4000:80 friendlyhello         # Same thing, but in detached mode
@@ -521,7 +521,7 @@ $ docker run username/repository:tag                   # Run image from a regist
 
 **part3 서비스**
 
-```
+```python
 $ docker stack ls                                            # List stacks or apps
 $ docker stack deploy -c <composefile> <appname>  # Run the specified Compose file
 $ docker service ls                 # List running services associated with an app

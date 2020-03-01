@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -516,11 +520,11 @@
 
 <p>/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /opt/td-agent/usr/sbin/td-agent
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> /opt/td-agent/usr/sbin/td-agent
 
 ... 중략 ...
 
-ENV["FLUENT_CONF"]="/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf"
+ENV[<span class="s2">"FLUENT_CONF"</span><span class="o">]=</span><span class="s2">"/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf"</span>
 
 ... 중략 ...
 </code></pre></div></div>
@@ -529,77 +533,77 @@ ENV["FLUENT_CONF"]="/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf
 
 <p>td-agent 설정 파일을 다음과 같이 수정하고 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat config/td-agent.log 
-&lt;source&gt;
-  @type tail
-  tag file_path
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat </span>config/td-agent.log 
+&lt;<span class="nb">source</span><span class="o">&gt;</span>
+  @type <span class="nb">tail
+  </span>tag file_path
   path /Users/kevin/dev/fluentd/test/file_path/source/fixed_file_path.log
   pos_file /Users/kevin/dev/fluentd/test/file_path/pos/pos_file.pos
   &lt;parse&gt;
     @type none
   &lt;/parse&gt;
   refresh_interval 5s
-  read_from_head true
+  read_from_head <span class="nb">true</span>
 &lt;/source&gt;
 
-&lt;match file_path*&gt;
+&lt;match file_path<span class="k">*</span><span class="o">&gt;</span>
   @type file
-  path /Users/kevin/dev/fluentd/test/file_path/match/${tag}_output
-  add_path_suffix true
-  path_suffix ".log"
-  append true
+  path /Users/kevin/dev/fluentd/test/file_path/match/<span class="k">${</span><span class="nv">tag</span><span class="k">}</span>_output
+  add_path_suffix <span class="nb">true
+  </span>path_suffix <span class="s2">".log"</span>
+  append <span class="nb">true</span>
   &lt;buffer tag&gt;
     flush_mode interval
     flush_interval 5s
   &lt;/buffer&gt;
   &lt;format&gt;
     @type out_file
-    output_tag false
-    output_time true
+    output_tag <span class="nb">false
+    </span>output_time <span class="nb">true</span>
   &lt;/format&gt;
 &lt;/match&gt;
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo launchctl load td-agent.plist
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>launchctl load td-agent.plist
 </code></pre></div></div>
 
 <p>다음과 같이 로그를 파일에 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "fixed_file_path_line_1" &gt; source/fixed_file_path.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"fixed_file_path_line_1"</span> <span class="o">&gt;</span> <span class="nb">source</span>/fixed_file_path.log
 </code></pre></div></div>
 
 <p>다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /var/log/td-agent/td-agent.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> /var/log/td-agent/td-agent.log
  
 ... 중략 ...
  
-2019-08-30 14:28:35 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/fixed_file_path.log
+2019-08-30 14:28:35 +0900 <span class="o">[</span>info]: <span class="c">#0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/fixed_file_path.log</span>
 </code></pre></div></div>
 
 <p>출력용 파일을 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_path_output.log
-2019-08-30T14:28:35+09:00	{"message":"fixed_file_path_line_1"}
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-10f</span> match/file_path_output.log
+2019-08-30T14:28:35+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"fixed_file_path_line_1"</span><span class="o">}</span>
 
 </code></pre></div></div>
 
 <p>다시 한번 다음과 같이 파일에 로그를 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "fixed_file_path_line_2" &gt;&gt; source/fixed_file_path.log
-$ echo "fixed_file_path_line_3" &gt;&gt; source/fixed_file_path.log
-$ echo "fixed_file_path_line_4" &gt;&gt; source/fixed_file_path.log
-$ echo "fixed_file_path_line_5" &gt;&gt; source/fixed_file_path.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"fixed_file_path_line_2"</span> <span class="o">&gt;&gt;</span> <span class="nb">source</span>/fixed_file_path.log
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"fixed_file_path_line_3"</span> <span class="o">&gt;&gt;</span> <span class="nb">source</span>/fixed_file_path.log
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"fixed_file_path_line_4"</span> <span class="o">&gt;&gt;</span> <span class="nb">source</span>/fixed_file_path.log
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"fixed_file_path_line_5"</span> <span class="o">&gt;&gt;</span> <span class="nb">source</span>/fixed_file_path.log
 </code></pre></div></div>
 
 <p>출력용 파일을 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_path_output.log
-2019-08-30T14:28:35+09:00	{"message":"fixed_file_path_line_1"}
-2019-08-30T14:29:30+09:00	{"message":"fixed_file_path_line_2"}
-2019-08-30T14:29:34+09:00	{"message":"fixed_file_path_line_3"}
-2019-08-30T14:29:38+09:00	{"message":"fixed_file_path_line_4"}
-2019-08-30T14:29:47+09:00	{"message":"fixed_file_path_line_5"}
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-10f</span> match/file_path_output.log
+2019-08-30T14:28:35+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"fixed_file_path_line_1"</span><span class="o">}</span>
+2019-08-30T14:29:30+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"fixed_file_path_line_2"</span><span class="o">}</span>
+2019-08-30T14:29:34+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"fixed_file_path_line_3"</span><span class="o">}</span>
+2019-08-30T14:29:38+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"fixed_file_path_line_4"</span><span class="o">}</span>
+2019-08-30T14:29:47+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"fixed_file_path_line_5"</span><span class="o">}</span>
 </code></pre></div></div>
 
 <p>테스트 결과를 정리하면 다음과 같다.</p>
@@ -617,87 +621,87 @@ $ echo "fixed_file_path_line_5" &gt;&gt; source/fixed_file_path.log
 
 <p>td-agent 설정 파일을 다음과 같이 수정하고 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat config/td-agent.log 
-&lt;source&gt;
-  @type tail
-  tag file_path
-  path /Users/kevin/dev/fluentd/test/file_path/source/*.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat </span>config/td-agent.log 
+&lt;<span class="nb">source</span><span class="o">&gt;</span>
+  @type <span class="nb">tail
+  </span>tag file_path
+  path /Users/kevin/dev/fluentd/test/file_path/source/<span class="k">*</span>.log
   pos_file /Users/kevin/dev/fluentd/test/file_path/pos/pos_file.pos
   &lt;parse&gt;
     @type none
   &lt;/parse&gt;
   refresh_interval 5s
-  read_from_head true
+  read_from_head <span class="nb">true</span>
 &lt;/source&gt;
 
-&lt;match file_path*&gt;
+&lt;match file_path<span class="k">*</span><span class="o">&gt;</span>
   @type file
-  path /Users/kevin/dev/fluentd/test/file_path/match/${tag}_output
-  add_path_suffix true
-  path_suffix ".log"
-  append true
+  path /Users/kevin/dev/fluentd/test/file_path/match/<span class="k">${</span><span class="nv">tag</span><span class="k">}</span>_output
+  add_path_suffix <span class="nb">true
+  </span>path_suffix <span class="s2">".log"</span>
+  append <span class="nb">true</span>
   &lt;buffer tag&gt;
     flush_mode interval
     flush_interval 5s
   &lt;/buffer&gt;
   &lt;format&gt;
     @type out_file
-    output_tag false
-    output_time true
+    output_tag <span class="nb">false
+    </span>output_time <span class="nb">true</span>
   &lt;/format&gt;
 &lt;/match&gt;
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo launchctl load td-agent.plist
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>launchctl load td-agent.plist
 </code></pre></div></div>
 
 <h3 id="log에-로그-저장">*.log에 로그 저장</h3>
 
 <p>다음과 같이 로그를 파일에 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "filename_extension_log_line_1" &gt; source/log_file.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"filename_extension_log_line_1"</span> <span class="o">&gt;</span> <span class="nb">source</span>/log_file.log
 </code></pre></div></div>
 
 <p>다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /var/log/td-agent/td-agent.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> /var/log/td-agent/td-agent.log
  
 ... 중략 ...
  
-2019-08-30 15:05:01 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/log_file.log
+2019-08-30 15:05:01 +0900 <span class="o">[</span>info]: <span class="c">#0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/log_file.log</span>
 </code></pre></div></div>
 
 <p>출력용 파일을 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_path_output.log
-2019-08-30T15:05:01+09:00	{"message":"filename_extension_log_line_1"}
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-10f</span> match/file_path_output.log
+2019-08-30T15:05:01+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"filename_extension_log_line_1"</span><span class="o">}</span>
 
 </code></pre></div></div>
 
 <p>다시 한번 다음과 같이 파일에 로그를 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "filename_extension_log_line_2" &gt;&gt; source/log_file.log
-$ echo "filename_extension_log_line_3" &gt;&gt; source/log_file.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"filename_extension_log_line_2"</span> <span class="o">&gt;&gt;</span> <span class="nb">source</span>/log_file.log
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"filename_extension_log_line_3"</span> <span class="o">&gt;&gt;</span> <span class="nb">source</span>/log_file.log
 </code></pre></div></div>
 
 <p>출력용 파일을 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_path_output.log
-2019-08-30T15:05:01+09:00	{"message":"filename_extension_log_line_1"}
-2019-08-30T15:08:01+09:00	{"message":"filename_extension_log_line_2"}
-2019-08-30T15:08:06+09:00	{"message":"filename_extension_log_line_3"}
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-10f</span> match/file_path_output.log
+2019-08-30T15:05:01+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"filename_extension_log_line_1"</span><span class="o">}</span>
+2019-08-30T15:08:01+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"filename_extension_log_line_2"</span><span class="o">}</span>
+2019-08-30T15:08:06+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"filename_extension_log_line_3"</span><span class="o">}</span>
 </code></pre></div></div>
 
 <h3 id="log가-아닌-경우">*.log가 아닌 경우</h3>
 
 <p>다음과 같이 로그를 파일에 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "filename_extension_txt_line_1" &gt; source/text_file.txt
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"filename_extension_txt_line_1"</span> <span class="o">&gt;</span> <span class="nb">source</span>/text_file.txt
 </code></pre></div></div>
 
 <p>다음과 같이 td-agent가 파일 생성을 인지하지 못한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /var/log/td-agent/td-agent.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> /var/log/td-agent/td-agent.log
  
 ... 중략 ...
 
@@ -706,19 +710,19 @@ $ echo "filename_extension_log_line_3" &gt;&gt; source/log_file.log
 
 <p>출력용 파일을 확인 했을때 로그가 저장되지 않는 것을 알 수 있다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_path_output.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-10f</span> match/file_path_output.log
 입력용 파일에 저장한 로그가 저장되지 않는다.
 </code></pre></div></div>
 
 <p>다시 한번 다음과 같이 파일에 로그를 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "filename_extension_txt_line_2" &gt;&gt; source/text_file.txt
-$ echo "filename_extension_txt_line_3" &gt;&gt; source/text_file.txt
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"filename_extension_txt_line_2"</span> <span class="o">&gt;&gt;</span> <span class="nb">source</span>/text_file.txt
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"filename_extension_txt_line_3"</span> <span class="o">&gt;&gt;</span> <span class="nb">source</span>/text_file.txt
 </code></pre></div></div>
 
 <p>출력용 파일을 확인 했을때 로그가 저장되지 않는 것을 알 수 있다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_path_output.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-10f</span> match/file_path_output.log
 입력용 파일에 저장한 로그가 저장되지 않는다.
 </code></pre></div></div>
 
@@ -745,111 +749,111 @@ $ echo "filename_extension_txt_line_3" &gt;&gt; source/text_file.txt
 
 <p>td-agent 설정 파일을 다음과 같이 수정하고 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat config/td-agent.log 
-&lt;source&gt;
-  @type tail
-  tag file_path
-  path /Users/kevin/dev/fluentd/test/file_path/source/prefix*
-  pos_file /Users/kevin/dev/fluentd/test/file_path/pos/pos_file.pos
-  &lt;parse&gt;
-    @type none
-  &lt;/parse&gt;
-  refresh_interval 5s
-  read_from_head true
-&lt;/source&gt;
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="n">config</span><span class="o">/</span><span class="n">td</span><span class="o">-</span><span class="n">agent</span><span class="o">.</span><span class="n">log</span><span class="err"> </span>
+<span class="o">&lt;</span><span class="n">source</span><span class="o">&gt;</span>
+  <span class="o">@</span><span class="nb">type</span> <span class="n">tail</span>
+  <span class="n">tag</span> <span class="n">file_path</span>
+  <span class="n">path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kevin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">fluentd</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">file_path</span><span class="o">/</span><span class="n">source</span><span class="o">/</span><span class="n">prefix</span><span class="o">*</span>
+  <span class="n">pos_file</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kevin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">fluentd</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">file_path</span><span class="o">/</span><span class="n">pos</span><span class="o">/</span><span class="n">pos_file</span><span class="o">.</span><span class="n">pos</span>
+  <span class="o">&lt;</span><span class="n">parse</span><span class="o">&gt;</span>
+    <span class="o">@</span><span class="nb">type</span> <span class="n">none</span>
+  <span class="o">&lt;/</span><span class="n">parse</span><span class="o">&gt;</span>
+  <span class="n">refresh_interval</span> <span class="mi">5</span><span class="n">s</span>
+  <span class="n">read_from_head</span> <span class="n">true</span>
+<span class="o">&lt;/</span><span class="n">source</span><span class="o">&gt;</span>
 
-&lt;match file_path*&gt;
-  @type file
-  path /Users/kevin/dev/fluentd/test/file_path/match/${tag}_output
-  add_path_suffix true
-  path_suffix ".log"
-  append true
-  &lt;buffer tag&gt;
-    flush_mode interval
-    flush_interval 5s
-  &lt;/buffer&gt;
-  &lt;format&gt;
-    @type out_file
-    output_tag false
-    output_time true
-  &lt;/format&gt;
-&lt;/match&gt;
+<span class="o">&lt;</span><span class="n">match</span> <span class="n">file_path</span><span class="o">*&gt;</span>
+  <span class="o">@</span><span class="nb">type</span> <span class="nb">file</span>
+  <span class="n">path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">kevin</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">fluentd</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">file_path</span><span class="o">/</span><span class="n">match</span><span class="o">/</span><span class="err">$</span><span class="p">{</span><span class="n">tag</span><span class="p">}</span><span class="n">_output</span>
+  <span class="n">add_path_suffix</span> <span class="n">true</span>
+  <span class="n">path_suffix</span> <span class="s">".log"</span>
+  <span class="n">append</span> <span class="n">true</span>
+  <span class="o">&lt;</span><span class="nb">buffer</span> <span class="n">tag</span><span class="o">&gt;</span>
+    <span class="n">flush_mode</span> <span class="n">interval</span>
+    <span class="n">flush_interval</span> <span class="mi">5</span><span class="n">s</span>
+  <span class="o">&lt;/</span><span class="nb">buffer</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nb">format</span><span class="o">&gt;</span>
+    <span class="o">@</span><span class="nb">type</span> <span class="n">out_file</span>
+    <span class="n">output_tag</span> <span class="n">false</span>
+    <span class="n">output_time</span> <span class="n">true</span>
+  <span class="o">&lt;/</span><span class="nb">format</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">match</span><span class="o">&gt;</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo launchctl load td-agent.plist
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>launchctl load td-agent.plist
 </code></pre></div></div>
 
 <h3 id="prefix가-일치하는-경우">prefix가 일치하는 경우</h3>
 
 <p>다음과 같이 로그를 파일에 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "prefix_line_1" &gt; source/prefix_test.txt
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"prefix_line_1"</span> <span class="o">&gt;</span> <span class="nb">source</span>/prefix_test.txt
 </code></pre></div></div>
 
 <p>다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /var/log/td-agent/td-agent.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> /var/log/td-agent/td-agent.log
  
 ... 중략 ...
  
-2019-08-30 15:35:45 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.txt
+2019-08-30 15:35:45 +0900 <span class="o">[</span>info]: <span class="c">#0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.txt</span>
 </code></pre></div></div>
 
 <p>출력용 파일을 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_path_output.log
-2019-08-30T15:35:45+09:00	{"message":"prefix_line_1"}
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-10f</span> match/file_path_output.log
+2019-08-30T15:35:45+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"prefix_line_1"</span><span class="o">}</span>
 
 </code></pre></div></div>
 
 <p>다시 한번 다음과 같이 파일에 로그를 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "prefix_line_2" &gt;&gt; source/prefix_test.txt
-$ echo "prefix_line_3" &gt;&gt; source/prefix_test.txt
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"prefix_line_2"</span> <span class="o">&gt;&gt;</span> <span class="nb">source</span>/prefix_test.txt
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"prefix_line_3"</span> <span class="o">&gt;&gt;</span> <span class="nb">source</span>/prefix_test.txt
 </code></pre></div></div>
 
 <p>출력용 파일을 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_path_output.log
-2019-08-30T15:35:45+09:00	{"message":"prefix_line_1"}
-2019-08-30T15:36:58+09:00	{"message":"prefix_line_2"}
-2019-08-30T15:37:01+09:00	{"message":"prefix_line_3"}
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-10f</span> match/file_path_output.log
+2019-08-30T15:35:45+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"prefix_line_1"</span><span class="o">}</span>
+2019-08-30T15:36:58+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"prefix_line_2"</span><span class="o">}</span>
+2019-08-30T15:37:01+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"prefix_line_3"</span><span class="o">}</span>
 </code></pre></div></div>
 
 <p>다음과 같이 파일에 로그를 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "prefix_line_1" &gt; source/prefix_test.log
-$ echo "prefix_line_2" &gt;&gt; source/prefix_test.log
-$ echo "prefix_line_3" &gt;&gt; source/prefix_test.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"prefix_line_1"</span> <span class="o">&gt;</span> <span class="nb">source</span>/prefix_test.log
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"prefix_line_2"</span> <span class="o">&gt;&gt;</span> <span class="nb">source</span>/prefix_test.log
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"prefix_line_3"</span> <span class="o">&gt;&gt;</span> <span class="nb">source</span>/prefix_test.log
 </code></pre></div></div>
 
 <p>다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /var/log/td-agent/td-agent.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> /var/log/td-agent/td-agent.log
  
 ... 중략 ...
  
-2019-08-30 15:40:00 +0900 [info]: #0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.log
+2019-08-30 15:40:00 +0900 <span class="o">[</span>info]: <span class="c">#0 following tail of /Users/kevin/dev/fluentd/test/file_path/source/prefix_test.log</span>
 </code></pre></div></div>
 
 <p>출력용 파일을 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_path_output.log
-2019-08-30T15:40:00+09:00	{"message":"prefix_line_1"}
-2019-08-30T15:40:09+09:00	{"message":"prefix_line_2"}
-2019-08-30T15:40:13+09:00	{"message":"prefix_line_3"}
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-10f</span> match/file_path_output.log
+2019-08-30T15:40:00+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"prefix_line_1"</span><span class="o">}</span>
+2019-08-30T15:40:09+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"prefix_line_2"</span><span class="o">}</span>
+2019-08-30T15:40:13+09:00	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"prefix_line_3"</span><span class="o">}</span>
 </code></pre></div></div>
 
 <h3 id="prefix가-일치하지-않는-경우">prefix가 일치하지 않는 경우</h3>
 
 <p>다음과 같이 로그를 파일에 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "prefix_line_1" &gt; none.txt
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"prefix_line_1"</span> <span class="o">&gt;</span> none.txt
 </code></pre></div></div>
 
 <p>다음과 같이 td-agent가 파일 생성을 인지하지 못한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /var/log/td-agent/td-agent.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> /var/log/td-agent/td-agent.log
  
 ... 중략 ...
 
@@ -858,19 +862,19 @@ $ echo "prefix_line_3" &gt;&gt; source/prefix_test.log
 
 <p>출력용 파일을 확인 했을때 로그가 저장되지 않는 것을 알 수 있다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_path_output.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-10f</span> match/file_path_output.log
 입력용 파일에 저장한 로그가 저장되지 않는다.
 </code></pre></div></div>
 
 <p>다시 한번 다음과 같이 파일에 로그를 저장한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "prefix_line_2" &gt;&gt; none.txt
-$ echo "prefix_line_3" &gt;&gt; none.txt
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"prefix_line_2"</span> <span class="o">&gt;&gt;</span> none.txt
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"prefix_line_3"</span> <span class="o">&gt;&gt;</span> none.txt
 </code></pre></div></div>
 
 <p>출력용 파일을 확인 했을때 로그가 저장되지 않는 것을 알 수 있다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -10f match/file_path_output.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-10f</span> match/file_path_output.log
 입력용 파일에 저장한 로그가 저장되지 않는다.
 </code></pre></div></div>
 

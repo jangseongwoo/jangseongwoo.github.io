@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -432,16 +436,16 @@
 
 <p>Kafka는 ZooKeeper를 사용하고 있다. 그래서 먼저 ZooKeeper server를 실행한다. 편리한 실행을 위해 아래의 스크립트를 이용해 Kafka패키지에 포함되어 있는 ZooKeeper instance를 실행한다. 그 뒤에 Kakfa server를 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ bin/zookeeper-server-start.sh config/zookeeper.properties
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="nb">bin</span><span class="o">/</span><span class="n">zookeeper</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">start</span><span class="o">.</span><span class="n">sh</span> <span class="n">config</span><span class="o">/</span><span class="n">zookeeper</span><span class="o">.</span><span class="n">properties</span>
 
-$ bin/kafka-server-start.sh config/server.properties
+<span class="err">$</span> <span class="nb">bin</span><span class="o">/</span><span class="n">kafka</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">start</span><span class="o">.</span><span class="n">sh</span> <span class="n">config</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">properties</span>
 
 
-[2020-01-02 21:47:03,844] INFO Reading configuration from: config/zookeeper.properties (org.apache.zookeeper.server.quorum.QuorumPeerConfig)
-[2020-01-02 21:47:03,847] WARN config/zookeeper.properties is relative. Prepend ./ to indicate that you're sure! (org.apache.zookeeper.server.quorum.QuorumPeerConfig)
-[2020-01-02 21:47:03,851] INFO clientPortAddress is 0.0.0.0/0.0.0.0:2181 (org.apache.zookeeper.server.quorum.QuorumPeerConfig)
-...
-</code></pre></div></div>
+<span class="p">[</span><span class="mi">2020</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">02</span> <span class="mi">21</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">03</span><span class="p">,</span><span class="mi">844</span><span class="p">]</span> <span class="n">INFO</span> <span class="n">Reading</span> <span class="n">configuration</span> <span class="k">from</span><span class="p">:</span> <span class="n">config</span><span class="o">/</span><span class="n">zookeeper</span><span class="o">.</span><span class="n">properties</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">zookeeper</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">quorum</span><span class="o">.</span><span class="n">QuorumPeerConfig</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">2020</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">02</span> <span class="mi">21</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">03</span><span class="p">,</span><span class="mi">847</span><span class="p">]</span> <span class="n">WARN</span> <span class="n">config</span><span class="o">/</span><span class="n">zookeeper</span><span class="o">.</span><span class="n">properties</span> <span class="ow">is</span> <span class="n">relative</span><span class="o">.</span> <span class="n">Prepend</span> <span class="o">./</span> <span class="n">to</span> <span class="n">indicate</span> <span class="n">that</span> <span class="n">you</span><span class="s">'re sure! (org.apache.zookeeper.server.quorum.QuorumPeerConfig)</span><span class="err">
+</span><span class="s">[2020-01-02 21:47:03,851] INFO clientPortAddress is 0.0.0.0/0.0.0.0:2181 (org.apache.zookeeper.server.quorum.QuorumPeerConfig)</span><span class="err">
+</span><span class="s">...</span><span class="err">
+</span></code></pre></div></div>
 
 <h1 id="topic-생성하기">Topic 생성하기</h1>
 
@@ -451,13 +455,13 @@ $ bin/kafka-server-start.sh config/server.properties
 
 <p>테스트를 위해 “test”라는 이름의 Topic을 직접 생성해보자. 생성 시 설정은 1개의 단일 Partition과 1개의 Replica이다. 다음 명령어를 입력한다. 명령어 입력 후 &gt; 모양이 터미널에 뜨며 메시지를 입력할 수 있다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="nb">bin</span><span class="o">/</span><span class="n">kafka</span><span class="o">-</span><span class="n">topics</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">create</span> <span class="o">--</span><span class="n">bootstrap</span><span class="o">-</span><span class="n">server</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">9092</span> <span class="o">--</span><span class="n">replication</span><span class="o">-</span><span class="n">factor</span> <span class="mi">1</span> <span class="o">--</span><span class="n">partitions</span> <span class="mi">1</span> <span class="o">--</span><span class="n">topic</span> <span class="n">test</span>
 </code></pre></div></div>
 
 <p>생성 후 다음과 같은 명령어를 입력해 정상적으로 Topic이 생성됬는지 확인할 수 있다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ bin/kafka-topics.sh --list --bootstrap-server localhost:9092
-test
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="nb">bin</span><span class="o">/</span><span class="n">kafka</span><span class="o">-</span><span class="n">topics</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="nb">list</span> <span class="o">--</span><span class="n">bootstrap</span><span class="o">-</span><span class="n">server</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">9092</span>
+<span class="n">test</span>
 </code></pre></div></div>
 
 <h1 id="테스트-메시지-보내기">테스트 메시지 보내기</h1>
@@ -468,9 +472,9 @@ test
 
 <p>다음과 같은 명령어를 입력 후 전달하고자 하는 메시지를 입력한다. 기본 적으로 각각의 라인이 하나의 독립된 메시지로 처리된다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
-test 1
-test 2
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="nb">bin</span><span class="o">/</span><span class="n">kafka</span><span class="o">-</span><span class="n">console</span><span class="o">-</span><span class="n">producer</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">broker</span><span class="o">-</span><span class="nb">list</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">9092</span> <span class="o">--</span><span class="n">topic</span> <span class="n">test</span>
+<span class="n">test</span> <span class="mi">1</span>
+<span class="n">test</span> <span class="mi">2</span>
 </code></pre></div></div>
 
 <h1 id="consumer-실행하기">Consumer 실행하기 </h1>
@@ -479,9 +483,9 @@ test 2
 
 <p>Kafka는 터미널에서 command line Consumer를 실행할 수 있으며 직접 터미널에서 특정 Topic으로 전달된 메시지를 볼 수 있다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
-test 1
-test 2
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="nb">bin</span><span class="o">/</span><span class="n">kafka</span><span class="o">-</span><span class="n">console</span><span class="o">-</span><span class="n">consumer</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">bootstrap</span><span class="o">-</span><span class="n">server</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">9092</span> <span class="o">--</span><span class="n">topic</span> <span class="n">test</span> <span class="o">--</span><span class="k">from</span><span class="o">-</span><span class="n">beginning</span>
+<span class="n">test</span> <span class="mi">1</span>
+<span class="n">test</span> <span class="mi">2</span>
 </code></pre></div></div>
 
 <p>“테스트 메시지 보내기”에서 입력했던 터미널과 Consumer를 입력했던 터미널을 두 개의 터미널에서 각 각 띄우면 근실시간에 가깝게 입력된 메시지가 Consumer를 실행한 터미널에서 출력됨을 확인할 수 있다.</p>

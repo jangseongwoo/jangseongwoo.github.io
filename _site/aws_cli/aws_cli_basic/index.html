@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -454,20 +458,20 @@
 
 <p>Python이 설치 되어있지 않다면 설치방법에 대하여 구글링을 하거나 다음과 같은 brew 명령을 활용하여 설치하면 된다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ brew intall python3
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">brew</span> <span class="n">intall</span> <span class="n">python3</span>
 </code></pre></div></div>
 
 <p>다른 설치 방법도 있지만 AWS CLI의 기본 배포 방법은 pip이며, 그중 pip3로 설치하는 것을 권장하고 있으므로 pip3로 설치를 진행한다.</p>
 
 <p>다음과 같이 AWS CLI를 설치를 진행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ pip3 install awscli --upgrade --user
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">pip3</span> <span class="n">install</span> <span class="n">awscli</span> <span class="o">--</span><span class="n">upgrade</span> <span class="o">--</span><span class="n">user</span>
 </code></pre></div></div>
 
 <p>다음과 같은 명령으로 AWS CLI 설치 확인겸 버전 확인을 한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ aws --version
-aws-cli/1.16.222 Python/2.7.16 Darwin/18.7.0 botocore/1.12.212
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">aws</span> <span class="o">--</span><span class="n">version</span>
+<span class="n">aws</span><span class="o">-</span><span class="n">cli</span><span class="o">/</span><span class="mf">1.16.222</span> <span class="n">Python</span><span class="o">/</span><span class="mf">2.7.16</span> <span class="n">Darwin</span><span class="o">/</span><span class="mf">18.7.0</span> <span class="n">botocore</span><span class="o">/</span><span class="mf">1.12.212</span>
 </code></pre></div></div>
 
 <p>더 자세한 내용은 <a href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-chap-install.html">AWS CLI 설치 - macOS</a>를 참고한다.</p>
@@ -484,9 +488,9 @@ aws-cli/1.16.222 Python/2.7.16 Darwin/18.7.0 botocore/1.12.212
 
 <p>구성 및 자격 증명은 다음과 같은 구조로 저장된다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Users/user/.aws/
-├── config
-└── credentials
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Users</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">aws</span><span class="o">/</span>
+<span class="err">├──</span> <span class="n">config</span>
+<span class="err">└──</span> <span class="n">credentials</span>
 </code></pre></div></div>
 
 <p>각각의 파일에 담기는 내용은 다음과 같다.</p>
@@ -521,26 +525,26 @@ aws-cli/1.16.222 Python/2.7.16 Darwin/18.7.0 botocore/1.12.212
 
 <p>프로필 별로 구성 및 자격증명을 지정하는 방법은 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ aws configure --profile "프로필명"
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">aws</span> <span class="n">configure</span> <span class="o">--</span><span class="n">profile</span> <span class="s">"프로필명"</span>
 </code></pre></div></div>
 
 <p>설정된 프로필을 확인하면 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat ~/.aws/config
-[default]
-region=us-west-2
-output=json
-[profile user1]
-region=us-east-1
-output=text
- 
-$ cat ~/.aws/credential
-[default]
-aws_access_key_id="디폴트 엑세스 키 아이디"
-aws_secret_access_key="디폴트 시크릿 엑세스 키"
-[프로필명]
-aws_access_key_id="프로필명 엑세스 키 아이디"
-aws_secret_access_key="프로필명 시크릿 엑세스 키"
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">cat</span> <span class="o">~/.</span><span class="n">aws</span><span class="o">/</span><span class="n">config</span>
+<span class="p">[</span><span class="n">default</span><span class="p">]</span>
+<span class="n">region</span><span class="o">=</span><span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mi">2</span>
+<span class="n">output</span><span class="o">=</span><span class="n">json</span>
+<span class="p">[</span><span class="n">profile</span> <span class="n">user1</span><span class="p">]</span>
+<span class="n">region</span><span class="o">=</span><span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">output</span><span class="o">=</span><span class="n">text</span>
+<span class="err"> </span>
+<span class="err">$</span> <span class="n">cat</span> <span class="o">~/.</span><span class="n">aws</span><span class="o">/</span><span class="n">credential</span>
+<span class="p">[</span><span class="n">default</span><span class="p">]</span>
+<span class="n">aws_access_key_id</span><span class="o">=</span><span class="s">"디폴트 엑세스 키 아이디"</span>
+<span class="n">aws_secret_access_key</span><span class="o">=</span><span class="s">"디폴트 시크릿 엑세스 키"</span>
+<span class="p">[</span><span class="err">프로필명</span><span class="p">]</span>
+<span class="n">aws_access_key_id</span><span class="o">=</span><span class="s">"프로필명 엑세스 키 아이디"</span>
+<span class="n">aws_secret_access_key</span><span class="o">=</span><span class="s">"프로필명 시크릿 엑세스 키"</span>
 </code></pre></div></div>
 
 <h1 id="aws-cli-사용--amazon-s3">AWS CLI 사용 : Amazon S3</h1>
@@ -553,72 +557,72 @@ aws_secret_access_key="프로필명 시크릿 엑세스 키"
 
 <p>케이스 : 로컬 파일을 s3로 복사</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls
-cp                local_cp_test.txt
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">ls</span>
+<span class="n">cp</span>                <span class="n">local_cp_test</span><span class="o">.</span><span class="n">txt</span>
 
-$ aws s3 ls s3://bucket/user-s3-cli-test/
-2019-08-22 21:10:50          0
+<span class="err">$</span> <span class="n">aws</span> <span class="n">s3</span> <span class="n">ls</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">21</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">50</span>          <span class="mi">0</span>
 
-$ aws s3 cp local_cp_test.txt s3://bucket/user-s3-cli-test/s3_cp_test.txt
-upload: ./local_cp_test.txt to s3://bucket/user-s3-cli-test/s3_cp_test.txt
+<span class="err">$</span> <span class="n">aws</span> <span class="n">s3</span> <span class="n">cp</span> <span class="n">local_cp_test</span><span class="o">.</span><span class="n">txt</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span><span class="n">s3_cp_test</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">upload</span><span class="p">:</span> <span class="o">./</span><span class="n">local_cp_test</span><span class="o">.</span><span class="n">txt</span> <span class="n">to</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span><span class="n">s3_cp_test</span><span class="o">.</span><span class="n">txt</span>
 
-$ aws s3 ls s3://bucket/user-s3-cli-test/
-2019-08-22 21:10:50          0
-2019-08-22 22:23:05         21 s3_cp_test.txt
+<span class="err">$</span> <span class="n">aws</span> <span class="n">s3</span> <span class="n">ls</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">21</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">50</span>          <span class="mi">0</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">22</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">05</span>         <span class="mi">21</span> <span class="n">s3_cp_test</span><span class="o">.</span><span class="n">txt</span>
 </code></pre></div></div>
 
 <p>케이스 : s3 파일을 로컬로 복사</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -al
-total 16
-drwxr-xr-x  3 user  staff    96  8 22 22:25 .
-drwxr-xr-x  7 user  staff   224  8 22 20:59 ..
--rw-r--r--@ 1 user  staff  6148  8 22 22:19 .DS_Store
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">ls</span> <span class="o">-</span><span class="n">al</span>
+<span class="n">total</span> <span class="mi">16</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">3</span> <span class="n">user</span>  <span class="n">staff</span>    <span class="mi">96</span>  <span class="mi">8</span> <span class="mi">22</span> <span class="mi">22</span><span class="p">:</span><span class="mi">25</span> <span class="o">.</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">7</span> <span class="n">user</span>  <span class="n">staff</span>   <span class="mi">224</span>  <span class="mi">8</span> <span class="mi">22</span> <span class="mi">20</span><span class="p">:</span><span class="mi">59</span> <span class="o">..</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--@</span> <span class="mi">1</span> <span class="n">user</span>  <span class="n">staff</span>  <span class="mi">6148</span>  <span class="mi">8</span> <span class="mi">22</span> <span class="mi">22</span><span class="p">:</span><span class="mi">19</span> <span class="o">.</span><span class="n">DS_Store</span>
 
-$ aws s3 ls s3://bucket/user-s3-cli-test/
-2019-08-22 21:10:50          0
-2019-08-22 22:23:05         21 s3_cp_test.txt
+<span class="err">$</span> <span class="n">aws</span> <span class="n">s3</span> <span class="n">ls</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">21</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">50</span>          <span class="mi">0</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">22</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">05</span>         <span class="mi">21</span> <span class="n">s3_cp_test</span><span class="o">.</span><span class="n">txt</span>
 
-$ aws s3 cp s3://bucket/user-s3-cli-test/s3_cp_test.txt ./local_cp_test.txt
-download: s3://bucket/user-s3-cli-test/s3_cp_test.txt to ./local_cp_test.txt
+<span class="err">$</span> <span class="n">aws</span> <span class="n">s3</span> <span class="n">cp</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span><span class="n">s3_cp_test</span><span class="o">.</span><span class="n">txt</span> <span class="o">./</span><span class="n">local_cp_test</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">download</span><span class="p">:</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span><span class="n">s3_cp_test</span><span class="o">.</span><span class="n">txt</span> <span class="n">to</span> <span class="o">./</span><span class="n">local_cp_test</span><span class="o">.</span><span class="n">txt</span>
 
-$ ls
-local_cp_test.txt
+<span class="err">$</span> <span class="n">ls</span>
+<span class="n">local_cp_test</span><span class="o">.</span><span class="n">txt</span>
 </code></pre></div></div>
 
 <p>케이스 : s3 파일을 s3로 복사</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ aws s3 ls s3://bucket/user-s3-cli-test/
-2019-08-22 21:10:50          0
-2019-08-22 22:23:05         21 s3_cp_test.txt
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">aws</span> <span class="n">s3</span> <span class="n">ls</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">21</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">50</span>          <span class="mi">0</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">22</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">05</span>         <span class="mi">21</span> <span class="n">s3_cp_test</span><span class="o">.</span><span class="n">txt</span>
 
-$ aws s3 cp s3://bucket/user-s3-cli-test/s3_cp_test.txt s3://bucket/user-s3-cli-test/s3_cp_test_copy.txt
-copy: s3://bucket/user-s3-cli-test/s3_cp_test.txt to s3://bucket/user-s3-cli-test/s3_cp_test_copy.txt
+<span class="err">$</span> <span class="n">aws</span> <span class="n">s3</span> <span class="n">cp</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span><span class="n">s3_cp_test</span><span class="o">.</span><span class="n">txt</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span><span class="n">s3_cp_test_copy</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">copy</span><span class="p">:</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span><span class="n">s3_cp_test</span><span class="o">.</span><span class="n">txt</span> <span class="n">to</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span><span class="n">s3_cp_test_copy</span><span class="o">.</span><span class="n">txt</span>
 
-$ aws s3 ls s3://bucket/user-s3-cli-test/
-2019-08-22 21:10:50          0
-2019-08-22 22:23:05         21 s3_cp_test.txt
-2019-08-22 22:30:43         21 s3_cp_test_copy.txt
+<span class="err">$</span> <span class="n">aws</span> <span class="n">s3</span> <span class="n">ls</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">21</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">50</span>          <span class="mi">0</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">22</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">05</span>         <span class="mi">21</span> <span class="n">s3_cp_test</span><span class="o">.</span><span class="n">txt</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">22</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">43</span>         <span class="mi">21</span> <span class="n">s3_cp_test_copy</span><span class="o">.</span><span class="n">txt</span>
 </code></pre></div></div>
 
 <p>케이스 : 로컬 디렉터리를 s3로 복사</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls ./cp_dir_test/
-local_cp_test.txt
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">ls</span> <span class="o">./</span><span class="n">cp_dir_test</span><span class="o">/</span>
+<span class="n">local_cp_test</span><span class="o">.</span><span class="n">txt</span>
 
-$ aws s3 ls s3://bucket/user-s3-cli-test/
-2019-08-22 21:10:50          0
-2019-08-22 22:23:05         21 s3_cp_test.txt
-2019-08-22 22:30:43         21 s3_cp_test_copy.txt
+<span class="err">$</span> <span class="n">aws</span> <span class="n">s3</span> <span class="n">ls</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">21</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">50</span>          <span class="mi">0</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">22</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">05</span>         <span class="mi">21</span> <span class="n">s3_cp_test</span><span class="o">.</span><span class="n">txt</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">22</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">43</span>         <span class="mi">21</span> <span class="n">s3_cp_test_copy</span><span class="o">.</span><span class="n">txt</span>
 
-$ aws s3 cp ./cp_dir_test s3://bucket/user-s3-cli-test/s3_cp_dir_test --recursive
-upload: cp_dir_test/local_cp_test.txt to s3://bucket/user-s3-cli-test/s3_cp_dir_test/local_cp_test.txt
+<span class="err">$</span> <span class="n">aws</span> <span class="n">s3</span> <span class="n">cp</span> <span class="o">./</span><span class="n">cp_dir_test</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span><span class="n">s3_cp_dir_test</span> <span class="o">--</span><span class="n">recursive</span>
+<span class="n">upload</span><span class="p">:</span> <span class="n">cp_dir_test</span><span class="o">/</span><span class="n">local_cp_test</span><span class="o">.</span><span class="n">txt</span> <span class="n">to</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span><span class="n">s3_cp_dir_test</span><span class="o">/</span><span class="n">local_cp_test</span><span class="o">.</span><span class="n">txt</span>
 
-$ aws s3 ls s3://bucket/user-s3-cli-test/s3_cp_dir_test
-                           PRE s3_cp_dir_test/
+<span class="err">$</span> <span class="n">aws</span> <span class="n">s3</span> <span class="n">ls</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span><span class="n">s3_cp_dir_test</span>
+                           <span class="n">PRE</span> <span class="n">s3_cp_dir_test</span><span class="o">/</span>
 
-$ aws s3 ls s3://bucket/user-s3-cli-test/s3_cp_dir_test/
-2019-08-22 22:34:48         21 local_cp_test.txt
+<span class="err">$</span> <span class="n">aws</span> <span class="n">s3</span> <span class="n">ls</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">cli</span><span class="o">-</span><span class="n">test</span><span class="o">/</span><span class="n">s3_cp_dir_test</span><span class="o">/</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">22</span> <span class="mi">22</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mi">48</span>         <span class="mi">21</span> <span class="n">local_cp_test</span><span class="o">.</span><span class="n">txt</span>
 </code></pre></div></div>
 
 <h3 id="lsmv-rm-명령">ls, mv, rm 명령</h3>

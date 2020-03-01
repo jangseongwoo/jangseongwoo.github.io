@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -476,18 +480,18 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                                                  Kinesis Data Firehose
-                                                 +----------------------+
-  +---------+           +--------+               |  Event-1 - Stream-1  |                 +--------+
-  |  data   |----------&gt;|Fluentd |--------------&gt;|         ...          |----------------&gt;| AWS S3 |
-  +---------+           +--------+ data records  |  Event-N - Stream-N  |        backup   +--------+
-                                                 +----------------------+                   Bucket
-                                                     Delivery Streams
-                                                      (Event Stream)
-                                                            |                             +---------------+
-                                                            |                             | Elasticsearch |
-                                                            +----------------------------&gt;| Cluster       |&lt;---&gt;[Kibana]
-                                                                                indexing  +---------------+      dashboard
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                                                  <span class="n">Kinesis</span> <span class="n">Data</span> <span class="n">Firehose</span>
+                                                 <span class="o">+----------------------+</span>
+  <span class="o">+---------+</span>           <span class="o">+--------+</span>               <span class="o">|</span>  <span class="n">Event</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Stream</span><span class="o">-</span><span class="mi">1</span>  <span class="o">|</span>                 <span class="o">+--------+</span>
+  <span class="o">|</span>  <span class="n">data</span>   <span class="o">|----------&gt;|</span><span class="n">Fluentd</span> <span class="o">|--------------&gt;|</span>         <span class="o">...</span>          <span class="o">|----------------&gt;|</span> <span class="n">AWS</span> <span class="n">S3</span> <span class="o">|</span>
+  <span class="o">+---------+</span>           <span class="o">+--------+</span> <span class="n">data</span> <span class="n">records</span>  <span class="o">|</span>  <span class="n">Event</span><span class="o">-</span><span class="n">N</span> <span class="o">-</span> <span class="n">Stream</span><span class="o">-</span><span class="n">N</span>  <span class="o">|</span>        <span class="n">backup</span>   <span class="o">+--------+</span>
+                                                 <span class="o">+----------------------+</span>                   <span class="n">Bucket</span>
+                                                     <span class="n">Delivery</span> <span class="n">Streams</span>
+                                                      <span class="p">(</span><span class="n">Event</span> <span class="n">Stream</span><span class="p">)</span>
+                                                            <span class="o">|</span>                             <span class="o">+---------------+</span>
+                                                            <span class="o">|</span>                             <span class="o">|</span> <span class="n">Elasticsearch</span> <span class="o">|</span>
+                                                            <span class="o">+----------------------------&gt;|</span> <span class="n">Cluster</span>       <span class="o">|&lt;---&gt;</span><span class="p">[</span><span class="n">Kibana</span><span class="p">]</span>
+                                                                                <span class="n">indexing</span>  <span class="o">+---------------+</span>      <span class="n">dashboard</span>
 </code></pre></div></div>
 
 <h2 id="aws-elasticsearch-환경">AWS Elasticsearch 환경</h2>
@@ -568,47 +572,47 @@
 
 <p>Elasticsearch에 tempalte을 설정하기 위해 Kibana Dev tools에 아래와 같은 명령어를 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT _template/template-test
-{
-    "index_patterns": [
-        "data-test-*"
-    ],
-    "settings": {
-        "number_of_shards": 1
-    },
-    "aliases": {
-        "test-data": {}
-    },
-    "mappings": {
-            "_source": {
-                "enabled": true
-            },
-            "properties": {
-                "board_id": {
-                    "type": "long"
-                },
-                "playtime": {
-                    "type": "long"
-                },
-                "timestamp": {
-                    "type": "date"
-                },
-                "user_id": {
-                    "type": "long"
-                },
-                "interest": {
-                    "type": "keyword"
-                }
-        }
-    }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PUT</span> <span class="n">_template</span><span class="o">/</span><span class="n">template</span><span class="o">-</span><span class="n">test</span>
+<span class="p">{</span>
+    <span class="s">"index_patterns"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">"data-test-*"</span>
+    <span class="p">],</span>
+    <span class="s">"settings"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"number_of_shards"</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">},</span>
+    <span class="s">"aliases"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"test-data"</span><span class="p">:</span> <span class="p">{}</span>
+    <span class="p">},</span>
+    <span class="s">"mappings"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">"_source"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">"enabled"</span><span class="p">:</span> <span class="n">true</span>
+            <span class="p">},</span>
+            <span class="s">"properties"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">"board_id"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s">"type"</span><span class="p">:</span> <span class="s">"long"</span>
+                <span class="p">},</span>
+                <span class="s">"playtime"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s">"type"</span><span class="p">:</span> <span class="s">"long"</span>
+                <span class="p">},</span>
+                <span class="s">"timestamp"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s">"type"</span><span class="p">:</span> <span class="s">"date"</span>
+                <span class="p">},</span>
+                <span class="s">"user_id"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s">"type"</span><span class="p">:</span> <span class="s">"long"</span>
+                <span class="p">},</span>
+                <span class="s">"interest"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s">"type"</span><span class="p">:</span> <span class="s">"keyword"</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <p>명령어 실행 후 아래와 같은 메시지가 나온다면 성공적으로 동작한 것이다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  "acknowledged" : true
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="s">"acknowledged"</span> <span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <h2 id="fluentd의-aws-kinesis-data-stream-플러그인-설치하기">Fluentd의 AWS Kinesis Data stream 플러그인 설치하기</h2>
@@ -617,52 +621,52 @@
 
 <p>AWS Kinesis output plugin 설치 명령은 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ gem install fluent-plugin-kinesis
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">fluent</span><span class="o">-</span><span class="n">plugin</span><span class="o">-</span><span class="n">kinesis</span>
 </code></pre></div></div>
 
 <h2 id="fluentd의-설정-변경-및-실행">Fluentd의 설정 변경 및 실행</h2>
 
 <p>다음과 같은 디렉토리 구조를 생성한다. 해당 구조로 프로젝트 디렉토리를 구성한 이후 다음 내용을 진행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Project/pos/
-Project/pos/pos_file.pos
-Project/source/{log_file.log}
-Project/kinesis_test.config
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Project</span><span class="o">/</span><span class="n">pos</span><span class="o">/</span>
+<span class="n">Project</span><span class="o">/</span><span class="n">pos</span><span class="o">/</span><span class="n">pos_file</span><span class="o">.</span><span class="n">pos</span>
+<span class="n">Project</span><span class="o">/</span><span class="n">source</span><span class="o">/</span><span class="p">{</span><span class="n">log_file</span><span class="o">.</span><span class="n">log</span><span class="p">}</span>
+<span class="n">Project</span><span class="o">/</span><span class="n">kinesis_test</span><span class="o">.</span><span class="n">config</span>
 </code></pre></div></div>
 
 <p>kinesis_test.config을 생성하고 다음과 같이 내용을 입력한다. 내용 중 Path, Pos_file에 대한 설정은 각자 환경에 맞게 구성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;source&gt;
-  @type tail
-  path /Users/st/test/test_data_poc/source/*.log
-  pos_file /Users/st/test/test_data_poc/pos/pos_file.pos
-  tag kinesis.test
-  &lt;parse&gt;
-    @type json
-  &lt;/parse&gt;
-  refresh_interval 5s
-&lt;/source&gt;
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">source</span><span class="o">&gt;</span>
+  <span class="o">@</span><span class="nb">type</span> <span class="n">tail</span>
+  <span class="n">path</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">test_data_poc</span><span class="o">/</span><span class="n">source</span><span class="o">/*.</span><span class="n">log</span>
+  <span class="n">pos_file</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">test_data_poc</span><span class="o">/</span><span class="n">pos</span><span class="o">/</span><span class="n">pos_file</span><span class="o">.</span><span class="n">pos</span>
+  <span class="n">tag</span> <span class="n">kinesis</span><span class="o">.</span><span class="n">test</span>
+  <span class="o">&lt;</span><span class="n">parse</span><span class="o">&gt;</span>
+    <span class="o">@</span><span class="nb">type</span> <span class="n">json</span>
+  <span class="o">&lt;/</span><span class="n">parse</span><span class="o">&gt;</span>
+  <span class="n">refresh_interval</span> <span class="mi">5</span><span class="n">s</span>
+<span class="o">&lt;/</span><span class="n">source</span><span class="o">&gt;</span>
 
 
-&lt;match kinesis.*&gt;
-  @type kinesis_firehose
-  region ap-northeast-2
-  delivery_stream_name test-fluentd-firehose
-  &lt;buffer tag&gt;
-    flush_mode interval
-    flush_interval 1s
-  &lt;/buffer&gt;
-&lt;/match&gt;
+<span class="o">&lt;</span><span class="n">match</span> <span class="n">kinesis</span><span class="o">.*&gt;</span>
+  <span class="o">@</span><span class="nb">type</span> <span class="n">kinesis_firehose</span>
+  <span class="n">region</span> <span class="n">ap</span><span class="o">-</span><span class="n">northeast</span><span class="o">-</span><span class="mi">2</span>
+  <span class="n">delivery_stream_name</span> <span class="n">test</span><span class="o">-</span><span class="n">fluentd</span><span class="o">-</span><span class="n">firehose</span>
+  <span class="o">&lt;</span><span class="nb">buffer</span> <span class="n">tag</span><span class="o">&gt;</span>
+    <span class="n">flush_mode</span> <span class="n">interval</span>
+    <span class="n">flush_interval</span> <span class="mi">1</span><span class="n">s</span>
+  <span class="o">&lt;/</span><span class="nb">buffer</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">match</span><span class="o">&gt;</span>
 </code></pre></div></div>
 
 <p>Fluentd를 실행하기 위해 Project 디렉토리에서 다음과 같은 명령을 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ fluentd -c kinesis_test.config -o fleuntd.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>fluentd <span class="nt">-c</span> kinesis_test.config <span class="nt">-o</span> fleuntd.log
 </code></pre></div></div>
 
 <p>새로운 터미널을 열고 로그 파일을 보기 위해 다음과 같은 명령을 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -f fleuntd.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-f</span> fleuntd.log
 </code></pre></div></div>
 
 <p>로그 파일을 통해 Fluentd가 정상적으로 실행되었다는 것을 확인한다.</p>
@@ -671,107 +675,107 @@ Project/kinesis_test.config
 
 <p>다음과 같은 데이터 형식으로 Data generator를 만들면 된다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>board_id : long
-playtime : long
-timestamp : date형
-user_id : long
-interest: long
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">board_id</span> <span class="p">:</span> <span class="nb">long</span>
+<span class="n">playtime</span> <span class="p">:</span> <span class="nb">long</span>
+<span class="n">timestamp</span> <span class="p">:</span> <span class="n">date</span><span class="err">형</span>
+<span class="n">user_id</span> <span class="p">:</span> <span class="nb">long</span>
+<span class="n">interest</span><span class="p">:</span> <span class="nb">long</span>
 </code></pre></div></div>
 
 <p>Data generator를 만들기 위해 data_generator.py를 생성하고 다음과 같이 내용을 입력한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from datetime import datetime
-import string
-import time
-from multiprocessing import Pool
-from random import *
-import random
-from datetime import timedelta, datetime
-import json
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
 
-def random_date(start, end):
-    """
+<span class="k">def</span> <span class="nf">random_date</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+    <span class="s">"""
     This function will return a random datetime between two datetime 
     objects.
-    """
-    delta = end - start
-    int_delta = (delta.days * 24 * 60 * 60) + delta.seconds
-    random_second = randrange(int_delta)
-    return start + timedelta(seconds=random_second)
+    """</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+    <span class="n">int_delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">days</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="o">+</span> <span class="n">delta</span><span class="o">.</span><span class="n">seconds</span>
+    <span class="n">random_second</span> <span class="o">=</span> <span class="n">randrange</span><span class="p">(</span><span class="n">int_delta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">start</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">random_second</span><span class="p">)</span>
 
 
-def make_datetime_now():
-    d1 = datetime.strptime('1/1/2019 1:30 PM', '%m/%d/%Y %I:%M %p')
-    d2 = datetime.strptime('12/29/2019 4:50 AM', '%m/%d/%Y %I:%M %p')
+<span class="k">def</span> <span class="nf">make_datetime_now</span><span class="p">():</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s">'1/1/2019 1:30 PM'</span><span class="p">,</span> <span class="s">'</span><span class="si">%</span><span class="s">m/</span><span class="si">%</span><span class="s">d/</span><span class="si">%</span><span class="s">Y </span><span class="si">%</span><span class="s">I:</span><span class="si">%</span><span class="s">M </span><span class="si">%</span><span class="s">p'</span><span class="p">)</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s">'12/29/2019 4:50 AM'</span><span class="p">,</span> <span class="s">'</span><span class="si">%</span><span class="s">m/</span><span class="si">%</span><span class="s">d/</span><span class="si">%</span><span class="s">Y </span><span class="si">%</span><span class="s">I:</span><span class="si">%</span><span class="s">M </span><span class="si">%</span><span class="s">p'</span><span class="p">)</span>
     
-    d3 = random_date(d1, d2)
-    d3 = str(d3)
+    <span class="n">d3</span> <span class="o">=</span> <span class="n">random_date</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">)</span>
+    <span class="n">d3</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">d3</span><span class="p">)</span>
 
-    random_date_string = d3[0:10] + 'T' +d3[11:]+'Z'
+    <span class="n">random_date_string</span> <span class="o">=</span> <span class="n">d3</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">+</span> <span class="s">'T'</span> <span class="o">+</span><span class="n">d3</span><span class="p">[</span><span class="mi">11</span><span class="p">:]</span><span class="o">+</span><span class="s">'Z'</span>
 
-    return random_date_string
+    <span class="k">return</span> <span class="n">random_date_string</span>
 
 
-def make_random_number(start, end):
-    random_number = randint(start, end)
+<span class="k">def</span> <span class="nf">make_random_number</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+    <span class="n">random_number</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
     
-    return random_number
+    <span class="k">return</span> <span class="n">random_number</span>
 
 
-def make_datum():
-    board_id = make_random_number(0, 1000000)
-    playtime = make_random_number(0, 15)
-    user_id = make_random_number(0, 1000000)
-    timestamp = make_datetime_now()
-    interest = "test_first"
+<span class="k">def</span> <span class="nf">make_datum</span><span class="p">():</span>
+    <span class="n">board_id</span> <span class="o">=</span> <span class="n">make_random_number</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">)</span>
+    <span class="n">playtime</span> <span class="o">=</span> <span class="n">make_random_number</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">make_random_number</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">)</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">make_datetime_now</span><span class="p">()</span>
+    <span class="n">interest</span> <span class="o">=</span> <span class="s">"test_first"</span>
 
-    datum = {
-        "board_id" : board_id,
-        "playtime" : playtime,
-        "user_id" : user_id, 
-        "timestamp" : timestamp,
-        "interest" : "test_fluentd_firehose"
-    }
+    <span class="n">datum</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"board_id"</span> <span class="p">:</span> <span class="n">board_id</span><span class="p">,</span>
+        <span class="s">"playtime"</span> <span class="p">:</span> <span class="n">playtime</span><span class="p">,</span>
+        <span class="s">"user_id"</span> <span class="p">:</span> <span class="n">user_id</span><span class="p">,</span> 
+        <span class="s">"timestamp"</span> <span class="p">:</span> <span class="n">timestamp</span><span class="p">,</span>
+        <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test_fluentd_firehose"</span>
+    <span class="p">}</span>
 
-    return datum
-
-
-def make_datum_to_json(datum):
-    return json.dumps(datum)
+    <span class="k">return</span> <span class="n">datum</span>
 
 
-def write_datum_json_to_file(datum, file_name):
-    with open(file_name, 'a') as file_object:
-        file_object.write(datum)
-        file_object.write("\n")
+<span class="k">def</span> <span class="nf">make_datum_to_json</span><span class="p">(</span><span class="n">datum</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">datum</span><span class="p">)</span>
 
 
-def main():
+<span class="k">def</span> <span class="nf">write_datum_json_to_file</span><span class="p">(</span><span class="n">datum</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s">'a'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_object</span><span class="p">:</span>
+        <span class="n">file_object</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">datum</span><span class="p">)</span>
+        <span class="n">file_object</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
 
-    for j in range(0, 100):
-        for i in range(0, 100):
-            datum = make_datum()
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+            <span class="n">datum</span> <span class="o">=</span> <span class="n">make_datum</span><span class="p">()</span>
             
-            print(datum)
+            <span class="k">print</span><span class="p">(</span><span class="n">datum</span><span class="p">)</span>
 
-            datum_json = make_datum_to_json(datum)
-            write_datum_json_to_file(datum_json, "source/test_fluentd_firehose.log")
-        time.sleep(1)
+            <span class="n">datum_json</span> <span class="o">=</span> <span class="n">make_datum_to_json</span><span class="p">(</span><span class="n">datum</span><span class="p">)</span>
+            <span class="n">write_datum_json_to_file</span><span class="p">(</span><span class="n">datum_json</span><span class="p">,</span> <span class="s">"source/test_fluentd_firehose.log"</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 
-if __name__ == "__main__":
-    main()
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
 </code></pre></div></div>
 
 <p>다음과 같이 명령어를 입력해 data_generator.py을 실행한다.  실행 시 data_generator.py는 10000개의 데이터를 생성하고 파일로 기록한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python data_generator.py &gt; firehose.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python data_generator.py <span class="o">&gt;</span> firehose.log
 </code></pre></div></div>
 
 <p>미리 설정해둔 fleuntd.log에서 다음과 같은 메시지를 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2019-11-14 21:07:00 +0900 [info]: #0 following tail of /Users/st/test/test_data_poc/source/test_fluentd_firehose.log
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2019-11-14 21:07:00 +0900 <span class="o">[</span>info]: <span class="c">#0 following tail of /Users/st/test/test_data_poc/source/test_fluentd_firehose.log</span>
 </code></pre></div></div>
 
 <h2 id="데이터-입력이-제대로-됬는지-확인">데이터 입력이 제대로 됬는지 확인</h2>
@@ -795,164 +799,164 @@ if __name__ == "__main__":
 
 <p>확인을 위해 Kibana Dev tools에서 아래와 같은 쿼리를 입력하고 결과를 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET _search/
-{
-  "query": {
-    "match": {"interest":"test_fluentd_firehose"}
-  }
-}
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET _search/
+<span class="o">{</span>
+  <span class="s2">"query"</span>: <span class="o">{</span>
+    <span class="s2">"match"</span>: <span class="o">{</span><span class="s2">"interest"</span>:<span class="s2">"test_fluentd_firehose"</span><span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  "took" : 16,
-  "timed_out" : false,
-  "_shards" : {
-    "total" : 22,
-    "successful" : 22,
-    "skipped" : 0,
-    "failed" : 0
-  },
-  "hits" : {
-    "total" : {
-      "value" : 10000,
-      "relation" : "eq"
-    },
-    "max_score" : 0.99693555,
-    "hits" : [
-      {
-        "_index" : "data-test-2019-11-18-11",
-        "_type" : "_doc",
-        "_id" : "49601506511312770511672440629703967127024877424999399426.0",
-        "_score" : 0.99693555,
-        "_source" : {
-          "board_id" : 922281,
-          "playtime" : 13,
-          "user_id" : 48951,
-          "interest" : "test_fluentd_firehose",
-          "timestamp" : "2019-02-19T23:08:10Z"
-        }
-      },
-      {
-        "_index" : "data-test-2019-11-18-11",
-        "_type" : "_doc",
-        "_id" : "49601506511312770511672440629705176052844492054174105602.0",
-        "_score" : 0.99693555,
-        "_source" : {
-          "board_id" : 919679,
-          "playtime" : 4,
-          "user_id" : 515347,
-          "interest" : "test_fluentd_firehose",
-          "timestamp" : "2019-12-26T08:25:05Z"
-        }
-      },
-      {
-        "_index" : "data-test-2019-11-18-11",
-        "_type" : "_doc",
-        "_id" : "49601506511312770511672440629706384978664106683348811778.0",
-        "_score" : 0.99693555,
-        "_source" : {
-          "board_id" : 484020,
-          "playtime" : 14,
-          "user_id" : 475076,
-          "interest" : "test_fluentd_firehose",
-          "timestamp" : "2019-10-06T15:58:35Z"
-        }
-      },
-      {
-        "_index" : "data-test-2019-11-18-11",
-        "_type" : "_doc",
-        "_id" : "49601506511312770511672440629707593904483721312523517954.0",
-        "_score" : 0.99693555,
-        "_source" : {
-          "board_id" : 476641,
-          "playtime" : 1,
-          "user_id" : 883424,
-          "interest" : "test_fluentd_firehose",
-          "timestamp" : "2019-05-14T20:46:58Z"
-        }
-      },
-      {
-        "_index" : "data-test-2019-11-18-11",
-        "_type" : "_doc",
-        "_id" : "49601506511312770511672440629708802830303335941698224130.0",
-        "_score" : 0.99693555,
-        "_source" : {
-          "board_id" : 967380,
-          "playtime" : 5,
-          "user_id" : 642448,
-          "interest" : "test_fluentd_firehose",
-          "timestamp" : "2019-03-18T11:11:58Z"
-        }
-      },
-      {
-        "_index" : "data-test-2019-11-18-11",
-        "_type" : "_doc",
-        "_id" : "49601506511312770511672440629710011756122950570872930306.0",
-        "_score" : 0.99693555,
-        "_source" : {
-          "board_id" : 261627,
-          "playtime" : 1,
-          "user_id" : 242466,
-          "interest" : "test_fluentd_firehose",
-          "timestamp" : "2019-07-27T03:16:14Z"
-        }
-      },
-      {
-        "_index" : "data-test-2019-11-18-11",
-        "_type" : "_doc",
-        "_id" : "49601506511312770511672440629711220681942565200047636482.0",
-        "_score" : 0.99693555,
-        "_source" : {
-          "board_id" : 486000,
-          "playtime" : 6,
-          "user_id" : 390459,
-          "interest" : "test_fluentd_firehose",
-          "timestamp" : "2019-06-22T22:54:43Z"
-        }
-      },
-      {
-        "_index" : "data-test-2019-11-18-11",
-        "_type" : "_doc",
-        "_id" : "49601506511312770511672440629712429607762179829222342658.0",
-        "_score" : 0.99693555,
-        "_source" : {
-          "board_id" : 449380,
-          "playtime" : 12,
-          "user_id" : 635895,
-          "interest" : "test_fluentd_firehose",
-          "timestamp" : "2019-12-14T21:01:22Z"
-        }
-      },
-      {
-        "_index" : "data-test-2019-11-18-11",
-        "_type" : "_doc",
-        "_id" : "49601506511312770511672440629713638533581794458397048834.0",
-        "_score" : 0.99693555,
-        "_source" : {
-          "board_id" : 380671,
-          "playtime" : 8,
-          "user_id" : 964548,
-          "interest" : "test_fluentd_firehose",
-          "timestamp" : "2019-10-16T08:25:32Z"
-        }
-      },
-      {
-        "_index" : "data-test-2019-11-18-11",
-        "_type" : "_doc",
-        "_id" : "49601506511312770511672440629714847459401409087571755010.0",
-        "_score" : 0.99693555,
-        "_source" : {
-          "board_id" : 497368,
-          "playtime" : 7,
-          "user_id" : 222811,
-          "interest" : "test_fluentd_firehose",
-          "timestamp" : "2019-08-18T04:00:50Z"
-        }
-      }
-    ]
-  }
-}
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">{</span>
+  <span class="s2">"took"</span> : 16,
+  <span class="s2">"timed_out"</span> : <span class="nb">false</span>,
+  <span class="s2">"_shards"</span> : <span class="o">{</span>
+    <span class="s2">"total"</span> : 22,
+    <span class="s2">"successful"</span> : 22,
+    <span class="s2">"skipped"</span> : 0,
+    <span class="s2">"failed"</span> : 0
+  <span class="o">}</span>,
+  <span class="s2">"hits"</span> : <span class="o">{</span>
+    <span class="s2">"total"</span> : <span class="o">{</span>
+      <span class="s2">"value"</span> : 10000,
+      <span class="s2">"relation"</span> : <span class="s2">"eq"</span>
+    <span class="o">}</span>,
+    <span class="s2">"max_score"</span> : 0.99693555,
+    <span class="s2">"hits"</span> : <span class="o">[</span>
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"data-test-2019-11-18-11"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"49601506511312770511672440629703967127024877424999399426.0"</span>,
+        <span class="s2">"_score"</span> : 0.99693555,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"board_id"</span> : 922281,
+          <span class="s2">"playtime"</span> : 13,
+          <span class="s2">"user_id"</span> : 48951,
+          <span class="s2">"interest"</span> : <span class="s2">"test_fluentd_firehose"</span>,
+          <span class="s2">"timestamp"</span> : <span class="s2">"2019-02-19T23:08:10Z"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"data-test-2019-11-18-11"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"49601506511312770511672440629705176052844492054174105602.0"</span>,
+        <span class="s2">"_score"</span> : 0.99693555,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"board_id"</span> : 919679,
+          <span class="s2">"playtime"</span> : 4,
+          <span class="s2">"user_id"</span> : 515347,
+          <span class="s2">"interest"</span> : <span class="s2">"test_fluentd_firehose"</span>,
+          <span class="s2">"timestamp"</span> : <span class="s2">"2019-12-26T08:25:05Z"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"data-test-2019-11-18-11"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"49601506511312770511672440629706384978664106683348811778.0"</span>,
+        <span class="s2">"_score"</span> : 0.99693555,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"board_id"</span> : 484020,
+          <span class="s2">"playtime"</span> : 14,
+          <span class="s2">"user_id"</span> : 475076,
+          <span class="s2">"interest"</span> : <span class="s2">"test_fluentd_firehose"</span>,
+          <span class="s2">"timestamp"</span> : <span class="s2">"2019-10-06T15:58:35Z"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"data-test-2019-11-18-11"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"49601506511312770511672440629707593904483721312523517954.0"</span>,
+        <span class="s2">"_score"</span> : 0.99693555,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"board_id"</span> : 476641,
+          <span class="s2">"playtime"</span> : 1,
+          <span class="s2">"user_id"</span> : 883424,
+          <span class="s2">"interest"</span> : <span class="s2">"test_fluentd_firehose"</span>,
+          <span class="s2">"timestamp"</span> : <span class="s2">"2019-05-14T20:46:58Z"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"data-test-2019-11-18-11"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"49601506511312770511672440629708802830303335941698224130.0"</span>,
+        <span class="s2">"_score"</span> : 0.99693555,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"board_id"</span> : 967380,
+          <span class="s2">"playtime"</span> : 5,
+          <span class="s2">"user_id"</span> : 642448,
+          <span class="s2">"interest"</span> : <span class="s2">"test_fluentd_firehose"</span>,
+          <span class="s2">"timestamp"</span> : <span class="s2">"2019-03-18T11:11:58Z"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"data-test-2019-11-18-11"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"49601506511312770511672440629710011756122950570872930306.0"</span>,
+        <span class="s2">"_score"</span> : 0.99693555,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"board_id"</span> : 261627,
+          <span class="s2">"playtime"</span> : 1,
+          <span class="s2">"user_id"</span> : 242466,
+          <span class="s2">"interest"</span> : <span class="s2">"test_fluentd_firehose"</span>,
+          <span class="s2">"timestamp"</span> : <span class="s2">"2019-07-27T03:16:14Z"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"data-test-2019-11-18-11"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"49601506511312770511672440629711220681942565200047636482.0"</span>,
+        <span class="s2">"_score"</span> : 0.99693555,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"board_id"</span> : 486000,
+          <span class="s2">"playtime"</span> : 6,
+          <span class="s2">"user_id"</span> : 390459,
+          <span class="s2">"interest"</span> : <span class="s2">"test_fluentd_firehose"</span>,
+          <span class="s2">"timestamp"</span> : <span class="s2">"2019-06-22T22:54:43Z"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"data-test-2019-11-18-11"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"49601506511312770511672440629712429607762179829222342658.0"</span>,
+        <span class="s2">"_score"</span> : 0.99693555,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"board_id"</span> : 449380,
+          <span class="s2">"playtime"</span> : 12,
+          <span class="s2">"user_id"</span> : 635895,
+          <span class="s2">"interest"</span> : <span class="s2">"test_fluentd_firehose"</span>,
+          <span class="s2">"timestamp"</span> : <span class="s2">"2019-12-14T21:01:22Z"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"data-test-2019-11-18-11"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"49601506511312770511672440629713638533581794458397048834.0"</span>,
+        <span class="s2">"_score"</span> : 0.99693555,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"board_id"</span> : 380671,
+          <span class="s2">"playtime"</span> : 8,
+          <span class="s2">"user_id"</span> : 964548,
+          <span class="s2">"interest"</span> : <span class="s2">"test_fluentd_firehose"</span>,
+          <span class="s2">"timestamp"</span> : <span class="s2">"2019-10-16T08:25:32Z"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"data-test-2019-11-18-11"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"49601506511312770511672440629714847459401409087571755010.0"</span>,
+        <span class="s2">"_score"</span> : 0.99693555,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"board_id"</span> : 497368,
+          <span class="s2">"playtime"</span> : 7,
+          <span class="s2">"user_id"</span> : 222811,
+          <span class="s2">"interest"</span> : <span class="s2">"test_fluentd_firehose"</span>,
+          <span class="s2">"timestamp"</span> : <span class="s2">"2019-08-18T04:00:50Z"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">]</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 
 
 </code></pre></div></div>

@@ -99,7 +99,7 @@ td-agent의 설정 파일의 경로를 다음과 같이 지정한다.
 
   
 
-```
+```bash
 $ cat /opt/td-agent/usr/sbin/td-agent
 
 ... 중략 ...
@@ -116,7 +116,7 @@ ENV["FLUENT_CONF"]="/Users/kevin/dev/fluentd/test/file_path/config/td-agent.conf
 
 td-agent 설정 파일을 다음과 같이 수정하고 실행한다.
 
-```
+```bash
 $ cat config/td-agent.log 
 <source>
   @type tail
@@ -150,7 +150,7 @@ $ cat config/td-agent.log 
 
   
 
-```
+```bash
 $ sudo launchctl load td-agent.plist
 ```
 
@@ -160,13 +160,13 @@ $ sudo launchctl load td-agent.plist
 
 다음과 같이 로그를 파일에 저장한다.
 
-```
+```bash
 $ echo "fixed_file_path_line_1" > source/fixed_file_path.log
 ```
 
 다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.
 
-```
+```bash
 $ cat /var/log/td-agent/td-agent.log
  
 ... 중략 ...
@@ -176,7 +176,7 @@ $ cat /var/log/td-agent/td-agent.log
 
 출력용 파일을 확인하면 다음과 같다.
 
-```
+```bash
 $ tail -10f match/file_path_output.log
 2019-08-30T14:28:35+09:00	{"message":"fixed_file_path_line_1"}
 
@@ -188,7 +188,7 @@ $ tail -10f match/file_path_output.log
 
 다시 한번 다음과 같이 파일에 로그를 저장한다.
 
-```
+```bash
 $ echo "fixed_file_path_line_2" >> source/fixed_file_path.log
 $ echo "fixed_file_path_line_3" >> source/fixed_file_path.log
 $ echo "fixed_file_path_line_4" >> source/fixed_file_path.log
@@ -197,7 +197,7 @@ $ echo "fixed_file_path_line_5" >> source/fixed_file_path.log
 
 출력용 파일을 확인하면 다음과 같다.
 
-```
+```bash
 $ tail -10f match/file_path_output.log
 2019-08-30T14:28:35+09:00	{"message":"fixed_file_path_line_1"}
 2019-08-30T14:29:30+09:00	{"message":"fixed_file_path_line_2"}
@@ -224,7 +224,7 @@ $ tail -10f match/file_path_output.log
 
 td-agent 설정 파일을 다음과 같이 수정하고 실행한다.
 
-```
+```bash
 $ cat config/td-agent.log 
 <source>
   @type tail
@@ -258,7 +258,7 @@ $ cat config/td-agent.log 
 
   
 
-```
+```bash
 $ sudo launchctl load td-agent.plist
 ```
 
@@ -268,13 +268,13 @@ $ sudo launchctl load td-agent.plist
 
 다음과 같이 로그를 파일에 저장한다.
 
-```
+```bash
 $ echo "filename_extension_log_line_1" > source/log_file.log
 ```
 
 다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.
 
-```
+```bash
 $ cat /var/log/td-agent/td-agent.log
  
 ... 중략 ...
@@ -284,7 +284,7 @@ $ cat /var/log/td-agent/td-agent.log
 
 출력용 파일을 확인하면 다음과 같다.
 
-```
+```bash
 $ tail -10f match/file_path_output.log
 2019-08-30T15:05:01+09:00	{"message":"filename_extension_log_line_1"}
 
@@ -296,14 +296,14 @@ $ tail -10f match/file_path_output.log
 
 다시 한번 다음과 같이 파일에 로그를 저장한다.
 
-```
+```bash
 $ echo "filename_extension_log_line_2" >> source/log_file.log
 $ echo "filename_extension_log_line_3" >> source/log_file.log
 ```
 
 출력용 파일을 확인하면 다음과 같다.
 
-```
+```bash
 $ tail -10f match/file_path_output.log
 2019-08-30T15:05:01+09:00	{"message":"filename_extension_log_line_1"}
 2019-08-30T15:08:01+09:00	{"message":"filename_extension_log_line_2"}
@@ -318,13 +318,13 @@ $ tail -10f match/file_path_output.log
 
 다음과 같이 로그를 파일에 저장한다.
 
-```
+```bash
 $ echo "filename_extension_txt_line_1" > source/text_file.txt
 ```
 
 다음과 같이 td-agent가 파일 생성을 인지하지 못한다.
 
-```
+```bash
 $ cat /var/log/td-agent/td-agent.log
  
 ... 중략 ...
@@ -334,7 +334,7 @@ $ cat /var/log/td-agent/td-agent.log
 
 출력용 파일을 확인 했을때 로그가 저장되지 않는 것을 알 수 있다.
 
-```
+```bash
 $ tail -10f match/file_path_output.log
 입력용 파일에 저장한 로그가 저장되지 않는다.
 ```
@@ -345,14 +345,14 @@ $ tail -10f match/file_path_output.log
 
 다시 한번 다음과 같이 파일에 로그를 저장한다.
 
-```
+```bash
 $ echo "filename_extension_txt_line_2" >> source/text_file.txt
 $ echo "filename_extension_txt_line_3" >> source/text_file.txt
 ```
 
 출력용 파일을 확인 했을때 로그가 저장되지 않는 것을 알 수 있다.
 
-```
+```bash
 $ tail -10f match/file_path_output.log
 입력용 파일에 저장한 로그가 저장되지 않는다.
 ```
@@ -379,7 +379,7 @@ $ tail -10f match/file_path_output.log
 
 td-agent 설정 파일을 다음과 같이 수정하고 실행한다.
 
-```
+```python
 $ cat config/td-agent.log 
 <source>
   @type tail
@@ -413,7 +413,7 @@ $ cat config/td-agent.log 
 
   
 
-```
+```bash
 $ sudo launchctl load td-agent.plist
 ```
 
@@ -421,13 +421,13 @@ $ sudo launchctl load td-agent.plist
 
 다음과 같이 로그를 파일에 저장한다.
 
-```
+```bash
 $ echo "prefix_line_1" > source/prefix_test.txt
 ```
 
 다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.
 
-```
+```bash
 $ cat /var/log/td-agent/td-agent.log
  
 ... 중략 ...
@@ -437,7 +437,7 @@ $ cat /var/log/td-agent/td-agent.log
 
 출력용 파일을 확인하면 다음과 같다.
 
-```
+```bash
 $ tail -10f match/file_path_output.log
 2019-08-30T15:35:45+09:00	{"message":"prefix_line_1"}
 
@@ -449,14 +449,14 @@ $ tail -10f match/file_path_output.log
 
 다시 한번 다음과 같이 파일에 로그를 저장한다.
 
-```
+```bash
 $ echo "prefix_line_2" >> source/prefix_test.txt
 $ echo "prefix_line_3" >> source/prefix_test.txt
 ```
 
 출력용 파일을 확인하면 다음과 같다.
 
-```
+```bash
 $ tail -10f match/file_path_output.log
 2019-08-30T15:35:45+09:00	{"message":"prefix_line_1"}
 2019-08-30T15:36:58+09:00	{"message":"prefix_line_2"}
@@ -467,7 +467,7 @@ $ tail -10f match/file_path_output.log
 
 다음과 같이 파일에 로그를 저장한다.
 
-```
+```bash
 $ echo "prefix_line_1" > source/prefix_test.log
 $ echo "prefix_line_2" >> source/prefix_test.log
 $ echo "prefix_line_3" >> source/prefix_test.log
@@ -475,7 +475,7 @@ $ echo "prefix_line_3" >> source/prefix_test.log
 
 다음과 같이 td-agent가 파일 생성을 인지한 것을 확인한다.
 
-```
+```bash
 $ cat /var/log/td-agent/td-agent.log
  
 ... 중략 ...
@@ -485,7 +485,7 @@ $ cat /var/log/td-agent/td-agent.log
 
 출력용 파일을 확인하면 다음과 같다.
 
-```
+```bash
 $ tail -10f match/file_path_output.log
 2019-08-30T15:40:00+09:00	{"message":"prefix_line_1"}
 2019-08-30T15:40:09+09:00	{"message":"prefix_line_2"}
@@ -498,13 +498,13 @@ $ tail -10f match/file_path_output.log
 
 다음과 같이 로그를 파일에 저장한다.
 
-```
+```bash
 $ echo "prefix_line_1" > none.txt
 ```
 
 다음과 같이 td-agent가 파일 생성을 인지하지 못한다.
 
-```
+```bash
 $ cat /var/log/td-agent/td-agent.log
  
 ... 중략 ...
@@ -514,7 +514,7 @@ $ cat /var/log/td-agent/td-agent.log
 
 출력용 파일을 확인 했을때 로그가 저장되지 않는 것을 알 수 있다.
 
-```
+```bash
 $ tail -10f match/file_path_output.log
 입력용 파일에 저장한 로그가 저장되지 않는다.
 ```
@@ -525,14 +525,14 @@ $ tail -10f match/file_path_output.log
 
 다시 한번 다음과 같이 파일에 로그를 저장한다.
 
-```
+```bash
 $ echo "prefix_line_2" >> none.txt
 $ echo "prefix_line_3" >> none.txt
 ```
 
 출력용 파일을 확인 했을때 로그가 저장되지 않는 것을 알 수 있다.
 
-```
+```bash
 $ tail -10f match/file_path_output.log
 입력용 파일에 저장한 로그가 저장되지 않는다.
 ```

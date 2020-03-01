@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -445,17 +449,17 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                             +----------------------+
-  +---------+                |  Event-1 - Stream-1  |                 +--------+
-  | Sources |---------------&gt;|         ...          |----------------&gt;| AWS S3 |
-  +---------+ data records   |  Event-N - Stream-N  |        backup   +--------+
-                             +----------------------+                   Bucket
-                                 Delivery Streams
-                                  (Event Stream)
-                                        |                             +---------------+
-                                        |                             | Elasticsearch |
-                                        +----------------------------&gt;| Cluster       |&lt;---&gt;[Kibana]
-                                                            indexing  +---------------+      dashboard
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                             <span class="o">+----------------------+</span>
+  <span class="o">+---------+</span>                <span class="o">|</span>  <span class="n">Event</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Stream</span><span class="o">-</span><span class="mi">1</span>  <span class="o">|</span>                 <span class="o">+--------+</span>
+  <span class="o">|</span> <span class="n">Sources</span> <span class="o">|---------------&gt;|</span>         <span class="o">...</span>          <span class="o">|----------------&gt;|</span> <span class="n">AWS</span> <span class="n">S3</span> <span class="o">|</span>
+  <span class="o">+---------+</span> <span class="n">data</span> <span class="n">records</span>   <span class="o">|</span>  <span class="n">Event</span><span class="o">-</span><span class="n">N</span> <span class="o">-</span> <span class="n">Stream</span><span class="o">-</span><span class="n">N</span>  <span class="o">|</span>        <span class="n">backup</span>   <span class="o">+--------+</span>
+                             <span class="o">+----------------------+</span>                   <span class="n">Bucket</span>
+                                 <span class="n">Delivery</span> <span class="n">Streams</span>
+                                  <span class="p">(</span><span class="n">Event</span> <span class="n">Stream</span><span class="p">)</span>
+                                        <span class="o">|</span>                             <span class="o">+---------------+</span>
+                                        <span class="o">|</span>                             <span class="o">|</span> <span class="n">Elasticsearch</span> <span class="o">|</span>
+                                        <span class="o">+----------------------------&gt;|</span> <span class="n">Cluster</span>       <span class="o">|&lt;---&gt;</span><span class="p">[</span><span class="n">Kibana</span><span class="p">]</span>
+                                                            <span class="n">indexing</span>  <span class="o">+---------------+</span>      <span class="n">dashboard</span>
 
 </code></pre></div></div>
 
@@ -557,16 +561,16 @@ _doc는 Elasticsearch에서 index 생성시 따로 type을 지정하지 않으�
   <li>
     <p>Amazon ES 테스트 도메인에 interest_service_click2 인덱스가 생성되고 search api로 데이터가 조회되는 것을 확인하였다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET '{es_domain}/interest_service_click2/_search'
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">XGET</span> <span class="s">'{es_domain}/interest_service_click2/_search'</span>
     
 </code></pre></div>    </div>
   </li>
   <li>
     <p>Amazon S3의 test 버킷에 2019/04/30/06/ 경로 아래로 테스트 데이터들이 저장된 것을 확인하였다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test-1-2019-04-30-06-26-00-9c948a08-f91a-4ba2-922d-408623ea0ddf
-test-1-2019-04-30-06-27-00-aca38977-b723-47df-b557-488e9d583f93
-test-1-2019-04-30-06-28-06-e0b3d645-e27d-451e-b812-33013a5aa57a
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">2019</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">30</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">26</span><span class="o">-</span><span class="mi">00</span><span class="o">-</span><span class="mi">9</span><span class="n">c948a08</span><span class="o">-</span><span class="n">f91a</span><span class="o">-</span><span class="mi">4</span><span class="n">ba2</span><span class="o">-</span><span class="mi">922</span><span class="n">d</span><span class="o">-</span><span class="mi">408623</span><span class="n">ea0ddf</span>
+<span class="n">test</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">2019</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">30</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">27</span><span class="o">-</span><span class="mi">00</span><span class="o">-</span><span class="n">aca38977</span><span class="o">-</span><span class="n">b723</span><span class="o">-</span><span class="mi">47</span><span class="n">df</span><span class="o">-</span><span class="n">b557</span><span class="o">-</span><span class="mf">488e9</span><span class="n">d583f93</span>
+<span class="n">test</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">2019</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">30</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">28</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="n">e0b3d645</span><span class="o">-</span><span class="n">e27d</span><span class="o">-</span><span class="mi">451</span><span class="n">e</span><span class="o">-</span><span class="n">b812</span><span class="o">-</span><span class="mi">33013</span><span class="n">a5aa57a</span>
     
 </code></pre></div>    </div>
   </li>
@@ -577,24 +581,24 @@ test-1-2019-04-30-06-28-06-e0b3d645-e27d-451e-b812-33013a5aa57a
 <p>커스텀 데이터를 Firehose Delivery Stream에 전송하여 Amazon ES와 S3 저장되는지 테스트한다.<br />
 아래와 같은 데이터를 Firehose Delivery Stream에 전송한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-    "user_id": "Aster-Kotlin-Sapphire-564",
-    "app_version": "v1.5.16(90)",
-    "device_id": "a03cd3d6-0b14-46e1-a2c8-18b1c86cf738",
-    "device_manufacturer": "LG",
-    "device_name": "LG G7 ThinQ",
-    "device_model": "LM-G710N",
-    "device_os": "Android",
-    "device_os_number": "8.0",
-    "event": "interest_service_click",
-    "interest_id": 1201,
-    "index": 1,
-    "interest_name": "1",
-    "interest_service_id": null,
-    "interest_service_type": "1",
-    "interest_service_name": "1",
-    "timestamp": "2019-04-30T07:30:00Z"
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="s">"user_id"</span><span class="p">:</span> <span class="s">"Aster-Kotlin-Sapphire-564"</span><span class="p">,</span>
+    <span class="s">"app_version"</span><span class="p">:</span> <span class="s">"v1.5.16(90)"</span><span class="p">,</span>
+    <span class="s">"device_id"</span><span class="p">:</span> <span class="s">"a03cd3d6-0b14-46e1-a2c8-18b1c86cf738"</span><span class="p">,</span>
+    <span class="s">"device_manufacturer"</span><span class="p">:</span> <span class="s">"LG"</span><span class="p">,</span>
+    <span class="s">"device_name"</span><span class="p">:</span> <span class="s">"LG G7 ThinQ"</span><span class="p">,</span>
+    <span class="s">"device_model"</span><span class="p">:</span> <span class="s">"LM-G710N"</span><span class="p">,</span>
+    <span class="s">"device_os"</span><span class="p">:</span> <span class="s">"Android"</span><span class="p">,</span>
+    <span class="s">"device_os_number"</span><span class="p">:</span> <span class="s">"8.0"</span><span class="p">,</span>
+    <span class="s">"event"</span><span class="p">:</span> <span class="s">"interest_service_click"</span><span class="p">,</span>
+    <span class="s">"interest_id"</span><span class="p">:</span> <span class="mi">1201</span><span class="p">,</span>
+    <span class="s">"index"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">"interest_name"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
+    <span class="s">"interest_service_id"</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+    <span class="s">"interest_service_type"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
+    <span class="s">"interest_service_name"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
+    <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2019-04-30T07:30:00Z"</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -602,141 +606,141 @@ test-1-2019-04-30-06-28-06-e0b3d645-e27d-451e-b812-33013a5aa57a
 
 <p>파이썬 가상환경을 구성하고 boto3 라이브러리를 설치한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 -m venv ./boto3_venv
-$ source ./boto3_venv/bin/activate
-$ pip3 install boto3
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">venv</span> <span class="o">./</span><span class="n">boto3_venv</span>
+<span class="err">$</span> <span class="n">source</span> <span class="o">./</span><span class="n">boto3_venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="err">$</span> <span class="n">pip3</span> <span class="n">install</span> <span class="n">boto3</span>
 
 </code></pre></div></div>
 
 <p>아래와 같은 파이썬 코드로 Data Firehose의 Delivery Stream에 데이터를 전송하여 테스트 하였다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import boto3
-import json
-import sys
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
 
 
-def get_firehose_client():
-    # Any clients created from this session will use credentials
-    # from the [test_profile] section of ~/.aws/credentials
-    # with test_profile profile.
-    session = boto3.Session(profile_name="test_profile")
-    firehose = session.client("firehose")
-    return firehose
+<span class="k">def</span> <span class="nf">get_firehose_client</span><span class="p">():</span>
+    <span class="c1"># Any clients created from this session will use credentials
+</span>    <span class="c1"># from the [test_profile] section of ~/.aws/credentials
+</span>    <span class="c1"># with test_profile profile.
+</span>    <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s">"test_profile"</span><span class="p">)</span>
+    <span class="n">firehose</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s">"firehose"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">firehose</span>
 
 
-# Test list up Delivery Streams
-def list_delivery_streams():
-    firehose = get_firehose_client()
+<span class="c1"># Test list up Delivery Streams
+</span><span class="k">def</span> <span class="nf">list_delivery_streams</span><span class="p">():</span>
+    <span class="n">firehose</span> <span class="o">=</span> <span class="n">get_firehose_client</span><span class="p">()</span>
 
-    print("List Delivery Streams")
-    response = firehose.list_delivery_streams(DeliveryStreamType="DirectPut")
-    print(response["DeliveryStreamNames"])
-
-
-# Test Record send to Delivery Stream
-def put_record_to_delivery_stream():
-    print("Put record to Delivery Stream")
-
-    test_data = {
-        "user_id": "Aster-Kotlin-Sapphire-564",
-        "app_version": "v1.5.16(90)",
-        "device_id": "a03cd3d6-0b14-46e1-a2c8-18b1c86cf738",
-        "device_manufacturer": "LG",
-        "device_name": "LG G7 ThinQ",
-        "device_model": "LM-G710N",
-        "device_os": "Android",
-        "device_os_number": "8.0",
-        "event": "interest_service_click",
-        "interest_id": 1201,
-        "index": 1,
-        "interest_name": "1",
-        "interest_service_id": None,
-        "interest_service_type": "1",
-        "interest_service_name": "1",
-        "timestamp": "2019-04-30T07:30:00Z"
-    }
-
-    firehose = get_firehose_client()
-
-    response = firehose.put_record(
-        DeliveryStreamName="test",
-        Record={"Data": json.dumps(test_data, ensure_ascii=False)}
-    )
-
-    print(response)
+    <span class="k">print</span><span class="p">(</span><span class="s">"List Delivery Streams"</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">firehose</span><span class="o">.</span><span class="n">list_delivery_streams</span><span class="p">(</span><span class="n">DeliveryStreamType</span><span class="o">=</span><span class="s">"DirectPut"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s">"DeliveryStreamNames"</span><span class="p">])</span>
 
 
-def batch_record_to_delivery_stream():
-    print("Put batch records to Delivery Stream")
+<span class="c1"># Test Record send to Delivery Stream
+</span><span class="k">def</span> <span class="nf">put_record_to_delivery_stream</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Put record to Delivery Stream"</span><span class="p">)</span>
 
-    test_data_list = [
-        {
-            "user_id": "Aster-Kotlin-Sapphire-564",
-            "app_version": "v1.5.16(90)",
-            "device_id": "a03cd3d6-0b14-46e1-a2c8-18b1c86cf738",
-            "device_manufacturer": "LG", "device_name": "LG G7 ThinQ", "device_model": "LM-G710N", "device_os": "Android", "device_os_number": "8.0",
-            "event": "interest_service_click",
-            "interest_id": 1101,
-            "index": 1,
-            "interest_name": "2", "interest_service_id": None, "interest_service_type": "4","interest_service_name": "4",
-            "timestamp": "2019-05-03T00:20:00Z"
-        },
-        {
-            "user_id": "Aster-Kotlin-Sapphire-564",
-            "app_version": "v1.5.16(90)",
-            "device_id": "a03cd3d6-0b14-46e1-a2c8-18b1c86cf738",
-            "device_manufacturer": "LG", "device_name": "LG G7 ThinQ", "device_model": "LM-G710N", "device_os": "Android", "device_os_number": "8.0",
-            "event": "interest_service_click",
-            "interest_id": 1301,
-            "index": 1,
-            "interest_name": "55", "interest_service_id": None, "interest_service_type": "5","interest_service_name": "7",
-            "timestamp": "2019-05-03T00:50:00Z"
-        },
-        {
-            "user_id": "Aster-Kotlin-Sapphire-564",
-            "app_version": "v1.5.16(90)",
-            "device_id": "a03cd3d6-0b14-46e1-a2c8-18b1c86cf738",
-            "device_manufacturer": "LG", "device_name": "LG G7 ThinQ", "device_model": "LM-G710N", "device_os": "Android", "device_os_number": "8.0",
-            "event": "interest_service_click",
-            "interest_id": 1201,
-            "index": 1,
-            "interest_name": "1", "interest_service_id": None, "interest_service_type": "1","interest_service_name": "1",
-            "timestamp": "2019-05-03T01:15:00Z"
-        }
-    ]
+    <span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"user_id"</span><span class="p">:</span> <span class="s">"Aster-Kotlin-Sapphire-564"</span><span class="p">,</span>
+        <span class="s">"app_version"</span><span class="p">:</span> <span class="s">"v1.5.16(90)"</span><span class="p">,</span>
+        <span class="s">"device_id"</span><span class="p">:</span> <span class="s">"a03cd3d6-0b14-46e1-a2c8-18b1c86cf738"</span><span class="p">,</span>
+        <span class="s">"device_manufacturer"</span><span class="p">:</span> <span class="s">"LG"</span><span class="p">,</span>
+        <span class="s">"device_name"</span><span class="p">:</span> <span class="s">"LG G7 ThinQ"</span><span class="p">,</span>
+        <span class="s">"device_model"</span><span class="p">:</span> <span class="s">"LM-G710N"</span><span class="p">,</span>
+        <span class="s">"device_os"</span><span class="p">:</span> <span class="s">"Android"</span><span class="p">,</span>
+        <span class="s">"device_os_number"</span><span class="p">:</span> <span class="s">"8.0"</span><span class="p">,</span>
+        <span class="s">"event"</span><span class="p">:</span> <span class="s">"interest_service_click"</span><span class="p">,</span>
+        <span class="s">"interest_id"</span><span class="p">:</span> <span class="mi">1201</span><span class="p">,</span>
+        <span class="s">"index"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s">"interest_name"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
+        <span class="s">"interest_service_id"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="s">"interest_service_type"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
+        <span class="s">"interest_service_name"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
+        <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2019-04-30T07:30:00Z"</span>
+    <span class="p">}</span>
 
-    # Delivery Stream에 batch로 넣을 데이터 구성
-    records_list = list()
-    for test_data in test_data_list:
-        records_list.append({"Data": json.dumps(test_data, ensure_ascii=False)})
+    <span class="n">firehose</span> <span class="o">=</span> <span class="n">get_firehose_client</span><span class="p">()</span>
 
-    firehose = get_firehose_client()
+    <span class="n">response</span> <span class="o">=</span> <span class="n">firehose</span><span class="o">.</span><span class="n">put_record</span><span class="p">(</span>
+        <span class="n">DeliveryStreamName</span><span class="o">=</span><span class="s">"test"</span><span class="p">,</span>
+        <span class="n">Record</span><span class="o">=</span><span class="p">{</span><span class="s">"Data"</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="bp">False</span><span class="p">)}</span>
+    <span class="p">)</span>
 
-    response = firehose.put_record_batch(
-        DeliveryStreamName="test",
-        Records=records_list
-    )
-
-    print(response)
+    <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
 
-def main():
-    arg = sys.argv[1:]
-    if "list" in arg:
-        list_delivery_streams()
-    elif "put" in arg:
-        put_record_to_delivery_stream()
-    elif "batch" in arg:
-        batch_record_to_delivery_stream()
-    else:
-        print("Unsupported test operation")
-        print("Supported operations : ['list', 'put', 'batch']")
+<span class="k">def</span> <span class="nf">batch_record_to_delivery_stream</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Put batch records to Delivery Stream"</span><span class="p">)</span>
+
+    <span class="n">test_data_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s">"user_id"</span><span class="p">:</span> <span class="s">"Aster-Kotlin-Sapphire-564"</span><span class="p">,</span>
+            <span class="s">"app_version"</span><span class="p">:</span> <span class="s">"v1.5.16(90)"</span><span class="p">,</span>
+            <span class="s">"device_id"</span><span class="p">:</span> <span class="s">"a03cd3d6-0b14-46e1-a2c8-18b1c86cf738"</span><span class="p">,</span>
+            <span class="s">"device_manufacturer"</span><span class="p">:</span> <span class="s">"LG"</span><span class="p">,</span> <span class="s">"device_name"</span><span class="p">:</span> <span class="s">"LG G7 ThinQ"</span><span class="p">,</span> <span class="s">"device_model"</span><span class="p">:</span> <span class="s">"LM-G710N"</span><span class="p">,</span> <span class="s">"device_os"</span><span class="p">:</span> <span class="s">"Android"</span><span class="p">,</span> <span class="s">"device_os_number"</span><span class="p">:</span> <span class="s">"8.0"</span><span class="p">,</span>
+            <span class="s">"event"</span><span class="p">:</span> <span class="s">"interest_service_click"</span><span class="p">,</span>
+            <span class="s">"interest_id"</span><span class="p">:</span> <span class="mi">1101</span><span class="p">,</span>
+            <span class="s">"index"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">"interest_name"</span><span class="p">:</span> <span class="s">"2"</span><span class="p">,</span> <span class="s">"interest_service_id"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"interest_service_type"</span><span class="p">:</span> <span class="s">"4"</span><span class="p">,</span><span class="s">"interest_service_name"</span><span class="p">:</span> <span class="s">"4"</span><span class="p">,</span>
+            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2019-05-03T00:20:00Z"</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s">"user_id"</span><span class="p">:</span> <span class="s">"Aster-Kotlin-Sapphire-564"</span><span class="p">,</span>
+            <span class="s">"app_version"</span><span class="p">:</span> <span class="s">"v1.5.16(90)"</span><span class="p">,</span>
+            <span class="s">"device_id"</span><span class="p">:</span> <span class="s">"a03cd3d6-0b14-46e1-a2c8-18b1c86cf738"</span><span class="p">,</span>
+            <span class="s">"device_manufacturer"</span><span class="p">:</span> <span class="s">"LG"</span><span class="p">,</span> <span class="s">"device_name"</span><span class="p">:</span> <span class="s">"LG G7 ThinQ"</span><span class="p">,</span> <span class="s">"device_model"</span><span class="p">:</span> <span class="s">"LM-G710N"</span><span class="p">,</span> <span class="s">"device_os"</span><span class="p">:</span> <span class="s">"Android"</span><span class="p">,</span> <span class="s">"device_os_number"</span><span class="p">:</span> <span class="s">"8.0"</span><span class="p">,</span>
+            <span class="s">"event"</span><span class="p">:</span> <span class="s">"interest_service_click"</span><span class="p">,</span>
+            <span class="s">"interest_id"</span><span class="p">:</span> <span class="mi">1301</span><span class="p">,</span>
+            <span class="s">"index"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">"interest_name"</span><span class="p">:</span> <span class="s">"55"</span><span class="p">,</span> <span class="s">"interest_service_id"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"interest_service_type"</span><span class="p">:</span> <span class="s">"5"</span><span class="p">,</span><span class="s">"interest_service_name"</span><span class="p">:</span> <span class="s">"7"</span><span class="p">,</span>
+            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2019-05-03T00:50:00Z"</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s">"user_id"</span><span class="p">:</span> <span class="s">"Aster-Kotlin-Sapphire-564"</span><span class="p">,</span>
+            <span class="s">"app_version"</span><span class="p">:</span> <span class="s">"v1.5.16(90)"</span><span class="p">,</span>
+            <span class="s">"device_id"</span><span class="p">:</span> <span class="s">"a03cd3d6-0b14-46e1-a2c8-18b1c86cf738"</span><span class="p">,</span>
+            <span class="s">"device_manufacturer"</span><span class="p">:</span> <span class="s">"LG"</span><span class="p">,</span> <span class="s">"device_name"</span><span class="p">:</span> <span class="s">"LG G7 ThinQ"</span><span class="p">,</span> <span class="s">"device_model"</span><span class="p">:</span> <span class="s">"LM-G710N"</span><span class="p">,</span> <span class="s">"device_os"</span><span class="p">:</span> <span class="s">"Android"</span><span class="p">,</span> <span class="s">"device_os_number"</span><span class="p">:</span> <span class="s">"8.0"</span><span class="p">,</span>
+            <span class="s">"event"</span><span class="p">:</span> <span class="s">"interest_service_click"</span><span class="p">,</span>
+            <span class="s">"interest_id"</span><span class="p">:</span> <span class="mi">1201</span><span class="p">,</span>
+            <span class="s">"index"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">"interest_name"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span> <span class="s">"interest_service_id"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"interest_service_type"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span><span class="s">"interest_service_name"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
+            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2019-05-03T01:15:00Z"</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Delivery Stream에 batch로 넣을 데이터 구성
+</span>    <span class="n">records_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">test_data</span> <span class="ow">in</span> <span class="n">test_data_list</span><span class="p">:</span>
+        <span class="n">records_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">"Data"</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="bp">False</span><span class="p">)})</span>
+
+    <span class="n">firehose</span> <span class="o">=</span> <span class="n">get_firehose_client</span><span class="p">()</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">firehose</span><span class="o">.</span><span class="n">put_record_batch</span><span class="p">(</span>
+        <span class="n">DeliveryStreamName</span><span class="o">=</span><span class="s">"test"</span><span class="p">,</span>
+        <span class="n">Records</span><span class="o">=</span><span class="n">records_list</span>
+    <span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">arg</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">if</span> <span class="s">"list"</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+        <span class="n">list_delivery_streams</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="s">"put"</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+        <span class="n">put_record_to_delivery_stream</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="s">"batch"</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+        <span class="n">batch_record_to_delivery_stream</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Unsupported test operation"</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Supported operations : ['list', 'put', 'batch']"</span><span class="p">)</span>
 
 
 
-if __name__ == "__main__":
-    main()
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
 
 </code></pre></div></div>
 

@@ -101,7 +101,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필드의 가공이
 
 다음은 테스트에서 사용할 tail 설정 예시이다.
 
-```
+```bashbash
 <source>  
   @type tail
   path /Users/kevin/dev/fluentd/test/filter_record_transformer/source/*
@@ -112,7 +112,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필드의 가공이
   tag filter_record_transformer.test
   refresh_interval 5s
 </source>
-```
+```bash
 
   
 
@@ -148,7 +148,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필드의 가공이
 
 다음은 테스트에서 사용할 grep 설정 예시이다.
 
-```
+```bash
 <filter filter_record_transformer.*>  
   @type record_transformer
   enable_ruby true
@@ -189,7 +189,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필드의 가공이
 
 다음은 테스트에서 사용하게 될 file 설정 예시이다.
 
-```
+```bash
 <match filter_record_transformer.*>  
   @type file
   path /Users/kevin/dev/fluentd/test/filter_record_transformer/match/${tag}
@@ -246,7 +246,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필드의 가공이
 
 1.  파일을 생성하고 정상적으로 생성 되었는지 확인한다.
     
-    ```
+    ```bash
     $ touch filter_record_transformer.json | stat filter_record_transformer.json
     16777223 8192640 -rw-r--r-- 1 kevin staff 0 0 "Aug 14 14:01:39 2019" "Aug 14 14:01:39 2019" "Aug 14 14:01:39 2019" "Aug 14 14:01:39 2019" 4096 0 0 filter_record_transformer.json
     ```
@@ -258,14 +258,14 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필드의 가공이
     
     수정한 경로에 td-agent 설정 파일을 생성한다.
     
-    ```
+    ```bash
     $ touch td-agent_filter_record_transformer.conf | stat td-agent_filter_record_transformer.conf
     16777223 8192245 -rw-r--r-- 1 kevin staff 0 0 "Aug 14 13:50:42 2019" "Aug 14 13:50:42 2019" "Aug 14 13:50:42 2019" "Aug 14 13:50:42 2019" 4096 0 0 td-agent_filter_record_transformer.conf
     ```
     
     td-agent 설정 파일을 다음과 같이 수정한다.
     
-    ```
+    ```bash
     $ vim td-agent_filter_record_transformer.conf
     <source>
       @type tail
@@ -309,7 +309,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필드의 가공이
     
 3.  입력용 파일에 로그를 출력하고 정상적으로 출력되었는지 확인한다.
     
-    ```
+    ```bash
     $ cat filter_record_transformer.json
     { "user_id" : "javascript0247", "created_at" : "2019-08-16T01:23:45+0900", "os" : "Android" }
     { "user_id" : "kotlin_0247", "created_at" : "2019-08-16T14:28:10+0900", "os" : "Android" }
@@ -321,7 +321,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필드의 가공이
       
     출력용 파일에 출력된 로그를 확인한다.
     
-    ```
+    ```bash
     $ cat filter_record_transformer.test.json
     {"user_id":"javascript0247","collected_at":"2019-08-16T15:14:29+0900","device_os":"Android"}
     {"user_id":"kotlin_0247","collected_at":"2019-08-16T15:14:29+0900","device_os":"Android"}
@@ -450,7 +450,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필터링하여 원
 
 다음은 테스트에서 사용할 tail 설정 예시이다.
 
-```
+```bash
 <source>
   @type tail
   path /Users/kevin/dev/fluentd/test/filter_grep/source/*
@@ -497,7 +497,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필터링하여 원
 
 다음은 테스트에서 사용할 grep 설정 예시이다.
 
-```
+```bash
 <filter filter_grep*>
   @type grep
   <regexp>
@@ -549,7 +549,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필터링하여 원
 
 다음은 테스트에서 사용하게 될 file 설정 예시이다.
 
-```
+```bash
 <match filter_grep.*>
   @type file
   path /Users/kevin/dev/fluentd/test/filter_grep/match/${tag}_output
@@ -605,7 +605,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필터링하여 원
 
 다음은 테스트에서 사용하게 될 out\_file 설정 예시이다.
 
-```
+```bash
   <format>
     @type out_file
     output_tag false
@@ -639,7 +639,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필터링하여 원
 
 1.  입력용 파일을 생성하고 정상적으로 생성 되었는지 확인한다.
     
-    ```
+    ```bash
     $ touch filter_grep_input.log | stat filter_grep_input.log
     16777223 8232044 -rw-r--r-- 1 kevin staff 0 0 "Aug 19 20:20:14 2019" "Aug 19 20:20:14 2019" "Aug 19 20:20:14 2019" "Aug 19 20:20:14 2019" 4096 0 0 filter_grep_input.log
     ```
@@ -652,14 +652,14 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필터링하여 원
     
     위에서 수정한 경로에 td-agent 설정파일을 생성한다.
     
-    ```
+    ```bash
     $ touch td-agent.conf | stat td-agent.conf
     16777223 8226646 -rw-r--r-- 1 kevin staff 0 0 "Aug 19 15:54:04 2019" "Aug 19 15:54:04 2019" "Aug 19 15:54:04 2019" "Aug 19 15:54:04 2019" 4096 0 0 td-agent.conf
     ```
     
     td-agent 설정 파일을 다음과 같이 수정한다.
     
-    ```
+    ```bash
     $ cat td-agent.conf
     
     <source>
@@ -707,7 +707,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필터링하여 원
     
 3.  입력용 파일에 로그를 출력하고 정상적으로 출력 되었는지 확인한다.
     
-    ```
+    ```bash
      $ cat source/filter_grep_input.log
     127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] "GET /apache_pb.gif HTTP/1.0" 100 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
     127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] "POST /regist.html HTTP/1.0" 200 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
@@ -723,7 +723,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필터링하여 원
     
     출력용 파일이 정상적으로 출력 되었는지 확인한다.
     
-    ```
+    ```bash
      $ cat match/filter_grep_output.log
     2019-08-20T00:40:02+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":300,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
     2019-08-20T00:40:04+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":500,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
@@ -746,7 +746,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필터링하여 원
 
 다음은 위의 요구사항대로 필터링된 예시이다.
 
-```
+```bash
 127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] "GET /apache_pb.gif HTTP/1.0" 100 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
 127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] "POST /regist.html HTTP/1.0" 200 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
 127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] "POST /regist.html HTTP/1.0" 300 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
@@ -761,7 +761,7 @@ td-agent로 로그를 수집하여 저장하는 과정에서 필터링하여 원
 
   
 
-```
+```bash
 2019-08-20T00:40:02+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":300,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
 2019-08-20T00:40:04+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":500,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
 2019-08-20T00:40:05+09:00   {"host":"127.0.0.1","user":null,"method":"POST","path":"/regist.html","code":100,"size":2326,"referer":"http://www.example.com/start.html","agent":"Mozilla/4.08 [en] (Win98; I ;Nav)"}
@@ -869,7 +869,7 @@ json에 대한 설명은 다음의 링크를 참고한다.
 
 다음은 테스트에서 사용할 tail 설정 예시이다.
 
-```
+```bash
 <source>
   @type tail
   path /Users/kevin/dev/fluentd/test/filter_parser/source/*
@@ -916,7 +916,7 @@ json에 대한 설명은 다음의 링크를 참고한다.
 
 다음은 테스트에서 사용하게 될 parser 설정 예시이다.
 
-```
+```bash
 <filter filter_parser*>
   @type parser
   key_name message
@@ -954,7 +954,7 @@ json에 대한 설명은 다음의 링크를 참고한다.
 
 다음은 테스트에서 사용하게 될 regexp 설정 예시이다.
 
-```
+```bash
   <parse>
     @type regexp
     expression ^(?<host>[^ ]*) [^ ]* (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^ ]*) +\S*)?" (?<code>[^ ]*) (?<size>[^ ]*)$
@@ -988,7 +988,7 @@ json에 대한 설명은 다음의 링크를 참고한다.
 
 다음은 테스트에서 사용하게 될 file 설정 예시이다.
 
-```
+```bash
 <match filter_parser*>
   @type file
   path /Users/kevin/dev/fluentd/test/filter_parser/match/${tag}_output
@@ -1046,7 +1046,7 @@ json에 대한 설명은 다음의 링크를 참고한다.
 
 1.  파일을 생성하고 정상적으로 생성 되었는지 확인한다.
     
-    ```
+    ```bash
     $ touch filter_parser_input.log | stat filter_parser_input.log
     16777223 8251706 -rw-r--r-- 1 kevin staff 0 0 "Aug 20 18:26:05 2019" "Aug 20 18:26:05 2019" "Aug 20 18:26:05 2019" "Aug 20 18:26:05 2019" 4096 0 0 filter_parser_input.log
     ```
@@ -1058,14 +1058,14 @@ json에 대한 설명은 다음의 링크를 참고한다.
     
     위에서 수정한 경로에 td-agent 설정파일을 생성한다.
     
-    ```
+    ```bash
     $ touch td-agent.conf | stat td-agent.conf
     16777223 8251793 -rw-r--r-- 1 kevin staff 0 0 "Aug 20 18:29:43 2019" "Aug 20 18:29:43 2019" "Aug 20 18:29:43 2019" "Aug 20 18:29:43 2019" 4096 0 0 td-agent.conf
     ```
     
     td-agent 설정 파일을 다음과 같이 수정한다.
     
-    ```
+    ```bash
     $ cat td-agent.conf
     <source>
       @type tail
@@ -1106,7 +1106,7 @@ json에 대한 설명은 다음의 링크를 참고한다.
     
 3.  입력용 파일에 로그를 출력하고 정상적으로 출력 되었는지 확인한다.
     
-    ```
+    ```bash
     $ cat source/filter_parser_input.log
     127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] "GET /apache_pb.gif HTTP/1.0" 100 2326
     127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] "POST /registration.html HTTP/1.0" 200 2326
@@ -1122,7 +1122,7 @@ json에 대한 설명은 다음의 링크를 참고한다.
     
     출력용 파일이 정상적으로 출력 되었는지 확인한다.
     
-    ```
+    ```bash
     $ cat match/filter_parser_output.json
     {"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"300","size":"2326"}
     {"host":"127.0.0.1","identd":"-","user":"-","method":"GET","path":"/apache_pb.gif","code":"400","size":"2326"}
@@ -1146,7 +1146,7 @@ json에 대한 설명은 다음의 링크를 참고한다.
 
 다음은 파싱전후의 예시이다.
 
-```
+```bash
 127.0.0.1 - - [20/Aug/2019:00:40:00 +0900] "GET /apache_pb.gif HTTP/1.0" 100 2326
 127.0.0.1 - - [20/Aug/2019:00:40:01 +0900] "POST /registration.html HTTP/1.0" 200 2326
 127.0.0.1 - - [20/Aug/2019:00:40:02 +0900] "POST /registration.html HTTP/1.0" 300 2326
@@ -1154,7 +1154,7 @@ json에 대한 설명은 다음의 링크를 참고한다.
 
   
 
-```
+```bash
 {"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"300","size":"2326"}
 {"host":"127.0.0.1","identd":"-","user":"-","method":"GET","path":"/apache_pb.gif","code":"400","size":"2326"}
 {"host":"127.0.0.1","identd":"-","user":"-","method":"POST","path":"/registration.html","code":"500","size":"2326"}

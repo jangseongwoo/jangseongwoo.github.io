@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -540,44 +544,44 @@
 
 <p>아래는 <a href="https://docs.python.org/ko/3/howto/logging-cookbook.html#using-filters-to-impart-contextual-information">Logging cook book - 문맥 정보 전달에 필터 사용하기</a>를 따라하며 실습한 내용이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import logging
-from random import choice
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
 
-class ContextFilter(logging.Filter):
-    USERS = ['wind', 'harry', 'kevin']
-    IPS = ['123.231.231.123', '127.0.0.1', '192.168.0.1']
+<span class="k">class</span> <span class="nc">ContextFilter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Filter</span><span class="p">):</span>
+    <span class="n">USERS</span> <span class="o">=</span> <span class="p">[</span><span class="s">'wind'</span><span class="p">,</span> <span class="s">'harry'</span><span class="p">,</span> <span class="s">'kevin'</span><span class="p">]</span>
+    <span class="n">IPS</span> <span class="o">=</span> <span class="p">[</span><span class="s">'123.231.231.123'</span><span class="p">,</span> <span class="s">'127.0.0.1'</span><span class="p">,</span> <span class="s">'192.168.0.1'</span><span class="p">]</span>
 
-    def filter(self, record):
+    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 
-        record.ip = choice(ContextFilter.IPS)
-        record.user = choice(ContextFilter.USERS)
-        return True
+        <span class="n">record</span><span class="o">.</span><span class="n">ip</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">ContextFilter</span><span class="o">.</span><span class="n">IPS</span><span class="p">)</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">ContextFilter</span><span class="o">.</span><span class="n">USERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">True</span>
 
 
-if __name__ == '__main__':
-    levels = (logging.DEBUG, logging.INFO, logging.WARNING,
-              logging.ERROR, logging.CRITICAL)
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(asctime)-15s %(name)-5s %(levelname)-8s IP: %(ip)-15s User: %(user)-8s %(message)s')
-    a1 = logging.getLogger('a.b.c')
-    a2 = logging.getLogger('d.e.f')
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">levels</span> <span class="o">=</span> <span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
+              <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
+                        <span class="nb">format</span><span class="o">=</span><span class="s">'</span><span class="si">%(asctime)-15</span><span class="s">s </span><span class="si">%(name)-5</span><span class="s">s </span><span class="si">%(levelname)-8</span><span class="s">s IP: </span><span class="si">%(ip)-15</span><span class="s">s User: </span><span class="si">%(user)-8</span><span class="s">s </span><span class="si">%(message)</span><span class="s">s'</span><span class="p">)</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">'a.b.c'</span><span class="p">)</span>
+    <span class="n">a2</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">'d.e.f'</span><span class="p">)</span>
 
-    f = ContextFilter()
+    <span class="n">f</span> <span class="o">=</span> <span class="n">ContextFilter</span><span class="p">()</span>
 
-    a1.addFilter(f)
-    a2.addFilter(f)
+    <span class="n">a1</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">a2</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
-    a1.debug('A debug message')
-    a1.info('An info message with %s', 'some parameters')
+    <span class="n">a1</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">'A debug message'</span><span class="p">)</span>
+    <span class="n">a1</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">'An info message with </span><span class="si">%</span><span class="s">s'</span><span class="p">,</span> <span class="s">'some parameters'</span><span class="p">)</span>
 
-    for x in range(10):
-        lvl = choice(levels)
-        lvlname = logging.getLevelName(lvl)
-        a2.log(lvl, 'A message at %s level with %d %s',
-               lvlname, 2, 'parameters')
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">lvl</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">levels</span><span class="p">)</span>
+        <span class="n">lvlname</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLevelName</span><span class="p">(</span><span class="n">lvl</span><span class="p">)</span>
+        <span class="n">a2</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">lvl</span><span class="p">,</span> <span class="s">'A message at </span><span class="si">%</span><span class="s">s level with </span><span class="si">%</span><span class="s">d </span><span class="si">%</span><span class="s">s'</span><span class="p">,</span>
+               <span class="n">lvlname</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'parameters'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 main.py
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python3 main.py
 2019-10-18 11:54:03,246 a.b.c DEBUG    IP: 192.168.0.1     User: wind     A debug message
 2019-10-18 11:54:03,249 a.b.c INFO     IP: 123.231.231.123 User: harry    An info message with some parameters
 2019-10-18 11:54:03,249 d.e.f ERROR    IP: 192.168.0.1     User: kevin    A message at ERROR level with 2 parameters
@@ -600,25 +604,25 @@ if __name__ == '__main__':
 
 <p>다음은 실습한 내용의 Python 코드이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import logging
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">logging</span>
 
-seong_logger = logging.getLogger("seongwoo")
+<span class="n">seong_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">"seongwoo"</span><span class="p">)</span>
 
-seong_logger.setLevel(logging.DEBUG)
+<span class="n">seong_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 
-seong_logger.addHandler(logging.FileHandler("log/seong.log"))
-seong_logger.addHandler(logging.StreamHandler())
+<span class="n">seong_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="s">"log/seong.log"</span><span class="p">))</span>
+<span class="n">seong_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">())</span>
 
-seong_logger.info("test")
+<span class="n">seong_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">"test"</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>표준 출력과 파일 출력(seong.log)이 되는 지 확인하였다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 main.py
-test
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python3 main.py
+<span class="nb">test</span>
 
-$ cat seong.log
-test
+<span class="nv">$ </span><span class="nb">cat </span>seong.log
+<span class="nb">test</span>
 </code></pre></div></div>
 
 <h1 id="로그-로테이팅">로그 로테이팅</h1>
@@ -643,7 +647,7 @@ test
 
 <h2 id="rotatingfilehandler">RotatingFileHandler</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class logging.handlers.RotatingFileHandler(filename, mode='a', maxBytes=0, backupCount=0, encoding=None, delay=False)
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class logging.handlers.RotatingFileHandler<span class="o">(</span>filename, <span class="nv">mode</span><span class="o">=</span><span class="s1">'a'</span>, <span class="nv">maxBytes</span><span class="o">=</span>0, <span class="nv">backupCount</span><span class="o">=</span>0, <span class="nv">encoding</span><span class="o">=</span>None, <span class="nv">delay</span><span class="o">=</span>False<span class="o">)</span>
 </code></pre></div></div>
 
 <p>RotatingFileHandler의 자세한 설명은 <a href="https://docs.python.org/ko/3/library/logging.handlers.html#rotatingfilehandler">logging.handler - rotatingfilehandler</a>를 참고한다. 문서 내용 중 기록될 필요가 있다고 생각되는 내용만 정리했다.</p>
@@ -660,31 +664,31 @@ test
 
 <p>다음은 <a href="https://docs.python.org/ko/3/howto/logging-cookbook.html#using-file-rotation">Logging cook book - 파일 회전하기</a>에 코드를  일부 수정하여 실습한 코드이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import glob
-import logging
-import logging.handlers
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">logging.handlers</span>
 
-LOG_FILENAME = 'logging_rotatingfile_example.out'
+<span class="n">LOG_FILENAME</span> <span class="o">=</span> <span class="s">'logging_rotatingfile_example.out'</span>
 
-my_logger = logging.getLogger("MyLogger")
-my_logger.setLevel(logging.DEBUG)
+<span class="n">my_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">"MyLogger"</span><span class="p">)</span>
+<span class="n">my_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 
-handlers = logging.handlers.RotatingFileHandler(
-    LOG_FILENAME, maxBytes=200, backupCount=2)
-my_logger.addHandler(handlers)
+<span class="n">handlers</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">handlers</span><span class="o">.</span><span class="n">RotatingFileHandler</span><span class="p">(</span>
+    <span class="n">LOG_FILENAME</span><span class="p">,</span> <span class="n">maxBytes</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">backupCount</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">my_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handlers</span><span class="p">)</span>
 
-for i in range(20):
-    my_logger.debug('file log rotating test line %3d' % i)
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+    <span class="n">my_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">'file log rotating test line </span><span class="si">%3</span><span class="s">d'</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
 
-logfiles = glob.glob('%s*' % LOG_FILENAME)
+<span class="n">logfiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">s*'</span> <span class="o">%</span> <span class="n">LOG_FILENAME</span><span class="p">)</span>
 
-for filename in logfiles:
-    print(filename)
+<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">logfiles</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>아래의 코드를 여러번 실행할 경우에는 mode 인자의 디폴트 값이 ‘a’이므로 기존에 생성 되었던 로그 파일들을 삭제하고 실행 해야 한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 file_rotating_test.py
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python3 file_rotating_test.py
 logging_rotatingfile_example.out.2
 logging_rotatingfile_example.out.1
 logging_rotatingfile_example.out
@@ -692,7 +696,7 @@ logging_rotatingfile_example.out
 
 <h2 id="timedrotatingfilehandler">TimedRotatingFileHandler</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class logging.handlers.TimedRotatingFileHandler(filename, when='h', interval=1, backupCount=0, encoding=None, delay=False, utc=False, atTime=None)
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class logging.handlers.TimedRotatingFileHandler<span class="o">(</span>filename, <span class="nv">when</span><span class="o">=</span><span class="s1">'h'</span>, <span class="nv">interval</span><span class="o">=</span>1, <span class="nv">backupCount</span><span class="o">=</span>0, <span class="nv">encoding</span><span class="o">=</span>None, <span class="nv">delay</span><span class="o">=</span>False, <span class="nv">utc</span><span class="o">=</span>False, <span class="nv">atTime</span><span class="o">=</span>None<span class="o">)</span>
 </code></pre></div></div>
 
 <p>TimeRotatingHandler의 자세한 설명은 <a href="https://docs.python.org/ko/3/library/logging.handlers.html#timedrotatingfilehandler">logging.handler - timerotatinghandler</a>를 참고한다. 문서 내용 중 기록될 필요가 있다고 생각되는 내용만 정리했다.</p>
@@ -717,43 +721,43 @@ logging_rotatingfile_example.out
 
 <p>위의 시나리오를 바탕으로 다음과 같은 파이썬 코드를 작성하였다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import glob
-import logging
-import logging.handlers
-from time import time, sleep
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">logging.handlers</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span><span class="p">,</span> <span class="n">sleep</span>
 
-LOG_FILENAME = 'timerotating_logtest.out'
-
-
-def main():
-    my_logger = logging.getLogger("MyLogger")
-    my_logger.setLevel(logging.DEBUG)
-
-    handlers = logging.handlers.TimedRotatingFileHandler(
-        LOG_FILENAME, when='s', interval=1, backupCount=10)
-    my_logger.addHandler(handlers)
-
-    start_time = time()
-
-    delay_timetable = [1., 5., 6.]
-
-    for delay_time in delay_timetable:
-        while True:
-            if start_time + delay_time &lt; time():
-                my_logger.debug('time log rotating test - %f' % time())
-                break
-
-    logfiles = glob.glob('%s*' % LOG_FILENAME)
-
-    for filename in logfiles:
-        print(filename)
+<span class="n">LOG_FILENAME</span> <span class="o">=</span> <span class="s">'timerotating_logtest.out'</span>
 
 
-if __name__ == "__main__":
-    main()
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">my_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">"MyLogger"</span><span class="p">)</span>
+    <span class="n">my_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+    <span class="n">handlers</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">handlers</span><span class="o">.</span><span class="n">TimedRotatingFileHandler</span><span class="p">(</span>
+        <span class="n">LOG_FILENAME</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="s">'s'</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">backupCount</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">my_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handlers</span><span class="p">)</span>
+
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+
+    <span class="n">delay_timetable</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">delay_time</span> <span class="ow">in</span> <span class="n">delay_timetable</span><span class="p">:</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">start_time</span> <span class="o">+</span> <span class="n">delay_time</span> <span class="o">&lt;</span> <span class="n">time</span><span class="p">():</span>
+                <span class="n">my_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">'time log rotating test - </span><span class="si">%</span><span class="s">f'</span> <span class="o">%</span> <span class="n">time</span><span class="p">())</span>
+                <span class="k">break</span>
+
+    <span class="n">logfiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">s*'</span> <span class="o">%</span> <span class="n">LOG_FILENAME</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">logfiles</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 time_rotating_test.py
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python3 time_rotating_test.py
 timerotating_logtest.out.2019-10-17_20-05-52
 timerotating_logtest.out
 timerotating_logtest.out.2019-10-17_20-05-56

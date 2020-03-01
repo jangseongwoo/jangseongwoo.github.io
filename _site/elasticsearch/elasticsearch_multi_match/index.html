@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -442,14 +446,14 @@
 
 <p>아래와 같이 Query를 실행할 경우 기본값으로 설정되는 항목에 대해 설명한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-    "query": {
-        "multi_match" : {
-            "query":    "this is a test",
-            "fields": [ "subject", "message" ]
-        }
-    }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"multi_match"</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s">"query"</span><span class="p">:</span>    <span class="s">"this is a test"</span><span class="p">,</span>
+            <span class="s">"fields"</span><span class="p">:</span> <span class="p">[</span> <span class="s">"subject"</span><span class="p">,</span> <span class="s">"message"</span> <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -470,29 +474,29 @@
 
 <p>Multi_match는 Wildcards를 지원한다. 다음은 예시이다. 예시에서는 “*_name”로 Field를 지정해 _name으로 끝나는 Field를 대상 Field로 지정한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /_search
-{
-  "query": {
-    "multi_match" : {
-      "query":    "Will Smith",
-      "fields": [ "title", "*_name" ] 
-    }
-  }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+  <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">"multi_match"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"query"</span><span class="p">:</span>    <span class="s">"Will Smith"</span><span class="p">,</span>
+      <span class="s">"fields"</span><span class="p">:</span> <span class="p">[</span> <span class="s">"title"</span><span class="p">,</span> <span class="s">"*_name"</span> <span class="p">]</span> 
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>또한, 각 각의 Field에 대해 가중치를 부여할 수 있다. 다음은 예시이다. 예시에서는 “subject” field는 “message” field에 대해 3배 중요하다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /_search
-{
-  "query": {
-    "multi_match" : {
-      "query" : "this is a test",
-      "fields" : [ "subject^3", "message" ] 
-    }
-  }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+  <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">"multi_match"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"query"</span> <span class="p">:</span> <span class="s">"this is a test"</span><span class="p">,</span>
+      <span class="s">"fields"</span> <span class="p">:</span> <span class="p">[</span> <span class="s">"subject^3"</span><span class="p">,</span> <span class="s">"message"</span> <span class="p">]</span> 
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -511,28 +515,28 @@
   </thead>
   <tbody>
     <tr>
-      <td><code class="highlighter-rouge">best_fields</code></td>
-      <td>(<strong>기본 설정값</strong>) 모든 Field에 대해 Match되는 Field를 찾는다. 가장 잘 Match되는 <strong>1개의 Field를 기준으로 Score를 계산</strong>한다. 참고문서 <code class="highlighter-rouge">best_fields</code>.</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">best_fields</span></code></td>
+      <td>(<strong>기본 설정값</strong>) 모든 Field에 대해 Match되는 Field를 찾는다. 가장 잘 Match되는 <strong>1개의 Field를 기준으로 Score를 계산</strong>한다. 참고문서 <code class="language-python highlighter-rouge"><span class="n">best_fields</span></code>.</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">most_fields</code></td>
-      <td>모든 Field에 대해 Match되는 각 각의 field에 대해 점수를 계산하고 모두 합한다. 합한 점수를 field 개수로 나눠서 최종 스코어를 계산한다. 참고문서 <code class="highlighter-rouge">most_fields</code>.</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">most_fields</span></code></td>
+      <td>모든 Field에 대해 Match되는 각 각의 field에 대해 점수를 계산하고 모두 합한다. 합한 점수를 field 개수로 나눠서 최종 스코어를 계산한다. 참고문서 <code class="language-python highlighter-rouge"><span class="n">most_fields</span></code>.</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">cross_fields</code></td>
-      <td>Treats fields with the same <code class="highlighter-rouge">analyzer</code> as though they were one big field. Looks for each word in <strong>any</strong>field. See <code class="highlighter-rouge">cross_fields</code>.</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">cross_fields</span></code></td>
+      <td>Treats fields with the same <code class="language-python highlighter-rouge"><span class="n">analyzer</span></code> as though they were one big field. Looks for each word in <strong>any</strong>field. See <code class="language-python highlighter-rouge"><span class="n">cross_fields</span></code>.</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">phrase</code></td>
-      <td>Runs a <code class="highlighter-rouge">match_phrase</code> query on each field and uses the <code class="highlighter-rouge">_score</code> from the best field. See <code class="highlighter-rouge">phrase</code> and <code class="highlighter-rouge">phrase_prefix</code>.</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">phrase</span></code></td>
+      <td>Runs a <code class="language-python highlighter-rouge"><span class="n">match_phrase</span></code> query on each field and uses the <code class="language-python highlighter-rouge"><span class="n">_score</span></code> from the best field. See <code class="language-python highlighter-rouge"><span class="n">phrase</span></code> and <code class="language-python highlighter-rouge"><span class="n">phrase_prefix</span></code>.</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">phrase_prefix</code></td>
-      <td>Runs a <code class="highlighter-rouge">match_phrase_prefix</code> query on each field and uses the <code class="highlighter-rouge">_score</code> from the best field. See <code class="highlighter-rouge">phrase</code>and <code class="highlighter-rouge">phrase_prefix</code>.</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">phrase_prefix</span></code></td>
+      <td>Runs a <code class="language-python highlighter-rouge"><span class="n">match_phrase_prefix</span></code> query on each field and uses the <code class="language-python highlighter-rouge"><span class="n">_score</span></code> from the best field. See <code class="language-python highlighter-rouge"><span class="n">phrase</span></code>and <code class="language-python highlighter-rouge"><span class="n">phrase_prefix</span></code>.</td>
     </tr>
     <tr>
-      <td><code class="highlighter-rouge">bool_prefix</code></td>
-      <td>Creates a <code class="highlighter-rouge">match_bool_prefix</code> query on each field and combines the <code class="highlighter-rouge">_score</code>from each field. See <code class="highlighter-rouge">bool_prefix</code>.</td>
+      <td><code class="language-python highlighter-rouge"><span class="n">bool_prefix</span></code></td>
+      <td>Creates a <code class="language-python highlighter-rouge"><span class="n">match_bool_prefix</span></code> query on each field and combines the <code class="language-python highlighter-rouge"><span class="n">_score</span></code>from each field. See <code class="language-python highlighter-rouge"><span class="n">bool_prefix</span></code>.</td>
     </tr>
   </tbody>
 </table>
@@ -543,34 +547,34 @@
 
 <p>예시는 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /_search
-{
-  "query": {
-    "multi_match" : {
-      "query":      "brown fox",
-      "type":       "best_fields",
-      "fields":     [ "subject", "message" ],
-      "tie_breaker": 0.3
-    }
-  }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+  <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">"multi_match"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"query"</span><span class="p">:</span>      <span class="s">"brown fox"</span><span class="p">,</span>
+      <span class="s">"type"</span><span class="p">:</span>       <span class="s">"best_fields"</span><span class="p">,</span>
+      <span class="s">"fields"</span><span class="p">:</span>     <span class="p">[</span> <span class="s">"subject"</span><span class="p">,</span> <span class="s">"message"</span> <span class="p">],</span>
+      <span class="s">"tie_breaker"</span><span class="p">:</span> <span class="mf">0.3</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>위의 예시 Query는 다음과 같이 실행될 것이다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /_search
-{
-  "query": {
-    "dis_max": {
-      "queries": [
-        { "match": { "subject": "brown fox" }},
-        { "match": { "message": "brown fox" }}
-      ],
-      "tie_breaker": 0.3
-    }
-  }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+  <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">"dis_max"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s">"queries"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span> <span class="s">"match"</span><span class="p">:</span> <span class="p">{</span> <span class="s">"subject"</span><span class="p">:</span> <span class="s">"brown fox"</span> <span class="p">}},</span>
+        <span class="p">{</span> <span class="s">"match"</span><span class="p">:</span> <span class="p">{</span> <span class="s">"message"</span><span class="p">:</span> <span class="s">"brown fox"</span> <span class="p">}}</span>
+      <span class="p">],</span>
+      <span class="s">"tie_breaker"</span><span class="p">:</span> <span class="mf">0.3</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -597,55 +601,55 @@
 
 <p>즉, 주어진 대상 Field 별로 Score를 계산하고 이 계산된 모든 Score를 비교해 가장 큰 값을 최종 Document의 Score로 결정하는 것이다. 다음은 예시이다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  "hits" : {
-    "total" : {
-      "value" : 4,
-      "relation" : "eq"
-    },
-    "max_score" : 0.9913396,
-    "hits" : [
-      {
-        "_shard" : "[test_multi_match_query][0]",
-        "_node" : "_MqXQL7fShunzdcE4D6j9w",
-        "_index" : "test_multi_match_query",
-        "_type" : "_doc",
-        "_id" : "QfQRHnABGReuIwC7G8rY",
-        "_score" : 0.9913396,
-        "_source" : {
-          "first_field" : "first",
-          "second_field" : "first",
-          "third_field" : "first"
-        },
-        "_explanation" : {
-          "value" : 0.9913396,
-          "description" : "max of:",
-          "details" : [
-            {
-              "value" : 0.6103343,
-              "description" : "weight(second_field:first in 1) [PerFieldSimilarity], result of:",
-              "details" : {...}
-            },
-            {
-              "value" : 0.30873197,
-              "description" : "weight(first_field:first in 1) [PerFieldSimilarity], result of:",
-              "details" : {...}
-            },
-            {
-              "value" : 0.9913396,
-              "description" : "weight(third_field:first in 1) [PerFieldSimilarity], result of:",
-              "details" : {...}
-            }
-          ]
-        }
-      },
-...하략
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="s">"hits"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"value"</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+      <span class="s">"relation"</span> <span class="p">:</span> <span class="s">"eq"</span>
+    <span class="p">},</span>
+    <span class="s">"max_score"</span> <span class="p">:</span> <span class="mf">0.9913396</span><span class="p">,</span>
+    <span class="s">"hits"</span> <span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="s">"_shard"</span> <span class="p">:</span> <span class="s">"[test_multi_match_query][0]"</span><span class="p">,</span>
+        <span class="s">"_node"</span> <span class="p">:</span> <span class="s">"_MqXQL7fShunzdcE4D6j9w"</span><span class="p">,</span>
+        <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"test_multi_match_query"</span><span class="p">,</span>
+        <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span><span class="p">,</span>
+        <span class="s">"_id"</span> <span class="p">:</span> <span class="s">"QfQRHnABGReuIwC7G8rY"</span><span class="p">,</span>
+        <span class="s">"_score"</span> <span class="p">:</span> <span class="mf">0.9913396</span><span class="p">,</span>
+        <span class="s">"_source"</span> <span class="p">:</span> <span class="p">{</span>
+          <span class="s">"first_field"</span> <span class="p">:</span> <span class="s">"first"</span><span class="p">,</span>
+          <span class="s">"second_field"</span> <span class="p">:</span> <span class="s">"first"</span><span class="p">,</span>
+          <span class="s">"third_field"</span> <span class="p">:</span> <span class="s">"first"</span>
+        <span class="p">},</span>
+        <span class="s">"_explanation"</span> <span class="p">:</span> <span class="p">{</span>
+          <span class="s">"value"</span> <span class="p">:</span> <span class="mf">0.9913396</span><span class="p">,</span>
+          <span class="s">"description"</span> <span class="p">:</span> <span class="s">"max of:"</span><span class="p">,</span>
+          <span class="s">"details"</span> <span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+              <span class="s">"value"</span> <span class="p">:</span> <span class="mf">0.6103343</span><span class="p">,</span>
+              <span class="s">"description"</span> <span class="p">:</span> <span class="s">"weight(second_field:first in 1) [PerFieldSimilarity], result of:"</span><span class="p">,</span>
+              <span class="s">"details"</span> <span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+              <span class="s">"value"</span> <span class="p">:</span> <span class="mf">0.30873197</span><span class="p">,</span>
+              <span class="s">"description"</span> <span class="p">:</span> <span class="s">"weight(first_field:first in 1) [PerFieldSimilarity], result of:"</span><span class="p">,</span>
+              <span class="s">"details"</span> <span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+              <span class="s">"value"</span> <span class="p">:</span> <span class="mf">0.9913396</span><span class="p">,</span>
+              <span class="s">"description"</span> <span class="p">:</span> <span class="s">"weight(third_field:first in 1) [PerFieldSimilarity], result of:"</span><span class="p">,</span>
+              <span class="s">"details"</span> <span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+            <span class="p">}</span>
+          <span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+<span class="o">...</span><span class="err">하략</span>
 </code></pre></div></div>
 
 <p>이 예시는 Multi_match query를 Best_fields type으로 3개의 Field에 대해 Query 했을 때 계산 과정을 설명한 내용이다. 이 Multi_match query의 Query절은 3개의 Field에 대해 정확히 일치한다. (Ex. 검색어: First, 대상 필드 3개의 값: First)</p>
 
 <p>예시 중 중요한 부분은 “hits” → ”hits” → ”_explanation” -&gt; “details” 부분이다. 해당 부분을 보면 각 각의 3개의 Field에 대해 Per field 별로 Score를 계산하고 그 중 최고점을 최종 Score로 계산한다. 모두 Query 절이 정확히 일치해도 모든 문서의 대상 Field가 얼마나 자주 등장하는 지, Term의 길이 등 Relevance 계산 알고리즘에 의해 점수가 다르게 계산된다. </p>
 
-<p><code class="highlighter-rouge">공식 문서는 best_fields를 참고한다. </code></p>
+<p><code class="language-python highlighter-rouge"><span class="err">공식</span> <span class="err">문서는 </span><span class="n">best_fields</span><span class="err">를</span> <span class="err">참고한다</span><span class="o">.</span><span class="err"> </span></code></p>
 
 <p>중요 Operator and minimum_should_match에 대한 설명</p>
 
@@ -653,24 +657,24 @@
 
 <p>예시는 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /_search
-{
-  "query": {
-    "multi_match" : {
-      "query":      "Will Smith",
-      "type":       "best_fields",
-      "fields":     [ "first_name", "last_name" ],
-      "operator":   "and" 
-    }
-  }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+  <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">"multi_match"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"query"</span><span class="p">:</span>      <span class="s">"Will Smith"</span><span class="p">,</span>
+      <span class="s">"type"</span><span class="p">:</span>       <span class="s">"best_fields"</span><span class="p">,</span>
+      <span class="s">"fields"</span><span class="p">:</span>     <span class="p">[</span> <span class="s">"first_name"</span><span class="p">,</span> <span class="s">"last_name"</span> <span class="p">],</span>
+      <span class="s">"operator"</span><span class="p">:</span>   <span class="s">"and"</span> 
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>위의 Query는 Will, Smith로 분석된 Token이 First_name, Last_name 중에 1개의 field라도 모두 존재하면 Match된다. 식으로 표현하면 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(+first_name:will +first_name:smith) 
-| (+last_name:will  +last_name:smith)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="o">+</span><span class="n">first_name</span><span class="p">:</span><span class="n">will</span> <span class="o">+</span><span class="n">first_name</span><span class="p">:</span><span class="n">smith</span><span class="p">)</span> 
+<span class="o">|</span> <span class="p">(</span><span class="o">+</span><span class="n">last_name</span><span class="p">:</span><span class="n">will</span>  <span class="o">+</span><span class="n">last_name</span><span class="p">:</span><span class="n">smith</span><span class="p">)</span>
 
 </code></pre></div></div>
 
@@ -682,33 +686,33 @@
 
 <p>다음은 예시이다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /_search
-{
-  "query": {
-    "multi_match" : {
-      "query":      "quick brown fox",
-      "type":       "most_fields",
-      "fields":     [ "title", "title.original", "title.shingles" ]
-    }
-  }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+  <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">"multi_match"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"query"</span><span class="p">:</span>      <span class="s">"quick brown fox"</span><span class="p">,</span>
+      <span class="s">"type"</span><span class="p">:</span>       <span class="s">"most_fields"</span><span class="p">,</span>
+      <span class="s">"fields"</span><span class="p">:</span>     <span class="p">[</span> <span class="s">"title"</span><span class="p">,</span> <span class="s">"title.original"</span><span class="p">,</span> <span class="s">"title.shingles"</span> <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>위와 같이 작성된 쿼리는 실제로 다음과 같은 쿼리로 실행될 것이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /_search
-{
-  "query": {
-    "bool": {
-      "should": [
-        { "match": { "title":          "quick brown fox" }},
-        { "match": { "title.original": "quick brown fox" }},
-        { "match": { "title.shingles": "quick brown fox" }}
-      ]
-    }
-  }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+  <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">"bool"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s">"should"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span> <span class="s">"match"</span><span class="p">:</span> <span class="p">{</span> <span class="s">"title"</span><span class="p">:</span>          <span class="s">"quick brown fox"</span> <span class="p">}},</span>
+        <span class="p">{</span> <span class="s">"match"</span><span class="p">:</span> <span class="p">{</span> <span class="s">"title.original"</span><span class="p">:</span> <span class="s">"quick brown fox"</span> <span class="p">}},</span>
+        <span class="p">{</span> <span class="s">"match"</span><span class="p">:</span> <span class="p">{</span> <span class="s">"title.shingles"</span><span class="p">:</span> <span class="s">"quick brown fox"</span> <span class="p">}}</span>
+      <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -720,7 +724,7 @@
   <li>각 각의 Match되는 field에 대해 점수를 계산한 후 합한다.</li>
 </ul>
 
-<p>자세한 사항은 <code class="highlighter-rouge">most_fields를 참고한다.</code></p>
+<p>자세한 사항은 <code class="language-python highlighter-rouge"><span class="n">most_fields</span><span class="err">를</span> <span class="err">참고한다</span><span class="o">.</span></code></p>
 
 <h2 id="phrase-and-phrase_prefix-type">Phrase and Phrase_prefix type</h2>
 
@@ -755,24 +759,24 @@
 
 <p>Cross_fields type은 query로 입력한 키워드를 분석한 후 모든 Field에 대해 각 각의 Term을 검색한다. 예시는 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /_search
-{
-  "query": {
-    "multi_match" : {
-      "query":      "Will Smith",
-      "type":       "cross_fields",
-      "fields":     [ "first_name", "last_name" ],
-      "operator":   "and"
-    }
-  }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+  <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">"multi_match"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"query"</span><span class="p">:</span>      <span class="s">"Will Smith"</span><span class="p">,</span>
+      <span class="s">"type"</span><span class="p">:</span>       <span class="s">"cross_fields"</span><span class="p">,</span>
+      <span class="s">"fields"</span><span class="p">:</span>     <span class="p">[</span> <span class="s">"first_name"</span><span class="p">,</span> <span class="s">"last_name"</span> <span class="p">],</span>
+      <span class="s">"operator"</span><span class="p">:</span>   <span class="s">"and"</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>이 Query는 다음과 같이 실행될 것이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+(first_name:will last_name:will) 
-+(first_name:smith last_name:smith)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">+</span><span class="p">(</span><span class="n">first_name</span><span class="p">:</span><span class="n">will</span> <span class="n">last_name</span><span class="p">:</span><span class="n">will</span><span class="p">)</span> 
+<span class="o">+</span><span class="p">(</span><span class="n">first_name</span><span class="p">:</span><span class="n">smith</span> <span class="n">last_name</span><span class="p">:</span><span class="n">smith</span><span class="p">)</span>
 
 </code></pre></div></div>
 

@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -499,29 +503,29 @@
 
 <p>아래와 같은 명령으로 Elasticsearch에 Index를 1개 생성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT test_index_1
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PUT</span> <span class="n">test_index_1</span>
 
 </code></pre></div></div>
 
 <p>아래 명령으로 test_index_1 이라는 이름의 index가 생성되었는지 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET _cat/indices/test_index_1?format=json
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="n">_cat</span><span class="o">/</span><span class="n">indices</span><span class="o">/</span><span class="n">test_index_1</span><span class="err">?</span><span class="nb">format</span><span class="o">=</span><span class="n">json</span>
 
-# 응답 예:
-[
-  {
-    "health" : "yellow",
-    "status" : "open",
-    "index" : "test_index_1",
-    "uuid" : "2j6DWAQGRsepaf8vBoK1FQ",
-    "pri" : "5",
-    "rep" : "1",
-    "docs.count" : "0",
-    "docs.deleted" : "0",
-    "store.size" : "1.1kb",
-    "pri.store.size" : "1.1kb"
-  }
-]
+<span class="c1"># 응답 예:
+</span><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s">"health"</span> <span class="p">:</span> <span class="s">"yellow"</span><span class="p">,</span>
+    <span class="s">"status"</span> <span class="p">:</span> <span class="s">"open"</span><span class="p">,</span>
+    <span class="s">"index"</span> <span class="p">:</span> <span class="s">"test_index_1"</span><span class="p">,</span>
+    <span class="s">"uuid"</span> <span class="p">:</span> <span class="s">"2j6DWAQGRsepaf8vBoK1FQ"</span><span class="p">,</span>
+    <span class="s">"pri"</span> <span class="p">:</span> <span class="s">"5"</span><span class="p">,</span>
+    <span class="s">"rep"</span> <span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
+    <span class="s">"docs.count"</span> <span class="p">:</span> <span class="s">"0"</span><span class="p">,</span>
+    <span class="s">"docs.deleted"</span> <span class="p">:</span> <span class="s">"0"</span><span class="p">,</span>
+    <span class="s">"store.size"</span> <span class="p">:</span> <span class="s">"1.1kb"</span><span class="p">,</span>
+    <span class="s">"pri.store.size"</span> <span class="p">:</span> <span class="s">"1.1kb"</span>
+  <span class="p">}</span>
+<span class="p">]</span>
 
 </code></pre></div></div>
 
@@ -529,34 +533,34 @@
 
 <p>아래 명령으로 test_index_1 이라는 이름의 index에 alias_for_write_test1 이라는 이름으로 alias를 설정한다. <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/indices-aliases.html">Index Aliases</a> 문서 참고.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /_aliases
-{
-    "actions" : [
-        { "add" : { "index" : "test_index_1", "alias" : "alias_for_write_test1" } }
-    ]
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span> <span class="o">/</span><span class="n">_aliases</span>
+<span class="p">{</span>
+    <span class="s">"actions"</span> <span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span> <span class="s">"add"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"index"</span> <span class="p">:</span> <span class="s">"test_index_1"</span><span class="p">,</span> <span class="s">"alias"</span> <span class="p">:</span> <span class="s">"alias_for_write_test1"</span> <span class="p">}</span> <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
 
-# 응답 예:
-{
-  "acknowledged" : true
-}
+<span class="c1"># 응답 예:
+</span><span class="p">{</span>
+  <span class="s">"acknowledged"</span> <span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>아래 명령으로 alias 정보를 확인한다. <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/cat-alias.html">cat aliases</a> 문서 참고.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /_cat/aliases?format=json
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">_cat</span><span class="o">/</span><span class="n">aliases</span><span class="err">?</span><span class="nb">format</span><span class="o">=</span><span class="n">json</span>
 
-# 응답 예:
-[
-    {
-        "alias" : "alias_for_write_test1",
-        "index" : "test_index_1",
-        "filter" : "-",
-        "routing.index" : "-",
-        "routing.search" : "-"
-    }
-]
+<span class="c1"># 응답 예:
+</span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s">"alias"</span> <span class="p">:</span> <span class="s">"alias_for_write_test1"</span><span class="p">,</span>
+        <span class="s">"index"</span> <span class="p">:</span> <span class="s">"test_index_1"</span><span class="p">,</span>
+        <span class="s">"filter"</span> <span class="p">:</span> <span class="s">"-"</span><span class="p">,</span>
+        <span class="s">"routing.index"</span> <span class="p">:</span> <span class="s">"-"</span><span class="p">,</span>
+        <span class="s">"routing.search"</span> <span class="p">:</span> <span class="s">"-"</span>
+    <span class="p">}</span>
+<span class="p">]</span>
 
 </code></pre></div></div>
 
@@ -564,32 +568,32 @@
 
 <p>아래와 같이 테스트용 데이터를 alias_for_write_test1 alias를 대상으로 indexing 한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST alias_for_write_test1/doc
-{
-    "board_id" : 10,
-    "playtime" : 5,
-    "minimum_play" : "Y",
-    "timestamp" : "2019-11-19T11:21:01Z",
-    "user_id" : 1,
-    "interest" : 100,
-    "goal" : "alias write test"
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span> <span class="n">alias_for_write_test1</span><span class="o">/</span><span class="n">doc</span>
+<span class="p">{</span>
+    <span class="s">"board_id"</span> <span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s">"playtime"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"minimum_play"</span> <span class="p">:</span> <span class="s">"Y"</span><span class="p">,</span>
+    <span class="s">"timestamp"</span> <span class="p">:</span> <span class="s">"2019-11-19T11:21:01Z"</span><span class="p">,</span>
+    <span class="s">"user_id"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">"interest"</span> <span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="s">"goal"</span> <span class="p">:</span> <span class="s">"alias write test"</span>
+<span class="p">}</span>
 
-# 응답 예:
-{
-  "_index" : "test_index_1",
-  "_type" : "doc",
-  "_id" : "7QV4g24BUKHIwWQy68LW",
-  "_version" : 1,
-  "result" : "created",
-  "_shards" : {
-    "total" : 2,
-    "successful" : 1,
-    "failed" : 0
-  },
-  "_seq_no" : 0,
-  "_primary_term" : 1
-}
+<span class="c1"># 응답 예:
+</span><span class="p">{</span>
+  <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"test_index_1"</span><span class="p">,</span>
+  <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"doc"</span><span class="p">,</span>
+  <span class="s">"_id"</span> <span class="p">:</span> <span class="s">"7QV4g24BUKHIwWQy68LW"</span><span class="p">,</span>
+  <span class="s">"_version"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"result"</span> <span class="p">:</span> <span class="s">"created"</span><span class="p">,</span>
+  <span class="s">"_shards"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s">"successful"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">"failed"</span> <span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="s">"_seq_no"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"_primary_term"</span> <span class="p">:</span> <span class="mi">1</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -599,48 +603,48 @@
 
 <p>아래와 같은 명령을 사용하여 alias를 대상으로 데이터를 조회해 본다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /alias_for_write_test1/_search
-{
-    "query" : {
-        "match_all" : {}
-    }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">alias_for_write_test1</span><span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+    <span class="s">"query"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s">"match_all"</span> <span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>정상적으로 indexing된 데이터를 쿼리 결과로 확인할 수 있다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  "took" : 2,
-  "timed_out" : false,
-  "_shards" : {
-    "total" : 5,
-    "successful" : 5,
-    "skipped" : 0,
-    "failed" : 0
-  },
-  "hits" : {
-    "total" : 1,
-    "max_score" : 1.0,
-    "hits" : [
-      {
-        "_index" : "test_index_1",
-        "_type" : "doc",
-        "_id" : "7QV4g24BUKHIwWQy68LW",
-        "_score" : 1.0,
-        "_source" : {
-          "board_id" : 10,
-          "playtime" : 5,
-          "minimum_play" : "Y",
-          "timestamp" : "2019-11-19T11:21:01Z",
-          "user_id" : 1,
-          "interest" : 100,
-          "goal" : "alias write test"
-        }
-      }
-    ]
-  }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="s">"took"</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="s">"timed_out"</span> <span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+  <span class="s">"_shards"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"successful"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"skipped"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"failed"</span> <span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="s">"hits"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">"max_score"</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="s">"hits"</span> <span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"test_index_1"</span><span class="p">,</span>
+        <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"doc"</span><span class="p">,</span>
+        <span class="s">"_id"</span> <span class="p">:</span> <span class="s">"7QV4g24BUKHIwWQy68LW"</span><span class="p">,</span>
+        <span class="s">"_score"</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="s">"_source"</span> <span class="p">:</span> <span class="p">{</span>
+          <span class="s">"board_id"</span> <span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+          <span class="s">"playtime"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+          <span class="s">"minimum_play"</span> <span class="p">:</span> <span class="s">"Y"</span><span class="p">,</span>
+          <span class="s">"timestamp"</span> <span class="p">:</span> <span class="s">"2019-11-19T11:21:01Z"</span><span class="p">,</span>
+          <span class="s">"user_id"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+          <span class="s">"interest"</span> <span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+          <span class="s">"goal"</span> <span class="p">:</span> <span class="s">"alias write test"</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -669,23 +673,23 @@
 
 <p>아래와 같은 명령으로 Elasticsearch에 Index를 3개 생성한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT test_index_2
-PUT test_index_3
-PUT test_index_4
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PUT</span> <span class="n">test_index_2</span>
+<span class="n">PUT</span> <span class="n">test_index_3</span>
+<span class="n">PUT</span> <span class="n">test_index_4</span>
 
 </code></pre></div></div>
 
 <p>아래 명령으로 test_index_2, test_index_3, test_index_4 이라는 이름의 index가 생성되었는지 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET _cat/indices/test_index_2?format=json
-GET _cat/indices/test_index_3?format=json
-GET _cat/indices/test_index_3?format=json
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="n">_cat</span><span class="o">/</span><span class="n">indices</span><span class="o">/</span><span class="n">test_index_2</span><span class="err">?</span><span class="nb">format</span><span class="o">=</span><span class="n">json</span>
+<span class="n">GET</span> <span class="n">_cat</span><span class="o">/</span><span class="n">indices</span><span class="o">/</span><span class="n">test_index_3</span><span class="err">?</span><span class="nb">format</span><span class="o">=</span><span class="n">json</span>
+<span class="n">GET</span> <span class="n">_cat</span><span class="o">/</span><span class="n">indices</span><span class="o">/</span><span class="n">test_index_3</span><span class="err">?</span><span class="nb">format</span><span class="o">=</span><span class="n">json</span>
 
 </code></pre></div></div>
 
 <p>참고로 아래와 같이 와일드카드를 사용하여 조회하는 것도 가능하다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET _cat/indices/test_index_*?format=json
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="n">_cat</span><span class="o">/</span><span class="n">indices</span><span class="o">/</span><span class="n">test_index_</span><span class="o">*</span><span class="err">?</span><span class="nb">format</span><span class="o">=</span><span class="n">json</span>
 
 </code></pre></div></div>
 
@@ -693,44 +697,44 @@ GET _cat/indices/test_index_3?format=json
 
 <p>아래 명령으로 test_index_2, test_index_3, test_index_4 index에 alias_for_write_test2 라는 이름으로 alias를 설정한다. <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.1/indices-aliases.html">Index Aliases</a> 문서 참고.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /_aliases
-{
-    "actions" : [
-        { "add" : { "index" : "test_index_2", "alias" : "alias_for_write_test2" } },
-        { "add" : { "index" : "test_index_3", "alias" : "alias_for_write_test2" } },
-        { "add" : { "index" : "test_index_4", "alias" : "alias_for_write_test2" } }
-    ]
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span> <span class="o">/</span><span class="n">_aliases</span>
+<span class="p">{</span>
+    <span class="s">"actions"</span> <span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span> <span class="s">"add"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"index"</span> <span class="p">:</span> <span class="s">"test_index_2"</span><span class="p">,</span> <span class="s">"alias"</span> <span class="p">:</span> <span class="s">"alias_for_write_test2"</span> <span class="p">}</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="s">"add"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"index"</span> <span class="p">:</span> <span class="s">"test_index_3"</span><span class="p">,</span> <span class="s">"alias"</span> <span class="p">:</span> <span class="s">"alias_for_write_test2"</span> <span class="p">}</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="s">"add"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"index"</span> <span class="p">:</span> <span class="s">"test_index_4"</span><span class="p">,</span> <span class="s">"alias"</span> <span class="p">:</span> <span class="s">"alias_for_write_test2"</span> <span class="p">}</span> <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
 
-# 응답 예:
-{
-  "acknowledged" : true
-}
+<span class="c1"># 응답 예:
+</span><span class="p">{</span>
+  <span class="s">"acknowledged"</span> <span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>아래 명령으로 alias 정보를 확인한다. <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.7/cat-alias.html">cat aliases</a> 문서 참고.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /_alias/alias_for_write_test2
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">_alias</span><span class="o">/</span><span class="n">alias_for_write_test2</span>
 
-# 응답 예:
-{
-  "test_index_2" : {
-    "aliases" : {
-      "alias_for_write_test2" : { }
-    }
-  },
-  "test_index_3" : {
-    "aliases" : {
-      "alias_for_write_test2" : { }
-    }
-  },
-  "test_index_4" : {
-    "aliases" : {
-      "alias_for_write_test2" : { }
-    }
-  }
-}
+<span class="c1"># 응답 예:
+</span><span class="p">{</span>
+  <span class="s">"test_index_2"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"aliases"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"alias_for_write_test2"</span> <span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s">"test_index_3"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"aliases"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"alias_for_write_test2"</span> <span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s">"test_index_4"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"aliases"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"alias_for_write_test2"</span> <span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -738,34 +742,34 @@ GET _cat/indices/test_index_3?format=json
 
 <p>아래와 같이 테스트용 데이터를 alias_for_write_test2 alias를 대상으로 indexing 한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST alias_for_write_test2/doc
-{
-    "board_id" : 69,
-    "playtime" : 14,
-    "minimum_play" : "Y",
-    "timestamp" : "2019-11-19T12:01:01Z",
-    "user_id" : 2,
-    "interest" : 200,
-    "goal" : "alias write test 2"
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span> <span class="n">alias_for_write_test2</span><span class="o">/</span><span class="n">doc</span>
+<span class="p">{</span>
+    <span class="s">"board_id"</span> <span class="p">:</span> <span class="mi">69</span><span class="p">,</span>
+    <span class="s">"playtime"</span> <span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+    <span class="s">"minimum_play"</span> <span class="p">:</span> <span class="s">"Y"</span><span class="p">,</span>
+    <span class="s">"timestamp"</span> <span class="p">:</span> <span class="s">"2019-11-19T12:01:01Z"</span><span class="p">,</span>
+    <span class="s">"user_id"</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s">"interest"</span> <span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">"goal"</span> <span class="p">:</span> <span class="s">"alias write test 2"</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p><strong>indexing이 실패하고 다음과 같은 응답메시지가 반환되는 것을 확인할 수 있었다.</strong></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  "error": {
-    "root_cause": [
-      {
-        "type": "illegal_argument_exception",
-        "reason": "no write index is defined for alias [alias_for_write_test2]. The write index may be explicitly disabled using is_write_index=false or the alias points to multiple indices without one being designated as a write index"
-      }
-    ],
-    "type": "illegal_argument_exception",
-    "reason": "no write index is defined for alias [alias_for_write_test2]. The write index may be explicitly disabled using is_write_index=false or the alias points to multiple indices without one being designated as a write index"
-  },
-  "status": 400
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="s">"error"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">"root_cause"</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="s">"type"</span><span class="p">:</span> <span class="s">"illegal_argument_exception"</span><span class="p">,</span>
+        <span class="s">"reason"</span><span class="p">:</span> <span class="s">"no write index is defined for alias [alias_for_write_test2]. The write index may be explicitly disabled using is_write_index=false or the alias points to multiple indices without one being designated as a write index"</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="s">"type"</span><span class="p">:</span> <span class="s">"illegal_argument_exception"</span><span class="p">,</span>
+    <span class="s">"reason"</span><span class="p">:</span> <span class="s">"no write index is defined for alias [alias_for_write_test2]. The write index may be explicitly disabled using is_write_index=false or the alias points to multiple indices without one being designated as a write index"</span>
+  <span class="p">},</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">400</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -773,32 +777,32 @@ GET _cat/indices/test_index_3?format=json
 
 <p>아래와 같은 명령을 사용하여 alias를 대상으로 데이터를 조회해 본다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /alias_for_write_test2/_search
-{
-    "query" : {
-        "match_all" : {}
-    }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">alias_for_write_test2</span><span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+    <span class="s">"query"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s">"match_all"</span> <span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>앞의 과정에서 indexing에 실패했고, 쿼리 결과로 데이터가 없는 것을 확인할 수 있다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  "took" : 10,
-  "timed_out" : false,
-  "_shards" : {
-    "total" : 15,
-    "successful" : 15,
-    "skipped" : 0,
-    "failed" : 0
-  },
-  "hits" : {
-    "total" : 0,
-    "max_score" : null,
-    "hits" : [ ]
-  }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="s">"took"</span> <span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="s">"timed_out"</span> <span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+  <span class="s">"_shards"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s">"successful"</span> <span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s">"skipped"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"failed"</span> <span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="s">"hits"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"max_score"</span> <span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+    <span class="s">"hits"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -849,113 +853,113 @@ If no write index is specified and there are multiple indices referenced by an a
   <li>
     <p>test_index_4 인덱스가 write index로 동작하도록 is_write_index 설정하여 alias 설정을 변경한다. 아래 명령은 기존에 test_index_4와 연결된 alias 설정을 삭제하고 다시 추가하는 명령이다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /_aliases
-{
-    "actions" : [
-        {
-            "remove" : {
-                "index" : "test_index_4",
-                "alias" : "alias_for_write_test2"
-            }
-        },
-        {
-            "add" : {
-                "index" : "test_index_4",
-                "alias" : "alias_for_write_test2",
-                "is_write_index" : true
-            }
-        }
-    ]
-}
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span> <span class="o">/</span><span class="n">_aliases</span>
+<span class="p">{</span>
+    <span class="s">"actions"</span> <span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s">"remove"</span> <span class="p">:</span> <span class="p">{</span>
+                <span class="s">"index"</span> <span class="p">:</span> <span class="s">"test_index_4"</span><span class="p">,</span>
+                <span class="s">"alias"</span> <span class="p">:</span> <span class="s">"alias_for_write_test2"</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s">"add"</span> <span class="p">:</span> <span class="p">{</span>
+                <span class="s">"index"</span> <span class="p">:</span> <span class="s">"test_index_4"</span><span class="p">,</span>
+                <span class="s">"alias"</span> <span class="p">:</span> <span class="s">"alias_for_write_test2"</span><span class="p">,</span>
+                <span class="s">"is_write_index"</span> <span class="p">:</span> <span class="n">true</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
     
 </code></pre></div>    </div>
   </li>
   <li>
     <p>아래 명령으로 alias_for_write_test2 alias의 정보를 확인해 보면 test_index_4에 is_write_index 옵션이 설정된 것을 확인할 수 있다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>아래와 같은 명령으로 GET /_alias/alias_for_write_test2
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">아래와</span> <span class="err">같은</span> <span class="err">명령으로</span> <span class="n">GET</span> <span class="o">/</span><span class="n">_alias</span><span class="o">/</span><span class="n">alias_for_write_test2</span>
     
-# 응답 예:
-{
-  "test_index_2" : {
-    "aliases" : {
-      "alias_for_write_test2" : { }
-    }
-  },
-  "test_index_3" : {
-    "aliases" : {
-      "alias_for_write_test2" : { }
-    }
-  },
-  "test_index_4" : {
-    "aliases" : {
-      "alias_for_write_test2" : {
-        "is_write_index" : true
-      }
-    }
-  }
-}
+<span class="c1"># 응답 예:
+</span><span class="p">{</span>
+  <span class="s">"test_index_2"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"aliases"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"alias_for_write_test2"</span> <span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s">"test_index_3"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"aliases"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"alias_for_write_test2"</span> <span class="p">:</span> <span class="p">{</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s">"test_index_4"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"aliases"</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s">"alias_for_write_test2"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s">"is_write_index"</span> <span class="p">:</span> <span class="n">true</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
     
 </code></pre></div>    </div>
   </li>
   <li>
     <p>테스트용 데이터를 alias_for_write_test2를 대상으로 다시 indexing 한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST alias_for_write_test2/doc
-{
-    "board_id" : 69,
-    "playtime" : 14,
-    "minimum_play" : "Y",
-    "timestamp" : "2019-11-19T12:35:01Z",
-    "user_id" : 2,
-    "interest" : 200,
-    "goal" : "alias write test 2"
-}
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span> <span class="n">alias_for_write_test2</span><span class="o">/</span><span class="n">doc</span>
+<span class="p">{</span>
+    <span class="s">"board_id"</span> <span class="p">:</span> <span class="mi">69</span><span class="p">,</span>
+    <span class="s">"playtime"</span> <span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+    <span class="s">"minimum_play"</span> <span class="p">:</span> <span class="s">"Y"</span><span class="p">,</span>
+    <span class="s">"timestamp"</span> <span class="p">:</span> <span class="s">"2019-11-19T12:35:01Z"</span><span class="p">,</span>
+    <span class="s">"user_id"</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s">"interest"</span> <span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">"goal"</span> <span class="p">:</span> <span class="s">"alias write test 2"</span>
+<span class="p">}</span>
     
 </code></pre></div>    </div>
   </li>
   <li>
     <p>indexing 요청 응답을 확인하고, 아래와 같이 데이터를 조회해본다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /alias_for_write_test2/_search
-{
-    "query" : {
-        "match_all" : {}
-    }
-}
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">alias_for_write_test2</span><span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+    <span class="s">"query"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s">"match_all"</span> <span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
     
-# 응답 결과:
-{
-  "took" : 6,
-  "timed_out" : false,
-  "_shards" : {
-    "total" : 15,
-    "successful" : 15,
-    "skipped" : 0,
-    "failed" : 0
-  },
-  "hits" : {
-    "total" : 1,
-    "max_score" : 1.0,
-    "hits" : [
-      {
-        "_index" : "test_index_4",
-        "_type" : "doc",
-        "_id" : "7gWrg24BUKHIwWQyAMLH",
-        "_score" : 1.0,
-        "_source" : {
-          "board_id" : 69,
-          "playtime" : 14,
-          "minimum_play" : "Y",
-          "timestamp" : "2019-11-19T12:35:01Z",
-          "user_id" : 2,
-          "interest" : 200,
-          "goal" : "alias write test 2"
-        }
-      }
-    ]
-  }
-}
+<span class="c1"># 응답 결과:
+</span><span class="p">{</span>
+  <span class="s">"took"</span> <span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+  <span class="s">"timed_out"</span> <span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+  <span class="s">"_shards"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s">"successful"</span> <span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s">"skipped"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"failed"</span> <span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="s">"hits"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">"max_score"</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="s">"hits"</span> <span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"test_index_4"</span><span class="p">,</span>
+        <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"doc"</span><span class="p">,</span>
+        <span class="s">"_id"</span> <span class="p">:</span> <span class="s">"7gWrg24BUKHIwWQyAMLH"</span><span class="p">,</span>
+        <span class="s">"_score"</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="s">"_source"</span> <span class="p">:</span> <span class="p">{</span>
+          <span class="s">"board_id"</span> <span class="p">:</span> <span class="mi">69</span><span class="p">,</span>
+          <span class="s">"playtime"</span> <span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+          <span class="s">"minimum_play"</span> <span class="p">:</span> <span class="s">"Y"</span><span class="p">,</span>
+          <span class="s">"timestamp"</span> <span class="p">:</span> <span class="s">"2019-11-19T12:35:01Z"</span><span class="p">,</span>
+          <span class="s">"user_id"</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+          <span class="s">"interest"</span> <span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+          <span class="s">"goal"</span> <span class="p">:</span> <span class="s">"alias write test 2"</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
     
 </code></pre></div>    </div>
   </li>

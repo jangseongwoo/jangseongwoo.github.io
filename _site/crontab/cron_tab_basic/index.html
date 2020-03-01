@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -431,19 +435,19 @@
 
 <p>Contab에 등록된 작업을 보기 위해 다음과 같은 명령어를 입력한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ crontab -l
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">crontab</span> <span class="o">-</span><span class="n">l</span>
 
-0 11 * * * /Users/st/test/mysql_to_mysql_shell_sciprt/etl.sh &gt; /Users/st/test/mysql_to_mysql_shell_sciprt/logs.log
+<span class="mi">0</span> <span class="mi">11</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">mysql_to_mysql_shell_sciprt</span><span class="o">/</span><span class="n">etl</span><span class="o">.</span><span class="n">sh</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">st</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">mysql_to_mysql_shell_sciprt</span><span class="o">/</span><span class="n">logs</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div></div>
 
 <p>Crontab에 작업을 등록하기 위해서 다음과 같은 명령어를 입력한다. 다음과 같은 명령어를 입력시 편집화면으로 진입하는데 이 화면에서 등록할 작업을 설정하면 된다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ crontab -e
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">crontab</span> <span class="o">-</span><span class="n">e</span>
 </code></pre></div></div>
 
 <p>Crontab을 지우기 위해서는 다음과 같은 명령어를 입력하면 된다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ crontab -r
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">crontab</span> <span class="o">-</span><span class="n">r</span>
 </code></pre></div></div>
 
 <h1 id="crontab-시간-등록-형식">Crontab 시간 등록 형식</h1>
@@ -452,15 +456,15 @@
 
 <p>Crontab의 시간 등록 형식은 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>* * * * *  실행할 명령어
-┬ ┬ ┬ ┬ ┬
-│ │ │ │ │
-│ │ │ │ │
-│ │ │ │ └───────── 요일 (0 - 6) (0:일요일, 1:월요일, 2:화요일, …, 6:토요일)
-│ │ │ └───────── 월 (1 - 12)
-│ │ └───────── 일 (1 - 31)
-│ └───────── 시 (0 - 23)
-└───────── 분 (0 - 59)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span>  <span class="err">실행할</span> <span class="err">명령어</span>
+<span class="err">┬</span> <span class="err">┬</span> <span class="err">┬</span> <span class="err">┬</span> <span class="err">┬</span>
+<span class="err">│</span> <span class="err">│</span> <span class="err">│</span> <span class="err">│</span> <span class="err">│</span>
+<span class="err">│</span> <span class="err">│</span> <span class="err">│</span> <span class="err">│</span> <span class="err">│</span>
+<span class="err">│</span> <span class="err">│</span> <span class="err">│</span> <span class="err">│</span> <span class="err">└─────────</span> <span class="err">요일</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">6</span><span class="p">)</span> <span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="err">일요일</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="err">월요일</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="err">화요일</span><span class="p">,</span> <span class="err">…</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span><span class="err">토요일</span><span class="p">)</span>
+<span class="err">│</span> <span class="err">│</span> <span class="err">│</span> <span class="err">└─────────</span> <span class="err">월</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">12</span><span class="p">)</span>
+<span class="err">│</span> <span class="err">│</span> <span class="err">└─────────</span> <span class="err">일</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">31</span><span class="p">)</span>
+<span class="err">│</span> <span class="err">└─────────</span> <span class="err">시</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">23</span><span class="p">)</span>
+<span class="err">└─────────</span> <span class="err">분</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">59</span><span class="p">)</span>
 </code></pre></div></div>
 
 <h1 id="crontab-등록-예시">Crontab 등록 예시</h1>
@@ -469,12 +473,12 @@
 
 <p>Crontab에 1분마다 스크립트를 실행하는 작업을 등록하는 예시는 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>* * * * * /root/every_1min.sh
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">every_1min</span><span class="o">.</span><span class="n">sh</span>
 </code></pre></div></div>
 
 <p>Crontab에 10분마다 스크립트를 실행하는 작업을 등록하는 예시는 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>*/10 * * * * /root/every_10min.sh
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">*/</span><span class="mi">10</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">every_10min</span><span class="o">.</span><span class="n">sh</span>
 </code></pre></div></div>
 
 <p>나머지 예시는 다음 링크를 참조한다.</p>
@@ -489,7 +493,7 @@
 
 <p>Crontab에 등록된 작업이 실행된 기록을 남기고 싶다면 다음과 같이 Crontab에 작업을 등록하면 된다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0 11 * * * 실행할 명령어 &gt; 로그를 남길 파일 이름
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">0</span> <span class="mi">11</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="err">실행할</span> <span class="err">명령어</span> <span class="o">&gt;</span> <span class="err">로그를</span> <span class="err">남길</span> <span class="err">파일</span> <span class="err">이름</span>
 </code></pre></div></div>
 
 <h1 id="참고-자료">참고 자료</h1>

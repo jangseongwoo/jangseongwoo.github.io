@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -466,12 +470,12 @@
   </li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                                                  
-                           Kinesis Stream        
-  +---------+                +--------+          
-  | Sources |---------------&gt;| Shard  |
-  +---------+ data records   +--------+          
-                             Data Stream
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                                                  
+                           <span class="n">Kinesis</span> <span class="n">Stream</span>        
+  <span class="o">+---------+</span>                <span class="o">+--------+</span>          
+  <span class="o">|</span> <span class="n">Sources</span> <span class="o">|---------------&gt;|</span> <span class="n">Shard</span>  <span class="o">|</span>
+  <span class="o">+---------+</span> <span class="n">data</span> <span class="n">records</span>   <span class="o">+--------+</span>          
+                             <span class="n">Data</span> <span class="n">Stream</span>
                                         
                                         
                                         
@@ -528,10 +532,10 @@
 
 <p>테스트는 다음과 같은 디렉토리 구조를 기준으로 진행하였다. 해당 구조로 프로젝트 디렉토리를 구성한 이후 다음 내용을 진행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Project/pos/
-Project/pos/pos_file.pos
-Project/source/{log_file.log}
-Project/kinesis_test.config
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Project</span><span class="o">/</span><span class="n">pos</span><span class="o">/</span>
+<span class="n">Project</span><span class="o">/</span><span class="n">pos</span><span class="o">/</span><span class="n">pos_file</span><span class="o">.</span><span class="n">pos</span>
+<span class="n">Project</span><span class="o">/</span><span class="n">source</span><span class="o">/</span><span class="p">{</span><span class="n">log_file</span><span class="o">.</span><span class="n">log</span><span class="p">}</span>
+<span class="n">Project</span><span class="o">/</span><span class="n">kinesis_test</span><span class="o">.</span><span class="n">config</span>
 </code></pre></div></div>
 
 <h2 id="fluentd의-aws-kinesis-data-stream-플러그인-설치하기">Fluentd의 AWS Kinesis Data stream 플러그인 설치하기</h2>
@@ -540,7 +544,7 @@ Project/kinesis_test.config
 
 <p>AWS Kinesis Data stream output plugin 설치 명령은 다음과 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ gem install fluent-plugin-kinesis
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">fluent</span><span class="o">-</span><span class="n">plugin</span><span class="o">-</span><span class="n">kinesis</span>
 </code></pre></div></div>
 
 <h2 id="fluentd의-config-파일-변경하기">Fluentd의 Config 파일 변경하기</h2>
@@ -549,32 +553,32 @@ Project/kinesis_test.config
 
 <p>따라서, kinesis_test.config을 다음과 같이 수정한다. 내용 중 {project_folder_path}은 프로젝트 디렉토리의 절대 경로를 입력하면 된다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;source&gt;
-  @type tail
-  path {project_folder_path}/source/*.log
-  pos_file {project_folder_path}/pos/pos_file.pos
-  tag kinesis.test
-  &lt;parse&gt;
-    @type none
-  &lt;/parse&gt;
-&lt;/source&gt;
-&lt;match kinesis.*&gt;
-  @type kinesis_streams
-  region ap-northeast-2
-  stream_name test-seongwoo-data-stream
-&lt;/match&gt;
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">source</span><span class="o">&gt;</span>
+  <span class="o">@</span><span class="nb">type</span> <span class="n">tail</span>
+  <span class="n">path</span> <span class="p">{</span><span class="n">project_folder_path</span><span class="p">}</span><span class="o">/</span><span class="n">source</span><span class="o">/*.</span><span class="n">log</span>
+  <span class="n">pos_file</span> <span class="p">{</span><span class="n">project_folder_path</span><span class="p">}</span><span class="o">/</span><span class="n">pos</span><span class="o">/</span><span class="n">pos_file</span><span class="o">.</span><span class="n">pos</span>
+  <span class="n">tag</span> <span class="n">kinesis</span><span class="o">.</span><span class="n">test</span>
+  <span class="o">&lt;</span><span class="n">parse</span><span class="o">&gt;</span>
+    <span class="o">@</span><span class="nb">type</span> <span class="n">none</span>
+  <span class="o">&lt;/</span><span class="n">parse</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">source</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">match</span> <span class="n">kinesis</span><span class="o">.*&gt;</span>
+  <span class="o">@</span><span class="nb">type</span> <span class="n">kinesis_streams</span>
+  <span class="n">region</span> <span class="n">ap</span><span class="o">-</span><span class="n">northeast</span><span class="o">-</span><span class="mi">2</span>
+  <span class="n">stream_name</span> <span class="n">test</span><span class="o">-</span><span class="n">seongwoo</span><span class="o">-</span><span class="n">data</span><span class="o">-</span><span class="n">stream</span>
+<span class="o">&lt;/</span><span class="n">match</span><span class="o">&gt;</span>
 </code></pre></div></div>
 
 <h2 id="fluentd-실행하기">Fluentd 실행하기</h2>
 
 <p>Fluentd를 실행하기 위해 Project 디렉토리에서 다음과 같은 명령을 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ fluentd -c kinesis_test.config -o fleuntd.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">fluentd</span> <span class="o">-</span><span class="n">c</span> <span class="n">kinesis_test</span><span class="o">.</span><span class="n">config</span> <span class="o">-</span><span class="n">o</span> <span class="n">fleuntd</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div></div>
 
 <p>새로운 터미널을 열고 로그 파일을 보기 위해 다음과 같은 명령을 실행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -f fleuntd.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">tail</span> <span class="o">-</span><span class="n">f</span> <span class="n">fleuntd</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div></div>
 
 <p>로그 파일을 통해 Fluentd가 정상적으로 실행되었다는 것을 확인한다.</p>
@@ -583,13 +587,13 @@ Project/kinesis_test.config
 
 <p>Fluentd가 watch하는 디렉토리에 로그파일 기록하기 위해 다음과 같은 명령어를 실행한다. 프로젝트 디렉토리 아래의 source 디렉토리에서 입력한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "test" &gt; test1.log
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">echo</span> <span class="s">"test"</span> <span class="o">&gt;</span> <span class="n">test1</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div></div>
 
 <p>로그가 정상적으로 기록되고 Fluentd가 의도한대로 동작하고 있다면 Fluentd 로그파일에 다음과 같은 로그 메시지가 발생한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2019-11-12 19:31:56 +0900 [info]: #0 following tail of /Users/st/test/fluentd_kinesis/source/test1.log
-</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">12</span> <span class="mi">19</span><span class="p">:</span><span class="mi">31</span><span class="p">:</span><span class="mi">56</span> <span class="o">+</span><span class="mi">0900</span> <span class="p">[</span><span class="n">info</span><span class="p">]:</span> <span class="c1">#0 following tail of /Users/st/test/fluentd_kinesis/source/test1.log
+</span></code></pre></div></div>
 
 <h2 id="aws-kinesis-data-stream에-정상적으로-로그가-입력되었는-지-확인하기">AWS Kinesis Data stream에 정상적으로 로그가 입력되었는 지 확인하기</h2>
 
@@ -605,26 +609,26 @@ Project/kinesis_test.config
 
 <p>해당 파일을 다운받아 내용을 확인한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{"message":"sdasdsad"}
-{"message":"asdasdsad"}
-{"message":"ad"}
-{"message":"sdasdsasdasdasdsdaad"}
-{"message":"tesd"}
-{"message":""}
-{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
-{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
-{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
-{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
-{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
-{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
-{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
-{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
-{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
-{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
-{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
-{"message":"asdasdsadasdsadadsasdasdatest4asdasdsasdad"}
-{"message":"asdasddsaasdsaxzcvxcvcxv"}
-{"message":"xzcv"}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"sdasdsad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasdsad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"ad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"sdasdsasdasdasdsdaad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"tesd"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">""</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasdsadasdsadadsasdasdatest4asdasdsasdad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasdsadasdsadadsasdasdatest4asdasdsasdad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasdsadasdsadadsasdasdatest4asdasdsasdad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasdsadasdsadadsasdasdatest4asdasdsasdad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasdsadasdsadadsasdasdatest4asdasdsasdad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasdsadasdsadadsasdasdatest4asdasdsasdad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasdsadasdsadadsasdasdatest4asdasdsasdad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasdsadasdsadadsasdasdatest4asdasdsasdad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasdsadasdsadadsasdasdatest4asdasdsasdad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasdsadasdsadadsasdasdatest4asdasdsasdad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasdsadasdsadadsasdasdatest4asdasdsasdad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasdsadasdsadadsasdasdatest4asdasdsasdad"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"asdasddsaasdsaxzcvxcvcxv"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"message"</span><span class="p">:</span><span class="s">"xzcv"</span><span class="p">}</span>
 </code></pre></div></div>
 
 <p>입력한 내용이 예시와 같은 형태로 입력되어 있다면 정상적으로 동작 했다고 볼 수 있다. </p>

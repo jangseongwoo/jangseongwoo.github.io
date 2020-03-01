@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -489,29 +493,29 @@
   <li>
     <p>입력용 파일을 생성한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ touch file_to_stdout_test.log
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span><span class="nb">touch </span>file_to_stdout_test.log
 </code></pre></div>    </div>
 
     <p>파일이 정상적으로 생성되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -l file_to_stdout_test.log
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> file_to_stdout_test.log
 drwxr-xr-x  4 kevin  staff  0  8  6 16:52 file_to_stdout_test.log 
 </code></pre></div>    </div>
   </li>
   <li>
     <p>td-agent.conf 파일을 다음과 같이 수정한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim /etc/td-agent/td-agent.conf
-&lt;source&gt;
-  @type tail 
-  path /Users/kevin/dev/fluentd/test/file_to_stdout/source/file_to_stdout_test.log 
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim /etc/td-agent/td-agent.conf
+&lt;<span class="nb">source</span><span class="o">&gt;</span>
+  @type <span class="nb">tail 
+  </span>path /Users/kevin/dev/fluentd/test/file_to_stdout/source/file_to_stdout_test.log 
   pos_file /home/kevin/dev/fluentd/test/pos_file/file_to_stdout.pos 
   tag file_to_stdout.test 
   &lt;parse&gt;
     @type none
   &lt;/parse&gt;
 &lt;/source&gt;
-&lt;match file_to_stdout.*&gt;
+&lt;match file_to_stdout.<span class="k">*</span><span class="o">&gt;</span>
   @type stdout
 &lt;/match&gt; 
 </code></pre></div>    </div>
@@ -568,7 +572,7 @@ drwxr-xr-x  4 kevin  staff  0  8  6 16:52 file_to_stdout_test.log 
   <li>
     <p>파일에 다음과 같은 로그를 저장하고 이를 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim file_to_stdout_test.log
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim file_to_stdout_test.log
 file_to_stdout_test 1
 file_to_stdout_test 2
 file_to_stdout_test 3
@@ -578,12 +582,12 @@ file_to_stdout_test 5
 
     <p>td-agent의 표준 출력을 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tail -5f /var/log/td-agent/td-agent.log
-2019-08-06 20:30:20.191939654 +0900 file_to_stdout.test: {"message":"file_to_stdout_test 1"}
-2019-08-06 20:30:25.738923745 +0900 file_to_stdout.test: {"message":"file_to_stdout_test 2"}
-2019-08-06 20:30:31.243424029 +0900 file_to_stdout.test: {"message":"file_to_stdout_test 3"}
-2019-08-06 20:30:35.698592603 +0900 file_to_stdout.test: {"message":"file_to_stdout_test 4"}
-2019-08-06 20:30:40.123402487 +0900 file_to_stdout.test: {"message":"file_to_stdout_test 5"}
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-5f</span> /var/log/td-agent/td-agent.log
+2019-08-06 20:30:20.191939654 +0900 file_to_stdout.test: <span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_stdout_test 1"</span><span class="o">}</span>
+2019-08-06 20:30:25.738923745 +0900 file_to_stdout.test: <span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_stdout_test 2"</span><span class="o">}</span>
+2019-08-06 20:30:31.243424029 +0900 file_to_stdout.test: <span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_stdout_test 3"</span><span class="o">}</span>
+2019-08-06 20:30:35.698592603 +0900 file_to_stdout.test: <span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_stdout_test 4"</span><span class="o">}</span>
+2019-08-06 20:30:40.123402487 +0900 file_to_stdout.test: <span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_stdout_test 5"</span><span class="o">}</span>
 </code></pre></div>    </div>
   </li>
 </ol>
@@ -592,7 +596,7 @@ file_to_stdout_test 5
 
 <p>파일에 저장된 로그는 라인 단위로 읽어와 “로그를 수집한 날짜”, “이벤트 Tag명”, “로그”를 표준출력하며 형식은 다음과 같음을 알 수 있다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(로그를 수집한 날짜) (이벤트 Tag명): {"message":"(로그)"}
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>로그를 수집한 날짜<span class="o">)</span> <span class="o">(</span>이벤트 Tag명<span class="o">)</span>: <span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"(로그)"</span><span class="o">}</span>
 </code></pre></div></div>
 
 <hr />
@@ -613,24 +617,24 @@ file_to_stdout_test 5
   <li>
     <p>입력용 파일을 생성한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch file_to_file_01.log file_to_file_02.log file_to_file_03.log 
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">touch </span>file_to_file_01.log file_to_file_02.log file_to_file_03.log 
 </code></pre></div>    </div>
 
     <p>파일이 정상적으로 생성되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -l file_to_file_0*.log
--rw-r--r--  1 kevin  staff  0  8 13 21:09 file_to_file_01.log
--rw-r--r--  1 kevin  staff  0  8 13 21:09 file_to_file_02.log
--rw-r--r--  1 kevin  staff  0  8 13 21:09 file_to_file_03.log
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> file_to_file_0<span class="k">*</span>.log
+<span class="nt">-rw-r--r--</span>  1 kevin  staff  0  8 13 21:09 file_to_file_01.log
+<span class="nt">-rw-r--r--</span>  1 kevin  staff  0  8 13 21:09 file_to_file_02.log
+<span class="nt">-rw-r--r--</span>  1 kevin  staff  0  8 13 21:09 file_to_file_03.log
 </code></pre></div>    </div>
   </li>
   <li>
     <p>td-agent.conf 파일을 다음과 같이 수정한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim /etc/td-agent/td-agent.conf
-&lt;source&gt;
-  @type tail
-  path /Users/kevin/dev/fluentd/test/file_to_file/source/*
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim /etc/td-agent/td-agent.conf
+&lt;<span class="nb">source</span><span class="o">&gt;</span>
+  @type <span class="nb">tail
+  </span>path /Users/kevin/dev/fluentd/test/file_to_file/source/<span class="k">*</span>
   pos_file /Users/kevin/dev/fluentd/test/pos/file_to_file.pos
   tag file_to_file.test
   &lt;parse&gt;
@@ -638,9 +642,9 @@ file_to_stdout_test 5
   &lt;/parse&gt;
   refresh_interval 1s
 &lt;/source&gt;
-&lt;match file_to_file.*&gt;
+&lt;match file_to_file.<span class="k">*</span><span class="o">&gt;</span>
   @type file
-  path /Users/kevin/dev/fluentd/test/file_to_file/match/${tag}
+  path /Users/kevin/dev/fluentd/test/file_to_file/match/<span class="k">${</span><span class="nv">tag</span><span class="k">}</span>
   &lt;buffer tag&gt;
     flush_mode interval
     flush_interval 10s
@@ -720,7 +724,7 @@ file_to_stdout_test 5
   <li>
     <p>입력용 로그 파일 1개에 다음과 같이 로그를 출력한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim file_to_file_01.log
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim file_to_file_01.log
 file_to_file_01    line 1
 file_to_file_01    line 2
 file_to_file_01    line 3
@@ -730,22 +734,22 @@ file_to_file_01    line 5
 
     <p>출력용 파일을 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat file_to_file.test_0.log
-2019-08-13T21:58:56+09:00	file_to_file.test	{"message":"file_to_file_01    line 1"}
-2019-08-13T21:58:56+09:00	file_to_file.test	{"message":"file_to_file_01    line 2"}
-2019-08-13T21:58:56+09:00	file_to_file.test	{"message":"file_to_file_01    line 3"}
-2019-08-13T21:58:56+09:00	file_to_file.test	{"message":"file_to_file_01    line 4"}
-2019-08-13T21:58:56+09:00	file_to_file.test	{"message":"file_to_file_01    line 5"}
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat </span>file_to_file.test_0.log
+2019-08-13T21:58:56+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_01    line 1"</span><span class="o">}</span>
+2019-08-13T21:58:56+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_01    line 2"</span><span class="o">}</span>
+2019-08-13T21:58:56+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_01    line 3"</span><span class="o">}</span>
+2019-08-13T21:58:56+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_01    line 4"</span><span class="o">}</span>
+2019-08-13T21:58:56+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_01    line 5"</span><span class="o">}</span>
 </code></pre></div>    </div>
 
     <p>파일명은 ${tag]_${index}.log형태로 출력된다.</p>
 
     <p>만약 ${tag}.log형태로 출력하려면 다음과 같이 match의 append 옵션을 수정하면 된다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;match 이벤트 tag명&gt;
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;match 이벤트 tag명&gt;
   ...중략...
       
-  append true
+  append <span class="nb">true</span>
       
   ...중략...
 &lt;match&gt;
@@ -753,7 +757,7 @@ file_to_file_01    line 5
 
     <p>나머지 파일에도 로그를 출력한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim file_to_file_02.log
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim file_to_file_02.log
 file_to_file_02    line 1
 file_to_file_02    line 2
 file_to_file_02    line 3
@@ -761,7 +765,7 @@ file_to_file_02    line 4
 file_to_file_02    line 5
 </code></pre></div>    </div>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim file_to_file_03.log
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim file_to_file_03.log
 file_to_file_03    line 1
 file_to_file_03    line 2
 file_to_file_03    line 3
@@ -771,17 +775,17 @@ file_to_file_03    line 5
 
     <p>출력용 파일을 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat file_to_file.test_1.log
-2019-08-13T22:07:06+09:00	file_to_file.test	{"message":"file_to_file_02    line 1"}
-2019-08-13T22:07:06+09:00	file_to_file.test	{"message":"file_to_file_02    line 2"}
-2019-08-13T22:07:06+09:00	file_to_file.test	{"message":"file_to_file_02    line 3"}
-2019-08-13T22:07:06+09:00	file_to_file.test	{"message":"file_to_file_02    line 4"}
-2019-08-13T22:07:06+09:00	file_to_file.test	{"message":"file_to_file_02    line 5"}
-2019-08-13T22:07:17+09:00	file_to_file.test	{"message":"file_to_file_03    line 1"}
-2019-08-13T22:07:17+09:00	file_to_file.test	{"message":"file_to_file_03    line 2"}
-2019-08-13T22:07:17+09:00	file_to_file.test	{"message":"file_to_file_03    line 3"}
-2019-08-13T22:07:17+09:00	file_to_file.test	{"message":"file_to_file_03    line 4"}
-2019-08-13T22:07:17+09:00	file_to_file.test	{"message":"file_to_file_03    line 5"}
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat </span>file_to_file.test_1.log
+2019-08-13T22:07:06+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_02    line 1"</span><span class="o">}</span>
+2019-08-13T22:07:06+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_02    line 2"</span><span class="o">}</span>
+2019-08-13T22:07:06+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_02    line 3"</span><span class="o">}</span>
+2019-08-13T22:07:06+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_02    line 4"</span><span class="o">}</span>
+2019-08-13T22:07:06+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_02    line 5"</span><span class="o">}</span>
+2019-08-13T22:07:17+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_03    line 1"</span><span class="o">}</span>
+2019-08-13T22:07:17+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_03    line 2"</span><span class="o">}</span>
+2019-08-13T22:07:17+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_03    line 3"</span><span class="o">}</span>
+2019-08-13T22:07:17+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_03    line 4"</span><span class="o">}</span>
+2019-08-13T22:07:17+09:00	file_to_file.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"file_to_file_03    line 5"</span><span class="o">}</span>
 </code></pre></div>    </div>
   </li>
 </ol>
@@ -794,7 +798,7 @@ file_to_file_03    line 5
   <li>
     <p>입력용 파일에 저장된 로그는 라인 단위로 읽어와 “로그를 수집한 날짜”, “이벤트 Tag명”, “로그”를 파일로 출력하며 형식은 다음과 같다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(로그를 수집한 날짜) (이벤트 Tag명) {"message":"(로그)"}
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>로그를 수집한 날짜<span class="o">)</span> <span class="o">(</span>이벤트 Tag명<span class="o">)</span> <span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"(로그)"</span><span class="o">}</span>
 </code></pre></div>    </div>
   </li>
   <li>
@@ -831,30 +835,30 @@ file_to_file_03    line 5
   <li>
     <p>입력용 파일을 생성한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch json_file_to_es_test.log
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">touch </span>json_file_to_es_test.log
 </code></pre></div>    </div>
 
     <p>파일이 정상적으로 생성되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -l
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
 total 0
--rw-r--r--  1 kevin  staff  0  8 13 13:48 json_file_to_es.log
+<span class="nt">-rw-r--r--</span>  1 kevin  staff  0  8 13 13:48 json_file_to_es.log
 </code></pre></div>    </div>
   </li>
   <li>
     <p>td-agent.conf 파일을 다음과 같이 수정한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim /etc/td-agent/td-agent.conf
-&lt;source&gt;
-  @type tail
-  path /Users/kevin/dev/fluentd/test/json_file_to_es/source/**
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim /etc/td-agent/td-agent.conf
+&lt;<span class="nb">source</span><span class="o">&gt;</span>
+  @type <span class="nb">tail
+  </span>path /Users/kevin/dev/fluentd/test/json_file_to_es/source/<span class="k">**</span>
   pos_file /Users/kevin/dev/fluentd/test/pos/json_file_to_es.pos
   tag json_file_to_es.test
   &lt;parse&gt;
     @type json
   &lt;/parse&gt;
 &lt;/source&gt;
-&lt;match json_file_to_es.**&gt;
+&lt;match json_file_to_es.<span class="k">**</span><span class="o">&gt;</span>
   @type elasticsearch
   host localhost
   port 9200
@@ -932,214 +936,214 @@ total 0
 
     <p>elasticsearch를 실행한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./bin/elasticsearch
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./bin/elasticsearch
 </code></pre></div>    </div>
 
     <p>elasticsearch가 구동되는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -X GET "localhost:9200"
-{
-  "name" : "kevin_es_node_name",
-  "cluster_name" : "kevin_es_cluster_name",
-  "cluster_uuid" : "G_WJqbiFS7Srdm4S1mUKWA",
-  "version" : {
-    "number" : "6.7.1",
-    "build_flavor" : "default",
-    "build_type" : "tar",
-    "build_hash" : "2f32220",
-    "build_date" : "2019-04-02T15:59:27.961366Z",
-    "build_snapshot" : false,
-    "lucene_version" : "7.7.0",
-    "minimum_wire_compatibility_version" : "5.6.0",
-    "minimum_index_compatibility_version" : "5.0.0"
-  },
-  "tagline" : "You Know, for Search"
-}
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> GET <span class="s2">"localhost:9200"</span>
+<span class="o">{</span>
+  <span class="s2">"name"</span> : <span class="s2">"kevin_es_node_name"</span>,
+  <span class="s2">"cluster_name"</span> : <span class="s2">"kevin_es_cluster_name"</span>,
+  <span class="s2">"cluster_uuid"</span> : <span class="s2">"G_WJqbiFS7Srdm4S1mUKWA"</span>,
+  <span class="s2">"version"</span> : <span class="o">{</span>
+    <span class="s2">"number"</span> : <span class="s2">"6.7.1"</span>,
+    <span class="s2">"build_flavor"</span> : <span class="s2">"default"</span>,
+    <span class="s2">"build_type"</span> : <span class="s2">"tar"</span>,
+    <span class="s2">"build_hash"</span> : <span class="s2">"2f32220"</span>,
+    <span class="s2">"build_date"</span> : <span class="s2">"2019-04-02T15:59:27.961366Z"</span>,
+    <span class="s2">"build_snapshot"</span> : <span class="nb">false</span>,
+    <span class="s2">"lucene_version"</span> : <span class="s2">"7.7.0"</span>,
+    <span class="s2">"minimum_wire_compatibility_version"</span> : <span class="s2">"5.6.0"</span>,
+    <span class="s2">"minimum_index_compatibility_version"</span> : <span class="s2">"5.0.0"</span>
+  <span class="o">}</span>,
+  <span class="s2">"tagline"</span> : <span class="s2">"You Know, for Search"</span>
+<span class="o">}</span>
 </code></pre></div>    </div>
 
     <p>elasticsearch에 index가 생성되고 document가 추가되는지 확인하기 위하여 document를 추가한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -H 'Content-Type: application/json' -XPOST localhost:9200/json_file_to_es/_doc/1/ -d '{"file_name" : "creat_index_add_document", "tag_name" : "test", "lines" : 1}'
-{"_index":"json_file_to_es","_type":"_doc","_id":"1","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":0,"_primary_term":1}%
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-H</span> <span class="s1">'Content-Type: application/json'</span> <span class="nt">-XPOST</span> localhost:9200/json_file_to_es/_doc/1/ <span class="nt">-d</span> <span class="s1">'{"file_name" : "creat_index_add_document", "tag_name" : "test", "lines" : 1}'</span>
+<span class="o">{</span><span class="s2">"_index"</span>:<span class="s2">"json_file_to_es"</span>,<span class="s2">"_type"</span>:<span class="s2">"_doc"</span>,<span class="s2">"_id"</span>:<span class="s2">"1"</span>,<span class="s2">"_version"</span>:1,<span class="s2">"result"</span>:<span class="s2">"created"</span>,<span class="s2">"_shards"</span>:<span class="o">{</span><span class="s2">"total"</span>:2,<span class="s2">"successful"</span>:1,<span class="s2">"failed"</span>:0<span class="o">}</span>,<span class="s2">"_seq_no"</span>:0,<span class="s2">"_primary_term"</span>:1<span class="o">}</span>%
 </code></pre></div>    </div>
 
     <p>정상적으로 document가 추가 되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XGET 'localhost:9200/json_file_to_es/_search?pretty'
-{
-  "took" : 0,
-  "timed_out" : false,
-  "_shards" : {
-    "total" : 5,
-    "successful" : 5,
-    "skipped" : 0,
-    "failed" : 0
-  },
-  "hits" : {
-    "total" : 1,
-    "max_score" : 1.0,
-    "hits" : [
-      {
-        "_index" : "json_file_to_es",
-        "_type" : "_doc",
-        "_id" : "1",
-        "_score" : 1.0,
-        "_source" : {
-          "file_name" : "creat_index_add_document",
-          "tag_name" : "test",
-          "lines" : 1
-        }
-      }
-    ]
-  }
-}
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-XGET</span> <span class="s1">'localhost:9200/json_file_to_es/_search?pretty'</span>
+<span class="o">{</span>
+  <span class="s2">"took"</span> : 0,
+  <span class="s2">"timed_out"</span> : <span class="nb">false</span>,
+  <span class="s2">"_shards"</span> : <span class="o">{</span>
+    <span class="s2">"total"</span> : 5,
+    <span class="s2">"successful"</span> : 5,
+    <span class="s2">"skipped"</span> : 0,
+    <span class="s2">"failed"</span> : 0
+  <span class="o">}</span>,
+  <span class="s2">"hits"</span> : <span class="o">{</span>
+    <span class="s2">"total"</span> : 1,
+    <span class="s2">"max_score"</span> : 1.0,
+    <span class="s2">"hits"</span> : <span class="o">[</span>
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"json_file_to_es"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"1"</span>,
+        <span class="s2">"_score"</span> : 1.0,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"file_name"</span> : <span class="s2">"creat_index_add_document"</span>,
+          <span class="s2">"tag_name"</span> : <span class="s2">"test"</span>,
+          <span class="s2">"lines"</span> : 1
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">]</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 </code></pre></div>    </div>
 
     <p>정상적으로 document가 추가된 것을 확인하였으면 테스트 진행을 위하여 index를 삭제한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -XDELETE 'localhost:9200/json_file_to_es?pretty'
-{
-  "acknowledged" : true
-}
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-XDELETE</span> <span class="s1">'localhost:9200/json_file_to_es?pretty'</span>
+<span class="o">{</span>
+  <span class="s2">"acknowledged"</span> : <span class="nb">true</span>
+<span class="o">}</span>
 </code></pre></div>    </div>
   </li>
   <li>
     <p>입력용 로그파일에 로그를 출력한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim json_file_to_es.log
-{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 1 }
-{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 2 }
-{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 3 }
-{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 4 }
-{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 5 }
-{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 6 }
-{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 7 }
-{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 8 }
-{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 9 }
-{ "file_name" : "json_file_to_es", "tag_name" : "json_file_to_es", "lines" : 10 } 
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim json_file_to_es.log
+<span class="o">{</span> <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"lines"</span> : 1 <span class="o">}</span>
+<span class="o">{</span> <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"lines"</span> : 2 <span class="o">}</span>
+<span class="o">{</span> <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"lines"</span> : 3 <span class="o">}</span>
+<span class="o">{</span> <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"lines"</span> : 4 <span class="o">}</span>
+<span class="o">{</span> <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"lines"</span> : 5 <span class="o">}</span>
+<span class="o">{</span> <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"lines"</span> : 6 <span class="o">}</span>
+<span class="o">{</span> <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"lines"</span> : 7 <span class="o">}</span>
+<span class="o">{</span> <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"lines"</span> : 8 <span class="o">}</span>
+<span class="o">{</span> <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"lines"</span> : 9 <span class="o">}</span>
+<span class="o">{</span> <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>, <span class="s2">"lines"</span> : 10 <span class="o">}</span> 
 </code></pre></div>    </div>
 
     <p>elasticsearch에 index에 정상적으로 insert 되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -X GET 'localhost:9200/json_file_to_es/_search?filter_path=hits&amp;pretty'
-{
-  "hits" : {
-    "total" : 10,
-    "max_score" : 1.0,
-    "hits" : [
-      {
-        "_index" : "json_file_to_es",
-        "_type" : "_doc",
-        "_id" : "boabimwBFFtJqSTvn084",
-        "_score" : 1.0,
-        "_source" : {
-          "file_name" : "json_file_to_es",
-          "tag_name" : "json_file_to_es",
-          "lines" : 2
-        }
-      },
-      {
-        "_index" : "json_file_to_es",
-        "_type" : "_doc",
-        "_id" : "cYabimwBFFtJqSTvn084",
-        "_score" : 1.0,
-        "_source" : {
-          "file_name" : "json_file_to_es",
-          "tag_name" : "json_file_to_es",
-          "lines" : 5
-        }
-      },
-      {
-        "_index" : "json_file_to_es",
-        "_type" : "_doc",
-        "_id" : "dYabimwBFFtJqSTvn084",
-        "_score" : 1.0,
-        "_source" : {
-          "file_name" : "json_file_to_es",
-          "tag_name" : "json_file_to_es",
-          "lines" : 9
-        }
-      },
-      {
-        "_index" : "json_file_to_es",
-        "_type" : "_doc",
-        "_id" : "doabimwBFFtJqSTvn084",
-        "_score" : 1.0,
-        "_source" : {
-          "file_name" : "json_file_to_es",
-          "tag_name" : "json_file_to_es",
-          "lines" : 10
-        }
-      },
-      {
-        "_index" : "json_file_to_es",
-        "_type" : "_doc",
-        "_id" : "coabimwBFFtJqSTvn084",
-        "_score" : 1.0,
-        "_source" : {
-          "file_name" : "json_file_to_es",
-          "tag_name" : "json_file_to_es",
-          "lines" : 6
-        }
-      },
-      {
-        "_index" : "json_file_to_es",
-        "_type" : "_doc",
-        "_id" : "dIabimwBFFtJqSTvn084",
-        "_score" : 1.0,
-        "_source" : {
-          "file_name" : "json_file_to_es",
-          "tag_name" : "json_file_to_es",
-          "lines" : 8
-        }
-      },
-      {
-        "_index" : "json_file_to_es",
-        "_type" : "_doc",
-        "_id" : "bYabimwBFFtJqSTvn084",
-        "_score" : 1.0,
-        "_source" : {
-          "file_name" : "json_file_to_es",
-          "tag_name" : "json_file_to_es",
-          "lines" : 1
-        }
-      },
-      {
-        "_index" : "json_file_to_es",
-        "_type" : "_doc",
-        "_id" : "b4abimwBFFtJqSTvn084",
-        "_score" : 1.0,
-        "_source" : {
-          "file_name" : "json_file_to_es",
-          "tag_name" : "json_file_to_es",
-          "lines" : 3
-        }
-      },
-      {
-        "_index" : "json_file_to_es",
-        "_type" : "_doc",
-        "_id" : "cIabimwBFFtJqSTvn084",
-        "_score" : 1.0,
-        "_source" : {
-          "file_name" : "json_file_to_es",
-          "tag_name" : "json_file_to_es",
-          "lines" : 4
-        }
-      },
-      {
-        "_index" : "json_file_to_es",
-        "_type" : "_doc",
-        "_id" : "c4abimwBFFtJqSTvn084",
-        "_score" : 1.0,
-        "_source" : {
-          "file_name" : "json_file_to_es",
-          "tag_name" : "json_file_to_es",
-          "lines" : 7
-        }
-      }
-    ]
-  }
-}
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> GET <span class="s1">'localhost:9200/json_file_to_es/_search?filter_path=hits&amp;pretty'</span>
+<span class="o">{</span>
+  <span class="s2">"hits"</span> : <span class="o">{</span>
+    <span class="s2">"total"</span> : 10,
+    <span class="s2">"max_score"</span> : 1.0,
+    <span class="s2">"hits"</span> : <span class="o">[</span>
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"json_file_to_es"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"boabimwBFFtJqSTvn084"</span>,
+        <span class="s2">"_score"</span> : 1.0,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"lines"</span> : 2
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"json_file_to_es"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"cYabimwBFFtJqSTvn084"</span>,
+        <span class="s2">"_score"</span> : 1.0,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"lines"</span> : 5
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"json_file_to_es"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"dYabimwBFFtJqSTvn084"</span>,
+        <span class="s2">"_score"</span> : 1.0,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"lines"</span> : 9
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"json_file_to_es"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"doabimwBFFtJqSTvn084"</span>,
+        <span class="s2">"_score"</span> : 1.0,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"lines"</span> : 10
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"json_file_to_es"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"coabimwBFFtJqSTvn084"</span>,
+        <span class="s2">"_score"</span> : 1.0,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"lines"</span> : 6
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"json_file_to_es"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"dIabimwBFFtJqSTvn084"</span>,
+        <span class="s2">"_score"</span> : 1.0,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"lines"</span> : 8
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"json_file_to_es"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"bYabimwBFFtJqSTvn084"</span>,
+        <span class="s2">"_score"</span> : 1.0,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"lines"</span> : 1
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"json_file_to_es"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"b4abimwBFFtJqSTvn084"</span>,
+        <span class="s2">"_score"</span> : 1.0,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"lines"</span> : 3
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"json_file_to_es"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"cIabimwBFFtJqSTvn084"</span>,
+        <span class="s2">"_score"</span> : 1.0,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"lines"</span> : 4
+        <span class="o">}</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"_index"</span> : <span class="s2">"json_file_to_es"</span>,
+        <span class="s2">"_type"</span> : <span class="s2">"_doc"</span>,
+        <span class="s2">"_id"</span> : <span class="s2">"c4abimwBFFtJqSTvn084"</span>,
+        <span class="s2">"_score"</span> : 1.0,
+        <span class="s2">"_source"</span> : <span class="o">{</span>
+          <span class="s2">"file_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"tag_name"</span> : <span class="s2">"json_file_to_es"</span>,
+          <span class="s2">"lines"</span> : 7
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">]</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 </code></pre></div>    </div>
   </li>
 </ol>
@@ -1186,23 +1190,23 @@ total 0
   <li>
     <p>입력용으로 사용할 로그 파일 생성한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ touch source.log
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">touch</span> <span class="n">source</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div>    </div>
 
     <p>파일이 정상적으로 생성 되었는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -l
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
 total 0
--rw-r--r--  1 kevin  staff  0  8  9 15:00 source.log
+<span class="nt">-rw-r--r--</span>  1 kevin  staff  0  8  9 15:00 source.log
 </code></pre></div>    </div>
   </li>
   <li>
     <p>td-agent 파일은 다음과 같이 수정한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim /etc/td-agent/td-agent.conf
-&lt;source&gt;
-  @type tail
-  path /Users/kevin/dev/fluentd/test/file_to_s3/source/*
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim /etc/td-agent/td-agent.conf
+&lt;<span class="nb">source</span><span class="o">&gt;</span>
+  @type <span class="nb">tail
+  </span>path /Users/kevin/dev/fluentd/test/file_to_s3/source/<span class="k">*</span>
   pos_file /Users/kevin/dev/fluentd/test/pos/file_to_s3.pos
   tag file_to_s3.test
   &lt;parse&gt;
@@ -1210,15 +1214,15 @@ total 0
   &lt;/parse&gt;  
   refresh_interval 1s
 &lt;/source&gt;
-&lt;match file_to_s3.*&gt;
+&lt;match file_to_s3.<span class="k">*</span><span class="o">&gt;</span>
   @type s3
-  aws_key_id ### access key id를 입력
-  aws_sec_key ### access secret key를 입력
-  s3_bucket ### s3_bucket
-  s3_region ### s3_region
+  aws_key_id <span class="c">### access key id를 입력</span>
+  aws_sec_key <span class="c">### access secret key를 입력</span>
+  s3_bucket <span class="c">### s3_bucket</span>
+  s3_region <span class="c">### s3_region</span>
   store_as text
   path fluentd-raw-test
-  s3_object_key_format %{path}/${tag}_%{index}.log
+  s3_object_key_format %<span class="o">{</span>path<span class="o">}</span>/<span class="k">${</span><span class="nv">tag</span><span class="k">}</span>_%<span class="o">{</span>index<span class="o">}</span>.log
   &lt;buffer tag&gt;
     @type file
     path /Users/kevin/dev/fluentd/test/file_to_s3/match
@@ -1326,44 +1330,44 @@ total 0
   <li>
     <p>입력 로그 파일에 로그를 출력한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ vim source.log
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim source.log
      
-./source/source.log - Loop seq 1
-./source/source.log - Loop seq 2
-./source/source.log - Loop seq 3
+./source/source.log - Loop <span class="nb">seq </span>1
+./source/source.log - Loop <span class="nb">seq </span>2
+./source/source.log - Loop <span class="nb">seq </span>3
      
 ... 중략 ...
     
-./source/source.log - Loop seq 98
-./source/source.log - Loop seq 99
-./source/source.log - Loop seq 100
+./source/source.log - Loop <span class="nb">seq </span>98
+./source/source.log - Loop <span class="nb">seq </span>99
+./source/source.log - Loop <span class="nb">seq </span>100
 </code></pre></div>    </div>
   </li>
   <li>
     <p>미리 설정한 임시 저장 경로에 파일이 생성되는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls -al
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-al</span>
 total 32
-drwxr-xr-x  4 kevin  staff   128  8 12 21:49 .
+drwxr-xr-x  4 kevin  staff   128  8 12 21:49 <span class="nb">.</span>
 drwxr-xr-x  6 kevin  staff   192  8  9 17:04 ..
--rw-r--r--  1 root   staff  8992  8 12 21:49 buffer.b58feaf4165048e338efa067db3a22de5.log
--rw-r--r--  1 root   staff    79  8 12 21:49 buffer.b58feaf4165048e338efa067db3a22de5.log.meta
+<span class="nt">-rw-r--r--</span>  1 root   staff  8992  8 12 21:49 buffer.b58feaf4165048e338efa067db3a22de5.log
+<span class="nt">-rw-r--r--</span>  1 root   staff    79  8 12 21:49 buffer.b58feaf4165048e338efa067db3a22de5.log.meta
 </code></pre></div>    </div>
 
     <p>입력 파일에 로그 출력후 flush_interval 시간이 지나기 전에 확인해야한다.</p>
 
     <p>파일에 접근하여 내용을 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat *.log
-2019-08-12T21:49:23+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 1"}
-2019-08-12T21:49:23+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 2"}
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> <span class="k">*</span>.log
+2019-08-12T21:49:23+09:00	file_to_s3.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"./source/source.log - Loop seq 1"</span><span class="o">}</span>
+2019-08-12T21:49:23+09:00	file_to_s3.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"./source/source.log - Loop seq 2"</span><span class="o">}</span>
     
     
 ...중략...
     
-2019-08-12T21:49:23+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 98"}
-2019-08-12T21:49:23+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 99"}
-2019-08-12T21:49:23+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 100"}
+2019-08-12T21:49:23+09:00	file_to_s3.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"./source/source.log - Loop seq 98"</span><span class="o">}</span>
+2019-08-12T21:49:23+09:00	file_to_s3.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"./source/source.log - Loop seq 99"</span><span class="o">}</span>
+2019-08-12T21:49:23+09:00	file_to_s3.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"./source/source.log - Loop seq 100"</span><span class="o">}</span>
 </code></pre></div>    </div>
   </li>
   <li>
@@ -1373,14 +1377,14 @@ drwxr-xr-x  6 kevin  staff   192  8  9 17:04 ..
 
     <p>해당 파일을 다운로드하여 정상적으로 출력되었는 지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat file_to_s3.test_0.txt
-2019-08-09T19:15:22+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 1"}
-2019-08-09T19:15:22+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 2"}
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat </span>file_to_s3.test_0.txt
+2019-08-09T19:15:22+09:00	file_to_s3.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"./source/source.log - Loop seq 1"</span><span class="o">}</span>
+2019-08-09T19:15:22+09:00	file_to_s3.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"./source/source.log - Loop seq 2"</span><span class="o">}</span>
     
 ... 중략 ...
     
-2019-08-09T19:15:22+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 99"}
-2019-08-09T19:15:22+09:00	file_to_s3.test	{"message":"./source/source.log - Loop seq 100"}
+2019-08-09T19:15:22+09:00	file_to_s3.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"./source/source.log - Loop seq 99"</span><span class="o">}</span>
+2019-08-09T19:15:22+09:00	file_to_s3.test	<span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"./source/source.log - Loop seq 100"</span><span class="o">}</span>
     
     
 </code></pre></div>    </div>
@@ -1395,7 +1399,7 @@ drwxr-xr-x  6 kevin  staff   192  8  9 17:04 ..
   <li>
     <p>입력용 파일에 저장된 로그는 라인 단위로 읽어와 “로그를 수집한 날짜”, “이벤트Tag명”, “로그”를 파일로 출력하며 형식은 다음과 같다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(로그를 수집한 날짜) (이벤트 Tag명) {"message":"(로그)"}
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>로그를 수집한 날짜<span class="o">)</span> <span class="o">(</span>이벤트 Tag명<span class="o">)</span> <span class="o">{</span><span class="s2">"message"</span>:<span class="s2">"(로그)"</span><span class="o">}</span>
 </code></pre></div>    </div>
   </li>
   <li>

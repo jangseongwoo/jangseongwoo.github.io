@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -460,215 +464,215 @@
 
 <p>Celery 스케줄러를 만들기 위해 프로젝트 폴더에 celery_scheduler.py 파일을 만들고 다음과 같이 입력한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from celery import Celery
-from celery.schedules import crontab
-import os
-from dotenv import load_dotenv
-from os.path import join, dirname
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
+<span class="kn">from</span> <span class="nn">celery.schedules</span> <span class="kn">import</span> <span class="n">crontab</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">dirname</span>
 
-# env setting
-try:
-    if os.path.isfile('.env') == True:
-        dotenv_path = join(dirname(__file__), '.env')
-        load_dotenv(dotenv_path)
-except Exception as e:
-    print(e)
+<span class="c1"># env setting
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">'.env'</span><span class="p">)</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">dotenv_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">'.env'</span><span class="p">)</span>
+        <span class="n">load_dotenv</span><span class="p">(</span><span class="n">dotenv_path</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
-CRON_JOB_TIME_HOUR = int(os.getenv("CRON_JOB_TIME_HOUR", "5"))
-CRON_JOB_TIME_MINUTE = int(os.getenv("CRON_JOB_TIME_MINUTE", "0"))
-ENV_NAME = str(os.getenv("ENV_NAME"))
-REDIS_URL = str(os.getenv("REDIS_URL"))
+<span class="n">CRON_JOB_TIME_HOUR</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"CRON_JOB_TIME_HOUR"</span><span class="p">,</span> <span class="s">"5"</span><span class="p">))</span>
+<span class="n">CRON_JOB_TIME_MINUTE</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"CRON_JOB_TIME_MINUTE"</span><span class="p">,</span> <span class="s">"0"</span><span class="p">))</span>
+<span class="n">ENV_NAME</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"ENV_NAME"</span><span class="p">))</span>
+<span class="n">REDIS_URL</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"REDIS_URL"</span><span class="p">))</span>
 
-print("----------------------")
-print("CRON_JOB_TIME_HOUR : {}, CRON_JOB_TIME_MINUTE: {}".format(CRON_JOB_TIME_HOUR, CRON_JOB_TIME_MINUTE))
-print("ENV_NAME : {}".format(ENV_NAME))
-print("REDIS_URL : {}".format(REDIS_URL))
-print("----------------------")
+<span class="k">print</span><span class="p">(</span><span class="s">"----------------------"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"CRON_JOB_TIME_HOUR : {}, CRON_JOB_TIME_MINUTE: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">CRON_JOB_TIME_HOUR</span><span class="p">,</span> <span class="n">CRON_JOB_TIME_MINUTE</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"ENV_NAME : {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">ENV_NAME</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"REDIS_URL : {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">REDIS_URL</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"----------------------"</span><span class="p">)</span>
 
-if ENV_NAME == "test":
-    app = Celery('celery_test', backend='redis://localhost', broker='redis://localhost')
-else:    
-    app = Celery('celery_test', backend=REDIS_URL, broker=REDIS_URL)
+<span class="k">if</span> <span class="n">ENV_NAME</span> <span class="o">==</span> <span class="s">"test"</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s">'celery_test'</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s">'redis://localhost'</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="s">'redis://localhost'</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>    
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s">'celery_test'</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">REDIS_URL</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="n">REDIS_URL</span><span class="p">)</span>
 
-app.conf.timezone = 'Asia/Seoul'
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">timezone</span> <span class="o">=</span> <span class="s">'Asia/Seoul'</span>
 
-# Set the beat scheduler.
-app.conf.beat_schedule = {
-    'test_models': {
-        'task': 'task_ml_first.make_ml_model_build_job',
-        'schedule': crontab(hour=CRON_JOB_TIME_HOUR, minute=CRON_JOB_TIME_MINUTE),
-        'options' : { "queue": "test_model_build_q" },
-    }
-}
+<span class="c1"># Set the beat scheduler.
+</span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_schedule</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'test_models'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'task'</span><span class="p">:</span> <span class="s">'task_ml_first.make_ml_model_build_job'</span><span class="p">,</span>
+        <span class="s">'schedule'</span><span class="p">:</span> <span class="n">crontab</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="n">CRON_JOB_TIME_HOUR</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">CRON_JOB_TIME_MINUTE</span><span class="p">),</span>
+        <span class="s">'options'</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"queue"</span><span class="p">:</span> <span class="s">"test_model_build_q"</span> <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-if __name__ == "__main__":
-    print("start as main")
-    app.start()
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"start as main"</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </code></pre></div></div>
 
 <p>Celery 스케줄러가 스케줄링 잡을 Broker에 등록하면 Worker가 직접 태스크를 받아 처리해준다. Worker를 만들기 위해 celery_worker.py 파일을 만들고 아래와 같이 파일의 내용을 입력한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from celery import Celery
-from dotenv import load_dotenv
-from os.path import join, dirname
-import os
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">dirname</span>
+<span class="kn">import</span> <span class="nn">os</span>
 
-# env setting
-if os.path.isfile('.env') == True:
-    dotenv_path = join(dirname(__file__), '.env')
-    load_dotenv(dotenv_path)
+<span class="c1"># env setting
+</span><span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">'.env'</span><span class="p">)</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">dotenv_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">'.env'</span><span class="p">)</span>
+    <span class="n">load_dotenv</span><span class="p">(</span><span class="n">dotenv_path</span><span class="p">)</span>
 
-CRON_JOB_TIME_HOUR = int(os.getenv("CRON_JOB_TIME_HOUR", "5"))
-CRON_JOB_TIME_MINUTE = int(os.getenv("CRON_JOB_TIME_MINUTE", "0"))
-ENV_NAME = str(os.getenv("ENV_NAME"))
-REDIS_URL = str(os.getenv("REDIS_URL"))
+<span class="n">CRON_JOB_TIME_HOUR</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"CRON_JOB_TIME_HOUR"</span><span class="p">,</span> <span class="s">"5"</span><span class="p">))</span>
+<span class="n">CRON_JOB_TIME_MINUTE</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"CRON_JOB_TIME_MINUTE"</span><span class="p">,</span> <span class="s">"0"</span><span class="p">))</span>
+<span class="n">ENV_NAME</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"ENV_NAME"</span><span class="p">))</span>
+<span class="n">REDIS_URL</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"REDIS_URL"</span><span class="p">))</span>
 
-# set celery work
-if ENV_NAME == "test":
-    app = Celery("celery_worker",
-                        backend="redis://localhost",
-                        broker="redis://localhost",
-                        include=["task_ml_first"])
-else:
-    app = Celery("celery_worker",
-                        backend=REDIS_URL,
-                        broker=REDIS_URL,
-                        include=["task_ml_first"])
+<span class="c1"># set celery work
+</span><span class="k">if</span> <span class="n">ENV_NAME</span> <span class="o">==</span> <span class="s">"test"</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s">"celery_worker"</span><span class="p">,</span>
+                        <span class="n">backend</span><span class="o">=</span><span class="s">"redis://localhost"</span><span class="p">,</span>
+                        <span class="n">broker</span><span class="o">=</span><span class="s">"redis://localhost"</span><span class="p">,</span>
+                        <span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s">"task_ml_first"</span><span class="p">])</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s">"celery_worker"</span><span class="p">,</span>
+                        <span class="n">backend</span><span class="o">=</span><span class="n">REDIS_URL</span><span class="p">,</span>
+                        <span class="n">broker</span><span class="o">=</span><span class="n">REDIS_URL</span><span class="p">,</span>
+                        <span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s">"task_ml_first"</span><span class="p">])</span>
 
-# task routing config test
-app.conf.update = {
-    'generate_models': {
-        'task': 'task_ml_first.complete_message_print_model_build',
-        'options' : { "queue": "test_model_build_q" },
-    },
-}
+<span class="c1"># task routing config test
+</span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">update</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'generate_models'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'task'</span><span class="p">:</span> <span class="s">'task_ml_first.complete_message_print_model_build'</span><span class="p">,</span>
+        <span class="s">'options'</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"queue"</span><span class="p">:</span> <span class="s">"test_model_build_q"</span> <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">}</span>
 
-app.conf.timezone = "Asia/Seoul"
+<span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">timezone</span> <span class="o">=</span> <span class="s">"Asia/Seoul"</span>
 
-if __name__ == "__main__":
-    app.start()
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </code></pre></div></div>
 
 <p>Worker가 실제 어떤 작업을 실행하는 지 정의하기 위한 task_ml_first.py 파일을 만들고 내용을 다음과 같이 입력한다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import os
-import time
-from datetime import datetime
-from celery_worker import app
-from celery import group, chord
-from os.path import join, dirname
-from dotenv import load_dotenv
-import random
-from slack_fucntion import send_message_to_slack
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">celery_worker</span> <span class="kn">import</span> <span class="n">app</span>
+<span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">group</span><span class="p">,</span> <span class="n">chord</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">dirname</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">slack_fucntion</span> <span class="kn">import</span> <span class="n">send_message_to_slack</span>
 
-if os.path.isfile('./.env') == True:
-    dotenv_path = join(dirname(__file__), '.env')
-    load_dotenv(dotenv_path)
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">'./.env'</span><span class="p">)</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">dotenv_path</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">'.env'</span><span class="p">)</span>
+    <span class="n">load_dotenv</span><span class="p">(</span><span class="n">dotenv_path</span><span class="p">)</span>
 
-ENV_NAME = str(os.getenv("ENV_NAME"))
-
-
-def deploy_model(model_name):
-    print("{} is deploy".format(model_name))
-    send_message_to_slack({"text":"{} is deployed".format(model_name)})
+<span class="n">ENV_NAME</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"ENV_NAME"</span><span class="p">))</span>
 
 
+<span class="k">def</span> <span class="nf">deploy_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"{} is deploy"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">model_name</span><span class="p">))</span>
+    <span class="n">send_message_to_slack</span><span class="p">({</span><span class="s">"text"</span><span class="p">:</span><span class="s">"{} is deployed"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">model_name</span><span class="p">)})</span>
 
-@app.task(name='task_ml_first.build_ml_models')
-def build_ml_models(results):
-    print("{} test model build".format(results))
-    max_num = 0
 
-    for result in results:
-        if max_num &lt; result['value']:
-            max_num = result['value']
+
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'task_ml_first.build_ml_models'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">build_ml_models</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"{} test model build"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+    <span class="n">max_num</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">max_num</span> <span class="o">&lt;</span> <span class="n">result</span><span class="p">[</span><span class="s">'value'</span><span class="p">]:</span>
+            <span class="n">max_num</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s">'value'</span><span class="p">]</span>
     
-    print(max_num)
+    <span class="k">print</span><span class="p">(</span><span class="n">max_num</span><span class="p">)</span>
 
-    for result in results:
-        if max_num == result['value']:
-            model_name = result['model_name']
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">max_num</span> <span class="o">==</span> <span class="n">result</span><span class="p">[</span><span class="s">'value'</span><span class="p">]:</span>
+            <span class="n">model_name</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s">'model_name'</span><span class="p">]</span>
         
-    deploy_model(model_name)
+    <span class="n">deploy_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
 
-    return True
-
-
-@app.task(name='task_ml_first.first_method_ml_model_build')
-def first_method_ml_model_build():
-    random_number = random.randrange(1,10)
-
-    print("first_method_ml_model_build() start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    time.sleep(random_number)
-    print("first_method_ml_model_build() end!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
-    return {"model_name" : "first_method_ml_model_build", "value": random_number}
+    <span class="k">return</span> <span class="bp">True</span>
 
 
-@app.task(name='task_ml_first.second_method_ml_model_build')
-def second_method_ml_model_build():
-    random_number = random.randrange(1,10)
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'task_ml_first.first_method_ml_model_build'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">first_method_ml_model_build</span><span class="p">():</span>
+    <span class="n">random_number</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
 
-    print("second_method_ml_model_build() start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    time.sleep(random_number)
-    print("second_method_ml_model_build() end!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    <span class="k">print</span><span class="p">(</span><span class="s">"first_method_ml_model_build() start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">random_number</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"first_method_ml_model_build() end!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"</span><span class="p">)</span>
 
-    return {"model_name" : "second_method_ml_model_build", "value": random_number}
-
-
-@app.task(name='task_ml_first.third_method_ml_model_build')
-def third_method_ml_model_build():
-    random_number = random.randrange(1,10)
-
-    print("third_method_ml_model_build() start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    time.sleep(random_number)
-    print("third_method_ml_model_build() end!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
-    return {"model_name" : "third_method_ml_model_build", "value": random_number}
+    <span class="k">return</span> <span class="p">{</span><span class="s">"model_name"</span> <span class="p">:</span> <span class="s">"first_method_ml_model_build"</span><span class="p">,</span> <span class="s">"value"</span><span class="p">:</span> <span class="n">random_number</span><span class="p">}</span>
 
 
-@app.task(name='task_ml_first.make_ml_model_build_job')
-def make_ml_model_build_job():
-    task_signature_list = []
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'task_ml_first.second_method_ml_model_build'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">second_method_ml_model_build</span><span class="p">():</span>
+    <span class="n">random_number</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"second_method_ml_model_build() start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">random_number</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"second_method_ml_model_build() end!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s">"model_name"</span> <span class="p">:</span> <span class="s">"second_method_ml_model_build"</span><span class="p">,</span> <span class="s">"value"</span><span class="p">:</span> <span class="n">random_number</span><span class="p">}</span>
+
+
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'task_ml_first.third_method_ml_model_build'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">third_method_ml_model_build</span><span class="p">():</span>
+    <span class="n">random_number</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"third_method_ml_model_build() start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">random_number</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"third_method_ml_model_build() end!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s">"model_name"</span> <span class="p">:</span> <span class="s">"third_method_ml_model_build"</span><span class="p">,</span> <span class="s">"value"</span><span class="p">:</span> <span class="n">random_number</span><span class="p">}</span>
+
+
+<span class="o">@</span><span class="n">app</span><span class="o">.</span><span class="n">task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'task_ml_first.make_ml_model_build_job'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">make_ml_model_build_job</span><span class="p">():</span>
+    <span class="n">task_signature_list</span> <span class="o">=</span> <span class="p">[]</span>
     
-    try:
-        print("make_ml_model_build_job executed")
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"make_ml_model_build_job executed"</span><span class="p">)</span>
         
-        task_signature_list.append(first_method_ml_model_build.signature())
-        task_signature_list.append(second_method_ml_model_build.signature())
-        task_signature_list.append(third_method_ml_model_build.signature())
+        <span class="n">task_signature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">first_method_ml_model_build</span><span class="o">.</span><span class="n">signature</span><span class="p">())</span>
+        <span class="n">task_signature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">second_method_ml_model_build</span><span class="o">.</span><span class="n">signature</span><span class="p">())</span>
+        <span class="n">task_signature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">third_method_ml_model_build</span><span class="o">.</span><span class="n">signature</span><span class="p">())</span>
 
-        model_build_work_chord = chord(task_signature_list, build_ml_models.s())
-        model_build_work_chord.apply_async(queue="test_model_build_q")  # queue 지정
-        print("make_ml_model_build_job.apply_async() called")
-    except Exception as e:
-        print(e)
+        <span class="n">model_build_work_chord</span> <span class="o">=</span> <span class="n">chord</span><span class="p">(</span><span class="n">task_signature_list</span><span class="p">,</span> <span class="n">build_ml_models</span><span class="o">.</span><span class="n">s</span><span class="p">())</span>
+        <span class="n">model_build_work_chord</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">queue</span><span class="o">=</span><span class="s">"test_model_build_q"</span><span class="p">)</span>  <span class="c1"># queue 지정
+</span>        <span class="k">print</span><span class="p">(</span><span class="s">"make_ml_model_build_job.apply_async() called"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>슬랙 메시지를 보내기 위해 slack_fucntion.py 파일을 만들고 미리 작성한 코드를 아래와 같이 입력한다. webhook_url은 미리 각자 생성한 url를 입력하면 된다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import json
-import requests
-import os
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">os</span>
 
 
-def send_message_to_slack_channel_using_slack_api(message, webhook_url):
-    response = requests.post(
-            webhook_url, data=json.dumps(message),
-            headers={'Content-Type': 'application/json'}
-    )
+<span class="k">def</span> <span class="nf">send_message_to_slack_channel_using_slack_api</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">webhook_url</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="n">webhook_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">message</span><span class="p">),</span>
+            <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span><span class="p">}</span>
+    <span class="p">)</span>
     
-    return response
+    <span class="k">return</span> <span class="n">response</span>
 
 
-def send_message_to_slack(message):
-    webhook_url = ""
-    response = send_message_to_slack_channel_using_slack_api(message, webhook_url)
+<span class="k">def</span> <span class="nf">send_message_to_slack</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="n">webhook_url</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">send_message_to_slack_channel_using_slack_api</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">webhook_url</span><span class="p">)</span>
 
-    if response.text != 'ok':
-        print('error_function_name', 'send_message_to_slack')
-        print('error_message', response.text)
-        raise Exception
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span> <span class="o">!=</span> <span class="s">'ok'</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'error_function_name'</span><span class="p">,</span> <span class="s">'send_message_to_slack'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'error_message'</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="nb">Exception</span>
 </code></pre></div></div>
 
 <h1 id="celery-실행-명령">Celery 실행 명령</h1>
@@ -677,12 +681,12 @@ def send_message_to_slack(message):
 
 <p>Celery 스케줄러 실행 명령은 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ celery -A celery_scheduler beat --loglevel=debug
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">celery</span> <span class="o">-</span><span class="n">A</span> <span class="n">celery_scheduler</span> <span class="n">beat</span> <span class="o">--</span><span class="n">loglevel</span><span class="o">=</span><span class="n">debug</span>
 </code></pre></div></div>
 
 <p>Celery worker 실행 명령은 다음과 같다. </p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ celery -A celery_worker worker --loglevel=debug --queues=test_model_build_q --concurrency=3
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">celery</span> <span class="o">-</span><span class="n">A</span> <span class="n">celery_worker</span> <span class="n">worker</span> <span class="o">--</span><span class="n">loglevel</span><span class="o">=</span><span class="n">debug</span> <span class="o">--</span><span class="n">queues</span><span class="o">=</span><span class="n">test_model_build_q</span> <span class="o">--</span><span class="n">concurrency</span><span class="o">=</span><span class="mi">3</span>
 </code></pre></div></div>
 
 <h1 id="결과">결과</h1>
@@ -691,7 +695,7 @@ def send_message_to_slack(message):
 
 <p>결과는 미리 설정된 스케줄링 시간에 다음과 같은 형태의 메시지가 슬랙에 온다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{}_method_ml_model_build is deployed
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{}</span><span class="n">_method_ml_model_build</span> <span class="ow">is</span> <span class="n">deployed</span>
 </code></pre></div></div>
 
 <p>이로써 Celery를 활용해 가장 정확도가 높은 모델을 서비스에 적용하고 슬랙으로 알림 받는 기능을 가장 간단한 형태로 개발을 완료했다. 추후 프로덕션 개발 시 참고해 진행하면 될 것 같다.</p>

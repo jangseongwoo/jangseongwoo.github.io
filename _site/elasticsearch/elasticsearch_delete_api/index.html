@@ -27,8 +27,6 @@
 
 
 
-  <meta property="og:image" content="http://localhost:4000/assets/images/header.jpg">
-
 
 
 
@@ -125,6 +123,8 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo_temp.png" alt=""></a>
         
         <a class="site-title" href="/">
           kelpin's blog
@@ -248,6 +248,10 @@
         
           
         
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/seongwoo-jang-64607515b/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> linkedin</a></li>
           
         
       
@@ -449,12 +453,12 @@ Elasticsearch에서 document를 indexing하면서 document의 id를 특정 값�
 
 <p>아래와 같은 형태의 데이터를 indexing하여 테스트를 진행한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-    "data_text" : "string type data",
-    "db_ref" : 1,
-    "interest" : "test",
-    "subject" : "math"
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"string type data"</span><span class="p">,</span>
+    <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span>
+    <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"math"</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -479,25 +483,25 @@ Elasticsearch에서 document를 indexing하면서 document의 id를 특정 값�
 
 <p>bulk API를 사용하여 테스트용 데이터를 인덱싱한다. 9개의 테스트 데이터를 인덱싱한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST _bulk
-{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
-{ "data_text" : "math text 1", "db_ref" : 1, "interest" : "test", "subject" : "math" }
-{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
-{ "data_text" : "math text 2", "db_ref" : 2, "interest" : "test", "subject" : "math" }
-{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
-{ "data_text" : "math text 3", "db_ref" : 3, "interest" : "test", "subject" : "math" }
-{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
-{ "data_text" : "english text 4", "db_ref" : 4, "interest" : "test", "subject" : "eng" }
-{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
-{ "data_text" : "english text 5", "db_ref" : 5, "interest" : "test", "subject" : "eng"}
-{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
-{ "data_text" : "english text 6", "db_ref" : 6, "interest" : "test", "subject" : "eng" }
-{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
-{ "data_text" : "한글 텍스트 7", "db_ref" : 7, "interest" : "test", "subject" : "korean" }
-{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
-{ "data_text" : "한글 텍스트 8", "db_ref" : 8, "interest" : "test", "subject" : "korean" }
-{ "index" : { "_index" : "es_data_delete_test_index", "_type" : "_doc" } }
-{ "data_text" : "한글 텍스트 9", "db_ref" : 9, "interest" : "test", "subject" : "korean" }
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span> <span class="n">_bulk</span>
+<span class="p">{</span> <span class="s">"index"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"es_data_delete_test_index"</span><span class="p">,</span> <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"math text 1"</span><span class="p">,</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"math"</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"index"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"es_data_delete_test_index"</span><span class="p">,</span> <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"math text 2"</span><span class="p">,</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"math"</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"index"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"es_data_delete_test_index"</span><span class="p">,</span> <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"math text 3"</span><span class="p">,</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"math"</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"index"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"es_data_delete_test_index"</span><span class="p">,</span> <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"english text 4"</span><span class="p">,</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"eng"</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"index"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"es_data_delete_test_index"</span><span class="p">,</span> <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"english text 5"</span><span class="p">,</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"eng"</span><span class="p">}</span>
+<span class="p">{</span> <span class="s">"index"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"es_data_delete_test_index"</span><span class="p">,</span> <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"english text 6"</span><span class="p">,</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"eng"</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"index"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"es_data_delete_test_index"</span><span class="p">,</span> <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"한글 텍스트 7"</span><span class="p">,</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"korean"</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"index"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"es_data_delete_test_index"</span><span class="p">,</span> <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"한글 텍스트 8"</span><span class="p">,</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"korean"</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"index"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"es_data_delete_test_index"</span><span class="p">,</span> <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"한글 텍스트 9"</span><span class="p">,</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"korean"</span> <span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -507,26 +511,26 @@ Elasticsearch에서 document를 indexing하면서 document의 id를 특정 값�
   <li>
     <p>전체 데이터 검색</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
-{
-    "query" : {
-        "match_all" : {}
-    }
-}
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+    <span class="s">"query"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s">"match_all"</span> <span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
     
 </code></pre></div>    </div>
   </li>
   <li>
     <p>검색 결과 개수 확인. 응답에서 count 필드의 값을 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_count
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_count</span>
     
-GET /es_data_delete_test_index/_count
-{
-    "query" : {
-        "match_all" : {}
-    }
-}
+<span class="n">GET</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_count</span>
+<span class="p">{</span>
+    <span class="s">"query"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s">"match_all"</span> <span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
     
 </code></pre></div>    </div>
   </li>
@@ -538,104 +542,104 @@ GET /es_data_delete_test_index/_count
 
 <p>아래 예는 term query를 사용하여 db_ref 필드의 값이 1인 데이터를 검색하는 예이다. db_ref 필드의 값은 유니크한 식별자 값으로 특정 db_ref값을 갖는 문서는 오직 한개만 존재하도록 테스트 데이터가 인덱싱 되어있다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
-{
-    "query": {
-        "term" : { "db_ref" : 1 }
-    }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"term"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  "took" : 1,
-  "timed_out" : false,
-  "_shards" : {
-    "total" : 5,
-    "successful" : 5,
-    "skipped" : 0,
-    "failed" : 0
-  },
-  "hits" : {
-    "total" : 1,
-    "max_score" : 1.0,
-    "hits" : [
-      {
-        "_index" : "es_data_delete_test_index",
-        "_type" : "_doc",
-        "_id" : "-72zOG0BAWG07ejJMX7s",
-        "_score" : 1.0,
-        "_source" : {
-          "data_text" : "math text 1",
-          "db_ref" : 1,
-          "interest" : "test",
-          "subject" : "math"
-        }
-      }
-    ]
-  }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="s">"took"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"timed_out"</span> <span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+  <span class="s">"_shards"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"successful"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"skipped"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"failed"</span> <span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="s">"hits"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">"max_score"</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="s">"hits"</span> <span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"es_data_delete_test_index"</span><span class="p">,</span>
+        <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span><span class="p">,</span>
+        <span class="s">"_id"</span> <span class="p">:</span> <span class="s">"-72zOG0BAWG07ejJMX7s"</span><span class="p">,</span>
+        <span class="s">"_score"</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="s">"_source"</span> <span class="p">:</span> <span class="p">{</span>
+          <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"math text 1"</span><span class="p">,</span>
+          <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+          <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span>
+          <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"math"</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>delete by query의 search 요청으로 term query를 전달하여 데이터 삭제요청을 한다. term query 조건에 만족되는 모든 데이터에 대하여 삭제를 요청하는 것이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /es_data_delete_test_index/_delete_by_query
-{
-    "query": {
-        "term" : { "db_ref" : 1 }
-    }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_delete_by_query</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"term"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>삭제요청에 대한 응답 메시지는 아래와 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-    "took" : 218,
-    "timed_out" : false,
-    "total" : 1,
-    "deleted" : 1,
-    "batches" : 1,
-    "version_conflicts" : 0,
-    "noops" : 0,
-    "retries" : {
-        "bulk" : 0,
-        "search" : 0
-    },
-    "throttled_millis" : 0,
-    "requests_per_second" : -1.0,
-    "throttled_until_millis" : 0,
-    "failures" : [ ]
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="s">"took"</span> <span class="p">:</span> <span class="mi">218</span><span class="p">,</span>
+    <span class="s">"timed_out"</span> <span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">"deleted"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">"batches"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">"version_conflicts"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"noops"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"retries"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s">"bulk"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s">"search"</span> <span class="p">:</span> <span class="mi">0</span>
+    <span class="p">},</span>
+    <span class="s">"throttled_millis"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"requests_per_second"</span> <span class="p">:</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="s">"throttled_until_millis"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"failures"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">]</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>delete by query 응답을 확인하고나서 다시 term query로 해당 db_ref값을 갖는 데이터를 검색하여 삭제여부를 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
-{
-    "query": {
-        "term" : { "db_ref" : 1 }
-    }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"term"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-# 응답
-{
-  "took" : 0,
-  "timed_out" : false,
-  "_shards" : {
-    "total" : 5,
-    "successful" : 5,
-    "skipped" : 0,
-    "failed" : 0
-  },
-  "hits" : {
-    "total" : 0,
-    "max_score" : null,
-    "hits" : [ ]
-  }
-}
+<span class="c1"># 응답
+</span><span class="p">{</span>
+  <span class="s">"took"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"timed_out"</span> <span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+  <span class="s">"_shards"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"successful"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"skipped"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"failed"</span> <span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="s">"hits"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"max_score"</span> <span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+    <span class="s">"hits"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
@@ -646,75 +650,75 @@ GET /es_data_delete_test_index/_count
   <li>
     <p>subject 필드값이 ‘eng’인 데이터를 검색하여 몇 개의 데이터가 검색되는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
-{
-    "query": {
-        "term" : { "subject" : "eng" }
-    }
-}
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"term"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"eng"</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
     
 </code></pre></div>    </div>
   </li>
   <li>
     <p>subject 필드의 값이 ‘eng’ 인 조건으로 삭제 요청을 한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /es_data_delete_test_index/_delete_by_query
-{
-    "query": {
-        "term" : { "subject" : "eng" }
-    }
-}
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_delete_by_query</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"term"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"eng"</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
     
-{
-  "took" : 28,
-  "timed_out" : false,
-  "total" : 3,
-  "deleted" : 3,
-  "batches" : 1,
-  "version_conflicts" : 0,
-  "noops" : 0,
-  "retries" : {
-    "bulk" : 0,
-    "search" : 0
-  },
-  "throttled_millis" : 0,
-  "requests_per_second" : -1.0,
-  "throttled_until_millis" : 0,
-  "failures" : [ ]
-}
+<span class="p">{</span>
+  <span class="s">"took"</span> <span class="p">:</span> <span class="mi">28</span><span class="p">,</span>
+  <span class="s">"timed_out"</span> <span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+  <span class="s">"total"</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="s">"deleted"</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="s">"batches"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">"version_conflicts"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"noops"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"retries"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"bulk"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"search"</span> <span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="s">"throttled_millis"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"requests_per_second"</span> <span class="p">:</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>
+  <span class="s">"throttled_until_millis"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"failures"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">]</span>
+<span class="p">}</span>
     
 </code></pre></div>    </div>
   </li>
   <li>
     <p>subject 필드값이 ‘eng’인 데이터를 검색하여 몇 개의 데이터가 검색되는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
-{
-    "query": {
-        "term" : { "subject" : "eng" }
-    }
-}
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"term"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"eng"</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
     
 </code></pre></div>    </div>
   </li>
   <li>
     <p>검색 조건을 만족하는 모든 데이터가 삭제되었음을 확인할 수 있다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  "took" : 0,
-  "timed_out" : false,
-  "_shards" : {
-    "total" : 5,
-    "successful" : 5,
-    "skipped" : 0,
-    "failed" : 0
-  },
-  "hits" : {
-    "total" : 0,
-    "max_score" : null,
-    "hits" : [ ]
-  }
-}
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="s">"took"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"timed_out"</span> <span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+  <span class="s">"_shards"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"successful"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"skipped"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"failed"</span> <span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="s">"hits"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"max_score"</span> <span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+    <span class="s">"hits"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
     
 </code></pre></div>    </div>
   </li>
@@ -726,24 +730,24 @@ GET /es_data_delete_test_index/_count
   <li>
     <p>interest 필드값이 ‘test’인 데이터를 검색하여 몇 개의 데이터가 검색되는지 확인한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
-{
-    "query": {
-        "term" : { "interest" : "test" }
-    }
-}
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"term"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
     
 </code></pre></div>    </div>
   </li>
   <li>
     <p>interest 필드의 값이 ‘test’ 인 조건으로 삭제 요청을 한다.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /es_data_delete_test_index/_delete_by_query
-{
-    "query": {
-        "term" : { "subject" : "test" }
-    }
-}
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_delete_by_query</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"term"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"test"</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
     
 </code></pre></div>    </div>
   </li>
@@ -757,167 +761,167 @@ GET /es_data_delete_test_index/_count
 
 <p>아래 예는 terms query를 사용하여 db_ref 필드의 값이 1, 3, 5 중에 하나라도 일치하는 데이터는 모두 검색하는 쿼리 예이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
-{
-    "query": {
-        "terms" : { "db_ref" : [1, 3, 5] }
-    }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"terms"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  "took" : 0,
-  "timed_out" : false,
-  "_shards" : {
-    "total" : 5,
-    "successful" : 5,
-    "skipped" : 0,
-    "failed" : 0
-  },
-  "hits" : {
-    "total" : 3,
-    "max_score" : 1.0,
-    "hits" : [
-      {
-        "_index" : "es_data_delete_test_index",
-        "_type" : "_doc",
-        "_id" : "Gr30OG0BAWG07ejJyH_Z",
-        "_score" : 1.0,
-        "_source" : {
-          "data_text" : "english text 5",
-          "db_ref" : 5,
-          "interest" : "test",
-          "subject" : "eng"
-        }
-      },
-      {
-        "_index" : "es_data_delete_test_index",
-        "_type" : "_doc",
-        "_id" : "Fr30OG0BAWG07ejJyH_Z",
-        "_score" : 1.0,
-        "_source" : {
-          "data_text" : "math text 1",
-          "db_ref" : 1,
-          "interest" : "test",
-          "subject" : "math"
-        }
-      },
-      {
-        "_index" : "es_data_delete_test_index",
-        "_type" : "_doc",
-        "_id" : "GL30OG0BAWG07ejJyH_Z",
-        "_score" : 1.0,
-        "_source" : {
-          "data_text" : "math text 3",
-          "db_ref" : 3,
-          "interest" : "test",
-          "subject" : "math"
-        }
-      }
-    ]
-  }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="s">"took"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"timed_out"</span> <span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+  <span class="s">"_shards"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"successful"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"skipped"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"failed"</span> <span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="s">"hits"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s">"max_score"</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="s">"hits"</span> <span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"es_data_delete_test_index"</span><span class="p">,</span>
+        <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span><span class="p">,</span>
+        <span class="s">"_id"</span> <span class="p">:</span> <span class="s">"Gr30OG0BAWG07ejJyH_Z"</span><span class="p">,</span>
+        <span class="s">"_score"</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="s">"_source"</span> <span class="p">:</span> <span class="p">{</span>
+          <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"english text 5"</span><span class="p">,</span>
+          <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+          <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span>
+          <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"eng"</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"es_data_delete_test_index"</span><span class="p">,</span>
+        <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span><span class="p">,</span>
+        <span class="s">"_id"</span> <span class="p">:</span> <span class="s">"Fr30OG0BAWG07ejJyH_Z"</span><span class="p">,</span>
+        <span class="s">"_score"</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="s">"_source"</span> <span class="p">:</span> <span class="p">{</span>
+          <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"math text 1"</span><span class="p">,</span>
+          <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+          <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span>
+          <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"math"</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="s">"_index"</span> <span class="p">:</span> <span class="s">"es_data_delete_test_index"</span><span class="p">,</span>
+        <span class="s">"_type"</span> <span class="p">:</span> <span class="s">"_doc"</span><span class="p">,</span>
+        <span class="s">"_id"</span> <span class="p">:</span> <span class="s">"GL30OG0BAWG07ejJyH_Z"</span><span class="p">,</span>
+        <span class="s">"_score"</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="s">"_source"</span> <span class="p">:</span> <span class="p">{</span>
+          <span class="s">"data_text"</span> <span class="p">:</span> <span class="s">"math text 3"</span><span class="p">,</span>
+          <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+          <span class="s">"interest"</span> <span class="p">:</span> <span class="s">"test"</span><span class="p">,</span>
+          <span class="s">"subject"</span> <span class="p">:</span> <span class="s">"math"</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>delete by query의 search 요청으로 terms query를 전달하여 데이터 삭제요청을 한다. terms query 조건에 만족되는 모든 데이터에 대하여 삭제를 요청하는 것이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /es_data_delete_test_index/_delete_by_query
-{
-    "query": {
-        "term" : { "db_ref" : 1 }
-    }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_delete_by_query</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"term"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>삭제요청에 대한 응답 메시지는 아래와 같다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-    "took" : 41,
-    "timed_out" : false,
-    "total" : 3,
-    "deleted" : 3,
-    "batches" : 1,
-    "version_conflicts" : 0,
-    "noops" : 0,
-    "retries" : {
-        "bulk" : 0,
-        "search" : 0
-    },
-    "throttled_millis" : 0,
-    "requests_per_second" : -1.0,
-    "throttled_until_millis" : 0,
-    "failures" : [ ]
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="s">"took"</span> <span class="p">:</span> <span class="mi">41</span><span class="p">,</span>
+    <span class="s">"timed_out"</span> <span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+    <span class="s">"total"</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s">"deleted"</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s">"batches"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">"version_conflicts"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"noops"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"retries"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s">"bulk"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s">"search"</span> <span class="p">:</span> <span class="mi">0</span>
+    <span class="p">},</span>
+    <span class="s">"throttled_millis"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"requests_per_second"</span> <span class="p">:</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="s">"throttled_until_millis"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"failures"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">]</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>delete by query 응답을 확인하고나서 다시 term query로 해당 db_ref값을 갖는 데이터를 검색하여 삭제여부를 확인한다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
-{
-    "query": {
-        "terms" : { "db_ref" : [1, 3, 5] }
-    }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"terms"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-# 응답
-{
-    "took" : 0,
-    "timed_out" : false,
-    "_shards" : {
-        "total" : 5,
-        "successful" : 5,
-        "skipped" : 0,
-        "failed" : 0
-    },
-    "hits" : {
-        "total" : 0,
-        "max_score" : null,
-        "hits" : [ ]
-    }
-}
+<span class="c1"># 응답
+</span><span class="p">{</span>
+    <span class="s">"took"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"timed_out"</span> <span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+    <span class="s">"_shards"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s">"total"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s">"successful"</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s">"skipped"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s">"failed"</span> <span class="p">:</span> <span class="mi">0</span>
+    <span class="p">},</span>
+    <span class="s">"hits"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s">"total"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s">"max_score"</span> <span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+        <span class="s">"hits"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>아래와 같이 문서들의 모든 db_ref값을 삭제 대상 조건으로 terms query에 전달하여 전체 데이터를 삭제하는 것이 가능하다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /es_data_delete_test_index/_search
-{
-    "query": {
-        "terms" : { "db_ref" : [1, 2, 3, 4, 5, 6, 7, 8, 9] }
-    }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GET</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_search</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"terms"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"db_ref"</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>다양한 search query 방식으로 데이터 삭제를 테스트 해보자.<br />
 아래 예는 subject의 값이 ‘math’이거나 ‘eng’인 데이터를 삭제하는 요청이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /es_data_delete_test_index/_delete_by_query
-{
-    "query": {
-        "terms" : { "subject" : ["math", "eng"] }
-    }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_delete_by_query</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"terms"</span> <span class="p">:</span> <span class="p">{</span> <span class="s">"subject"</span> <span class="p">:</span> <span class="p">[</span><span class="s">"math"</span><span class="p">,</span> <span class="s">"eng"</span><span class="p">]</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
 <p>아래 예는 db_ref의 값이 1보다 크거나 같고, 3보다 작거나 같은 데이터를 삭제하는 요청이다.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /es_data_delete_test_index/_delete_by_query
-{
-    "query": {
-        "range": {
-            "db_ref": {
-              "gte": 1,
-              "lte" : 3
-            }
-        }
-    }
-}
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span> <span class="o">/</span><span class="n">es_data_delete_test_index</span><span class="o">/</span><span class="n">_delete_by_query</span>
+<span class="p">{</span>
+    <span class="s">"query"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"range"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">"db_ref"</span><span class="p">:</span> <span class="p">{</span>
+              <span class="s">"gte"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+              <span class="s">"lte"</span> <span class="p">:</span> <span class="mi">3</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
 
