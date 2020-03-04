@@ -57,13 +57,13 @@ GET _cat/indices
 결과는 다음과 같다. 
 
 ```
-green open st-prod-conects-15sec-index-2020-01-17 7jh2KhP6SdeDxwm2hy5kfg 5 1   6307   0     2mb      1mb
-green open st-prod-conects-15sec-index-2020-01-19 SLOT4YsRQqm21rbvmCZG7g 5 1   2561   0     1mb  573.8kb
-green open st-prod-conects-15sec-index-2020-02-12 XGS8G2AoTiaqXTuwiZ-6IA 5 1   5220   0   2.1mb      1mb
-green open st-prod-conects-15sec-index-2020-01-28 DGxK_YcwTJu7xYCSQ_BUxA 5 1   4158   0   1.5mb  794.7kb
-green open st-prod-conects-15sec-index-2020-02-01 tIOUrhWTSO-_crw1MIOI2g 5 1   2225   0   1.1mb  555.4kb
-green open st-prod-conects-15sec-index-2019-12-10 k9dLLvBGTFqPpka6rvjxhg 5 1   8470   0   2.4mb    1.2mb
-green open st-prod-conects-15sec-index-2020-02-14 lSdUS-YSRUC9TjjKTfSxCA 5 1   5831   0   2.3mb    1.1mb
+green open test-index-2020-01-17 7jh2KhP6SdeDxwm2hy5kfg 5 1   6307   0     2mb      1mb
+green open test-index-2020-01-19 SLOT4YsRQqm21rbvmCZG7g 5 1   2561   0     1mb  573.8kb
+green open test-index-2020-02-12 XGS8G2AoTiaqXTuwiZ-6IA 5 1   5220   0   2.1mb      1mb
+green open test-index-2020-01-28 DGxK_YcwTJu7xYCSQ_BUxA 5 1   4158   0   1.5mb  794.7kb
+green open test-index-2020-02-01 tIOUrhWTSO-_crw1MIOI2g 5 1   2225   0   1.1mb  555.4kb
+green open test-index-2019-12-10 k9dLLvBGTFqPpka6rvjxhg 5 1   8470   0   2.4mb    1.2mb
+green open test-index-2020-02-14 lSdUS-YSRUC9TjjKTfSxCA 5 1   5831   0   2.3mb    1.1mb
 ... 하략 
 ```
 
@@ -79,12 +79,12 @@ GET /_cat/indices/st*?v&s=index
 
 ```
 health status index                                  uuid                   pri rep docs.count docs.deleted store.size pri.store.size
-green  open   st-prod-conects-15sec-index-2019-12-06 1OOwRAA9Rb2kd5XECLUbig   5   1       1702            0    809.1kb        393.4kb
-green  open   st-prod-conects-15sec-index-2019-12-07 UXtG3bGRRzSuTU8aWa5AGg   5   1       1653            0    810.3kb        429.2kb
-green  open   st-prod-conects-15sec-index-2019-12-08 CdIeUvR8T52Trgpc8J9i4Q   5   1       4251            0      1.3mb        678.6kb
-green  open   st-prod-conects-15sec-index-2019-12-09 hKLDEP9tQYCLp4cDnpr_Pg   5   1       6004            0      1.8mb        931.7kb
-green  open   st-prod-conects-15sec-index-2019-12-10 k9dLLvBGTFqPpka6rvjxhg   5   1       8470            0      2.4mb          1.2mb
-green  open   st-prod-conects-15sec-index-2019-12-11 wgRb_p6uSUGCtmw9wdMjlw   5   1       8032            0      2.3mb          1.1mb
+green  open   test-index-2019-12-06 1OOwRAA9Rb2kd5XECLUbig   5   1       1702            0    809.1kb        393.4kb
+green  open   test-index-2019-12-07 UXtG3bGRRzSuTU8aWa5AGg   5   1       1653            0    810.3kb        429.2kb
+green  open   test-index-2019-12-08 CdIeUvR8T52Trgpc8J9i4Q   5   1       4251            0      1.3mb        678.6kb
+green  open   test-index-2019-12-09 hKLDEP9tQYCLp4cDnpr_Pg   5   1       6004            0      1.8mb        931.7kb
+green  open   test-index-2019-12-10 k9dLLvBGTFqPpka6rvjxhg   5   1       8470            0      2.4mb          1.2mb
+green  open   test-index-2019-12-11 wgRb_p6uSUGCtmw9wdMjlw   5   1       8032            0      2.3mb          1.1mb
 ```
 
 Cat indices API에 대한 설명
