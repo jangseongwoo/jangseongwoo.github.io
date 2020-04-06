@@ -36,7 +36,7 @@ toc_sticky: true
 
 이러한 시그널의 가장 쉬운 예는 터미널에서 실행한 프로세스를 kill 명령을 이용해 종료하는 것이다. kill 명령은 특정 Process에게 종료 시그널을 보내고 받은 Process는 작동을 종료하게 된다. 
 
-![](/assets/images/signal.jpg))
+![](/assets/images/signal.jpg)
 
 시그널 발생 케이스
 ----------
