@@ -27,8 +27,10 @@ toc_sticky: true
 
 정확하게 공식문서에서 정상 작동 여부를 체크할 수 있는 API는 나와있지 않다. 그러나 구글 검색 결과 아래와 같은 API가 있다는 것을 확인했다. 
 
+```
 API: /api/health
 사용 예: http://localhost:port-number-here/api/health
+```
 
 아래와 같은 명령어를 입력해 로컬에서 Metabase를 Docker로 실행한다.
 
