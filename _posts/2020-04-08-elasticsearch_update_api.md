@@ -84,10 +84,7 @@ POST test\_multi\_field\_update/\_doc
   "created\_at" : "2019-11-05T08:07:33Z",
   "id" : 1657898,
   "title" : "",
-  "body" : "test\_body",
-  "locale" : 410,
-  "local" : 40,
-  "cached\_tag\_list" : ""
+  "body" : "test\_body"
 }
 ```
 
@@ -128,10 +125,7 @@ GET test\_multi\_field\_update/\_search
           "created\_at" : "2019-11-05T08:07:33Z",
           "id" : 1657898,
           "title" : "",
-          "body" : "test\_body",
-          "locale" : 410,
-          "local" : 40,
-          "cached\_tag\_list" : ""
+          "body" : "test\_body"
         }
       }
     \]
@@ -145,7 +139,7 @@ GET test\_multi\_field\_update/\_search
 POST test\_multi\_field\_update/\_update\_by\_query?pretty
 {
   "script": {
-    "source": "ctx.\_source.body = 'converted\_body'; ctx.\_source.locale = 77;",
+    "source": "ctx.\_source.body = 'converted\_body';",
     "lang": "painless"
   },
   "query" : {
@@ -218,10 +212,7 @@ GET test\_multi\_field\_update/\_search
           "created\_at" : "2019-11-05T08:07:33Z",
           "id" : 1657898,
           "title" : "",
-          "body" : "converted\_body",
-          "locale" : 77,
-          "local" : 40,
-          "cached\_tag\_list" : ""
+          "body" : "converted\_body"
         }
       }
     \]
