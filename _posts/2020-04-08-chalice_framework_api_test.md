@@ -54,8 +54,8 @@ Test용 Project setting 
 Test용 Project setting을 위해서 다음과 같이 진행한다. 
 
 ```
-$ mkdir {project\_folder}
-$ cd {project\_folder}
+$ mkdir {project_folder}
+$ cd {project_folder}
 
 $ virtualenv --python=python3.7 .venv
 
@@ -68,7 +68,7 @@ $ chalice new-project helloworld && cd helloworld
 ```
 from chalice import Chalice
 
-app = Chalice(app\_name='chalice-unit-test')
+app = Chalice(app_name='chalice-unit-test')
 
 
 @app.route('/')
@@ -103,10 +103,10 @@ Pytest-chalice Library를 이용한 테스트
 pytest-chalice를 이용해 API 테스트를 진행할 수 있다. Test code 작성을 위해 다음과 같은 명령어를 입력한다. 
 
 ```
-\# in project root directory
+# in project root directory
 $ mkdir tests
 $ cd tests
-$ touch test\_code.py 
+$ touch test_code.py 
 $ touch conftest.py
 $ pip install pytest-chalice
 ```
@@ -114,52 +114,52 @@ $ pip install pytest-chalice
 이후 주석을 참고해 각각의 파일에 대해 아래와 같이 내용을 입력한다. 
 
 ```
-\# in conftest.py
+# in conftest.py
 
 from chalice import Chalice
 
 import os,sys
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(\_\_file\_\_))))
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-from test\_code.app import app as chalice\_app
+from test_code.app import app as chalice_app
 
 
 @pytest.fixture
 def app() -> Chalice:
-    return chalice\_app
+    return chalice_app
 
   
 
-\# in test\_code.py
+# in test_code.py
 
 from http import HTTPStatus
-from pytest\_chalice.handlers import RequestHandler
+from pytest_chalice.handlers import RequestHandler
 
 
-def test\_index(client: RequestHandler) -> None:
+def test_index(client: RequestHandler) -> None:
     response = client.get('/')
-    assert response.status\_code == HTTPStatus.OK
+    assert response.status_code == HTTPStatus.OK
     assert response.json == {'hello': 'world'}
 ```
 
 아래의 명령어를 입력해 테스트 코드를 실행하고 테스트 코드 Coverage를 확인한다. 
 
 ```
-$ pytest --cov=test\_code tests/test\_chalice.py -v
+$ pytest --cov=test_code tests/test_chalice.py -v
 
 ==================================================================== test session starts =====================================================================
-platform darwin -- Python 3.7.1, pytest-5.3.5, py-1.8.1, pluggy-0.13.1 -- /Users/st/test/chalice\_pytest/.venv/bin/python3.7
-cachedir: .pytest\_cache
-rootdir: /Users/st/test/chalice\_pytest
+platform darwin -- Python 3.7.1, pytest-5.3.5, py-1.8.1, pluggy-0.13.1 -- /Users/st/test/chalice_pytest/.venv/bin/python3.7
+cachedir: .pytest_cache
+rootdir: /Users/st/test/chalice_pytest
 plugins: chalice-0.0.4, cov-2.8.1
 collected 1 item
 
-tests/test\_chalice.py::test\_index PASSED                                                                                                               \[100%\]
+tests/test_chalice.py::test_index PASSED                                                                                                               [100%]
 
 ---------- coverage: platform darwin, python 3.7.1-final-0 -----------
 Name               Stmts   Miss  Cover
 --------------------------------------
-test\_code/app.py       6      0   100%
+test_code/app.py       6      0   100%
 
 
 ===================================================================== 1 passed in 0.03s ======================================================================
@@ -172,10 +172,10 @@ test\_code/app.py       6      0   100%
 Chalice LocalGateway를 이용한 테스트 
 ------------------------------
 
-Chalice framework에서 제공하는 LocalGateway를 이용해 테스트하기 위해 아래와 같이 test\_code.py의 파일을 수정한다. 
+Chalice framework에서 제공하는 LocalGateway를 이용해 테스트하기 위해 아래와 같이 test_code.py의 파일을 수정한다. 
 
 ```
-\# in test\_code.py
+# in test_code.py
 
 import json
 from unittest import TestCase
@@ -184,44 +184,44 @@ from chalice.config import Config
 from chalice.local import LocalGateway
 
 import os,sys
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(\_\_file\_\_))))
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-from test\_code.app import app
+from test_code.app import app
 
 
 class TestApp(TestCase):
     def setUp(self):
         self.lg = LocalGateway(app, Config("prod"))
 
-    def test\_api(self):
+    def test_api(self):
         #print(Config("prod"))
-        response = self.lg.handle\_request(method='GET',
+        response = self.lg.handle_request(method='GET',
                                           path='/',
                                           headers={},
                                           body='')
 
         print(response)
-        assert response\['statusCode'\] == 200
+        assert response['statusCode'] == 200
 ```
 
 수정 후 아래와 같이 명령어를 입력해 테스트 코드를 실행하고 테스트 코드 Coverage를 확인한다. 
 
 ```
-$ pytest --cov=test\_code tests/test\_other\_way.py -v
+$ pytest --cov=test_code tests/test_other_way.py -v
 
 ==================================================================== test session starts =====================================================================
-platform darwin -- Python 3.7.1, pytest-5.3.5, py-1.8.1, pluggy-0.13.1 -- /Users/st/test/chalice\_pytest/.venv/bin/python3.7
-cachedir: .pytest\_cache
-rootdir: /Users/st/test/chalice\_pytest
+platform darwin -- Python 3.7.1, pytest-5.3.5, py-1.8.1, pluggy-0.13.1 -- /Users/st/test/chalice_pytest/.venv/bin/python3.7
+cachedir: .pytest_cache
+rootdir: /Users/st/test/chalice_pytest
 plugins: chalice-0.0.4, cov-2.8.1
 collected 1 item
 
-tests/test\_other\_way.py::TestApp::test\_api PASSED                                                                                                      \[100%\]
+tests/test_other_way.py::TestApp::test_api PASSED                                                                                                      [100%]
 
 ---------- coverage: platform darwin, python 3.7.1-final-0 -----------
 Name               Stmts   Miss  Cover
 --------------------------------------
-test\_code/app.py       6      0   100%
+test_code/app.py       6      0   100%
 ```
 
 결과를 통해 app.py의 api가 테스트되어 Coverage 100%가 나온 것을 확인할 수 있다. 

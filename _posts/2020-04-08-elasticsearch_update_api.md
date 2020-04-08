@@ -27,7 +27,7 @@ ES Update API 작동 방식
 
 * * *
 
-공식 사이트에서 Update API 관련 내용은 [Elasticsearch Reference \[7.x\]](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/index.html) » [REST APIs](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/rest-apis.html) » [Document APIs](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/docs.html) » [Update API](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/docs-update.html) 에 정리되어 있다. 
+공식 사이트에서 Update API 관련 내용은 [Elasticsearch Reference [7.x]](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/index.html) » [REST APIs](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/rest-apis.html) » [Document APIs](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/docs.html) » [Update API](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/docs-update.html) 에 정리되어 있다. 
 
 해당 문서를 읽고 API Update 관련해 필요한 부분만 정리해 남겨둔다.
 
@@ -53,7 +53,7 @@ ES에서 문서를 Update하는 방법은 두 가지가 있다. 스크립트를 
 1번 방법
 
 ```
-POST /customer/\_doc/1/\_update?pretty
+POST /customer/_doc/1/_update?pretty
 {
   "doc": { "name": "Jane Doe", "age": 20 }
 }
@@ -62,9 +62,9 @@ POST /customer/\_doc/1/\_update?pretty
  2번 방법(script)
 
 ```
-POST /customer/\_doc/1/\_update?pretty
+POST /customer/_doc/1/_update?pretty
 {
-  "script" : "ctx.\_source.age += 5"
+  "script" : "ctx._source.age += 5"
 }
 ```
 
@@ -76,22 +76,22 @@ POST /customer/\_doc/1/\_update?pretty
 multi field update 테스트를 하기 위해 다음과 같은 명령어를 입력해 Document를 index한다. 
 
 ```
-POST test\_multi\_field\_update/\_doc
+POST test_multi_field_update/_doc
 {
-  "category\_id" : 1,
-  "updated\_at" : "2019-11-05T14:54:26Z",
-  "user\_id" : 1220267,
-  "created\_at" : "2019-11-05T08:07:33Z",
+  "category_id" : 1,
+  "updated_at" : "2019-11-05T14:54:26Z",
+  "user_id" : 1220267,
+  "created_at" : "2019-11-05T08:07:33Z",
   "id" : 1657898,
   "title" : "",
-  "body" : "test\_body"
+  "body" : "test_body"
 }
 ```
 
 Index 후 데이터가 원하는대로 정확하게 입력 됬는 지 다음과 같은 명령어를 통해 확인한다. 
 
 ```
-GET test\_multi\_field\_update/\_search
+GET test_multi_field_update/_search
 ```
 
 아래처럼 응답 결과가 나오면 정상적으로 Document 입력이 된 것이다. 
@@ -99,8 +99,8 @@ GET test\_multi\_field\_update/\_search
 ```
 {
   "took" : 0,
-  "timed\_out" : false,
-  "\_shards" : {
+  "timed_out" : false,
+  "_shards" : {
     "total" : 1,
     "successful" : 1,
     "skipped" : 0,
@@ -111,24 +111,24 @@ GET test\_multi\_field\_update/\_search
       "value" : 1,
       "relation" : "eq"
     },
-    "max\_score" : 1.0,
-    "hits" : \[
+    "max_score" : 1.0,
+    "hits" : [
       {
-        "\_index" : "test\_multi\_field\_update",
-        "\_type" : "\_doc",
-        "\_id" : "MId9DnABTeXXiGlkj0Cm",
-        "\_score" : 1.0,
-        "\_source" : {
-          "category\_id" : 1,
-          "updated\_at" : "2019-11-05T14:54:26Z",
-          "user\_id" : 1220267,
-          "created\_at" : "2019-11-05T08:07:33Z",
+        "_index" : "test_multi_field_update",
+        "_type" : "_doc",
+        "_id" : "MId9DnABTeXXiGlkj0Cm",
+        "_score" : 1.0,
+        "_source" : {
+          "category_id" : 1,
+          "updated_at" : "2019-11-05T14:54:26Z",
+          "user_id" : 1220267,
+          "created_at" : "2019-11-05T08:07:33Z",
           "id" : 1657898,
           "title" : "",
-          "body" : "test\_body"
+          "body" : "test_body"
         }
       }
-    \]
+    ]
   }
 }
 ```
@@ -136,10 +136,10 @@ GET test\_multi\_field\_update/\_search
 이제, 다음과 같은 명령어를 입력해 multi field에 대해 업데이트를 한다. 
 
 ```
-POST test\_multi\_field\_update/\_update\_by\_query?pretty
+POST test_multi_field_update/_update_by_query?pretty
 {
   "script": {
-    "source": "ctx.\_source.body = 'converted\_body';",
+    "source": "ctx._source.body = 'converted_body';",
     "lang": "painless"
   },
   "query" : {
@@ -155,21 +155,21 @@ POST test\_multi\_field\_update/\_update\_by\_query?pretty
 ```
 {
   "took" : 56,
-  "timed\_out" : false,
+  "timed_out" : false,
   "total" : 1,
   "updated" : 1,
   "deleted" : 0,
   "batches" : 1,
-  "version\_conflicts" : 0,
+  "version_conflicts" : 0,
   "noops" : 0,
   "retries" : {
     "bulk" : 0,
     "search" : 0
   },
-  "throttled\_millis" : 0,
-  "requests\_per\_second" : -1.0,
-  "throttled\_until\_millis" : 0,
-  "failures" : \[ \]
+  "throttled_millis" : 0,
+  "requests_per_second" : -1.0,
+  "throttled_until_millis" : 0,
+  "failures" : [ ]
 }
 ```
 
@@ -178,7 +178,7 @@ POST test\_multi\_field\_update/\_update\_by\_query?pretty
 업데이트가 정상적으로 됬는 지 다음과 같은 명령어를 입력해 확인한다. 
 
 ```
-GET test\_multi\_field\_update/\_search
+GET test_multi_field_update/_search
 ```
 
 응답 결과는 다음과 같다. 
@@ -186,8 +186,8 @@ GET test\_multi\_field\_update/\_search
 ```
 {
   "took" : 0,
-  "timed\_out" : false,
-  "\_shards" : {
+  "timed_out" : false,
+  "_shards" : {
     "total" : 1,
     "successful" : 1,
     "skipped" : 0,
@@ -198,24 +198,24 @@ GET test\_multi\_field\_update/\_search
       "value" : 1,
       "relation" : "eq"
     },
-    "max\_score" : 1.0,
-    "hits" : \[
+    "max_score" : 1.0,
+    "hits" : [
       {
-        "\_index" : "test\_multi\_field\_update",
-        "\_type" : "\_doc",
-        "\_id" : "MId9DnABTeXXiGlkj0Cm",
-        "\_score" : 1.0,
-        "\_source" : {
-          "category\_id" : 1,
-          "updated\_at" : "2019-11-05T14:54:26Z",
-          "user\_id" : 1220267,
-          "created\_at" : "2019-11-05T08:07:33Z",
+        "_index" : "test_multi_field_update",
+        "_type" : "_doc",
+        "_id" : "MId9DnABTeXXiGlkj0Cm",
+        "_score" : 1.0,
+        "_source" : {
+          "category_id" : 1,
+          "updated_at" : "2019-11-05T14:54:26Z",
+          "user_id" : 1220267,
+          "created_at" : "2019-11-05T08:07:33Z",
           "id" : 1657898,
           "title" : "",
-          "body" : "converted\_body"
+          "body" : "converted_body"
         }
       }
-    \]
+    ]
   }
 }
 ```

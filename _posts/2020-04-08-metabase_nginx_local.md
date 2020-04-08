@@ -55,7 +55,7 @@ Metabase Docker Container가 정상적으로 실행되었는 지 확인하기 �
 $ docker ps
 
 CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS                                      NAMES
-29f03aae9325        metabase/metabase:v0.29.3   "/app/run\_metabase.sh"   23 hours ago        Up 23 hours         0.0.0.0:3000->3000/tcp                     metabase
+29f03aae9325        metabase/metabase:v0.29.3   "/app/run_metabase.sh"   23 hours ago        Up 23 hours         0.0.0.0:3000->3000/tcp                     metabase
 ```
 
 확인 후 웹 브라우저를 이용해 localhost:3000으로 접속한다. 접속 시 Metabase 로그인 화면이 보인다면 정상적으로 실행된 것이다. 
@@ -70,22 +70,22 @@ Nginx를 Metabase에 연결하기 위해서 아래와 같이 Config 파일을 �
 ```
 server {
   listen 80;
-  listen \[::\]:80;
-  return 301 https://$host$request\_uri;
+  listen [::]:80;
+  return 301 https://$host$request_uri;
 }
 
 server {
   listen 443;
 
   ssl on;
-  ssl\_certificate  /nginx/data/.pem;
-  ssl\_certificate\_key  /nginx/data/.pem;
+  ssl_certificate  /nginx/data/.pem;
+  ssl_certificate_key  /nginx/data/.pem;
 
   location / { 
-    proxy\_pass http://172.17.0.1:3000;
-    proxy\_set\_header X-Real-IP $remote\_addr;
-    proxy\_set\_header X-Forwarded-For $proxy\_add\_x\_forwarded\_for;
-    proxy\_set\_header X-Forwarded-Proto $scheme;
+    proxy_pass http://172.17.0.1:3000;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
   }
 }
 ```
@@ -93,7 +93,7 @@ server {
 
 Docker Container 생성 시 기본 네트워크 드라이버 설정은 Brigde이다. 
 
-따라서 위의 Nginx 설정 중 proxy\_pass의 값은 Metabase docker container의 ip값으로 설정되어야 하며 아래와 같은 명령어를 통해 확인할 수 있다. 
+따라서 위의 Nginx 설정 중 proxy_pass의 값은 Metabase docker container의 ip값으로 설정되어야 하며 아래와 같은 명령어를 통해 확인할 수 있다. 
 
 ```
 $ docker inspect -f "{{ .NetworkSettings.IPAddress }}" metabase;
@@ -114,7 +114,7 @@ $ docker ps
 
 CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS                                      NAMES
 4b4441129191        nginx                       "nginx -g 'daemon of…"   23 hours ago        Up 23 hours         0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   nginx
-29f03aae9325        metabase/metabase:v0.29.3   "/app/run\_metabase.sh"   23 hours ago        Up 23 hours         0.0.0.0:3000->3000/tcp                     metabase
+29f03aae9325        metabase/metabase:v0.29.3   "/app/run_metabase.sh"   23 hours ago        Up 23 hours         0.0.0.0:3000->3000/tcp                     metabase
 ```
 
 Docker Container가 정상적으로 실행되었는 지 확인하기 위해 다음과 같은 명령어를 입력하고 결과를 확인한다.

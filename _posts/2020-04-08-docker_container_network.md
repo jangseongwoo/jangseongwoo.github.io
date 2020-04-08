@@ -109,7 +109,7 @@ Default로 생성된 bridge에 대한 정보를 확인하기 위해 다음과 �
 ```
 $ docker network inspect bridge
 
-\[
+[
     {
         "Name": "bridge",
         "Id": "708de6eadf6df7b1664c24d57068e4ee563083b7d40966ef1fabdb6e6f7d6c19",
@@ -120,12 +120,12 @@ $ docker network inspect bridge
         "IPAM": {
             "Driver": "default",
             "Options": null,
-            "Config": \[
+            "Config": [
                 {
                     "Subnet": "172.17.0.0/16",
                     "Gateway": "172.17.0.1"
                 }
-            \]
+            ]
         },
         "Internal": false,
         "Attachable": false,
@@ -136,16 +136,16 @@ $ docker network inspect bridge
         "ConfigOnly": false,
         "Containers": {},
         "Options": {
-            "com.docker.network.bridge.default\_bridge": "true",
-            "com.docker.network.bridge.enable\_icc": "true",
-            "com.docker.network.bridge.enable\_ip\_masquerade": "true",
-            "com.docker.network.bridge.host\_binding\_ipv4": "0.0.0.0",
+            "com.docker.network.bridge.default_bridge": "true",
+            "com.docker.network.bridge.enable_icc": "true",
+            "com.docker.network.bridge.enable_ip_masquerade": "true",
+            "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
             "com.docker.network.bridge.name": "docker0",
             "com.docker.network.driver.mtu": "1500"
         },
         "Labels": {}
     }
-\]
+]
 ```
   
 
@@ -158,13 +158,13 @@ $ ip link
 
 응답예:
 
-1: lo: <LOOPBACK,UP,LOWER\_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default  
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default  
 link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00  
-2: eth0: <BROADCAST,MULTICAST,UP,LOWER\_UP> mtu 9001 qdisc mq state UP mode DEFAULT group default qlen 1000  
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001 qdisc mq state UP mode DEFAULT group default qlen 1000  
 link/ether 0a:86:23:77:c7:58 brd ff:ff:ff:ff:ff:ff  
-3: docker0: <BROADCAST,MULTICAST,UP,LOWER\_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default  
+3: docker0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default  
 link/ether 56:84:7a:fe:97:99 brd ff:ff:ff:ff:ff:ff  
-17: veth4ad9372: <BROADCAST,MULTICAST,UP,LOWER\_UP> mtu 1500 qdisc noqueue master docker0 state UP mode DEFAULT group default  
+17: veth4ad9372: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master docker0 state UP mode DEFAULT group default  
 link/ether ae:7b:c6:12:47:b5 brd ff:ff:ff:ff:ff:ff
 ```
   
@@ -196,7 +196,7 @@ $ docker run --name nginx -p 80:80 -p 443:443 -it -d nginx
 ```
 $ docker inspect bridge
 
-\[
+[
     {
         "Name": "bridge",
         "Id": "803a5d2302aeacf5287cb5965e57c27089631da415c847cfdfbbb64ca8d30d6e",
@@ -207,12 +207,12 @@ $ docker inspect bridge
         "IPAM": {
             "Driver": "default",
             "Options": null,
-            "Config": \[
+            "Config": [
                 {
                     "Subnet": "172.17.0.0/16",
                     "Gateway": "172.17.0.1"
                 }
-            \]
+            ]
         },
         "Internal": false,
         "Attachable": false,
@@ -238,16 +238,16 @@ $ docker inspect bridge
             },
         },
         "Options": {
-            "com.docker.network.bridge.default\_bridge": "true",
-            "com.docker.network.bridge.enable\_icc": "true",
-            "com.docker.network.bridge.enable\_ip\_masquerade": "true",
-            "com.docker.network.bridge.host\_binding\_ipv4": "0.0.0.0",
+            "com.docker.network.bridge.default_bridge": "true",
+            "com.docker.network.bridge.enable_icc": "true",
+            "com.docker.network.bridge.enable_ip_masquerade": "true",
+            "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
             "com.docker.network.bridge.name": "docker0",
             "com.docker.network.driver.mtu": "1500"
         },
         "Labels": {}
     }
-\]
+]
 ```
   
 
@@ -267,18 +267,18 @@ $ docker run --rm -it --name c1 busybox sh
 # in docker 
 $ ip address
 
-1: lo: <LOOPBACK,UP,LOWER\_UP> mtu 65536 qdisc noqueue qlen 1
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue qlen 1
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
-       valid\_lft forever preferred\_lft forever
+       valid_lft forever preferred_lft forever
 2: tunl0@NONE: <NOARP> mtu 1480 qdisc noop qlen 1
     link/ipip 0.0.0.0 brd 0.0.0.0
 3: ip6tnl0@NONE: <NOARP> mtu 1452 qdisc noop qlen 1
     link/tunnel6 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 brd 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00
-28: eth0@if29: <BROADCAST,MULTICAST,UP,LOWER\_UP,M-DOWN> mtu 1500 qdisc noqueue
+28: eth0@if29: <BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN> mtu 1500 qdisc noqueue
     link/ether 02:42:ac:11:00:04 brd ff:ff:ff:ff:ff:ff
     inet 172.17.0.4/16 brd 172.17.255.255 scope global eth0
-       valid\_lft forever preferred\_lft forever
+       valid_lft forever preferred_lft forever
 ```
 
 결과를 통해 eth0가 생성되었으며 Container의 ip는 172.17.0.4로 할당되었음을 확인 할 수 있다. 
@@ -305,7 +305,7 @@ $ docker start nginx
 $ docker start metabase
 $ docker inspect bridge
 
-\[
+[
     {
         "Name": "bridge",
         "Id": "803a5d2302aeacf5287cb5965e57c27089631da415c847cfdfbbb64ca8d30d6e",
@@ -316,12 +316,12 @@ $ docker inspect bridge
         "IPAM": {
             "Driver": "default",
             "Options": null,
-            "Config": \[
+            "Config": [
                 {
                     "Subnet": "172.17.0.0/16",
                     "Gateway": "172.17.0.1"
                 }
-            \]
+            ]
         },
         "Internal": false,
         "Attachable": false,
@@ -347,16 +347,16 @@ $ docker inspect bridge
             },
         },
         "Options": {
-            "com.docker.network.bridge.default\_bridge": "true",
-            "com.docker.network.bridge.enable\_icc": "true",
-            "com.docker.network.bridge.enable\_ip\_masquerade": "true",
-            "com.docker.network.bridge.host\_binding\_ipv4": "0.0.0.0",
+            "com.docker.network.bridge.default_bridge": "true",
+            "com.docker.network.bridge.enable_icc": "true",
+            "com.docker.network.bridge.enable_ip_masquerade": "true",
+            "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
             "com.docker.network.bridge.name": "docker0",
             "com.docker.network.driver.mtu": "1500"
         },
         "Labels": {}
     }
-\]
+]
 ```
   
 
@@ -408,7 +408,7 @@ $ docker inspect bridge
     
 *   Linux namespace: [https://bluese05.tistory.com/11](https://bluese05.tistory.com/11)
     
-*   [\[번역\] 확장성 있고, 이식성 있는 Docker Container 네트워크 설계](https://ziwon.github.io/post/designing-scalable-portable-docker-container-networks/): [https://ziwon.dev/post/designing-scalable-portable-docker-container-networks/](https://ziwon.dev/post/designing-scalable-portable-docker-container-networks/)
+*   [[번역] 확장성 있고, 이식성 있는 Docker Container 네트워크 설계](https://ziwon.github.io/post/designing-scalable-portable-docker-container-networks/): [https://ziwon.dev/post/designing-scalable-portable-docker-container-networks/](https://ziwon.dev/post/designing-scalable-portable-docker-container-networks/)
     
 *   Docker 네트워크 설명 개인 블로그 글:
     
