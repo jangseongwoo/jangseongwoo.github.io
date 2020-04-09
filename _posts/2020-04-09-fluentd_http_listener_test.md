@@ -8,7 +8,7 @@ excerpt: "HTTP Data Listener 기능을 Fluentd의 Http Input Plugin을 사용하
 categories:
   - Fluentd
 tags:
-  - Fluentd, Fluentd Plugin, HTTP Listener, Test
+  - Fluentd, Fluentd_Plugin, HTTP_Listener, Test
 
 toc: true
 toc_label: "Index"
