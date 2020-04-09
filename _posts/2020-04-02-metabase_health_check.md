@@ -5,7 +5,8 @@ excerpt: "이 글의 목적은 Metabase의 모니터링 자동화를 위해 서�
 categories:
   - Metabase
 tags:
-  - Metabase, Metabase_Health_check_API
+  - Metabase
+  - Metabase_Health_check_API
 
 toc: true
 toc_label: "Index"

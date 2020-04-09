@@ -5,7 +5,10 @@ excerpt: "이 문서는 Docker Container 간 통신이 어떻게 이뤄지는 �
 categories:
   - Docker
 tags:
-  - Docker, Container, Docker_Network, Bridge
+  - Docker
+  - Container
+  - Docker_Network
+  - Bridge
 
 toc: true
 toc_label: "Index"

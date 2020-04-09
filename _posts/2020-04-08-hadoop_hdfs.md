@@ -5,7 +5,8 @@ excerpt: "이 문서는 Apache Hadoop HDFS에 대해 설명하고 어떻게 동�
 categories:
   - Hadoop
 tags:
-  - Hadoop, Hadoop_HDFS
+  - Hadoop
+  - Hadoop_HDFS
 
 toc: true
 toc_label: "Index"

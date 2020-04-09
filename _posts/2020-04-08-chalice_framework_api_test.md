@@ -5,7 +5,9 @@ excerpt: "이 문서는 Chalice framework API의 API 레벨에서 테스트할 
 categories:
   - Chalice
 tags:
-  - Chalice, API, Test
+  - Chalice
+  - API
+  - Test
 
 toc: true
 toc_label: "Index"

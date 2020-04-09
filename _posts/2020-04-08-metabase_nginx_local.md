@@ -5,7 +5,8 @@ excerpt: "이 문서는 Metabase와 Nginx를 로컬에서 설치하고 실행하
 categories:
   - Metabase
 tags:
-  - Metabase, Nginx
+  - Metabase
+  - Nginx
 
 toc: true
 toc_label: "Index"
