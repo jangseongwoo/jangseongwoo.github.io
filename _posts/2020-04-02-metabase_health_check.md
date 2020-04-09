@@ -3,9 +3,9 @@ title:  "Metabase Health check api 관련 조사"
 excerpt: "이 글의 목적은 Metabase의 모니터링 자동화를 위해 서비스의 정상 작동 여부를 알 수 있는 API 관련해 조사한 것을 남기기 위해 작성했다. "
 
 categories:
-  - Linux
+  - Metabase
 tags:
-  - Linux
+  - Metabase, Metabase_Health_check_API
 
 toc: true
 toc_label: "Index"
