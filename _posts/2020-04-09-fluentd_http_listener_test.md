@@ -1,5 +1,5 @@
 ---
-title:  "[테스트] Fluentd - Http Input Plugin 부하 및 성능 테스트"
+title:  "Fluentd - Http Input Plugin 부하 및 성능 테스트"
 excerpt: "HTTP Data Listener 기능을 Fluentd의 Http Input Plugin을 사용하여 구성하고 테스트한 내용을 정리한다.
 테스트로 확인한 내용은 다음과 같다.
 *   Fluentd Http Input Plugin을 사용한 HTTP Listener가 오류없이 얼마나 많은 유저의 요청을 처리할 수 있는 지 확인 (부하 테스트)

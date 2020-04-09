@@ -1,5 +1,5 @@
 ---
-title:  "[테스트] Elasticsearch Update API 관련 테스트 및 정리"
+title:  "Elasticsearch Update API 관련 테스트 및 정리"
 excerpt: "이 문서는 Elasticsearch의 Update 관련 테스트 및 정보를 기술하기 위해 작성한다. 해당 문서는 Elasticsearch 7.1 version을 기준으로 작성되었다. 가독성을 위해 용어 중 Elasticsearch는 ES로 줄여서 표현하겠다. 공식 문서 버전 기준은 7.x 버전을 기준으로 작성했다. "
 
 categories:
