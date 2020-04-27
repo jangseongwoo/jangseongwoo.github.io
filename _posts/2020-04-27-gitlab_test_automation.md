@@ -1,5 +1,6 @@
 ---
-title:  "GitLab Testing, coverage 측정 자동화"
+title:  "GitLab에서 Gitlab CI/CD를 활용한 자동화 Testing, coverage 측정"
+excerpt: "이 문서의 목적은 GitLab에서 GitLab Testing, coverage 측정 자동화에 대한 내용을 정리하고 공유하기 위해 작성했다. "
 
 categories:
   - Gitlab
