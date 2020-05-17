@@ -3,11 +3,11 @@ title: "Kubernetes dashboard 설치하고 실행하기"
 excerpt: "이 글에서는 Kubernetes dashboard를 Local 환경에서 설치하고 실행해보는 것을 목적으로 한다. "
 
 categories:
-  - Rundeck
+  - Kubernetes
 tags:
-  - Rundeck
+  - Kubernetes
   - Docker
-  - Docker_container
+  - Kubernetes_dashboard
 
 toc: true
 toc_label: "Index"
