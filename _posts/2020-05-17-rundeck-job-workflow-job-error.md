@@ -214,13 +214,13 @@ Node Steps에서 설정한 작업은 각 Node마다 1번씩 실행된다.
 
 Workflow Steps에서 설정한 작업은 전체 Workflow에서 단 1회만 실행된다.
 
-![](https://aircrew.atlassian.net/wiki/download/attachments/277970945/fig0410a.bf052f58.png?api=v2)
+![](/assets/images/rundeck8.jpg)
 
 이 부분에서 중요한 것은 각 작업이 실행되었는데 실패할 경우 어떻게 처리 되는 지가 중요한데, Rundeck에서 이것은 Error Handler를 통해 처리한다.
 
 **Error Hadler**
 
-![](/assets/images/rundeck8.jpg)
+![](/assets/images/rundeck9.jpg)
 
 Error Handler는 특정 Command가 실패했을 경우 불려지는 처리기이다. 위의 사진처럼 추가할 수 있다.
 
