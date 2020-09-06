@@ -94,13 +94,7 @@ server {
 
 Docker Container 생성 시 기본 네트워크 드라이버 설정은 Brigde이다. 
 
-따라서 위의 Nginx 설정 중 proxy_pass의 값은 Metabase docker container의 ip값으로 설정되어야 하며 아래와 같은 명령어를 통해 확인할 수 있다. 
-
-```
-$ docker inspect -f '{{ .NetworkSettings.IPAddress }}' metabase;
-```
-
-자세한 내용은 블로그 문서 [Docker Container Network 중 Bridge에 대한 설명 정리](https://jangseongwoo.github.io/tags/#docker)를 참고한다. 
+Docker Container 네트워크 드라이버 설정에 대한 자세한 내용은 블로그 문서 [Docker Container Network 중 Bridge에 대한 설명 정리](https://jangseongwoo.github.io/tags/#docker)를 참고한다. 
 
   
 
