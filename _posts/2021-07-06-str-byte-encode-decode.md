@@ -12,8 +12,6 @@ toc_icon: cog
 toc_sticky: true
 ---
 
-# Str, Byte, Encode, Decode
-
 # Unicode
 
 유니코드는 전 세계의 모든 문자를 컴퓨터에서 일관되게 표현하고 다룰 수 있도록 설계된 산업 표준이다.
